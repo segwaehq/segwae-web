@@ -1,0 +1,126 @@
+/* @import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+} */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap'); */
+@import "tailwindcss";
+
+/* Base CSS custom properties (light by default) */
+:root {
+  /* Light theme base */
+  --background: #ffffff;
+  --foreground: #171717;
+
+  /* Fonts (set these via next/font to expose the vars) */
+  /* --font-satoshi: "Satoshi", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"; */
+   /* --font-satoshi: "Plus Jakarta Sans", sans-serif; TODO: CHANGE TO SATOSHI IF YOU FIND THE FONT, FOR NOW USE THIS SIMILAR ONE */
+   /* --font-satoshi: var(--font-satoshi); */
+  /* --font-space-grotesk: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"; */
+  --font-spaceGrotesk: "Space Grotesk", sans-serif;
+  /* --font-openSans: "Open Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"; */
+  --font-openSans: "Open Sans", sans-serif;
+}
+
+@theme inline {
+  /* System variables */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  /* --font-sans: var(--font-satoshi);
+  --font-mono: var(--font-space-grotesk); */
+  --font-openSans: "Open Sans", sans-serif;
+  --font-spaceGrotesk: "Space Grotesk", sans-serif;
+  --font-satoshi: "Satoshi", sans-serif;
+
+  /* Segwae Color Palette */
+  --color-mainPurple: #6A0DAD;
+  --color-lightPurple: #F7E4FD;
+  --color-blue: #0A66C2;
+  --color-successGreen: #34C759;
+  --color-warningYellow: #FFCC00;
+  --color-errorRed: #FF3B30;
+  --color-black: #000000;
+  --color-secondaryBlack: #1A1A1A;
+  --color-grey1: #212121;
+  --color-grey2: #4E4F54;
+  --color-grey3: #949499;
+  --color-grey4: #E1E2E3;
+  --color-grey5: #F4F4F4;
+  --color-grey6: #F9F9FB;
+  --color-neutral: #EBECED;
+  --color-secondaryWhite: #F8F8F8;
+  --color-darkBackground: #121212;
+  --color-darkSurface: #1C1C1E;
+  --color-darkSurfaceVariant: #2C2C2E;
+  --color-darkOnSurface: #E5E5E7;
+  --color-darkOnSurfaceVariant: #8E8E93;
+}
+
+/* Auto-dark scheme (can also support .dark class if you prefer manual toggling) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+/* Base element styles */
+/* html, body {
+  height: 100%;
+} */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  /* background: var(--background);
+  color: var(--foreground); */
+  
+  /* font-family: var(--font-satoshi); */
+  /* -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; */
+  @apply bg-white text-black;
+}
+
+/* Handy utilities (optional) */
+.bg-main-gradient {
+  background: linear-gradient(135deg, var(--color-main-purple), var(--color-blue));
+}
