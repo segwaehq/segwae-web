@@ -9,7 +9,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="col-span-1">
             {/* <h3 className="font-satoshi font-black text-2xl mb-4">Segwae</h3> */}
-            <Link href="/" className="flex items-center space-x-2">
+            <Link href="/" className="flex items-center space-x-2 mb-4">
               <Image
                 // src="/wordmark_svg.svg"
                 src="/wordmark_white.png"
