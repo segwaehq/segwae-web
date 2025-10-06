@@ -5,6 +5,7 @@ import { submitToWaitlist } from '@/lib/supabase'
 import { NIGERIAN_STATES } from '@/lib/constants'
 
 export default function WaitlistForm() {
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [state, setState] = useState('')
   const [loading, setLoading] = useState(false)
@@ -16,7 +17,7 @@ export default function WaitlistForm() {
     setLoading(true)
     setError('')
 
-    const { data, error: submitError } = await submitToWaitlist(email, state)
+    const { data, error: submitError } = await submitToWaitlist(name, email, state)
 
     setLoading(false)
 
@@ -30,6 +31,7 @@ export default function WaitlistForm() {
       }
     } else {
       setSuccess(true)
+      setName('')
       setEmail('')
       setState('')
     }
@@ -61,6 +63,21 @@ export default function WaitlistForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <label htmlFor="name" className="block font-spaceGrotesk font-semibold mb-2">
+          Name
+        </label>
+        <input
+          type="text"
+          id="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+          className="w-full px-4 py-3 rounded-xl border border-grey4 focus:border-mainPurple focus:ring-2 focus:ring-mainPurple/20 outline-none transition-all font-openSans"
+          placeholder="Your full name"
+        />
+      </div>
+
       <div>
         <label htmlFor="email" className="block font-spaceGrotesk font-semibold mb-2">
           Email Address

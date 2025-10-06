@@ -64,11 +64,11 @@ export async function getUserProfile(username: string): Promise<UserProfile | nu
 }
 
 // Submit waitlist entry
-export async function submitToWaitlist(email: string, state: string) {
+export async function submitToWaitlist(name: string, email: string, state: string) {
   try {
     const { data, error } = await supabase
       .from('waitlist')
-      .insert([{ email, state }])
+      .insert([{ name, email, state }])
       .select()
       .single()
 
