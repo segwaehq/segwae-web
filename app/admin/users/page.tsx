@@ -1,30 +1,23 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { exportToCSV } from '@/lib/csvExport'
+import { User } from '@/lib/types'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseServiceKey = process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!
 
 export default function UsersPage() {
-  const [users, setUsers] = useState<any[]>([])
-  const [filteredUsers, setFilteredUsers] = useState<any[]>([])
+  const [users, setUsers] = useState<User[]>([])
+  const [filteredUsers, setFilteredUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
   const [tierFilter, setTierFilter] = useState('all')
 
   const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
-  useEffect(() => {
-    fetchUsers()
-  }, [])
-
-  useEffect(() => {
-    filterUsers()
-  }, [searchTerm, tierFilter, users])
-
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     setLoading(true)
     const { data, error } = await supabase
       .from('users')
@@ -35,9 +28,9 @@ export default function UsersPage() {
       setUsers(data)
     }
     setLoading(false)
-  }
+  }, [supabase])
 
-  const filterUsers = () => {
+  const filterUsers = useCallback(() => {
     let filtered = users
 
     if (searchTerm) {
@@ -54,7 +47,15 @@ export default function UsersPage() {
     }
 
     setFilteredUsers(filtered)
-  }
+  }, [users, searchTerm, tierFilter])
+
+  useEffect(() => {
+    fetchUsers()
+  }, [fetchUsers])
+
+  useEffect(() => {
+    filterUsers()
+  }, [filterUsers])
 
   const handleExport = () => {
     const exportData = filteredUsers.map((user) => ({

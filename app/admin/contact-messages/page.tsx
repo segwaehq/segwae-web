@@ -135,31 +135,24 @@
 
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { exportToCSV } from '@/lib/csvExport'
+import { ContactMessage } from '@/lib/types'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseServiceKey = process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!
 
 export default function ContactMessagesPage() {
-  const [messages, setMessages] = useState<any[]>([])
-  const [filteredMessages, setFilteredMessages] = useState<any[]>([])
+  const [messages, setMessages] = useState<ContactMessage[]>([])
+  const [filteredMessages, setFilteredMessages] = useState<ContactMessage[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
 
   const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
-  useEffect(() => {
-    fetchMessages()
-  }, [])
-
-  useEffect(() => {
-    filterMessages()
-  }, [searchTerm, statusFilter, messages])
-
-  const fetchMessages = async () => {
+  const fetchMessages = useCallback(async () => {
     setLoading(true)
     const { data, error } = await supabase
       .from('contact_messages')
@@ -170,9 +163,9 @@ export default function ContactMessagesPage() {
       setMessages(data)
     }
     setLoading(false)
-  }
+  }, [supabase])
 
-  const filterMessages = () => {
+  const filterMessages = useCallback(() => {
     let filtered = messages
 
     // Search filter
@@ -192,7 +185,15 @@ export default function ContactMessagesPage() {
     }
 
     setFilteredMessages(filtered)
-  }
+  }, [messages, searchTerm, statusFilter])
+
+  useEffect(() => {
+    fetchMessages()
+  }, [fetchMessages])
+
+  useEffect(() => {
+    filterMessages()
+  }, [filterMessages])
 
   const handleExport = () => {
     const exportData = filteredMessages.map((msg) => ({

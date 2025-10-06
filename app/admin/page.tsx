@@ -109,6 +109,7 @@
 
 import { createAdminClient } from '@/lib/adminAuth'
 import StatsCard from '@/components/admin/StatsCard'
+import { ContactMessage } from '@/lib/types'
 
 export default async function AdminDashboard() {
   const supabase = createAdminClient()
@@ -216,7 +217,7 @@ export default async function AdminDashboard() {
             <p className="text-grey3 font-openSans">No messages yet</p>
           ) : (
             <div className="space-y-3">
-              {recentMessages.map((msg: any) => (
+              {recentMessages.map((msg: ContactMessage) => (
                 <div key={msg.id} className="flex justify-between items-start border-b border-grey4 pb-3 last:border-0">
                   <div className="flex-1">
                     <p className="font-spaceGrotesk font-semibold">{msg.name}</p>

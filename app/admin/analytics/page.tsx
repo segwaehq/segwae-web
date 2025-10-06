@@ -1,4 +1,5 @@
 import { createAdminClient } from '@/lib/adminAuth'
+import { AnalyticsEvent } from '@/lib/types'
 
 export default async function AnalyticsPage() {
   const supabase = createAdminClient()
@@ -53,7 +54,7 @@ export default async function AnalyticsPage() {
           <p className="text-grey3 font-openSans">No activity yet</p>
         ) : (
           <div className="space-y-3">
-            {recentEvents.map((event: any) => (
+            {recentEvents.map((event: AnalyticsEvent) => (
               <div key={event.id} className="flex justify-between items-center border-b border-grey4 pb-3 last:border-0">
                 <div>
                   <p className="font-spaceGrotesk font-semibold">

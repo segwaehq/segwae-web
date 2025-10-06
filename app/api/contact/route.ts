@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Store in database
-    const { data: messageData, error: dbError } = await supabase
+    const { error: dbError } = await supabase
       .from('contact_messages')
       .insert([
         {
@@ -86,10 +86,10 @@ export async function POST(request: NextRequest) {
       success: true,
       message: 'Your message has been sent successfully!',
     })
-  } catch (error: any) {
+  } catch (error) {
     console.error('Contact form error:', error)
     return NextResponse.json(
-      { error: error.message || 'Something went wrong' },
+      { error: error instanceof Error ? error.message : 'Something went wrong' },
       { status: 500 }
     )
   }

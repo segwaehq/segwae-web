@@ -14,6 +14,7 @@ import {
   FaStackOverflow,
   FaFigma,
 } from 'react-icons/fa6'
+import { IconType } from 'react-icons'
 import { SOCIAL_PLATFORMS } from '@/lib/constants'
 
 interface SocialIconProps {
@@ -23,7 +24,7 @@ interface SocialIconProps {
   onClick?: () => void
 }
 
-const iconMap: Record<string, any> = {
+const iconMap: Record<string, IconType> = {
   FaLinkedin,
   FaGithub,
   FaXTwitter,

@@ -116,7 +116,6 @@
 
 
 
-import Link from 'next/link'
 import WaitlistForm from '@/components/WaitlistForm'
 import { FaQrcode, FaMobileAlt, FaChartLine, FaCreditCard } from 'react-icons/fa'
 
@@ -252,7 +251,7 @@ export default function Home() {
               </div>
               <h3 className="font-spaceGrotesk font-bold text-2xl mb-3">Share & Connect</h3>
               <p className="font-openSans text-grey2">
-                Share your QR code or profile link. When someone views it, they're automatically added to your network.
+                Share your QR code or profile link. When someone views it, they&apos;re automatically added to your network.
               </p>
             </div>
 
@@ -374,7 +373,7 @@ export default function Home() {
               Join Our Event Network
             </h2>
             <p className="font-spaceGrotesk text-lg">
-              Get notified about networking events in your area. We'll only send relevant events based on your location.
+              Get notified about networking events in your area. We&apos;ll only send relevant events based on your location.
             </p>
           </div>
 

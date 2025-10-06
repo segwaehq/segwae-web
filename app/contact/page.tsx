@@ -296,8 +296,8 @@ export default function Contact() {
       }
 
       setSubmitted(true)
-    } catch (err: any) {
-      setError(err.message)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred')
     } finally {
       setLoading(false)
     }
@@ -332,7 +332,7 @@ export default function Contact() {
             </div>
             <h2 className="font-satoshi font-black text-3xl mb-2">Message Sent!</h2>
             <p className="font-openSans text-grey2 mb-6">
-              Thank you for contacting us. We'll get back to you as soon as possible.
+              Thank you for contacting us. We&apos;ll get back to you as soon as possible.
             </p>
             <button
               onClick={() => {
@@ -356,7 +356,7 @@ export default function Contact() {
         <div className="text-center mb-16">
           <h1 className="font-satoshi font-black text-5xl mb-4">Get In Touch</h1>
           <p className="font-spaceGrotesk text-xl text-grey2 max-w-2xl mx-auto">
-            Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+            Have questions? We&apos;d love to hear from you. Send us a message and we&apos;ll respond as soon as possible.
           </p>
         </div>
 

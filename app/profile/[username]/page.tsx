@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
-import { getUserProfile, type UserProfile } from '@/app/lib/supabase'
-import { trackProfileView, trackLinkClick } from '@/app/lib/analytics'
+import { getUserProfile } from '@/lib/supabase'
+import { trackProfileView, trackLinkClick } from '@/lib/analytics'
 import SocialIcon from '@/components/SocialIcon'
 import type { Metadata } from 'next'
 

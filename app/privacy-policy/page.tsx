@@ -15,7 +15,7 @@ export default function PrivacyPolicy() {
         <section className="mb-12">
           <h2 className="font-spaceGrotesk font-bold text-3xl mb-4">Introduction</h2>
           <p className="text-grey2 leading-relaxed">
-            Segwae ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our mobile application and services.
+            Segwae (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our mobile application and services.
           </p>
         </section>
 
@@ -117,7 +117,7 @@ export default function PrivacyPolicy() {
         </section>
 
         <section className="mb-12">
-          <h2 className="font-spaceGrotesk font-bold text-3xl mb-4">Children's Privacy</h2>
+          <h2 className="font-spaceGrotesk font-bold text-3xl mb-4">Children&apos;s Privacy</h2>
           <p className="text-grey2">
             Segwae is not intended for users under 13 years of age. We do not knowingly collect information from children.
           </p>
@@ -126,7 +126,7 @@ export default function PrivacyPolicy() {
         <section className="mb-12">
           <h2 className="font-spaceGrotesk font-bold text-3xl mb-4">Changes to This Policy</h2>
           <p className="text-grey2">
-            We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new policy on this page and updating the "Last updated" date.
+            We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new policy on this page and updating the &quot;Last updated&quot; date.
           </p>
         </section>
 

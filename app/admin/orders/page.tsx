@@ -1,9 +1,10 @@
 import { createAdminClient } from '@/lib/adminAuth'
+import { Order } from '@/lib/types'
 
 export default async function OrdersPage() {
   const supabase = createAdminClient()
 
-  const { data: orders, error } = await supabase
+  const { data: orders } = await supabase
     .from('orders')
     .select('*, users(name, email), products(name, price), addresses(*)')
     .order('created_at', { ascending: false })
@@ -29,7 +30,7 @@ export default async function OrdersPage() {
         </div>
       ) : (
         <div className="space-y-4">
-          {orders.map((order: any) => (
+          {orders.map((order: Order) => (
             <div key={order.id} className="bg-white rounded-2xl p-6 shadow-lg">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">

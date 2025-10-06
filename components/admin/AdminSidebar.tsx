@@ -133,7 +133,7 @@ export default function AdminSidebar() {
         </nav>
 
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-grey4">
-          <a
+          <Link
             href="/"
             className="flex items-center gap-3 px-4 py-3 rounded-lg font-spaceGrotesk text-grey2 hover:bg-grey6 transition-all"
           >
@@ -141,7 +141,7 @@ export default function AdminSidebar() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
             <span>Back to Website</span>
-          </a>
+          </Link>
         </div>
       </aside>
     </>

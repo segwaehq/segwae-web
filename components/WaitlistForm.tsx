@@ -53,7 +53,7 @@ export default function WaitlistForm() {
         </div>
         <h3 className="font-spaceGrotesk font-bold text-2xl mb-2">Thank You!</h3>
         <p className="font-openSans text-grey2">
-          You've been added to our waitlist. We'll notify you about upcoming events in your area.
+          You&apos;ve been added to our waitlist. We&apos;ll notify you about upcoming events in your area.
         </p>
       </div>
     )

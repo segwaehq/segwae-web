@@ -109,6 +109,7 @@
 import { useState } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { useRouter, useSearchParams } from 'next/navigation'
+import Link from 'next/link'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -221,9 +222,9 @@ export default function AdminLogin() {
         </form>
 
         <div className="mt-6 text-center">
-          <a href="/" className="text-mainPurple hover:underline font-spaceGrotesk text-sm">
+          <Link href="/" className="text-mainPurple hover:underline font-spaceGrotesk text-sm">
             ← Back to Website
-          </a>
+          </Link>
         </div>
       </div>
     </div>

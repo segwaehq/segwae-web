@@ -1,9 +1,10 @@
 import { createAdminClient } from '@/lib/adminAuth'
+import { BugReport } from '@/lib/types'
 
 export default async function BugReportsPage() {
   const supabase = createAdminClient()
 
-  const { data: bugReports, error } = await supabase
+  const { data: bugReports } = await supabase
     .from('bug_reports')
     .select('*')
     .order('created_at', { ascending: false })
@@ -28,7 +29,7 @@ export default async function BugReportsPage() {
         </div>
       ) : (
         <div className="space-y-4">
-          {bugReports.map((bug: any) => (
+          {bugReports.map((bug: BugReport) => (
             <div key={bug.id} className="bg-white rounded-2xl p-6 shadow-lg">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">

@@ -1,6 +1,6 @@
 'use strict'
 
-export function exportToCSV(data: any[], filename: string) {
+export function exportToCSV(data: Record<string, unknown>[], filename: string) {
   if (!data || data.length === 0) {
     alert('No data to export')
     return

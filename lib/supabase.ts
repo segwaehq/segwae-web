@@ -74,7 +74,7 @@ export async function submitToWaitlist(email: string, state: string) {
 
     if (error) throw error
     return { data, error: null }
-  } catch (error: any) {
-    return { data: null, error: error.message }
+  } catch (error) {
+    return { data: null, error: error instanceof Error ? error.message : 'Unknown error' }
   }
 }

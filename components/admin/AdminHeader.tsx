@@ -2,11 +2,12 @@
 
 import { createClient } from '@supabase/supabase-js'
 import { useRouter } from 'next/navigation'
+import { User } from '@supabase/supabase-js'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
-export default function AdminHeader({ user }: { user: any }) {
+export default function AdminHeader({ user }: { user: User }) {
   const router = useRouter()
   const supabase = createClient(supabaseUrl, supabaseAnonKey)
 

@@ -1,30 +1,23 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { exportToCSV } from '@/lib/csvExport'
+import { WaitlistSubscriber } from '@/lib/types'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseServiceKey = process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!
 
 export default function WaitlistPage() {
-  const [subscribers, setSubscribers] = useState<any[]>([])
-  const [filteredSubscribers, setFilteredSubscribers] = useState<any[]>([])
+  const [subscribers, setSubscribers] = useState<WaitlistSubscriber[]>([])
+  const [filteredSubscribers, setFilteredSubscribers] = useState<WaitlistSubscriber[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
   const [stateFilter, setStateFilter] = useState('all')
 
   const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
-  useEffect(() => {
-    fetchSubscribers()
-  }, [])
-
-  useEffect(() => {
-    filterSubscribers()
-  }, [searchTerm, stateFilter, subscribers])
-
-  const fetchSubscribers = async () => {
+  const fetchSubscribers = useCallback(async () => {
     setLoading(true)
     const { data, error } = await supabase
       .from('waitlist')
@@ -35,9 +28,9 @@ export default function WaitlistPage() {
       setSubscribers(data)
     }
     setLoading(false)
-  }
+  }, [supabase])
 
-  const filterSubscribers = () => {
+  const filterSubscribers = useCallback(() => {
     let filtered = subscribers
 
     if (searchTerm) {
@@ -51,7 +44,15 @@ export default function WaitlistPage() {
     }
 
     setFilteredSubscribers(filtered)
-  }
+  }, [subscribers, searchTerm, stateFilter])
+
+  useEffect(() => {
+    fetchSubscribers()
+  }, [fetchSubscribers])
+
+  useEffect(() => {
+    filterSubscribers()
+  }, [filterSubscribers])
 
   const handleExport = () => {
     const exportData = filteredSubscribers.map((sub) => ({
@@ -67,7 +68,7 @@ export default function WaitlistPage() {
   const uniqueStates = Array.from(new Set(subscribers.map((s) => s.state))).sort()
 
   // Get state statistics
-  const stateStats = subscribers.reduce((acc: any, sub) => {
+  const stateStats = subscribers.reduce((acc: Record<string, number>, sub) => {
     acc[sub.state] = (acc[sub.state] || 0) + 1
     return acc
   }, {})
@@ -118,7 +119,7 @@ export default function WaitlistPage() {
             Top State
           </h3>
           <p className="font-satoshi font-black text-2xl text-successGreen">
-            {Object.entries(stateStats).sort((a: any, b: any) => b[1] - a[1])[0]?.[0] || 'N/A'}
+            {Object.entries(stateStats).sort((a, b) => b[1] - a[1])[0]?.[0] || 'N/A'}
           </p>
         </div>
       </div>

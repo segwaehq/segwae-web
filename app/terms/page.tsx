@@ -164,7 +164,7 @@ export default function TermsOfService() {
         <section className="mb-12">
           <h2 className="font-spaceGrotesk font-bold text-3xl mb-4">12. Disclaimer of Warranties</h2>
           <p className="text-grey2">
-            Segwae is provided "as is" without warranties of any kind, either express or implied.
+            Segwae is provided &quot;as is&quot; without warranties of any kind, either express or implied.
           </p>
         </section>
 
