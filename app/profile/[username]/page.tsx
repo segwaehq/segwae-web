@@ -1,8 +1,9 @@
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import { getUserProfile } from '@/lib/supabase'
-import { trackProfileView, trackLinkClick } from '@/lib/analytics'
+import { trackProfileView } from '@/lib/analytics'
 import SocialIcon from '@/components/SocialIcon'
+import PortfolioLink from '@/components/PortfolioLink'
 import type { Metadata } from 'next'
 
 interface ProfilePageProps {
@@ -159,7 +160,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                     key={link.id}
                     platform={link.platform}
                     url={link.url}
-                    onClick={() => trackLinkClick(profile.id, link.platform)}
+                    profileId={profile.id}
                   />
                 ))}
             </div>
@@ -170,18 +171,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
         {showPortfolio && profile.portfolio_or_website_link && (
           <div className="bg-white rounded-3xl shadow-xl p-8 mb-8">
             <h2 className="font-spaceGrotesk font-bold text-2xl mb-4">Portfolio</h2>
-            <a
-              href={profile.portfolio_or_website_link}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => trackLinkClick(profile.id, 'portfolio')}
-              className="inline-flex items-center gap-2 text-mainPurple hover:underline font-spaceGrotesk font-semibold"
-            >
-              Visit Website
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
-            </a>
+            <PortfolioLink url={profile.portfolio_or_website_link} profileId={profile.id} />
           </div>
         )}
 

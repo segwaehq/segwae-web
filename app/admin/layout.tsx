@@ -2,6 +2,10 @@ import { checkAdminAuth } from '@/lib/adminAuth'
 import AdminSidebar from '@/components/admin/AdminSidebar'
 import AdminHeader from '@/components/admin/AdminHeader'
 
+// Force dynamic rendering for all admin routes
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export default async function AdminLayout({
   children,
 }: {

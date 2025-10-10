@@ -1,3 +1,5 @@
+'use client'
+
 import {
   FaLinkedin,
   FaGithub,
@@ -20,8 +22,8 @@ import { SOCIAL_PLATFORMS } from '@/lib/constants'
 interface SocialIconProps {
   platform: string
   url: string
+  profileId: string
   size?: number
-  onClick?: () => void
 }
 
 const iconMap: Record<string, IconType> = {
@@ -41,19 +43,36 @@ const iconMap: Record<string, IconType> = {
   FaFigma,
 }
 
-export default function SocialIcon({ platform, url, size = 24, onClick }: SocialIconProps) {
+export default function SocialIcon({ platform, url, profileId, size = 24 }: SocialIconProps) {
   const platformData = SOCIAL_PLATFORMS[platform as keyof typeof SOCIAL_PLATFORMS]
   if (!platformData) return null
 
   const IconComponent = iconMap[platformData.icon]
   if (!IconComponent) return null
 
+  const handleClick = async () => {
+    // Track analytics client-side
+    try {
+      await fetch('/api/analytics', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          profileId,
+          eventType: 'link_click',
+          linkType: platform,
+        }),
+      })
+    } catch (error) {
+      console.error('Analytics tracking failed:', error)
+    }
+  }
+
   return (
     <a
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      onClick={onClick}
+      onClick={handleClick}
       className="group relative"
     >
       <div
