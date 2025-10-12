@@ -4,6 +4,7 @@ import localFont from 'next/font/local'
 import Script from "next/script";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import LayoutWrapper from "@/components/LayoutWrapper";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -109,9 +110,10 @@ export default function RootLayout({
         // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         className="font-openSans antialiased"
       >
-        <Header />
+        {/* <Header />
         <main className="min-h-screen pt-16">{children}</main>
-        <Footer />
+        <Footer /> */}
+        <LayoutWrapper>{children}</LayoutWrapper>
       </body>
     </html>
   );
