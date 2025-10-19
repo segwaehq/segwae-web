@@ -107,12 +107,9 @@
 'use client'
 
 import { useState } from 'react'
-import { createClient } from '@supabase/supabase-js'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+import { loginAction } from './actions'
 
 export default function AdminLogin() {
   const [email, setEmail] = useState('')
@@ -122,41 +119,26 @@ export default function AdminLogin() {
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  const supabase = createClient(supabaseUrl, supabaseAnonKey)
-
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError('')
 
-    const { data, error: authError } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
+    const formData = new FormData()
+    formData.append('email', email)
+    formData.append('password', password)
 
-    if (authError) {
-      setError(authError.message)
+    const result = await loginAction(formData)
+
+    if (result.error) {
+      setError(result.error)
       setLoading(false)
       return
     }
 
-    // Check if user is admin
-    if (data.user) {
-      const { data: userData, error: userError } = await supabase
-        .from('users')
-        .select('is_admin')
-        .eq('id', data.user.id)
-        .single()
-
-      if (userError || !userData?.is_admin) {
-        setError('You do not have admin access')
-        await supabase.auth.signOut()
-        setLoading(false)
-        return
-      }
-
-      router.push('/admin')
-    }
+    // Redirect to admin dashboard
+    router.push('/admin')
+    router.refresh()
   }
 
   return (
