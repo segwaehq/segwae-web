@@ -32,12 +32,12 @@ async function checkAdminAccess() {
 // GET /api/products/[id] - Get a single product
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const cookieStore = await cookies()
     const supabase = createClient(cookieStore)
-    const { id } = params
+    const { id } = await params
 
     const { data: product, error } = await supabase
       .from('products')
@@ -65,7 +65,7 @@ export async function GET(
 // PUT /api/products/[id] - Update a product (Admin only)
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const adminCheck = await checkAdminAccess()
@@ -76,7 +76,7 @@ export async function PUT(
       )
     }
 
-    const { id } = params
+    const { id } = await params
     const body = await request.json()
 
     const {
@@ -90,7 +90,7 @@ export async function PUT(
     } = body
 
     // Build update object with only provided fields
-    const updates: any = {}
+    const updates: Record<string, unknown> = {}
     if (name !== undefined) updates.name = name
     if (description !== undefined) updates.description = description
     if (front_image_url !== undefined) updates.front_image_url = front_image_url
@@ -142,7 +142,7 @@ export async function PUT(
 // DELETE /api/products/[id] - Delete a product (Admin only)
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const adminCheck = await checkAdminAccess()
@@ -153,7 +153,7 @@ export async function DELETE(
       )
     }
 
-    const { id } = params
+    const { id } = await params
 
     const { error } = await adminCheck.supabase
       .from('products')

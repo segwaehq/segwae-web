@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { FiPlus, FiEdit2, FiTrash2, FiEye, FiEyeOff, FiImage } from 'react-icons/fi'
 // import { createClient } from '@/lib/supabase'
 import { createClient } from '@supabase/supabase-js'
@@ -68,7 +69,7 @@ export default function ProductsPage() {
       const filePath = `${fileName}`
 
       // Upload to Supabase Storage
-      const { data, error } = await supabase.storage
+      const { error } = await supabase.storage
         .from('product-images')
         .upload(filePath, file, {
           cacheControl: '3600',
@@ -85,9 +86,9 @@ export default function ProductsPage() {
         .getPublicUrl(filePath)
 
       setFormData(prev => ({ ...prev, [field]: publicUrl }))
-    } catch (error: any) {
+    } catch (error) {
       console.error('Upload error:', error)
-      setUploadError(error.message || 'Failed to upload image')
+      setUploadError(error instanceof Error ? error.message : 'Failed to upload image')
     } finally {
       setUploading(false)
     }
@@ -228,10 +229,11 @@ export default function ProductsPage() {
           <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden">
             {/* Product Images */}
             <div className="relative h-48 bg-gray-100">
-              <img
+              <Image
                 src={product.front_image_url}
                 alt={`${product.name} - Front`}
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
               />
               {!product.is_active && (
                 <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
@@ -364,7 +366,9 @@ export default function ProductsPage() {
                     disabled={uploading}
                   />
                   {formData.front_image_url && (
-                    <img src={formData.front_image_url} alt="Front preview" className="mt-2 h-32 object-cover rounded" />
+                    <div className="relative mt-2 h-32 rounded overflow-hidden">
+                      <Image src={formData.front_image_url} alt="Front preview" fill className="object-cover" />
+                    </div>
                   )}
                 </div>
 
@@ -379,7 +383,9 @@ export default function ProductsPage() {
                     disabled={uploading}
                   />
                   {formData.back_image_url && (
-                    <img src={formData.back_image_url} alt="Back preview" className="mt-2 h-32 object-cover rounded" />
+                    <div className="relative mt-2 h-32 rounded overflow-hidden">
+                      <Image src={formData.back_image_url} alt="Back preview" fill className="object-cover" />
+                    </div>
                   )}
                 </div>
 
