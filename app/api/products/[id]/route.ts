@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
-// import { createClient } from '@/lib/supabase'
-import { createClient } from '@supabase/supabase-js'
+import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
 export const dynamic = 'force-dynamic'
@@ -8,12 +7,31 @@ export const dynamic = 'force-dynamic'
 // Helper function to check admin status
 async function checkAdminAccess() {
   const cookieStore = await cookies()
-  const supabase = createClient(cookieStore)
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll()
+        },
+        setAll(cookiesToSet) {
+          try {
+            cookiesToSet.forEach(({ name, value, options }) =>
+              cookieStore.set(name, value, options)
+            )
+          } catch {
+            // Ignore errors in server components
+          }
+        },
+      },
+    }
+  )
 
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) {
-    return { isAdmin: false, error: 'Unauthorized', status: 401 }
+    return { isAdmin: false as const, error: 'Unauthorized', status: 401 }
   }
 
   const { data: userData } = await supabase
@@ -23,10 +41,10 @@ async function checkAdminAccess() {
     .single()
 
   if (!userData?.is_admin) {
-    return { isAdmin: false, error: 'Forbidden: Admin access required', status: 403 }
+    return { isAdmin: false as const, error: 'Forbidden: Admin access required', status: 403 }
   }
 
-  return { isAdmin: true, supabase, user }
+  return { isAdmin: true as const, supabase, user }
 }
 
 // GET /api/products/[id] - Get a single product
@@ -36,7 +54,26 @@ export async function GET(
 ) {
   try {
     const cookieStore = await cookies()
-    const supabase = createClient(cookieStore)
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll() {
+            return cookieStore.getAll()
+          },
+          setAll(cookiesToSet) {
+            try {
+              cookiesToSet.forEach(({ name, value, options }) =>
+                cookieStore.set(name, value, options)
+              )
+            } catch {
+              // Ignore errors
+            }
+          },
+        },
+      }
+    )
     const { id } = await params
 
     const { data: product, error } = await supabase

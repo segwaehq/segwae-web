@@ -6,6 +6,9 @@ import { FiPlus, FiEdit2, FiTrash2, FiEye, FiEyeOff, FiImage } from 'react-icons
 // import { createClient } from '@/lib/supabase'
 import { createClient } from '@supabase/supabase-js'
 
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const supabaseServiceKey = process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!
+
 interface Product {
   id: string
   name: string
@@ -61,7 +64,8 @@ export default function ProductsPage() {
     setUploadError('')
 
     try {
-      const supabase = createClient()
+      // const supabase = createClient()
+      const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
       // Generate unique filename
       const fileExt = file.name.split('.').pop()
