@@ -6,14 +6,20 @@ import Footer from '@/components/Footer'
 
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
-  
+
   // Hide header and footer on profile pages (format: /profile/username or /qr/username)
   const isProfilePage = pathname?.match(/^\/(profile|qr)\/[^/]+$/)
-  
-  if (isProfilePage) {
+
+  // Hide header and footer on all admin pages
+  const isAdminPage = pathname?.startsWith('/admin')
+
+  // Alternative: Hide header and footer on admin dashboard pages only (uncomment to use)
+  // const isAdminPage = pathname?.startsWith('/admin') && !pathname?.startsWith('/admin/login')
+
+  if (isProfilePage || isAdminPage) {
     return <>{children}</>
   }
-  
+
   return (
     <>
       <Header />

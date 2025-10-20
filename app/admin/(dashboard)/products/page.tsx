@@ -3,11 +3,6 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { FiPlus, FiEdit2, FiTrash2, FiEye, FiEyeOff, FiImage } from 'react-icons/fi'
-// import { createClient } from '@/lib/supabase'
-import { createClient } from '@supabase/supabase-js'
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseServiceKey = process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!
 
 interface Product {
   id: string
@@ -58,37 +53,26 @@ export default function ProductsPage() {
     fetchProducts()
   }, [])
 
-  // Handle image upload to Supabase Storage
+  // Handle image upload via API
   const handleImageUpload = async (file: File, field: 'front_image_url' | 'back_image_url') => {
     setUploading(true)
     setUploadError('')
 
     try {
-      // const supabase = createClient()
-      const supabase = createClient(supabaseUrl, supabaseServiceKey)
+      const formData = new FormData()
+      formData.append('file', file)
 
-      // Generate unique filename
-      const fileExt = file.name.split('.').pop()
-      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`
-      const filePath = `${fileName}`
+      const response = await fetch('/api/products/upload-image', {
+        method: 'POST',
+        body: formData,
+      })
 
-      // Upload to Supabase Storage
-      const { error } = await supabase.storage
-        .from('product-images')
-        .upload(filePath, file, {
-          cacheControl: '3600',
-          upsert: false
-        })
-
-      if (error) {
-        throw error
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Failed to upload image')
       }
 
-      // Get public URL
-      const { data: { publicUrl } } = supabase.storage
-        .from('product-images')
-        .getPublicUrl(filePath)
-
+      const { publicUrl } = await response.json()
       setFormData(prev => ({ ...prev, [field]: publicUrl }))
     } catch (error) {
       console.error('Upload error:', error)

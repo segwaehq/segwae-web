@@ -114,7 +114,7 @@ export default function AdminSidebar() {
           <h1 className="font-satoshi font-black text-2xl">Segwae Admin</h1>
         </div>
 
-        <nav className="p-4">
+        <nav className="p-3 h-full overflow-y-scroll pb-44">
           <ul className="space-y-2">
             {navItems.map((item) => {
               const isActive = pathname === item.href
@@ -141,7 +141,7 @@ export default function AdminSidebar() {
           </ul>
         </nav>
 
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-grey4">
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t bg-grey6 border-grey4">
           <Link
             href="/"
             className="flex items-center gap-3 px-4 py-3 rounded-lg font-spaceGrotesk text-grey2 hover:bg-grey6 transition-all"
