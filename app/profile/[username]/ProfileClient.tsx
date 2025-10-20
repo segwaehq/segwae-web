@@ -545,14 +545,20 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
   const [copied, setCopied] = useState<string | null>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
 
-  const privacy = profile.privacy_settings
-  const showEmail = privacy?.show_email !== false
-  const showPhone = privacy?.show_phone !== false
-  const showSocialLinks = privacy?.show_social_links !== false
-  const showPortfolio = privacy?.show_portfolio !== false
-  const showResume = privacy?.show_resume !== false
+  // Use web_preferences if available, fallback to defaults
+  const prefs = profile.user_web_preferences
+  const showEmail = prefs?.show_email ?? true
+  const showPhone = prefs?.show_phone ?? true
+  const showPortfolio = prefs?.show_portfolio ?? true
+  const showResume = prefs?.show_resume ?? true
+  const showProfileVideo = prefs?.show_profile_video ?? true
+  const showSocialLinks = profile.social_links && profile.social_links.length > 0
 
-  const hasProfileVideo = !!profile.profile_video_url
+  const hasProfileVideo = !!profile.profile_video_url && showProfileVideo
+
+  // Get theme colors from preferences
+  const backgroundColor = prefs?.background_color ?? '#FFFFFF'
+  const textColor = prefs?.text_color ?? '#222222'
 
   const handleShare = async () => {
     const url = window.location.href
@@ -675,9 +681,9 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
   }
 
   return (
-    <div className="min-h-screen bg-grey6">
+    <div className="min-h-screen" style={{ backgroundColor }}>
       {/* Cover Image Section */}
-      <div className="bg-white rounded-b-[20px]">
+      <div className="rounded-b-[20px]" style={{ backgroundColor }}>
         <div className="relative">
           {/* Cover Image */}
           <div className="relative h-52 bg-grey2 rounded-b-[20px] overflow-hidden">
@@ -761,26 +767,26 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
             </div>
 
             {/* Name and Title */}
-            <h1 className="text-xl font-bold text-gray-900 leading-tight mb-1">
+            <h1 className="text-xl font-bold leading-tight mb-1" style={{ color: textColor }}>
               {profile.name}
             </h1>
-            <p className="text-sm text-gray-500 mb-5">
+            <p className="text-sm mb-5" style={{ color: textColor, opacity: 0.7 }}>
               {profile.title}
             </p>
 
             {/* Bio */}
             {profile.bio ? (
-              <p className="text-sm text-gray-800 leading-relaxed mb-8">
+              <p className="text-sm leading-relaxed mb-8" style={{ color: textColor, opacity: 0.9 }}>
                 {profile.bio}
               </p>
             ) : (
-              <p className="text-sm text-gray-500 italic mb-8">
+              <p className="text-sm italic mb-8" style={{ color: textColor, opacity: 0.5 }}>
                 No bio yet.
               </p>
             )}
 
             {/* Divider */}
-            <div className="h-px bg-grey6 mb-6" />
+            <div className="h-px mb-6" style={{ backgroundColor: textColor, opacity: 0.1 }} />
 
             {/* Contact Icons */}
             <div className="flex gap-2 pb-8 mb-6">
@@ -833,9 +839,9 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
       {/* Social Links Section */}
       {showSocialLinks && profile.social_links && profile.social_links.filter(link => link.is_enabled).length > 0 && (
         <div className="mt-2 mx-0">
-          <div className="bg-white rounded-[20px] p-6">
-            <h2 className="text-lg font-bold mb-5">Socials</h2>
-            <div className="h-px bg-gray-200 mb-5" />
+          <div className="rounded-[20px] p-6" style={{ backgroundColor }}>
+            <h2 className="text-lg font-bold mb-5" style={{ color: textColor }}>Socials</h2>
+            <div className="h-px mb-5" style={{ backgroundColor: textColor, opacity: 0.1 }} />
             
             <div className="space-y-6">
               {profile.social_links
@@ -853,10 +859,10 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
 
                       {/* Platform Info */}
                       <div className="flex-1 min-w-0">
-                        <p className="text-base font-semibold text-gray-900 capitalize">
+                        <p className="text-base font-semibold capitalize" style={{ color: textColor }}>
                           {link.platform}
                         </p>
-                        <p className="text-base text-gray-500 truncate underline">
+                        <p className="text-base truncate underline" style={{ color: textColor, opacity: 0.6 }}>
                           {link.url}
                         </p>
                       </div>
