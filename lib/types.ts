@@ -28,7 +28,7 @@ export interface User {
   username: string
   custom_username: string | null
   subscription_tier: 'free' | 'premium'
-  connection_count: number
+  // connection_count: number
   created_at: string
 }
 

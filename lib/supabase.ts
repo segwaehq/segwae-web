@@ -23,7 +23,7 @@ export interface UserProfile {
   subscription_tier: 'free' | 'premium'
   username: string
   custom_username: string | null
-  connection_count: number
+  // connection_count: number
   privacy_settings: PrivacySettings
   user_web_preferences: WebPreferences | null
   created_at: string
