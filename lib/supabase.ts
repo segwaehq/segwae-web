@@ -16,7 +16,7 @@ export interface UserProfile {
   portfolio_or_website_link: string
   profile_image_url: string | null
   cover_image_url: string | null
-  resume_url: string | null
+  resume_file_url: string | null
   profile_video_url: string | null
   profile_video_thumbnail_url: string | null
   social_links: SocialLink[]
