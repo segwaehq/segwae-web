@@ -1,5 +1,5 @@
-import Link from 'next/link'
-import Image from 'next/image'
+import Link from "next/link";
+import Image from "next/image";
 
 export default function Header() {
   return (
@@ -9,22 +9,13 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
             <Image
-            //   src="/wordmark.png"
               src="/wordmark_svg.svg"
               alt="Segwae Logo"
-            //   width={40}
-            //   height={40}
-            // fill
-            //   className="w-10 h-10"
-            //   className=" object-contain"
-            width={0}
-  height={0}
-  sizes="100vw"
-  className="h-8 !w-auto"
+              width={0}
+              height={0}
+              sizes="100vw"
+              className="h-8 !w-auto"
             />
-            {/* <span className="font-satoshi font-black text-2xl text-black">
-              Segwae
-            </span> */}
           </Link>
 
           {/* Navigation Links */}
@@ -64,5 +55,5 @@ export default function Header() {
         </div>
       </nav>
     </header>
-  )
+  );
 }
