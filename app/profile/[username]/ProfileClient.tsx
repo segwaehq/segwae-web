@@ -537,11 +537,11 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
       {/* Contact Modal */}
       {showContactModal && contactModalData && (
         <div
-          className="fixed inset-0 bg-black/50 flex items-center justify-center p-6 z-50"
+          className="fixed inset-0 bg-black/50 flex items-center justify-center p-6 z-50 animate-fadeIn"
           onClick={() => setShowContactModal(false)}
         >
           <div
-            className="bg-white rounded-[20px] p-6 max-w-md w-full"
+            className="bg-white rounded-[20px] p-6 max-w-md w-full animate-scaleIn"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
@@ -612,12 +612,12 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
       {/* Video Modal */}
       {showVideoModal && hasProfileVideo && (
         <div
-          className="fixed inset-0 bg-black z-50 flex items-center justify-center"
+          className="fixed inset-0 bg-black z-50 flex items-center justify-center animate-fadeIn"
           onClick={() => setShowVideoModal(false)}
         >
           <button
             onClick={() => setShowVideoModal(false)}
-            className="absolute top-4 right-4 text-white hover:text-grey3 transition-colors z-10"
+            className="absolute top-4 right-4 text-white hover:text-grey3 transition-colors z-10 animate-fadeIn"
           >
             <svg
               className="w-8 h-8"
@@ -637,7 +637,7 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
             src={profile.profile_video_url || undefined}
             controls
             autoPlay
-            className="max-w-full max-h-full"
+            className="max-w-full max-h-full animate-scaleIn"
             onClick={(e) => e.stopPropagation()}
           />
         </div>
