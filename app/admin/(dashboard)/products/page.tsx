@@ -205,7 +205,7 @@ export default function ProductsPage() {
         </div>
         <button
           onClick={() => openModal()}
-          className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 flex items-center gap-2"
+          className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 flex items-center gap-2 cursor-pointer"
         >
           <FiPlus /> Add Product
         </button>
@@ -253,20 +253,20 @@ export default function ProductsPage() {
               <div className="flex gap-2">
                 <button
                   onClick={() => toggleActive(product)}
-                  className="flex-1 px-3 py-2 bg-gray-100 rounded hover:bg-gray-200 flex items-center justify-center gap-1"
+                  className="flex-1 px-3 py-2 bg-gray-100 rounded hover:bg-gray-200 flex items-center justify-center gap-1 cursor-pointer"
                   title={product.is_active ? 'Deactivate' : 'Activate'}
                 >
                   {product.is_active ? <FiEyeOff size={16} /> : <FiEye size={16} />}
                 </button>
                 <button
                   onClick={() => openModal(product)}
-                  className="flex-1 px-3 py-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 flex items-center justify-center gap-1"
+                  className="flex-1 px-3 py-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 flex items-center justify-center gap-1 cursor-pointer"
                 >
                   <FiEdit2 size={16} /> Edit
                 </button>
                 <button
                   onClick={() => handleDelete(product.id)}
-                  className="flex-1 px-3 py-2 bg-red-100 text-red-700 rounded hover:bg-red-200 flex items-center justify-center gap-1"
+                  className="flex-1 px-3 py-2 bg-red-100 text-red-700 rounded hover:bg-red-200 flex items-center justify-center gap-1 cursor-pointer"
                 >
                   <FiTrash2 size={16} /> Delete
                 </button>
@@ -283,7 +283,7 @@ export default function ProductsPage() {
           <p className="mt-2 text-gray-600">Get started by adding your first NFC card design</p>
           <button
             onClick={() => openModal()}
-            className="mt-4 bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700"
+            className="mt-4 bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 cursor-pointer"
           >
             Add Your First Product
           </button>
@@ -353,9 +353,16 @@ export default function ProductsPage() {
                     className="w-full px-3 py-2 border rounded-lg"
                     disabled={uploading}
                   />
-                  {formData.front_image_url && (
+                  {/* {formData.front_image_url && (
                     <div className="relative mt-2 h-32 rounded overflow-hidden">
                       <Image src={formData.front_image_url} alt="Front preview" fill className="object-cover" />
+                    </div>
+                  )} */}
+
+                  {formData.front_image_url && (
+                    <div className="relative mt-2 overflow-hidden">
+                      {/* <Image src={formData.front_image_url} alt="Front preview" className="object-contain object-left w-full h-auto" /> */}
+                      <img src={formData.front_image_url} alt="Front preview" className="object-contain object-left w-auto h-80 rounded" />
                     </div>
                   )}
                 </div>
@@ -370,9 +377,14 @@ export default function ProductsPage() {
                     className="w-full px-3 py-2 border rounded-lg"
                     disabled={uploading}
                   />
-                  {formData.back_image_url && (
+                  {/* {formData.back_image_url && (
                     <div className="relative mt-2 h-32 rounded overflow-hidden">
                       <Image src={formData.back_image_url} alt="Back preview" fill className="object-cover" />
+                    </div>
+                  )} */}
+                  {formData.back_image_url && (
+                    <div className="relative mt-2 overflow-hidden">
+                      <img src={formData.back_image_url} alt="Back preview" className="object-contain object-left w-auto h-80 rounded" />
                     </div>
                   )}
                 </div>
@@ -409,14 +421,14 @@ export default function ProductsPage() {
                   <button
                     type="button"
                     onClick={closeModal}
-                    className="flex-1 px-4 py-2 border rounded-lg hover:bg-gray-50"
+                    className="flex-1 px-4 py-2 border rounded-lg hover:bg-gray-50 cursor-pointer"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={uploading}
-                    className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50"
+                    className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 cursor-pointer"
                   >
                     {uploading ? 'Uploading...' : (editingProduct ? 'Update' : 'Create')}
                   </button>

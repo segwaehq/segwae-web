@@ -132,15 +132,15 @@ export default function Home() {
             Create your digital business card, share it with a tap, and never lose a connection again.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-mainPurple text-white px-8 py-4 rounded-full font-spaceGrotesk font-semibold text-lg hover:bg-opacity-90 transition-all shadow-lg hover:shadow-xl">
-              Coming Soon
-            </button>
             <a
               href="#waitlist"
-              className="bg-white border-2 border-mainPurple text-mainPurple px-8 py-4 rounded-full font-spaceGrotesk font-semibold text-lg hover:bg-lightPurple transition-all"
+              className="bg-mainPurple text-white px-10 py-4 rounded-full font-spaceGrotesk font-bold text-lg hover:bg-opacity-90 transition-all shadow-lg hover:shadow-2xl hover:scale-105 transform"
             >
-              Join Waitlist
+              Join Event Waitlist
             </a>
+            <button className="bg-white border-2 border-mainPurple text-mainPurple px-8 py-4 rounded-full font-spaceGrotesk font-semibold text-lg hover:bg-lightPurple transition-all">
+              Coming Soon
+            </button>
           </div>
         </div>
 
