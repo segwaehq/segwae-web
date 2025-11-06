@@ -60,6 +60,19 @@ export interface WebPreferences {
   updated_at: string
 }
 
+export interface Product {
+  id: string
+  name: string
+  description: string | null
+  front_image_url: string
+  back_image_url: string
+  price: number
+  is_active: boolean
+  sort_order: number
+  created_at: string
+  updated_at: string
+}
+
 // Fetch user profile by username
 export async function getUserProfile(username: string): Promise<UserProfile | null> {
   try {
@@ -98,5 +111,23 @@ export async function submitToWaitlist(name: string, email: string, state: strin
     return { data, error: null }
   } catch (error) {
     return { data: null, error: error instanceof Error ? error.message : 'Unknown error' }
+  }
+}
+
+// Fetch active products
+export async function getProducts(): Promise<Product[]> {
+  try {
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .eq('is_active', true)
+      .order('sort_order', { ascending: true })
+      .order('created_at', { ascending: false })
+
+    if (error) throw error
+    return data || []
+  } catch (error) {
+    console.error('Error fetching products:', error)
+    return []
   }
 }

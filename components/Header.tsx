@@ -14,18 +14,12 @@ export default function Header() {
               width={0}
               height={0}
               sizes="100vw"
-              className="h-8 !w-auto"
+              className="h-8 w-auto!"
             />
           </Link>
 
           {/* Navigation Links */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link
-              href="/#features"
-              className="font-spaceGrotesk text-grey2 hover:text-mainPurple transition-colors"
-            >
-              Features
-            </Link>
             <Link
               href="/#how-it-works"
               className="font-spaceGrotesk text-grey2 hover:text-mainPurple transition-colors"
@@ -33,10 +27,16 @@ export default function Header() {
               How It Works
             </Link>
             <Link
-              href="/#pricing"
+              href="/about"
               className="font-spaceGrotesk text-grey2 hover:text-mainPurple transition-colors"
             >
-              Pricing
+              About
+            </Link>
+            <Link
+              href="/store"
+              className="font-spaceGrotesk text-grey2 hover:text-mainPurple transition-colors"
+            >
+              Store
             </Link>
             <Link
               href="/contact"
