@@ -17,7 +17,7 @@ export default function AdminHeader({ user }: { user: User }) {
   }
 
   return (
-    <header className="bg-white border-b border-grey4 px-6 py-4">
+    <header className="sticky top-0 z-10 bg-white border-b border-grey4 px-6 py-4">
       <div className="flex items-center justify-between">
         <div>
           <h2 className="font-spaceGrotesk font-semibold text-lg text-grey1">
