@@ -47,23 +47,108 @@ const satoshi = localFont({
   variable: '--font-satoshi',
 })
 
+// export const metadata: Metadata = {
+//   title: 'Segwae - Professional Networking Made Simple',
+//   description:
+//     'Create digital business cards with QR codes, connect with professionals, and order physical NFC cards. Small talk to big deals.',
+//   keywords: [
+//     'business cards',
+//     'networking',
+//     'QR code',
+//     'NFC cards',
+//     'professional networking',
+//     'digital business card',
+//     'Nigeria',
+//   ],
+//   authors: [{ name: 'Segwae' }],
+//   openGraph: {
+//     title: 'Segwae - Professional Networking Made Simple',
+//     description: 'Small talk to big deals. Create your digital business card today.',
+//     url: 'https://segwae.com',
+//     siteName: 'Segwae',
+//     images: [
+//       {
+//         url: 'https://segwae.com/logo.png',
+//         width: 1200,
+//         height: 630,
+//       },
+//     ],
+//     locale: 'en_US',
+//     type: 'website',
+//   },
+//   twitter: {
+//     card: 'summary_large_image',
+//     title: 'Segwae - Professional Networking Made Simple',
+//     description: 'Small talk to big deals. Create your digital business card today.',
+//     images: ['https://segwae.com/logo.png'],
+//   },
+// }
+
+
+
+// export const metadata: Metadata = {
+//   title: 'Segwae – Connect Smarter, Share Instantly',
+//   description:
+//     'Segwae makes networking effortless. Share your socials, email, and contact info through one QR code or NFC card — all managed from one sleek app.',
+//   keywords: [
+//     'networking',
+//     'contact sharing',
+//     'QR code',
+//     'NFC business card',
+//     'smart business card',
+//     'professional networking app',
+//     'Segwae',
+//     'Nigeria',
+//   ],
+//   authors: [{ name: 'Segwae' }],
+//   openGraph: {
+//     title: 'Segwae – Connect Smarter, Share Instantly',
+//     description:
+//       'Share your details seamlessly with one QR code or NFC card. Segwae simplifies professional networking for modern creators and entrepreneurs.',
+//     url: 'https://segwae.com',
+//     siteName: 'Segwae',
+//     images: [
+//       {
+//         url: 'https://segwae.com/logo.png',
+//         width: 1200,
+//         height: 630,
+//       },
+//     ],
+//     locale: 'en_US',
+//     type: 'website',
+//   },
+//   twitter: {
+//     card: 'summary_large_image',
+//     title: 'Segwae – Connect Smarter, Share Instantly',
+//     description:
+//       'Share your details seamlessly with one QR code or NFC card. Segwae simplifies professional networking for modern creators and entrepreneurs.',
+//     images: ['https://segwae.com/logo.png'],
+//   },
+// };
+
+
+
+
+
 export const metadata: Metadata = {
-  title: 'Segwae - Professional Networking Made Simple',
+  title: 'Segwae — The Smarter Way to Network',
   description:
-    'Create digital business cards with QR codes, connect with professionals, and order physical NFC cards. Small talk to big deals.',
+    'Skip the small talk. Segwae lets you share your socials, email, and contact info instantly with one QR code or NFC card — no app download needed.',
   keywords: [
-    'business cards',
-    'networking',
+    'smart business card',
+    'networking app',
     'QR code',
-    'NFC cards',
+    'NFC card',
+    'contact sharing',
+    'digital identity',
+    'Segwae',
     'professional networking',
-    'digital business card',
-    'Nigeria',
   ],
   authors: [{ name: 'Segwae' }],
   openGraph: {
-    title: 'Segwae - Professional Networking Made Simple',
-    description: 'Small talk to big deals. Create your digital business card today.',
+    title: 'Segwae — The Smarter Way to Network',
+    description:
+      'Share your profile instantly with a single tap or scan. Meet smarter, connect faster, and turn first impressions into real connections.',
     url: 'https://segwae.com',
     siteName: 'Segwae',
     images: [
@@ -78,11 +163,14 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Segwae - Professional Networking Made Simple',
-    description: 'Small talk to big deals. Create your digital business card today.',
+    title: 'Segwae — The Smarter Way to Network',
+    description:
+      'Share your profile instantly with a single tap or scan. Meet smarter, connect faster, and turn first impressions into real connections.',
     images: ['https://segwae.com/logo.png'],
   },
-}
+};
+
+
 
 export default function RootLayout({
   children,
