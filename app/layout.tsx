@@ -153,7 +153,7 @@ export const metadata: Metadata = {
     siteName: 'Segwae',
     images: [
       {
-        url: 'https://segwae.com/logo.png',
+        url: 'https://segwae.com/og-image.png',
         width: 1200,
         height: 630,
       },
@@ -166,7 +166,7 @@ export const metadata: Metadata = {
     title: 'Segwae - The Smarter Way to Network',
     description:
       'Share your profile instantly with a single tap or scan. Meet smarter, connect faster, and turn first impressions into real connections.',
-    images: ['https://segwae.com/logo.png'],
+    images: ['https://segwae.com/og-image.png'],
   },
 };
 
@@ -193,6 +193,8 @@ export default function RootLayout({
             gtag('config', 'G-FRLK75T2CW');
           `}
         </Script>
+
+        <link rel="image_src" href="https://segwae.com/og-image.png" />
       </head>
       <body
         // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
