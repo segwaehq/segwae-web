@@ -131,7 +131,7 @@ const satoshi = localFont({
 
 
 export const metadata: Metadata = {
-  title: 'Segwae — The Smarter Way to Network',
+  title: 'Segwae - The Smarter Way to Network',
   description:
     'Skip the small talk. Segwae lets you share your socials, email, and contact info instantly with one QR code or NFC card — no app download needed.',
   keywords: [
@@ -146,7 +146,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'Segwae' }],
   openGraph: {
-    title: 'Segwae — The Smarter Way to Network',
+    title: 'Segwae - The Smarter Way to Network',
     description:
       'Share your profile instantly with a single tap or scan. Meet smarter, connect faster, and turn first impressions into real connections.',
     url: 'https://segwae.com',
@@ -163,7 +163,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Segwae — The Smarter Way to Network',
+    title: 'Segwae - The Smarter Way to Network',
     description:
       'Share your profile instantly with a single tap or scan. Meet smarter, connect faster, and turn first impressions into real connections.',
     images: ['https://segwae.com/logo.png'],
