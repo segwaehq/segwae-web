@@ -3,10 +3,29 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
+interface CardDesign {
+  nameOnCard: string
+  professionOnCard: string
+  [key: string]: unknown // Allow additional properties
+}
+
+interface DeliveryAddress {
+  state: string
+  city: string
+  address: string
+}
+
+interface StatusHistoryEntry {
+  status: string
+  timestamp: string
+  note?: string
+  changedByName?: string
+}
+
 interface OrderItem {
   id: string
   card_type: string
-  card_design: any
+  card_design: CardDesign
   unit_price: number
   quantity: number
   total_price: number
@@ -20,10 +39,10 @@ interface Order {
   subtotal: number
   shipping_cost: number
   total_amount: number
-  delivery_address: any
+  delivery_address: DeliveryAddress
   customer_notes?: string
   admin_notes?: string
-  status_history?: any[]
+  status_history?: StatusHistoryEntry[]
   created_at: string
   updated_at: string
   order_items: OrderItem[]
@@ -70,7 +89,6 @@ export default function OrderEditForm({ order }: Props) {
   const [itemQuantity, setItemQuantity] = useState<number>(0)
   const [itemUnitPrice, setItemUnitPrice] = useState<number>(0)
 
-  const currentStatusInfo = ORDER_STATUSES.find((s) => s.value === status)
   const profileLink = `https://segwae.com/${order.users.custom_username || order.users.username}`
 
   const handleStatusUpdate = async () => {
@@ -289,7 +307,7 @@ export default function OrderEditForm({ order }: Props) {
         <div className="bg-white rounded-2xl p-6 shadow-lg">
           <h2 className="font-spaceGrotesk font-bold text-xl mb-4">Status History</h2>
           <div className="space-y-3">
-            {order.status_history.map((entry: any, index: number) => {
+            {order.status_history.map((entry: StatusHistoryEntry, index: number) => {
               const statusInfo = ORDER_STATUSES.find((s) => s.value === entry.status)
               return (
                 <div key={index} className="border-l-4 border-mainPurple pl-4 py-2">

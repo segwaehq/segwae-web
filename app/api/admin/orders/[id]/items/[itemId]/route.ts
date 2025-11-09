@@ -3,10 +3,11 @@ import { createAdminClient, checkAdminAuth } from '@/lib/adminAuth'
 
 export async function POST(
   request: Request,
-  { params }: { params: { id: string; itemId: string } }
+  { params }: { params: Promise<{ id: string; itemId: string }> }
 ) {
   try {
     const admin = await checkAdminAuth()
+    const { itemId } = await params
 
     const supabase = createAdminClient()
     const body = await request.json()
@@ -21,7 +22,7 @@ export async function POST(
 
     // Call the database function to update order item
     const { data, error } = await supabase.rpc('update_order_item', {
-      p_order_item_id: params.itemId,
+      p_order_item_id: itemId,
       p_quantity: quantity,
       p_unit_price: unit_price,
       p_changed_by: admin.id,

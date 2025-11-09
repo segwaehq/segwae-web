@@ -3,11 +3,12 @@ import { createAdminClient, checkAdminAuth } from '@/lib/adminAuth'
 
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // Check admin authentication
     const admin = await checkAdminAuth()
+    const { id } = await params
 
     const supabase = createAdminClient()
     const body = await request.json()
@@ -22,7 +23,7 @@ export async function POST(
 
     // Call the database function to update order status with history
     const { data, error } = await supabase.rpc('update_order_status_with_history', {
-      p_order_id: params.id,
+      p_order_id: id,
       p_status: status,
       p_changed_by: admin.id,
       p_note: note,
