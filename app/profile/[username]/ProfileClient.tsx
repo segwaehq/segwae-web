@@ -305,7 +305,7 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
                 className="object-cover"
               />
             ) : (
-              <div className="w-full h-full bg-gradient-to-br from-mainPurple to-blue" />
+              <div className="w-full h-full bg-linear-to-br from-mainPurple to-blue" />
             )}
           </div>
 
@@ -500,7 +500,7 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
                     return (
                       <div key={link.id} className="flex items-center gap-4">
                         {/* Platform Icon */}
-                        <div className="w-12 h-12 rounded-full bg-grey6 flex items-center justify-center flex-shrink-0">
+                        <div className="w-12 h-12 rounded-full bg-grey6 flex items-center justify-center shrink-0">
                           <div style={{ color: platform.color }}>
                             {platform.icon}
                           </div>
@@ -523,7 +523,7 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
                         </div>
 
                         {/* Action Buttons */}
-                        <div className="flex items-center gap-2 flex-shrink-0">
+                        <div className="flex items-center gap-2 shrink-0">
                           <button
                             onClick={() => copyToClipboard(link.url, link.id)}
                             className="w-8 h-8 flex items-center justify-center cursor-pointer text-gray-500 hover:text-gray-700 transition-colors"
@@ -632,7 +632,7 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
               </p>
               <div className="h-px bg-gray-200 mb-3" />
               <div className="flex items-center gap-2">
-                <div className="text-gray-900 flex-shrink-0">
+                <div className="text-gray-900 shrink-0">
                   {getContactIcon(contactModalData.type)}
                 </div>
                 <p className="text-base text-gray-900 break-all">
