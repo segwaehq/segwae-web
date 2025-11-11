@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import localFont from 'next/font/local'
 import Script from "next/script";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import LayoutWrapper from "@/components/LayoutWrapper";
 
 // const geistSans = Geist({

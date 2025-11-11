@@ -121,7 +121,7 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
           text: `Connect with me on Segwae! 🚀`,
           url: url,
         });
-      } catch (err) {
+      } catch {
         // User cancelled or share failed, fallback to copy
         copyToClipboard(url, "link");
       }
@@ -431,9 +431,11 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
                 {profile.social_links
                   .filter((link) => link.is_enabled)
                   .map((link) => {
+                    // Handle legacy "portfolio" identifier
+                    const platformKey = link.platform.toLowerCase() === 'portfolio' ? 'global' : link.platform.toLowerCase();
                     const platform =
-                      platformConfig[link.platform.toLowerCase()] ||
-                      platformConfig["portfolio"];
+                      platformConfig[platformKey] ||
+                      platformConfig["global"];
                     return (
                       <div key={link.id} className="flex items-center gap-4">
                         {/* Platform Icon */}

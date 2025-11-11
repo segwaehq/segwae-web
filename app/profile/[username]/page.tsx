@@ -1,5 +1,4 @@
 import { notFound } from 'next/navigation'
-import Image from 'next/image'
 import { getUserProfile } from '@/lib/supabase'
 import { trackProfileView } from '@/lib/analytics'
 import type { Metadata } from 'next'

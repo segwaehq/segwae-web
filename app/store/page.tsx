@@ -1,6 +1,4 @@
 import { getProducts } from '@/lib/supabase'
-import Image from 'next/image'
-import Link from 'next/link'
 import StoreClient from './StoreClient'
 
 export const metadata = {

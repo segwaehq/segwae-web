@@ -51,7 +51,7 @@ export const SOCIAL_PLATFORMS = {
   whatsapp: { name: 'WhatsApp', icon: 'FaWhatsapp', color: '#25D366' },
   youtube: { name: 'YouTube', icon: 'FaYoutube', color: '#FF0000' },
   tiktok: { name: 'TikTok', icon: 'FaTiktok', color: '#000000' },
-  portfolio: { name: 'Portfolio', icon: 'FaGlobe', color: '#6A0DAD' },
+  global: { name: 'Global', icon: 'FaGlobe', color: '#6B73FF' },
   medium: { name: 'Medium', icon: 'FaMedium', color: '#000000' },
   stackoverflow: { name: 'Stack Overflow', icon: 'FaStackOverflow', color: '#F58025' },
   figma: { name: 'Figma', icon: 'FaFigma', color: '#F24E1E' },
