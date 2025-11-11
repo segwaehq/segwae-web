@@ -18,8 +18,11 @@ import {
   FaWhatsapp,
   FaXTwitter,
   FaYoutube,
+  FaLink,
 } from "react-icons/fa6";
+import * as FaIcons from "react-icons/fa6";
 import { GoShareAndroid } from "react-icons/go";
+import { useSocialPlatforms } from "@/hooks/useSocialPlatforms";
 
 interface ContactModalData {
   type: "email" | "phone" | "web" | "resume";
@@ -27,6 +30,28 @@ interface ContactModalData {
   value: string;
 }
 
+// Utility function to convert icon identifier to React icon component
+const getIconComponent = (iconId: string) => {
+  // Convert icon identifier to PascalCase for react-icons
+  // e.g., "linkedin-in" -> "FaLinkedinIn"
+  const iconName =
+    "Fa" +
+    iconId
+      .split("-")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join("");
+
+  const IconComponent =
+    (
+      FaIcons as Record<
+        string,
+        React.ComponentType<React.SVGProps<SVGSVGElement>>
+      >
+    )[iconName] || FaIcons.FaLink;
+  return IconComponent;
+};
+
+// Fallback platform config (used when dynamic fetch fails)
 const platformConfig: Record<string, { color: string; icon: React.ReactNode }> =
   {
     linkedin: {
@@ -81,7 +106,7 @@ const platformConfig: Record<string, { color: string; icon: React.ReactNode }> =
       color: "#F24E1E",
       icon: <FaFigma className="w-5 h-5" />,
     },
-    portfolio: {
+    global: {
       color: "#6B73FF",
       icon: <FaGlobe className="w-5 h-5" />,
     },
@@ -94,6 +119,45 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [copied, setCopied] = useState<string | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Fetch dynamic social platforms
+  const { platforms: dynamicPlatforms } = useSocialPlatforms();
+
+  // Helper function to get platform config (dynamic or fallback)
+  const getPlatformConfig = (platformIdentifier: string) => {
+    // Normalize identifier (handle legacy "portfolio" → "global")
+    const normalizedId =
+      platformIdentifier.toLowerCase() === "portfolio"
+        ? "global"
+        : platformIdentifier.toLowerCase();
+
+    // Try to find in dynamic platforms first
+    const dynamicPlatform = dynamicPlatforms.find(
+      (p) => p.platform_identifier === normalizedId
+    );
+
+    if (dynamicPlatform) {
+      const IconComponent = getIconComponent(dynamicPlatform.icon_identifier);
+      return {
+        name: dynamicPlatform.platform_name,
+        color: dynamicPlatform.color_hex,
+        icon: <IconComponent className="w-5 h-5" />,
+      };
+    }
+
+    // Fallback to hardcoded config
+    return platformConfig[normalizedId]
+      ? {
+          name: normalizedId.charAt(0).toUpperCase() + normalizedId.slice(1),
+          color: platformConfig[normalizedId].color,
+          icon: platformConfig[normalizedId].icon,
+        }
+      : {
+          name: "Global",
+          color: platformConfig["global"].color,
+          icon: platformConfig["global"].icon,
+        };
+  };
 
   // Use web_preferences if available, fallback to defaults
   const prefs = profile.user_web_preferences;
@@ -431,11 +495,8 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
                 {profile.social_links
                   .filter((link) => link.is_enabled)
                   .map((link) => {
-                    // Handle legacy "portfolio" identifier
-                    const platformKey = link.platform.toLowerCase() === 'portfolio' ? 'global' : link.platform.toLowerCase();
-                    const platform =
-                      platformConfig[platformKey] ||
-                      platformConfig["global"];
+                    // Get platform config (dynamic or fallback)
+                    const platform = getPlatformConfig(link.platform);
                     return (
                       <div key={link.id} className="flex items-center gap-4">
                         {/* Platform Icon */}
@@ -448,10 +509,10 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
                         {/* Platform Info */}
                         <div className="flex-1 min-w-0">
                           <p
-                            className="text-base font-semibold capitalize"
+                            className="text-base font-semibold"
                             style={{ color: textColor }}
                           >
-                            {link.platform}
+                            {platform.name}
                           </p>
                           <p
                             className="text-base truncate underline"
