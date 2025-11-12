@@ -91,8 +91,8 @@ export default function ProfilePage() {
 
       // Upload to Supabase Storage
       const fileExt = file.name.split('.').pop()
-      const fileName = `${profile.id}-${Date.now()}.${fileExt}`
-      const filePath = `${fileName}`
+      const fileName = `${Date.now()}.${fileExt}`
+      const filePath = `${profile.id}/${fileName}` // RLS policy expects: avatars/{user_id}/filename
 
       const { error: uploadError } = await supabase.storage
         .from('avatars')
@@ -372,7 +372,7 @@ export default function ProfilePage() {
               <button
                 type="submit"
                 disabled={saving}
-                className="px-8 py-3 bg-mainPurple text-white rounded-lg font-spaceGrotesk font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-8 py-3 bg-mainPurple text-white rounded-lg font-spaceGrotesk font-semibold cursor-pointer hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {saving ? 'Saving...' : 'Save Changes'}
               </button>
