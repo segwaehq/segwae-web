@@ -1,13 +1,8 @@
-'use client'
-
-import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import WaitlistForm from '@/components/WaitlistForm'
-import AppDownloadModal from '@/components/AppDownloadModal'
 
 export default function Home() {
-  const [isModalOpen, setIsModalOpen] = useState(false)
 
   return (
     <div className="overflow-x-hidden">
@@ -25,12 +20,12 @@ export default function Home() {
               Segwae makes networking effortless. Create a smart digital profile, link it to your NFC card or QR code, and share your details in one tap — no apps, no awkward moments.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <button
-                onClick={() => setIsModalOpen(true)}
-                className="bg-mainPurple text-white px-10 py-4 rounded-full font-spaceGrotesk font-bold text-lg cursor-pointer hover:bg-opacity-90 transition-all shadow-lg hover:shadow-2xl hover:scale-105 transform"
+              <Link
+                href="/signup"
+                className="bg-mainPurple text-white px-10 py-4 rounded-full font-spaceGrotesk font-bold text-lg cursor-pointer hover:bg-opacity-90 transition-all shadow-lg hover:shadow-2xl hover:scale-105 transform text-center"
               >
                 Create Your Free Profile
-              </button>
+              </Link>
               <Link
                 href="/store"
                 className="bg-white border-2 border-mainPurple text-mainPurple px-8 py-4 rounded-full font-spaceGrotesk font-semibold text-lg cursor-pointer hover:bg-lightPurple transition-all text-center"
@@ -197,12 +192,12 @@ export default function Home() {
           <p className="font-spaceGrotesk text-xl mb-8">
             Join professionals and founders using Segwae to make real connections.
           </p>
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="bg-white text-mainPurple px-10 py-4 rounded-full font-spaceGrotesk font-bold text-lg hover:bg-opacity-90 transition-all shadow-lg hover:shadow-2xl hover:scale-105 transform"
+          <Link
+            href="/signup"
+            className="bg-white text-mainPurple px-10 py-4 rounded-full font-spaceGrotesk font-bold text-lg hover:bg-opacity-90 transition-all shadow-lg hover:shadow-2xl hover:scale-105 transform inline-block"
           >
             Get Started Free
-          </button>
+          </Link>
         </div>
       </section>
 
@@ -223,9 +218,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* App Download Modal */}
-      <AppDownloadModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   )
 }

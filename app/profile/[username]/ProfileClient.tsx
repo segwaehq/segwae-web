@@ -18,7 +18,6 @@ import {
   FaWhatsapp,
   FaXTwitter,
   FaYoutube,
-  FaLink,
 } from "react-icons/fa6";
 import * as FaIcons from "react-icons/fa6";
 import { GoShareAndroid } from "react-icons/go";

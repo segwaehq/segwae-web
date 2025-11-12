@@ -3,6 +3,7 @@ import "./globals.css";
 import localFont from 'next/font/local'
 import Script from "next/script";
 import LayoutWrapper from "@/components/LayoutWrapper";
+import { Toaster } from 'sonner';
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -198,6 +199,17 @@ export default function RootLayout({
         // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         className="font-openSans antialiased"
       >
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 4000,
+            style: {
+              background: 'white',
+              color: '#1a1a1a',
+              border: '1px solid #e5e5e5',
+            },
+          }}
+        />
         {/* <Header />
         <main className="min-h-screen pt-16">{children}</main>
         <Footer /> */}
