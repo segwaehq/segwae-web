@@ -176,6 +176,7 @@ export async function PATCH(request: Request) {
       "bio",
       "title",
       "profile_image_url",
+      "portfolio_or_website_link",
     ] as const;
     type AllowedKey = typeof allowedKeys[number];
 

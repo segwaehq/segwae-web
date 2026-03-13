@@ -78,7 +78,7 @@ function VerifyContent() {
       if (error) throw error
 
       toast.success('Email verified! Welcome to Segwae!')
-      router.push('/dashboard/profile')
+      router.push('/complete-profile')
       router.refresh()
     } catch (err) {
       console.error('OTP verification error:', err)

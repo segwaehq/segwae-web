@@ -144,6 +144,9 @@ export const metadata: Metadata = {
     'professional networking',
   ],
   authors: [{ name: 'Segwae' }],
+  alternates: {
+    canonical: 'https://segwae.com',
+  },
   openGraph: {
     title: 'Segwae - The Smarter Way to Network',
     description:

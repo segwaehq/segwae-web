@@ -389,11 +389,31 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
               {profile.name}
             </h1>
             <p
-              className="text-sm mb-5"
+              className="text-sm mb-3"
               style={{ color: textColor, opacity: 0.7 }}
             >
               {profile.title}
             </p>
+
+            {/* Profile Incomplete Badge */}
+            {!profile.is_profile_complete && (
+              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 mb-4 rounded-full bg-warningYellow/10 border border-warningYellow/30">
+                <svg
+                  className="w-4 h-4 text-warningYellow"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                <span className="text-xs font-medium text-warningYellow">
+                  Profile incomplete
+                </span>
+              </div>
+            )}
 
             {/* Bio */}
             {profile.bio ? (

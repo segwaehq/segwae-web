@@ -26,6 +26,8 @@ export interface UserProfile {
   // connection_count: number
   privacy_settings: PrivacySettings
   user_web_preferences: WebPreferences | null
+  is_profile_complete: boolean
+  profile_completion_percentage: number
   created_at: string
   updated_at: string
 }
