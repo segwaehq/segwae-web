@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import Image from 'next/image'
-import { FaCamera, FaSpinner } from 'react-icons/fa6'
+import { FaCamera, FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import { toast } from 'sonner'
 
 interface ProfileData {
@@ -16,6 +16,9 @@ interface ProfileData {
   profile_image_url: string | null
   username: string | null
 }
+
+const inputClass =
+  'w-full px-4 py-3 border border-grey4 rounded-xl focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 bg-white transition-colors'
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState<ProfileData | null>(null)
@@ -32,7 +35,6 @@ export default function ProfilePage() {
 
   const supabase = createClient()
 
-  // Fetch profile data
   useEffect(() => {
     fetchProfile()
   }, [])
@@ -41,11 +43,7 @@ export default function ProfilePage() {
     try {
       setLoading(true)
       const response = await fetch('/api/user/profile')
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch profile')
-      }
-
+      if (!response.ok) throw new Error('Failed to fetch profile')
       const data = await response.json()
       setProfile(data.profile)
       setFormData({
@@ -64,68 +62,34 @@ export default function ProfilePage() {
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    })
+    setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file || !profile) return
+    if (!file.type.startsWith('image/')) { toast.error('Please upload an image file'); return }
+    if (file.size > 5 * 1024 * 1024) { toast.error('Image size must be less than 5MB'); return }
 
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      toast.error('Please upload an image file')
-      return
-    }
-
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error('Image size must be less than 5MB')
-      return
-    }
-
+    setUploading(true)
     try {
-      setUploading(true)
-
-      // Upload to Supabase Storage
       const fileExt = file.name.split('.').pop()
-      const fileName = `${Date.now()}.${fileExt}`
-      const filePath = `${profile.id}/${fileName}` // RLS policy expects: avatars/{user_id}/filename
-
+      const filePath = `${profile.id}/${Date.now()}.${fileExt}`
       const { error: uploadError } = await supabase.storage
-        .from('avatars')
-        .upload(filePath, file, {
-          cacheControl: '3600',
-          upsert: false,
-        })
-
+        .from('avatars').upload(filePath, file, { cacheControl: '3600', upsert: false })
       if (uploadError) throw uploadError
 
-      // Get public URL
-      const {
-        data: { publicUrl },
-      } = supabase.storage.from('avatars').getPublicUrl(filePath)
-
-      // Update profile with new avatar URL
+      const { data: { publicUrl } } = supabase.storage.from('avatars').getPublicUrl(filePath)
       const response = await fetch('/api/user/profile', {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          profile_image_url: publicUrl,
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ profile_image_url: publicUrl }),
       })
-
       if (!response.ok) throw new Error('Failed to update avatar')
-
-      // Update local state
       setProfile({ ...profile, profile_image_url: publicUrl })
-      toast.success('Avatar updated successfully')
+      toast.success('Photo updated')
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Failed to upload avatar')
+      toast.error(err instanceof Error ? err.message : 'Failed to upload photo')
     } finally {
       setUploading(false)
     }
@@ -134,25 +98,20 @@ export default function ProfilePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setSaving(true)
-
     try {
       const response = await fetch('/api/user/profile', {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       })
-
       if (!response.ok) {
         const errorData = await response.json()
         throw new Error(errorData.error || 'Failed to update profile')
       }
-
-      toast.success('Profile updated successfully')
+      toast.success('Profile saved')
       await fetchProfile()
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Failed to update profile')
+      toast.error(err instanceof Error ? err.message : 'Failed to save profile')
     } finally {
       setSaving(false)
     }
@@ -161,50 +120,61 @@ export default function ProfilePage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <FaSpinner className="w-8 h-8 text-mainPurple animate-spin" />
+        <div className="w-7 h-7 border-[3px] border-mainPurple border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="bg-white rounded-2xl shadow-sm p-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="font-satoshi font-bold text-3xl text-grey1 mb-2">
-            Edit Profile
-          </h1>
-          <p className="font-openSans text-grey3">
-            Update your profile information and avatar
-          </p>
+    <div className="max-w-full">
+      {/* Page header */}
+      <div className="mb-8">
+        <p className="font-spaceGrotesk text-xs font-semibold text-mainPurple uppercase tracking-[0.15em] mb-1">
+          Dashboard
+        </p>
+        <div className="flex items-center justify-between">
+          <h1 className="font-satoshi font-black text-3xl text-grey1">Edit Profile</h1>
+          {profile?.username && (
+            <a
+              href={`/profile/${profile.username}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 font-spaceGrotesk text-xs font-semibold text-mainPurple hover:opacity-70 transition-opacity"
+            >
+              View profile
+              <FaArrowUpRightFromSquare className="w-3 h-3" />
+            </a>
+          )}
         </div>
+      </div>
 
-        {/* Avatar Upload */}
-        <div className="mb-8 flex items-center gap-6">
-          <div className="relative">
-            <div className="w-24 h-24 rounded-full overflow-hidden bg-grey4 flex items-center justify-center">
+      <div className="bg-white rounded-2xl border border-grey4/60 p-8 space-y-8">
+        {/* Avatar */}
+        <div className="flex items-center gap-5">
+          <div className="relative shrink-0">
+            <div className="w-20 h-20 rounded-full overflow-hidden bg-grey5 flex items-center justify-center">
               {profile?.profile_image_url ? (
                 <Image
                   src={profile.profile_image_url}
                   alt="Profile"
-                  width={96}
-                  height={96}
+                  width={80}
+                  height={80}
                   className="object-cover w-full h-full"
                 />
               ) : (
-                <span className="text-3xl font-satoshi font-bold text-grey2">
+                <span className="text-2xl font-satoshi font-bold text-grey2">
                   {profile?.name?.charAt(0).toUpperCase() || 'U'}
                 </span>
               )}
             </div>
             <label
               htmlFor="avatar-upload"
-              className="absolute bottom-0 right-0 bg-mainPurple text-white p-2 rounded-full cursor-pointer hover:opacity-90 transition-opacity"
+              className="absolute -bottom-0.5 -right-0.5 w-7 h-7 bg-mainPurple text-white rounded-full flex items-center justify-center cursor-pointer hover:bg-[#7D0FC9] transition-colors"
             >
               {uploading ? (
-                <FaSpinner className="w-4 h-4 animate-spin" />
+                <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
               ) : (
-                <FaCamera className="w-4 h-4" />
+                <FaCamera className="w-3 h-3" />
               )}
               <input
                 id="avatar-upload"
@@ -217,40 +187,16 @@ export default function ProfilePage() {
             </label>
           </div>
           <div>
-            <h3 className="font-spaceGrotesk font-semibold text-grey1 mb-1">
-              Profile Picture
-            </h3>
-            <p className="font-openSans text-sm text-grey3">
-              JPG, PNG or GIF. Max 5MB
-            </p>
+            <p className="font-spaceGrotesk font-semibold text-grey1 text-sm">Profile Photo</p>
+            <p className="font-openSans text-xs text-grey3 mt-0.5">JPG, PNG or GIF · Max 5 MB</p>
           </div>
         </div>
 
-        {/* Profile Information */}
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="font-spaceGrotesk font-semibold text-xl text-grey1">
-              Profile Information
-            </h2>
-            {profile?.username && (
-              <a
-                href={`/profile/${profile.username}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm font-openSans text-mainPurple hover:underline"
-              >
-                View Public Profile →
-              </a>
-            )}
-          </div>
-
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Name */}
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
-              <label
-                htmlFor="name"
-                className="block text-sm font-semibold text-grey1 mb-2 font-spaceGrotesk"
-              >
+              <label htmlFor="name" className="block text-xs font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
                 Full Name
               </label>
               <input
@@ -260,17 +206,12 @@ export default function ProfilePage() {
                 value={formData.name}
                 onChange={handleInputChange}
                 required
-                className="w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:ring-2 focus:ring-mainPurple focus:border-transparent font-openSans"
+                className={inputClass}
                 placeholder="John Doe"
               />
             </div>
-
-            {/* Title */}
             <div>
-              <label
-                htmlFor="title"
-                className="block text-sm font-semibold text-grey1 mb-2 font-spaceGrotesk"
-              >
+              <label htmlFor="title" className="block text-xs font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
                 Professional Title
               </label>
               <input
@@ -279,106 +220,85 @@ export default function ProfilePage() {
                 name="title"
                 value={formData.title}
                 onChange={handleInputChange}
-                className="w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:ring-2 focus:ring-mainPurple focus:border-transparent font-openSans"
-                placeholder="Software Engineer, Product Designer, etc."
+                className={inputClass}
+                placeholder="Software Engineer"
               />
             </div>
+          </div>
 
-            {/* Phone */}
+          <div>
+            <label htmlFor="phone" className="block text-xs font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
+              Phone Number
+            </label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              value={formData.phone}
+              onChange={handleInputChange}
+              className={inputClass}
+              placeholder="+234 801 234 5678"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="bio" className="block text-xs font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
+              Bio
+            </label>
+            <textarea
+              id="bio"
+              name="bio"
+              value={formData.bio}
+              onChange={handleInputChange}
+              rows={4}
+              className={`${inputClass} resize-none`}
+              placeholder="Tell us about yourself…"
+            />
+            <p className="mt-1.5 text-xs text-grey3 font-openSans tabular-nums">{formData.bio.length} characters</p>
+          </div>
+
+          <div>
+            <label htmlFor="email" className="block text-xs font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
+              Email Address
+            </label>
+            <input
+              type="email"
+              id="email"
+              value={profile?.email || ''}
+              disabled
+              className={`${inputClass} bg-grey5 text-grey3 cursor-not-allowed`}
+            />
+            <p className="mt-1.5 text-xs text-grey3 font-openSans">Email cannot be changed</p>
+          </div>
+
+          {profile?.username && (
             <div>
-              <label
-                htmlFor="phone"
-                className="block text-sm font-semibold text-grey1 mb-2 font-spaceGrotesk"
-              >
-                Phone Number
+              <label htmlFor="username" className="block text-xs font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
+                Username
               </label>
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                value={formData.phone}
-                onChange={handleInputChange}
-                className="w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:ring-2 focus:ring-mainPurple focus:border-transparent font-openSans"
-                placeholder="+1 (555) 123-4567"
-              />
-            </div>
-
-            {/* Bio */}
-            <div>
-              <label
-                htmlFor="bio"
-                className="block text-sm font-semibold text-grey1 mb-2 font-spaceGrotesk"
-              >
-                Bio
-              </label>
-              <textarea
-                id="bio"
-                name="bio"
-                value={formData.bio}
-                onChange={handleInputChange}
-                rows={4}
-                className="w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:ring-2 focus:ring-mainPurple focus:border-transparent font-openSans resize-none"
-                placeholder="Tell us about yourself..."
-              />
-              <p className="mt-2 text-sm text-grey3 font-openSans">
-                {formData.bio.length} characters
-              </p>
-            </div>
-
-            {/* Email (Read-only) */}
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-semibold text-grey1 mb-2 font-spaceGrotesk"
-              >
-                Email Address
-              </label>
-              <input
-                type="email"
-                id="email"
-                value={profile?.email || ''}
-                disabled
-                className="w-full px-4 py-3 border border-grey4 rounded-lg bg-gray-50 text-grey3 font-openSans cursor-not-allowed"
-              />
-              <p className="mt-2 text-sm text-grey3 font-openSans">
-                Email cannot be changed
-              </p>
-            </div>
-
-            {/* Username (Read-only) */}
-            {profile?.username && (
-              <div>
-                <label
-                  htmlFor="username"
-                  className="block text-sm font-semibold text-grey1 mb-2 font-spaceGrotesk"
-                >
-                  Username
-                </label>
-                <div className="flex items-center gap-2">
-                  <span className="text-grey3 font-openSans">segwae.com/</span>
-                  <input
-                    type="text"
-                    id="username"
-                    value={profile.username}
-                    disabled
-                    className="flex-1 px-4 py-3 border border-grey4 rounded-lg bg-gray-50 text-grey3 font-openSans cursor-not-allowed"
-                  />
-                </div>
+              <div className="flex items-center gap-2">
+                <span className="font-openSans text-sm text-grey3 whitespace-nowrap">segwae.com/</span>
+                <input
+                  type="text"
+                  id="username"
+                  value={profile.username}
+                  disabled
+                  className={`${inputClass} bg-grey5 text-grey3 cursor-not-allowed`}
+                />
               </div>
-            )}
-
-            {/* Submit Button */}
-            <div className="flex justify-end pt-4">
-              <button
-                type="submit"
-                disabled={saving}
-                className="px-8 py-3 bg-mainPurple text-white rounded-lg font-spaceGrotesk font-semibold cursor-pointer hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {saving ? 'Saving...' : 'Save Changes'}
-              </button>
             </div>
-          </form>
-        </div>
+          )}
+
+          <div className="flex justify-end pt-2">
+            <button
+              type="submit"
+              disabled={saving}
+              className="px-8 py-3 bg-mainPurple text-white rounded-xl font-spaceGrotesk font-semibold text-sm hover:bg-[#7D0FC9] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors"
+            >
+              {saving ? 'Saving…' : 'Save Changes'}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   )

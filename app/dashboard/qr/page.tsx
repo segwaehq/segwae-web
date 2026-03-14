@@ -1,602 +1,7 @@
-// "use client";
-
-// import { useState, useEffect, useRef } from "react";
-// import { QRCodeCanvas } from "qrcode.react";
-// import {
-//   FaSpinner,
-//   FaDownload,
-//   FaArrowUpRightFromSquare,
-//   FaCopy,
-// } from "react-icons/fa6";
-// import { toast } from "sonner";
-
-// interface ProfileData {
-//   username: string | null;
-// }
-
-// export default function QRCodePage() {
-//   const [profile, setProfile] = useState<ProfileData | null>(null);
-//   const [loading, setLoading] = useState(true);
-//   const qrRef = useRef<HTMLDivElement>(null);
-
-//   useEffect(() => {
-//     fetchProfile();
-//   }, []);
-
-//   const fetchProfile = async () => {
-//     try {
-//       setLoading(true);
-//       const response = await fetch("/api/user/profile");
-
-//       if (!response.ok) {
-//         throw new Error("Failed to fetch profile");
-//       }
-
-//       const data = await response.json();
-//       setProfile(data.profile);
-//     } catch (err) {
-//       toast.error(
-//         err instanceof Error ? err.message : "Failed to load profile"
-//       );
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const getProfileUrl = () => {
-//     if (!profile?.username) return "";
-//     return `https://segwae.com/profile/${profile.username}`;
-//   };
-
-//   const handleDownload = () => {
-//     const canvas = qrRef.current?.querySelector("canvas");
-//     if (!canvas) return;
-
-//     // Create a download link
-//     const url = canvas.toDataURL("image/png");
-//     const link = document.createElement("a");
-//     link.download = `segwae-qr-${profile?.username || "code"}.png`;
-//     link.href = url;
-//     link.click();
-//   };
-
-//   const handleCopyUrl = async () => {
-//     const url = getProfileUrl();
-//     try {
-//       await navigator.clipboard.writeText(url);
-//       toast.success("URL copied to clipboard");
-//     } catch {
-//       toast.error("Failed to copy URL");
-//     }
-//   };
-
-//   if (loading) {
-//     return (
-//       <div className="flex items-center justify-center min-h-[400px]">
-//         <FaSpinner className="w-8 h-8 text-mainPurple animate-spin" />
-//       </div>
-//     );
-//   }
-
-//   if (!profile?.username) {
-//     return (
-//       <div className="max-w-4xl mx-auto">
-//         <div className="bg-white rounded-2xl shadow-sm p-8">
-//           <div className="text-center py-12">
-//             <h1 className="font-satoshi font-bold text-3xl text-grey1 mb-4">
-//               QR Code Not Available
-//             </h1>
-//             <p className="font-openSans text-grey3 mb-6">
-//               You need a username to generate a QR code. Please complete your
-//               profile setup.
-//             </p>
-//           </div>
-//         </div>
-//       </div>
-//     );
-//   }
-
-//   const profileUrl = getProfileUrl();
-
-//   return (
-//     <div className="max-w-4xl mx-auto">
-//       <div className="bg-white rounded-2xl shadow-sm p-8">
-//         {/* Header */}
-//         <div className="mb-8">
-//           <h1 className="font-satoshi font-bold text-3xl text-grey1 mb-2">
-//             Your QR Code
-//           </h1>
-//           <p className="font-openSans text-grey3">
-//             Share your digital profile with a scan
-//           </p>
-//         </div>
-
-//         <div className="grid md:grid-cols-2 gap-8">
-//           {/* QR Code Display */}
-//           <div className="flex flex-col items-center justify-center">
-//             <div
-//               ref={qrRef}
-//               className="p-8 bg-white border-4 border-grey4 rounded-2xl shadow-lg"
-//             >
-//               <QRCodeCanvas
-//                 value={profileUrl}
-//                 size={256}
-//                 level="H"
-//                 includeMargin={false}
-//                 imageSettings={{
-//                   src: "/logo.png",
-//                   excavate: true,
-//                   width: 48,
-//                   height: 48,
-//                 }}
-//               />
-//             </div>
-
-//             <button
-//               onClick={handleDownload}
-//               className="mt-6 flex items-center gap-2 px-6 py-3 bg-mainPurple text-white rounded-lg font-spaceGrotesk font-semibold cursor-pointer hover:opacity-90 transition-opacity"
-//             >
-//               <FaDownload className="w-4 h-4" />
-//               Download QR Code
-//             </button>
-//           </div>
-
-//           {/* Profile Information */}
-//           <div className="flex flex-col justify-center space-y-6">
-//             <div>
-//               <h2 className="font-spaceGrotesk font-semibold text-xl text-grey1 mb-4">
-//                 Profile URL
-//               </h2>
-//               <div className="flex items-center gap-2 p-4 bg-gray-50 rounded-lg border border-grey4">
-//                 <a
-//                   href={profileUrl}
-//                   target="_blank"
-//                   rel="noopener noreferrer"
-//                   className="flex-1 font-openSans text-mainPurple hover:underline truncate"
-//                 >
-//                   {profileUrl}
-//                 </a>
-//                 <button
-//                   onClick={handleCopyUrl}
-//                   className="p-2 text-grey1 cursor-pointer hover:bg-white rounded-lg transition-colors"
-//                   title="Copy URL"
-//                 >
-//                   <FaCopy className="w-5 h-5" />
-//                 </button>
-//                 <a
-//                   href={profileUrl}
-//                   target="_blank"
-//                   rel="noopener noreferrer"
-//                   className="p-2 text-grey1 hover:bg-white rounded-lg transition-colors"
-//                   title="Open in new tab"
-//                 >
-//                   <FaArrowUpRightFromSquare className="w-5 h-5" />
-//                 </a>
-//               </div>
-//             </div>
-
-//             <div className="p-6 bg-linear-to-br from-mainPurple to-blue rounded-xl text-white">
-//               <h3 className="font-spaceGrotesk font-semibold text-lg mb-2">
-//                 How to use
-//               </h3>
-//               <ul className="space-y-2 font-openSans text-sm">
-//                 <li className="flex items-start gap-2">
-//                   <span className="mt-1">•</span>
-//                   <span>
-//                     Download and print your QR code for physical business cards
-//                   </span>
-//                 </li>
-//                 <li className="flex items-start gap-2">
-//                   <span className="mt-1">•</span>
-//                   <span>
-//                     Share it in email signatures or social media posts
-//                   </span>
-//                 </li>
-//                 <li className="flex items-start gap-2">
-//                   <span className="mt-1">•</span>
-//                   <span>
-//                     Anyone can scan it with their phone camera to view your
-//                     profile
-//                   </span>
-//                 </li>
-//               </ul>
-//             </div>
-
-//             <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-//               <p className="font-openSans text-sm text-blue-800">
-//                 <strong className="font-semibold">Tip:</strong> Update your
-//                 profile information anytime - your QR code will always link to
-//                 your latest profile!
-//               </p>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// "use client";
-
-// import { useState, useEffect, useRef } from "react";
-// import {
-//   FaSpinner,
-//   FaDownload,
-//   FaArrowUpRightFromSquare,
-//   FaCopy,
-// } from "react-icons/fa6";
-// import { toast } from "sonner";
-// import QRCode from "qrcode";
-
-// interface ProfileData {
-//   username: string | null;
-// }
-
-// export default function QRCodePage() {
-//   const [profile, setProfile] = useState<ProfileData | null>(null);
-//   const [loading, setLoading] = useState(true);
-//   const canvasRef = useRef<HTMLCanvasElement>(null);
-
-//   useEffect(() => {
-//     fetchProfile();
-//   }, []);
-
-//   useEffect(() => {
-//     if (profile?.username && canvasRef.current) {
-//       generatePrettyQR();
-//     }
-//   }, [profile]);
-
-//   const fetchProfile = async () => {
-//     try {
-//       setLoading(true);
-//       const response = await fetch("/api/user/profile");
-
-//       if (!response.ok) {
-//         throw new Error("Failed to fetch profile");
-//       }
-
-//       const data = await response.json();
-//       setProfile(data.profile);
-//     } catch (err) {
-//       toast.error(
-//         err instanceof Error ? err.message : "Failed to load profile"
-//       );
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const getProfileUrl = () => {
-//     if (!profile?.username) return "";
-//     return `https://segwae.com/profile/${profile.username}`;
-//   };
-
-//   const generatePrettyQR = async () => {
-//     const canvas = canvasRef.current;
-//     if (!canvas) return;
-
-//     const profileUrl = getProfileUrl();
-//     const size = 512; // Higher resolution for better quality
-//     const margin = 4;
-
-//     canvas.width = size;
-//     canvas.height = size;
-
-//     const ctx = canvas.getContext("2d");
-//     if (!ctx) return;
-
-//     // Generate QR code data
-//     const qrData = await QRCode.create(profileUrl, {
-//       errorCorrectionLevel: "H",
-//     });
-
-//     const moduleCount = qrData.modules.size;
-//     const moduleSize = (size - margin * 2) / moduleCount;
-//     const dotRadius = moduleSize * 0.42; // Circular dots
-
-//     // Fill white background
-//     ctx.fillStyle = "#FFFFFF";
-//     ctx.fillRect(0, 0, size, size);
-
-//     // Helper function to check if position is in finder pattern (corner squares)
-//     const isInFinderPattern = (row: number, col: number) => {
-//       const finderSize = 7;
-//       // Top-left
-//       if (row < finderSize && col < finderSize) return true;
-//       // Top-right
-//       if (row < finderSize && col >= moduleCount - finderSize) return true;
-//       // Bottom-left
-//       if (row >= moduleCount - finderSize && col < finderSize) return true;
-//       return false;
-//     };
-
-//     // Draw QR modules as circles
-//     ctx.fillStyle = "#000000";
-//     for (let row = 0; row < moduleCount; row++) {
-//       for (let col = 0; col < moduleCount; col++) {
-//         if (qrData.modules.get(row, col)) {
-//           if (!isInFinderPattern(row, col)) {
-//             const x = margin + col * moduleSize + moduleSize / 2;
-//             const y = margin + row * moduleSize + moduleSize / 2;
-
-//             ctx.beginPath();
-//             ctx.arc(x, y, dotRadius, 0, Math.PI * 2);
-//             ctx.fill();
-//           }
-//         }
-//       }
-//     }
-
-//     // Draw rounded finder patterns (position markers)
-//     const drawRoundedFinderPattern = (startRow: number, startCol: number) => {
-//       const finderSize = 7;
-//       const x = margin + startCol * moduleSize;
-//       const y = margin + startRow * moduleSize;
-//       const outerSize = finderSize * moduleSize;
-//       const outerRadius = moduleSize * 2;
-
-//       // Outer rounded square
-//       ctx.fillStyle = "#000000";
-//       ctx.beginPath();
-//       ctx.roundRect(x, y, outerSize, outerSize, outerRadius);
-//       ctx.fill();
-
-//       // Inner white rounded square
-//       const innerMargin = moduleSize;
-//       const innerSize = (finderSize - 2) * moduleSize;
-//       const innerRadius = moduleSize * 1.5;
-//       ctx.fillStyle = "#FFFFFF";
-//       ctx.beginPath();
-//       ctx.roundRect(
-//         x + innerMargin,
-//         y + innerMargin,
-//         innerSize,
-//         innerSize,
-//         innerRadius
-//       );
-//       ctx.fill();
-
-//       // Center rounded square
-//       const centerMargin = moduleSize * 2;
-//       const centerSize = (finderSize - 4) * moduleSize;
-//       const centerRadius = moduleSize;
-//       ctx.fillStyle = "#000000";
-//       ctx.beginPath();
-//       ctx.roundRect(
-//         x + centerMargin,
-//         y + centerMargin,
-//         centerSize,
-//         centerSize,
-//         centerRadius
-//       );
-//       ctx.fill();
-//     };
-
-//     // Draw the three finder patterns
-//     drawRoundedFinderPattern(0, 0); // Top-left
-//     drawRoundedFinderPattern(0, moduleCount - 7); // Top-right
-//     drawRoundedFinderPattern(moduleCount - 7, 0); // Bottom-left
-
-//     // Load and draw logo in center
-//     const logo = new Image();
-//     logo.crossOrigin = "anonymous";
-//     logo.src = "/logo.png";
-
-//     logo.onload = () => {
-//       const logoSize = size * 0.18; // Logo size relative to QR code
-//       const logoX = (size - logoSize) / 2;
-//       const logoY = (size - logoSize) / 2;
-
-//       // Draw white circle background for logo
-//       ctx.fillStyle = "#FFFFFF";
-//       ctx.beginPath();
-//       ctx.arc(size / 2, size / 2, logoSize / 2 + 8, 0, Math.PI * 2);
-//       ctx.fill();
-
-//       // Draw logo
-//       ctx.drawImage(logo, logoX, logoY, logoSize, logoSize);
-//     };
-//   };
-
-//   const handleDownload = () => {
-//     const canvas = canvasRef.current;
-//     if (!canvas) return;
-
-//     // Create a download link
-//     const url = canvas.toDataURL("image/png");
-//     const link = document.createElement("a");
-//     link.download = `segwae-qr-${profile?.username || "code"}.png`;
-//     link.href = url;
-//     link.click();
-//   };
-
-//   const handleCopyUrl = async () => {
-//     const url = getProfileUrl();
-//     try {
-//       await navigator.clipboard.writeText(url);
-//       toast.success("URL copied to clipboard");
-//     } catch {
-//       toast.error("Failed to copy URL");
-//     }
-//   };
-
-//   if (loading) {
-//     return (
-//       <div className="flex items-center justify-center min-h-[400px]">
-//         <FaSpinner className="w-8 h-8 text-mainPurple animate-spin" />
-//       </div>
-//     );
-//   }
-
-//   if (!profile?.username) {
-//     return (
-//       <div className="max-w-4xl mx-auto">
-//         <div className="bg-white rounded-2xl shadow-sm p-8">
-//           <div className="text-center py-12">
-//             <h1 className="font-satoshi font-bold text-3xl text-grey1 mb-4">
-//               QR Code Not Available
-//             </h1>
-//             <p className="font-openSans text-grey3 mb-6">
-//               You need a username to generate a QR code. Please complete your
-//               profile setup.
-//             </p>
-//           </div>
-//         </div>
-//       </div>
-//     );
-//   }
-
-//   const profileUrl = getProfileUrl();
-
-//   return (
-//     <div className="max-w-4xl mx-auto">
-//       <div className="bg-white rounded-2xl shadow-sm p-8">
-//         {/* Header */}
-//         <div className="mb-8">
-//           <h1 className="font-satoshi font-bold text-3xl text-grey1 mb-2">
-//             Your QR Code
-//           </h1>
-//           <p className="font-openSans text-grey3">
-//             Share your digital profile with a scan
-//           </p>
-//         </div>
-
-//         <div className="grid md:grid-cols-2 gap-8">
-//           {/* QR Code Display */}
-//           <div className="flex flex-col items-center justify-center">
-//             <div className="p-8 bg-white border-4 border-grey4 rounded-2xl shadow-lg">
-//               <canvas
-//                 ref={canvasRef}
-//                 className="max-w-full h-auto"
-//                 style={{ width: "256px", height: "256px" }}
-//               />
-//             </div>
-
-//             <button
-//               onClick={handleDownload}
-//               className="mt-6 flex items-center gap-2 px-6 py-3 bg-mainPurple text-white rounded-lg font-spaceGrotesk font-semibold cursor-pointer hover:opacity-90 transition-opacity"
-//             >
-//               <FaDownload className="w-4 h-4" />
-//               Download QR Code
-//             </button>
-//           </div>
-
-//           {/* Profile Information */}
-//           <div className="flex flex-col justify-center space-y-6">
-//             <div>
-//               <h2 className="font-spaceGrotesk font-semibold text-xl text-grey1 mb-4">
-//                 Profile URL
-//               </h2>
-//               <div className="flex items-center gap-2 p-4 bg-gray-50 rounded-lg border border-grey4">
-//                 <a
-//                   href={profileUrl}
-//                   target="_blank"
-//                   rel="noopener noreferrer"
-//                   className="flex-1 font-openSans text-mainPurple hover:underline truncate"
-//                 >
-//                   {profileUrl}
-//                 </a>
-//                 <button
-//                   onClick={handleCopyUrl}
-//                   className="p-2 text-grey1 cursor-pointer hover:bg-white rounded-lg transition-colors"
-//                   title="Copy URL"
-//                 >
-//                   <FaCopy className="w-5 h-5" />
-//                 </button>
-//                 <a
-//                   href={profileUrl}
-//                   target="_blank"
-//                   rel="noopener noreferrer"
-//                   className="p-2 text-grey1 hover:bg-white rounded-lg transition-colors"
-//                   title="Open in new tab"
-//                 >
-//                   <FaArrowUpRightFromSquare className="w-5 h-5" />
-//                 </a>
-//               </div>
-//             </div>
-
-//             <div className="p-6 bg-linear-to-br from-mainPurple to-blue-500 rounded-xl text-white">
-//               <h3 className="font-spaceGrotesk font-semibold text-lg mb-2">
-//                 How to use
-//               </h3>
-//               <ul className="space-y-2 font-openSans text-sm">
-//                 <li className="flex items-start gap-2">
-//                   <span className="mt-1">•</span>
-//                   <span>
-//                     Download and print your QR code for physical business cards
-//                   </span>
-//                 </li>
-//                 <li className="flex items-start gap-2">
-//                   <span className="mt-1">•</span>
-//                   <span>
-//                     Share it in email signatures or social media posts
-//                   </span>
-//                 </li>
-//                 <li className="flex items-start gap-2">
-//                   <span className="mt-1">•</span>
-//                   <span>
-//                     Anyone can scan it with their phone camera to view your
-//                     profile
-//                   </span>
-//                 </li>
-//               </ul>
-//             </div>
-
-//             <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-//               <p className="font-openSans text-sm text-blue-800">
-//                 <strong className="font-semibold">Tip:</strong> Update your
-//                 profile information anytime - your QR code will always link to
-//                 your latest profile!
-//               </p>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import {
-  FaSpinner,
-  FaDownload,
-  FaArrowUpRightFromSquare,
-  FaCopy,
-} from "react-icons/fa6";
+import { FaDownload, FaArrowUpRightFromSquare, FaCopy } from "react-icons/fa6";
 import { toast } from "sonner";
 import QRCode from "qrcode";
 
@@ -609,9 +14,7 @@ export default function QRCodePage() {
   const [loading, setLoading] = useState(true);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  useEffect(() => {
-    fetchProfile();
-  }, []);
+  useEffect(() => { fetchProfile(); }, []);
 
   useEffect(() => {
     if (profile?.username && canvasRef.current) {
@@ -623,17 +26,11 @@ export default function QRCodePage() {
     try {
       setLoading(true);
       const response = await fetch("/api/user/profile");
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch profile");
-      }
-
+      if (!response.ok) throw new Error("Failed to fetch profile");
       const data = await response.json();
       setProfile(data.profile);
     } catch (err) {
-      toast.error(
-        err instanceof Error ? err.message : "Failed to load profile"
-      );
+      toast.error(err instanceof Error ? err.message : "Failed to load profile");
     } finally {
       setLoading(false);
     }
@@ -649,7 +46,7 @@ export default function QRCodePage() {
     if (!canvas) return;
 
     const profileUrl = getProfileUrl();
-    const size = 512; // Higher resolution for better quality
+    const size = 512;
     const margin = 4;
 
     canvas.width = size;
@@ -658,131 +55,78 @@ export default function QRCodePage() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Generate QR code data
-    const qrData = await QRCode.create(profileUrl, {
-      errorCorrectionLevel: "H",
-    });
-
+    const qrData = await QRCode.create(profileUrl, { errorCorrectionLevel: "H" });
     const moduleCount = qrData.modules.size;
     const moduleSize = (size - margin * 2) / moduleCount;
-    const dotRadius = moduleSize * 0.42; // Circular dots
+    const dotRadius = moduleSize * 0.42;
 
-    // Fill white background
     ctx.fillStyle = "#FFFFFF";
     ctx.fillRect(0, 0, size, size);
 
-    // Helper function to check if position is in finder pattern (corner squares)
     const isInFinderPattern = (row: number, col: number) => {
-      const finderSize = 7;
-      // Top-left
-      if (row < finderSize && col < finderSize) return true;
-      // Top-right
-      if (row < finderSize && col >= moduleCount - finderSize) return true;
-      // Bottom-left
-      if (row >= moduleCount - finderSize && col < finderSize) return true;
+      const fs = 7;
+      if (row < fs && col < fs) return true;
+      if (row < fs && col >= moduleCount - fs) return true;
+      if (row >= moduleCount - fs && col < fs) return true;
       return false;
     };
 
-    // Draw QR modules as circles
-    ctx.fillStyle = "#000000";
+    ctx.fillStyle = "#080B14";
     for (let row = 0; row < moduleCount; row++) {
       for (let col = 0; col < moduleCount; col++) {
-        if (qrData.modules.get(row, col)) {
-          if (!isInFinderPattern(row, col)) {
-            const x = margin + col * moduleSize + moduleSize / 2;
-            const y = margin + row * moduleSize + moduleSize / 2;
-
-            ctx.beginPath();
-            ctx.arc(x, y, dotRadius, 0, Math.PI * 2);
-            ctx.fill();
-          }
+        if (qrData.modules.get(row, col) && !isInFinderPattern(row, col)) {
+          const x = margin + col * moduleSize + moduleSize / 2;
+          const y = margin + row * moduleSize + moduleSize / 2;
+          ctx.beginPath();
+          ctx.arc(x, y, dotRadius, 0, Math.PI * 2);
+          ctx.fill();
         }
       }
     }
 
-    // Draw rounded finder patterns (position markers)
-    const drawRoundedFinderPattern = (startRow: number, startCol: number) => {
-      const finderSize = 7;
+    const drawFinderPattern = (startRow: number, startCol: number) => {
+      const fs = 7;
       const x = margin + startCol * moduleSize;
       const y = margin + startRow * moduleSize;
-      const outerSize = finderSize * moduleSize;
-      const outerRadius = moduleSize * 2;
+      const outerSize = fs * moduleSize;
 
-      // Outer rounded square
-      ctx.fillStyle = "#000000";
+      ctx.fillStyle = "#080B14";
       ctx.beginPath();
-      ctx.roundRect(x, y, outerSize, outerSize, outerRadius);
+      ctx.roundRect(x, y, outerSize, outerSize, moduleSize * 2);
       ctx.fill();
 
-      // Inner white rounded square
-      const innerMargin = moduleSize;
-      const innerSize = (finderSize - 2) * moduleSize;
-      const innerRadius = moduleSize * 1.5;
       ctx.fillStyle = "#FFFFFF";
       ctx.beginPath();
-      ctx.roundRect(
-        x + innerMargin,
-        y + innerMargin,
-        innerSize,
-        innerSize,
-        innerRadius
-      );
+      ctx.roundRect(x + moduleSize, y + moduleSize, (fs - 2) * moduleSize, (fs - 2) * moduleSize, moduleSize * 1.5);
       ctx.fill();
 
-      // Center rounded square
-      const centerMargin = moduleSize * 2;
-      const centerSize = (finderSize - 4) * moduleSize;
-      const centerRadius = moduleSize;
-      ctx.fillStyle = "#000000";
+      ctx.fillStyle = "#6A0DAD";
       ctx.beginPath();
-      ctx.roundRect(
-        x + centerMargin,
-        y + centerMargin,
-        centerSize,
-        centerSize,
-        centerRadius
-      );
+      ctx.roundRect(x + moduleSize * 2, y + moduleSize * 2, (fs - 4) * moduleSize, (fs - 4) * moduleSize, moduleSize);
       ctx.fill();
     };
 
-    // Draw the three finder patterns
-    drawRoundedFinderPattern(0, 0); // Top-left
-    drawRoundedFinderPattern(0, moduleCount - 7); // Top-right
-    drawRoundedFinderPattern(moduleCount - 7, 0); // Bottom-left
+    drawFinderPattern(0, 0);
+    drawFinderPattern(0, moduleCount - 7);
+    drawFinderPattern(moduleCount - 7, 0);
 
-    // Load and draw logo in center
     const logo = new Image();
     logo.crossOrigin = "anonymous";
     logo.src = "/logo_icon.svg";
-
     logo.onload = () => {
-      const maxLogoSize = size * 0.18; // Maximum logo size relative to QR code
-      
-      // Calculate aspect ratio and dimensions
-      const aspectRatio = logo.naturalWidth / logo.naturalHeight;
-      let logoWidth, logoHeight;
-      
-      if (aspectRatio > 1) {
-        // Logo is wider than it is tall
-        logoWidth = maxLogoSize;
-        logoHeight = maxLogoSize / aspectRatio;
-      } else {
-        // Logo is taller than it is wide
-        logoHeight = maxLogoSize;
-        logoWidth = maxLogoSize * aspectRatio;
-      }
-      
+      const maxLogoSize = size * 0.18;
+      const ar = logo.naturalWidth / logo.naturalHeight;
+      const logoWidth = ar > 1 ? maxLogoSize : maxLogoSize * ar;
+      const logoHeight = ar > 1 ? maxLogoSize / ar : maxLogoSize;
       const logoX = (size - logoWidth) / 2;
       const logoY = (size - logoHeight) / 2;
 
-      // Draw white circle background for logo (use the larger dimension for radius)
-      const backgroundRadius = Math.max(logoWidth, logoHeight) / 2 + 12;
+      const bgRadius = Math.max(logoWidth, logoHeight) / 2 + 12;
       ctx.fillStyle = "#FFFFFF";
       ctx.beginPath();
-      ctx.arc(size / 2, size / 2, backgroundRadius, 0, Math.PI * 2);
+      ctx.arc(size / 2, size / 2, bgRadius, 0, Math.PI * 2);
       ctx.fill();
 
-      // Draw logo with correct aspect ratio
       ctx.drawImage(logo, logoX, logoY, logoWidth, logoHeight);
     };
   };
@@ -790,8 +134,6 @@ export default function QRCodePage() {
   const handleDownload = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-
-    // Create a download link
     const url = canvas.toDataURL("image/png");
     const link = document.createElement("a");
     link.download = `segwae-qr-${profile?.username || "code"}.png`;
@@ -803,7 +145,7 @@ export default function QRCodePage() {
     const url = getProfileUrl();
     try {
       await navigator.clipboard.writeText(url);
-      toast.success("URL copied to clipboard");
+      toast.success("URL copied");
     } catch {
       toast.error("Failed to copy URL");
     }
@@ -812,24 +154,27 @@ export default function QRCodePage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <FaSpinner className="w-8 h-8 text-mainPurple animate-spin" />
+        <div className="w-7 h-7 border-[3px] border-mainPurple border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
   if (!profile?.username) {
     return (
-      <div className="max-w-4xl mx-auto">
-        <div className="bg-white rounded-2xl shadow-sm p-8">
-          <div className="text-center py-12">
-            <h1 className="font-satoshi font-bold text-3xl text-grey1 mb-4">
-              QR Code Not Available
-            </h1>
-            <p className="font-openSans text-grey3 mb-6">
-              You need a username to generate a QR code. Please complete your
-              profile setup.
-            </p>
-          </div>
+      <div className="max-w-full">
+        <div className="mb-8">
+          <p className="font-spaceGrotesk text-xs font-semibold text-mainPurple uppercase tracking-[0.15em] mb-1">
+            Dashboard
+          </p>
+          <h1 className="font-satoshi font-black text-3xl text-grey1">QR Code</h1>
+        </div>
+        <div className="bg-white rounded-2xl border border-grey4/60 p-12 text-center">
+          <p className="font-openSans text-grey3 mb-4">
+            You need a username to generate a QR code.
+          </p>
+          <a href="/dashboard/profile" className="font-spaceGrotesk text-sm font-semibold text-mainPurple hover:opacity-70 transition-opacity">
+            Complete your profile →
+          </a>
         </div>
       </div>
     );
@@ -838,106 +183,81 @@ export default function QRCodePage() {
   const profileUrl = getProfileUrl();
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="bg-white rounded-2xl shadow-sm p-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="font-satoshi font-bold text-3xl text-grey1 mb-2">
-            Your QR Code
-          </h1>
-          <p className="font-openSans text-grey3">
-            Share your digital profile with a scan
-          </p>
-        </div>
+    <div className="max-w-full">
+      {/* Page header */}
+      <div className="mb-8">
+        <p className="font-spaceGrotesk text-xs font-semibold text-mainPurple uppercase tracking-[0.15em] mb-1">
+          Dashboard
+        </p>
+        <h1 className="font-satoshi font-black text-3xl text-grey1">QR Code</h1>
+      </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
-          {/* QR Code Display */}
-          <div className="flex flex-col items-center justify-center">
-            <div className="p-8 bg-white border-4 border-grey4 rounded-2xl shadow-lg">
+      <div className="bg-white rounded-2xl border border-grey4/60 p-8">
+        <div className="flex flex-col lg:flex-row gap-10 items-start">
+          {/* QR canvas */}
+          <div className="flex flex-col items-center gap-4 shrink-0">
+            <div className="p-5 rounded-2xl border border-grey4 bg-white shadow-sm">
               <canvas
                 ref={canvasRef}
-                className="max-w-full h-auto"
-                style={{ width: "256px", height: "256px" }}
+                style={{ width: "220px", height: "220px" }}
+                className="block"
               />
             </div>
-
             <button
               onClick={handleDownload}
-              className="mt-6 flex items-center gap-2 px-6 py-3 bg-mainPurple text-white rounded-lg font-spaceGrotesk font-semibold cursor-pointer hover:opacity-90 transition-opacity"
+              className="flex items-center gap-2 px-5 py-2.5 bg-[#080B14] text-white rounded-xl font-spaceGrotesk font-semibold text-sm hover:bg-grey1 transition-colors cursor-pointer"
             >
-              <FaDownload className="w-4 h-4" />
-              Download QR Code
+              <FaDownload className="w-3.5 h-3.5" />
+              Download
             </button>
           </div>
 
-          {/* Profile Information */}
-          <div className="flex flex-col justify-center space-y-6">
+          {/* Info */}
+          <div className="flex-1 space-y-6">
             <div>
-              <h2 className="font-spaceGrotesk font-semibold text-xl text-grey1 mb-4">
+              <p className="font-spaceGrotesk text-xs font-semibold text-grey2 uppercase tracking-[0.12em] mb-2">
                 Profile URL
-              </h2>
-              <div className="flex items-center gap-2 p-4 bg-gray-50 rounded-lg border border-grey4">
+              </p>
+              <div className="flex items-center gap-2 p-3.5 bg-grey5 rounded-xl border border-grey4">
                 <a
                   href={profileUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 font-openSans text-mainPurple hover:underline truncate"
+                  className="flex-1 font-openSans text-sm text-mainPurple hover:underline truncate"
                 >
                   {profileUrl}
                 </a>
                 <button
                   onClick={handleCopyUrl}
-                  className="p-2 text-grey1 cursor-pointer hover:bg-white rounded-lg transition-colors"
-                  title="Copy URL"
+                  className="p-1.5 text-grey3 hover:text-grey1 transition-colors shrink-0 cursor-pointer"
+                  title="Copy"
                 >
-                  <FaCopy className="w-5 h-5" />
+                  <FaCopy className="w-4 h-4" />
                 </button>
                 <a
                   href={profileUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 text-grey1 hover:bg-white rounded-lg transition-colors"
-                  title="Open in new tab"
+                  className="p-1.5 text-grey3 hover:text-grey1 transition-colors shrink-0"
+                  title="Open"
                 >
-                  <FaArrowUpRightFromSquare className="w-5 h-5" />
+                  <FaArrowUpRightFromSquare className="w-4 h-4" />
                 </a>
               </div>
             </div>
 
-            <div className="p-6 bg-linear-to-br from-mainPurple to-blue-500 rounded-xl text-white">
-              <h3 className="font-spaceGrotesk font-semibold text-lg mb-2">
-                How to use
-              </h3>
-              <ul className="space-y-2 font-openSans text-sm">
-                <li className="flex items-start gap-2">
-                  <span className="mt-1">•</span>
-                  <span>
-                    Download and print your QR code for physical business cards
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="mt-1">•</span>
-                  <span>
-                    Share it in email signatures or social media posts
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="mt-1">•</span>
-                  <span>
-                    Anyone can scan it with their phone camera to view your
-                    profile
-                  </span>
-                </li>
+            <div className="p-5 bg-[#080B14] rounded-xl text-white">
+              <p className="font-spaceGrotesk font-semibold text-sm mb-3">How to use</p>
+              <ul className="space-y-2 font-openSans text-xs text-white/60">
+                <li>Print and attach to physical business cards</li>
+                <li>Add to your email signature or LinkedIn</li>
+                <li>Anyone can scan it with their camera to view your profile</li>
               </ul>
             </div>
 
-            <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-              <p className="font-openSans text-sm text-blue-800">
-                <strong className="font-semibold">Tip:</strong> Update your
-                profile information anytime - your QR code will always link to
-                your latest profile!
-              </p>
-            </div>
+            <p className="font-openSans text-xs text-grey3">
+              Your QR code always points to your latest profile — no need to reprint when you update.
+            </p>
           </div>
         </div>
       </div>

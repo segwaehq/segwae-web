@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { toast } from 'sonner'
-import { FaSpinner, FaCheck, FaTimes } from 'react-icons/fa'
+import { FaSpinner, FaCheck, FaXmark } from 'react-icons/fa6'
+import AuthLayout from '@/components/AuthLayout'
 
 export default function SignupPage() {
   const router = useRouter()
@@ -22,257 +23,193 @@ export default function SignupPage() {
   const [loading, setLoading] = useState(false)
   const [usernameManuallyEdited, setUsernameManuallyEdited] = useState(false)
 
-  // Auto-generate username from name
   useEffect(() => {
     if (!usernameManuallyEdited && formData.name) {
-      const generated = generateUsernameFromName(formData.name)
-      setFormData(prev => ({ ...prev, username: generated }))
+      setFormData(prev => ({ ...prev, username: generateUsernameFromName(formData.name) }))
     }
   }, [formData.name, usernameManuallyEdited])
 
-  // Check username availability with debounce
   useEffect(() => {
     if (!formData.username || formData.username.length < 3) {
       setUsernameStatus('idle')
       return
     }
-
-    const timeoutId = setTimeout(async () => {
-      await checkUsernameAvailability(formData.username)
-    }, 500)
-
-    return () => clearTimeout(timeoutId)
+    const id = setTimeout(() => checkUsernameAvailability(formData.username), 500)
+    return () => clearTimeout(id)
   }, [formData.username])
 
-  const generateUsernameFromName = (name: string): string => {
-    // Clean the name: lowercase, remove special chars
-    const cleanName = name
-      .toLowerCase()
-      .replace(/[^a-z0-9]/g, '')
-
-    // Limit to 27 characters
-    const limitedName = cleanName.slice(0, 27)
-
-    // Add 3 random digits
-    const randomDigits = Math.floor(Math.random() * 900 + 100)
-
-    return limitedName + randomDigits
-  }
+  const generateUsernameFromName = (name: string) =>
+    name.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 27) +
+    Math.floor(Math.random() * 900 + 100)
 
   const checkUsernameAvailability = async (username: string) => {
     setUsernameStatus('checking')
-
     try {
-      const response = await fetch('/api/auth/check-username', {
+      const res = await fetch('/api/auth/check-username', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username }),
       })
-
-      const data = await response.json()
-
-      if (data.available) {
-        setUsernameStatus('available')
-      } else {
-        setUsernameStatus('taken')
-      }
-    } catch (err) {
-      console.error('Error checking username:', err)
+      const data = await res.json()
+      setUsernameStatus(data.available ? 'available' : 'taken')
+    } catch {
       setUsernameStatus('idle')
     }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-
-    // Validate username
     if (usernameStatus !== 'available') {
       toast.error('Please choose an available username')
       return
     }
-
-    // Validate all required fields
     if (!formData.name || !formData.email || !formData.username) {
       toast.error('Please fill in all required fields')
       return
     }
-
     setLoading(true)
-
-    try {
-      // Navigate to password page with form data
-      router.push(`/signup/password?${new URLSearchParams({
-        name: formData.name,
-        email: formData.email,
-        username: formData.username,
-        phone: formData.phone || '',
-        title: formData.title || '',
-      })}`)
-    } catch (err) {
-      toast.error('An error occurred. Please try again.')
-      setLoading(false)
-    }
+    router.push(`/signup/password?${new URLSearchParams({
+      name: formData.name,
+      email: formData.email,
+      username: formData.username,
+      phone: formData.phone || '',
+      title: formData.title || '',
+    })}`)
   }
 
-  const handleUsernameChange = (value: string) => {
-    setUsernameManuallyEdited(true)
-    setFormData(prev => ({ ...prev, username: value }))
-  }
+  const inputClass = "w-full px-4 py-3 border border-grey4 rounded-xl focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 transition-colors disabled:bg-grey6 disabled:cursor-not-allowed"
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-mainPurple to-blue flex items-center justify-center p-6">
-      <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="font-satoshi font-bold text-3xl text-grey1 mb-2">
-            Create Account
-          </h1>
-          <p className="font-openSans text-grey3">
-            Step 1 of 3: Enter your details
-          </p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Full Name */}
-          <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-semibold text-grey1 mb-2 font-spaceGrotesk"
-            >
-              Full Name <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              id="name"
-              value={formData.name}
-              onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-              required
-              className="w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:ring-2 focus:ring-mainPurple focus:border-transparent font-openSans"
-              placeholder="John Doe"
-              disabled={loading}
-            />
-          </div>
-
-          {/* Email */}
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-semibold text-grey1 mb-2 font-spaceGrotesk"
-            >
-              Email Address <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={formData.email}
-              onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-              required
-              className="w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:ring-2 focus:ring-mainPurple focus:border-transparent font-openSans"
-              placeholder="you@example.com"
-              disabled={loading}
-            />
-          </div>
-
-          {/* Username */}
-          <div>
-            <label
-              htmlFor="username"
-              className="block text-sm font-semibold text-grey1 mb-2 font-spaceGrotesk"
-            >
-              Username <span className="text-red-500">*</span>
-            </label>
-            <div className="relative">
-              <input
-                type="text"
-                id="username"
-                value={formData.username}
-                onChange={(e) => handleUsernameChange(e.target.value)}
-                required
-                minLength={3}
-                maxLength={30}
-                pattern="^[a-z0-9]+$"
-                className="w-full px-4 py-3 pr-12 border border-grey4 rounded-lg focus:outline-none focus:ring-2 focus:ring-mainPurple focus:border-transparent font-openSans lowercase"
-                placeholder="johndoe123"
-                disabled={loading}
-              />
-              {usernameStatus === 'checking' && (
-                <FaSpinner className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-grey3 animate-spin" />
-              )}
-              {usernameStatus === 'available' && (
-                <FaCheck className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-green-500" />
-              )}
-              {usernameStatus === 'taken' && (
-                <FaTimes className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-red-500" />
-              )}
-            </div>
-            <p className="mt-1 text-xs text-grey3 font-openSans">
-              {usernameStatus === 'taken' && 'Username already taken'}
-              {usernameStatus === 'available' && 'Username available'}
-              {usernameStatus === 'idle' && 'Only lowercase letters and numbers'}
-            </p>
-          </div>
-
-          {/* Phone (Optional) */}
-          <div>
-            <label
-              htmlFor="phone"
-              className="block text-sm font-semibold text-grey1 mb-2 font-spaceGrotesk"
-            >
-              Phone Number
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              value={formData.phone}
-              onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-              className="w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:ring-2 focus:ring-mainPurple focus:border-transparent font-openSans"
-              placeholder="+234 800 000 0000"
-              disabled={loading}
-            />
-          </div>
-
-          {/* Title/Role (Optional) */}
-          <div>
-            <label
-              htmlFor="title"
-              className="block text-sm font-semibold text-grey1 mb-2 font-spaceGrotesk"
-            >
-              Professional Title
-            </label>
-            <input
-              type="text"
-              id="title"
-              value={formData.title}
-              onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-              className="w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:ring-2 focus:ring-mainPurple focus:border-transparent font-openSans"
-              placeholder="Software Engineer"
-              disabled={loading}
-            />
-          </div>
-
-          {/* Submit Button */}
-          <button
-            type="submit"
-            disabled={loading || usernameStatus !== 'available'}
-            className="w-full bg-mainPurple text-white py-3 rounded-lg font-spaceGrotesk font-semibold cursor-pointer hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed mt-6"
-          >
-            {loading ? 'Processing...' : 'Continue to Password'}
-          </button>
-        </form>
-
-        {/* Login Link */}
-        <div className="mt-8 text-center">
-          <p className="text-grey3 font-openSans text-sm">
-            Already have an account?{' '}
-            <Link
-              href="/login"
-              className="text-mainPurple hover:underline font-semibold"
-            >
-              Sign in
-            </Link>
-          </p>
-        </div>
+    <AuthLayout step={1} totalSteps={3}>
+      <div className="mb-7">
+        <h1 className="font-satoshi font-black text-3xl text-grey1 mb-2">
+          Create your account
+        </h1>
+        <p className="font-openSans text-grey3 text-sm">
+          Tell us a bit about yourself to get started
+        </p>
       </div>
-    </div>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Full Name */}
+        <div>
+          <label htmlFor="name" className="block text-sm font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
+            Full Name <span className="text-errorRed">*</span>
+          </label>
+          <input
+            type="text"
+            id="name"
+            value={formData.name}
+            onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+            required
+            className={inputClass}
+            placeholder="John Doe"
+            disabled={loading}
+          />
+        </div>
+
+        {/* Email */}
+        <div>
+          <label htmlFor="email" className="block text-sm font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
+            Email Address <span className="text-errorRed">*</span>
+          </label>
+          <input
+            type="email"
+            id="email"
+            value={formData.email}
+            onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+            required
+            className={inputClass}
+            placeholder="you@example.com"
+            disabled={loading}
+          />
+        </div>
+
+        {/* Username */}
+        <div>
+          <label htmlFor="username" className="block text-sm font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
+            Username <span className="text-errorRed">*</span>
+          </label>
+          <div className="relative">
+            <input
+              type="text"
+              id="username"
+              value={formData.username}
+              onChange={(e) => {
+                setUsernameManuallyEdited(true)
+                setFormData(prev => ({ ...prev, username: e.target.value }))
+              }}
+              required
+              minLength={3}
+              maxLength={30}
+              pattern="^[a-z0-9]+$"
+              className={`${inputClass} pr-12 lowercase`}
+              placeholder="johndoe123"
+              disabled={loading}
+            />
+            <div className="absolute right-4 top-1/2 -translate-y-1/2">
+              {usernameStatus === 'checking' && <FaSpinner className="w-4 h-4 text-grey3 animate-spin" />}
+              {usernameStatus === 'available' && <FaCheck className="w-4 h-4 text-successGreen" />}
+              {usernameStatus === 'taken' && <FaXmark className="w-4 h-4 text-errorRed" />}
+            </div>
+          </div>
+          <p className={`mt-1 text-xs font-openSans ${
+            usernameStatus === 'taken' ? 'text-errorRed' :
+            usernameStatus === 'available' ? 'text-successGreen' : 'text-grey3'
+          }`}>
+            {usernameStatus === 'taken' && 'Username already taken'}
+            {usernameStatus === 'available' && 'Username is available'}
+            {(usernameStatus === 'idle' || usernameStatus === 'checking') && 'Only lowercase letters and numbers'}
+          </p>
+        </div>
+
+        {/* Phone */}
+        <div>
+          <label htmlFor="phone" className="block text-sm font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
+            Phone Number <span className="text-grey3 font-normal">(optional)</span>
+          </label>
+          <input
+            type="tel"
+            id="phone"
+            value={formData.phone}
+            onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+            className={inputClass}
+            placeholder="+234 800 000 0000"
+            disabled={loading}
+          />
+        </div>
+
+        {/* Title */}
+        <div>
+          <label htmlFor="title" className="block text-sm font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
+            Professional Title <span className="text-grey3 font-normal">(optional)</span>
+          </label>
+          <input
+            type="text"
+            id="title"
+            value={formData.title}
+            onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+            className={inputClass}
+            placeholder="Software Engineer"
+            disabled={loading}
+          />
+        </div>
+
+        <button
+          type="submit"
+          disabled={loading || usernameStatus !== 'available'}
+          className="w-full bg-mainPurple text-white py-3 rounded-xl font-spaceGrotesk font-semibold text-sm hover:bg-[#7D0FC9] transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer mt-2"
+        >
+          {loading ? 'Processing…' : 'Continue'}
+        </button>
+      </form>
+
+      <p className="font-openSans text-grey3 text-sm text-center mt-6">
+        Already have an account?{' '}
+        <Link href="/login" className="text-mainPurple font-semibold hover:underline">
+          Sign in
+        </Link>
+      </p>
+    </AuthLayout>
   )
 }

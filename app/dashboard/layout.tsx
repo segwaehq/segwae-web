@@ -47,26 +47,11 @@ export default function DashboardLayout({
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Mobile Header */}
-      <div className="lg:hidden bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between sticky top-0 z-40">
-        <h1 className="font-satoshi font-bold text-xl text-grey1">Segwae</h1>
-        <button
-          onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="p-2 text-grey1 hover:bg-gray-100 rounded-lg transition-colors"
-        >
-          {sidebarOpen ? (
-            <FaXmark className="w-6 h-6" />
-          ) : (
-            <FaBars className="w-6 h-6" />
-          )}
-        </button>
-      </div>
-
-      {/* Sidebar Overlay (Mobile) */}
+    <div className="min-h-screen bg-[#F4F3F1] flex">
+      {/* Mobile overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/60 z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -74,74 +59,92 @@ export default function DashboardLayout({
       {/* Sidebar */}
       <aside
         className={`
-          fixed top-0 left-0 h-full w-64 bg-white border-r border-gray-200 z-50
+          fixed top-0 left-0 h-full w-60 bg-[#080B14] z-50 flex flex-col
           transform transition-transform duration-300 ease-in-out
           lg:translate-x-0
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
         `}
       >
-        <div className="flex flex-col h-full">
-          {/* Logo */}
-          <div className="p-6 border-b border-gray-200">
-            <Link href="/" className="flex items-center space-x-2 z-50">
-              <Image
-                // src="/wordmark_svg.svg"
-                src="/wordmark.png"
-                alt="Segwae Logo"
-                width={0}
-                height={0}
-                sizes="100vw"
-                className="h-8 w-auto!"
-                priority
-              />
-            </Link>
-            <p className="font-openSans text-sm text-grey3 mt-1">Dashboard</p>
-          </div>
+        {/* Logo */}
+        <div className="px-6 py-7 border-b border-white/8">
+          <Link href="/" onClick={() => setSidebarOpen(false)}>
+            <Image
+              src="/wordmark_white.png"
+              alt="Segwae"
+              width={0}
+              height={0}
+              sizes="100vw"
+              className="h-7 w-auto!"
+              priority
+            />
+          </Link>
+        </div>
 
-          {/* Navigation */}
-          <nav className="flex-1 p-4 space-y-2">
-            {navItems.map((item) => {
-              const isActive = pathname === item.href;
-              const Icon = item.icon;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setSidebarOpen(false)}
-                  className={`
-                    flex items-center gap-3 px-4 py-3 rounded-lg font-spaceGrotesk font-medium
-                    transition-all duration-200
-                    ${
-                      isActive
-                        ? "bg-mainPurple text-white"
-                        : "text-grey1 hover:bg-gray-100"
-                    }
-                  `}
-                >
-                  <Icon className="w-5 h-5" />
-                  <span>{item.label}</span>
-                </Link>
-              );
-            })}
-          </nav>
+        {/* Navigation */}
+        <nav className="flex-1 px-3 py-6 space-y-0.5">
+          {navItems.map((item) => {
+            const isActive = pathname === item.href;
+            const Icon = item.icon;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setSidebarOpen(false)}
+                className={`
+                  flex items-center gap-3 px-3 py-2.5 rounded-xl font-spaceGrotesk font-medium text-sm
+                  transition-all duration-200
+                  ${
+                    isActive
+                      ? "bg-mainPurple text-white"
+                      : "text-white/50 hover:text-white hover:bg-white/[0.06]"
+                  }
+                `}
+              >
+                <Icon className="w-4 h-4 shrink-0" />
+                <span>{item.label}</span>
+              </Link>
+            );
+          })}
+        </nav>
 
-          {/* Logout Button */}
-          <div className="p-4 border-t border-gray-200">
-            <button
-              onClick={handleLogout}
-              disabled={loggingOut}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg font-spaceGrotesk font-medium text-red-600 cursor-pointer hover:bg-red-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <FaArrowRightFromBracket className="w-5 h-5" />
-              <span>{loggingOut ? "Logging out..." : "Logout"}</span>
-            </button>
-          </div>
+        {/* Logout */}
+        <div className="px-3 py-5 border-t border-white/[0.08]">
+          <button
+            onClick={handleLogout}
+            disabled={loggingOut}
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-spaceGrotesk font-medium text-sm text-white/40 hover:text-white/70 hover:bg-white/[0.06] transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            <FaArrowRightFromBracket className="w-4 h-4 shrink-0" />
+            <span>{loggingOut ? "Logging out…" : "Log out"}</span>
+          </button>
         </div>
       </aside>
 
-      {/* Main Content */}
-      <main className="lg:ml-64 min-h-screen">
-        <div className="p-6 lg:p-8">{children}</div>
+      {/* Mobile top bar */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 bg-[#080B14] px-5 py-4 flex items-center justify-between z-30">
+        <Image
+          src="/wordmark_white.png"
+          alt="Segwae"
+          width={0}
+          height={0}
+          sizes="100vw"
+          className="h-6 w-auto!"
+        />
+        <button
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className="p-1.5 text-white/60 hover:text-white transition-colors"
+        >
+          {sidebarOpen ? (
+            <FaXmark className="w-5 h-5" />
+          ) : (
+            <FaBars className="w-5 h-5" />
+          )}
+        </button>
+      </div>
+
+      {/* Main content */}
+      <main className="lg:ml-60 flex-1 min-h-screen pt-[60px] lg:pt-0">
+        <div className="p-6 lg:p-10">{children}</div>
       </main>
     </div>
   );

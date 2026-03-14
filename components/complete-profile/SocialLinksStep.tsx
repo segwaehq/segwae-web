@@ -3,18 +3,8 @@
 import { useState, useEffect } from 'react'
 import { FaPlus, FaTrash } from 'react-icons/fa6'
 
-interface SocialLink {
-  id: string
-  platform: string
-  url: string
-}
-
-interface Platform {
-  id: string
-  platform_identifier: string
-  platform_name: string
-  color_hex: string
-}
+interface SocialLink { id: string; platform: string; url: string }
+interface Platform { id: string; platform_identifier: string; platform_name: string; color_hex: string }
 
 interface SocialLinksStepProps {
   value: SocialLink[]
@@ -32,62 +22,27 @@ export default function SocialLinksStep({ value, onUpdate, onNext, onBack }: Soc
   const [saving, setSaving] = useState(false)
   const [deleting, setDeleting] = useState<string | null>(null)
 
-  // Fetch available platforms
   useEffect(() => {
-    async function fetchPlatforms() {
-      try {
-        const res = await fetch('/api/social-platforms')
-        if (res.ok) {
-          const data = await res.json()
-          // API returns array directly, not wrapped in { platforms: [...] }
-          setPlatforms(Array.isArray(data) ? data : [])
-        }
-      } catch (error) {
-        console.error('Error fetching platforms:', error)
-      }
-    }
-    fetchPlatforms()
+    fetch('/api/social-platforms')
+      .then(r => r.ok ? r.json() : [])
+      .then(d => setPlatforms(Array.isArray(d) ? d : []))
+      .catch(() => {})
   }, [])
 
-  // Fetch current links
   useEffect(() => {
-    async function fetchLinks() {
-      try {
-        const res = await fetch('/api/user/social-links')
-        if (res.ok) {
-          const data = await res.json()
-          setLinks(data.socialLinks || [])
-          onUpdate(data.socialLinks || [])
-        }
-      } catch (error) {
-        console.error('Error fetching links:', error)
-      }
-    }
     if (value.length === 0) {
-      fetchLinks()
+      fetch('/api/user/social-links')
+        .then(r => r.ok ? r.json() : { socialLinks: [] })
+        .then(d => { setLinks(d.socialLinks || []); onUpdate(d.socialLinks || []) })
+        .catch(() => {})
     }
   }, [value.length, onUpdate])
 
-  const handleAddLink = async () => {
+  const handleAdd = async () => {
     setError('')
-
-    if (!newPlatform) {
-      setError('Please select a platform')
-      return
-    }
-
-    if (!newUrl.trim()) {
-      setError('Please enter a URL')
-      return
-    }
-
-    // Basic URL validation
-    try {
-      new URL(newUrl)
-    } catch {
-      setError('Please enter a valid URL')
-      return
-    }
+    if (!newPlatform) { setError('Please select a platform'); return }
+    if (!newUrl.trim()) { setError('Please enter a URL'); return }
+    try { new URL(newUrl) } catch { setError('Please enter a valid URL'); return }
 
     setSaving(true)
     try {
@@ -96,17 +51,12 @@ export default function SocialLinksStep({ value, onUpdate, onNext, onBack }: Soc
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ platform: newPlatform, url: newUrl.trim() }),
       })
-
       if (res.ok) {
         const data = await res.json()
-        const updatedLinks = [...links, data.socialLink]
-        setLinks(updatedLinks)
-        onUpdate(updatedLinks)
-        setNewPlatform('')
-        setNewUrl('')
-      } else {
-        setError('Failed to add link. Please try again.')
-      }
+        const updated = [...links, data.socialLink]
+        setLinks(updated); onUpdate(updated)
+        setNewPlatform(''); setNewUrl('')
+      } else setError('Failed to add link. Please try again.')
     } catch {
       setError('Something went wrong. Please try again.')
     } finally {
@@ -114,144 +64,98 @@ export default function SocialLinksStep({ value, onUpdate, onNext, onBack }: Soc
     }
   }
 
-  const handleDeleteLink = async (linkId: string) => {
-    setDeleting(linkId)
+  const handleDelete = async (id: string) => {
+    setDeleting(id)
     try {
-      const res = await fetch(`/api/user/social-links/${linkId}`, {
-        method: 'DELETE',
-      })
-
+      const res = await fetch(`/api/user/social-links/${id}`, { method: 'DELETE' })
       if (res.ok) {
-        const updatedLinks = links.filter(l => l.id !== linkId)
-        setLinks(updatedLinks)
-        onUpdate(updatedLinks)
+        const updated = links.filter(l => l.id !== id)
+        setLinks(updated); onUpdate(updated)
       }
-    } catch (error) {
-      console.error('Error deleting link:', error)
-    } finally {
+    } catch { /* silent */ } finally {
       setDeleting(null)
     }
   }
 
-  const handleContinue = () => {
-    onNext()
-  }
+  const inputClass = "w-full px-4 py-3 border border-grey4 rounded-xl focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 bg-white transition-colors"
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-bold font-satoshi text-grey1 mb-2">
+        <h2 className="font-satoshi font-black text-3xl text-grey1 mb-2">
           Add your social links
         </h2>
-        <p className="text-grey3 text-sm">
-          Add links to help people connect with you on social media. (Optional)
+        <p className="font-openSans text-grey3 text-sm leading-relaxed">
+          Help people connect with you online. This step is optional.
         </p>
       </div>
 
-      {/* Current Links */}
+      {/* Existing links */}
       {links.length > 0 && (
-        <div className="space-y-3">
+        <div className="space-y-2">
           {links.map((link) => {
             const platform = platforms.find(p => p.platform_identifier === link.platform)
             return (
-              <div
-                key={link.id}
-                className="flex items-center gap-3 p-3 bg-white rounded-xl border border-grey4"
-              >
+              <div key={link.id} className="flex items-center gap-3 p-3 border border-grey4 rounded-xl">
                 <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold"
+                  className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-xs font-bold shrink-0"
                   style={{ backgroundColor: platform?.color_hex || '#6A0DAD' }}
                 >
                   {(platform?.platform_name || link.platform).charAt(0).toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-medium text-grey1 text-sm">
+                  <p className="font-spaceGrotesk font-semibold text-grey1 text-xs">
                     {platform?.platform_name || link.platform}
                   </p>
-                  <p className="text-xs text-grey3 truncate">{link.url}</p>
+                  <p className="font-openSans text-xs text-grey3 truncate">{link.url}</p>
                 </div>
-                <button
-                  onClick={() => handleDeleteLink(link.id)}
-                  disabled={deleting === link.id}
-                  className="p-2 text-grey3 hover:text-errorRed transition-colors"
-                >
-                  {deleting === link.id ? (
-                    <div className="w-4 h-4 border-2 border-grey3 border-t-transparent rounded-full animate-spin" />
-                  ) : (
-                    <FaTrash className="w-4 h-4" />
-                  )}
+                <button onClick={() => handleDelete(link.id)} disabled={deleting === link.id}
+                  className="p-1.5 text-grey3 hover:text-errorRed transition-colors shrink-0">
+                  {deleting === link.id
+                    ? <div className="w-3.5 h-3.5 border-2 border-grey3 border-t-transparent rounded-full animate-spin" />
+                    : <FaTrash className="w-3.5 h-3.5" />
+                  }
                 </button>
               </div>
             )
           })}
+          <p className="font-openSans text-xs text-grey3">{links.length} link{links.length !== 1 ? 's' : ''} added</p>
         </div>
       )}
 
-      {/* Links Count */}
-      {links.length > 0 && (
-        <p className="text-sm text-grey3">
-          {links.length} link{links.length !== 1 ? 's' : ''} added
-        </p>
-      )}
-
-      {/* Add New Link Form */}
-      <div className="bg-white rounded-xl border border-grey4 p-4 space-y-3">
-        <p className="text-sm font-medium text-grey2">Add a new link</p>
-
-        <select
-          value={newPlatform}
-          onChange={(e) => setNewPlatform(e.target.value)}
-          className="w-full px-4 py-3 rounded-xl border border-grey4 focus:border-mainPurple focus:ring-2 focus:ring-mainPurple/20 outline-none transition-all text-grey1 bg-white"
-        >
+      {/* Add new */}
+      <div className="border border-grey4 rounded-xl p-4 space-y-3">
+        <p className="font-spaceGrotesk text-xs font-semibold text-grey2">Add a link</p>
+        <select value={newPlatform} onChange={(e) => setNewPlatform(e.target.value)} className={inputClass}>
           <option value="">Select platform</option>
-          {platforms.map((platform) => (
-            <option key={platform.id} value={platform.platform_identifier}>
-              {platform.platform_name}
-            </option>
+          {platforms.map(p => (
+            <option key={p.id} value={p.platform_identifier}>{p.platform_name}</option>
           ))}
         </select>
-
         <input
           type="url"
           value={newUrl}
           onChange={(e) => setNewUrl(e.target.value)}
-          placeholder="https://..."
-          className="w-full px-4 py-3 rounded-xl border border-grey4 focus:border-mainPurple focus:ring-2 focus:ring-mainPurple/20 outline-none transition-all text-grey1"
+          placeholder="https://…"
+          className={inputClass}
         />
-
-        <button
-          onClick={handleAddLink}
-          disabled={saving}
-          className="w-full py-3 bg-grey5 text-grey1 rounded-full font-medium hover:bg-grey4 disabled:opacity-50 transition-colors flex items-center justify-center gap-2"
-        >
-          {saving ? (
-            <div className="w-5 h-5 border-2 border-grey3 border-t-transparent rounded-full animate-spin" />
-          ) : (
-            <>
-              <FaPlus className="w-4 h-4" />
-              Add Link
-            </>
-          )}
+        {error && <p className="text-xs text-errorRed font-openSans">{error}</p>}
+        <button onClick={handleAdd} disabled={saving}
+          className="w-full py-2.5 border border-mainPurple/30 text-mainPurple rounded-xl font-spaceGrotesk font-semibold text-sm hover:bg-mainPurple/5 disabled:opacity-50 transition-colors flex items-center justify-center gap-2">
+          {saving
+            ? <div className="w-4 h-4 border-2 border-mainPurple border-t-transparent rounded-full animate-spin" />
+            : <><FaPlus className="w-3.5 h-3.5" /> Add Link</>
+          }
         </button>
-
-        {error && (
-          <p className="text-sm text-errorRed">{error}</p>
-        )}
       </div>
 
       <div className="flex gap-3">
-        <button
-          type="button"
-          onClick={onBack}
-          className="flex-1 py-3.5 bg-grey5 text-grey2 rounded-full font-semibold hover:bg-grey4 transition-colors"
-        >
+        <button type="button" onClick={onBack}
+          className="flex-1 py-3.5 border border-grey4 text-grey2 rounded-xl font-spaceGrotesk font-semibold text-sm hover:border-grey3 transition-colors">
           Back
         </button>
-        <button
-          type="button"
-          onClick={handleContinue}
-          className="flex-1 py-3.5 bg-mainPurple cursor-pointer text-white rounded-full font-semibold hover:bg-mainPurple/90 transition-colors"
-        >
+        <button type="button" onClick={onNext}
+          className="flex-2 px-8 py-3.5 bg-mainPurple text-white rounded-xl font-spaceGrotesk font-semibold text-sm hover:bg-[#7D0FC9] transition-colors">
           {links.length > 0 ? 'Continue' : 'Skip'}
         </button>
       </div>

@@ -2,6 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
+import Link from 'next/link'
+import { motion, AnimatePresence } from 'framer-motion'
 import PhoneStep from '@/components/complete-profile/PhoneStep'
 import TitleStep from '@/components/complete-profile/TitleStep'
 import BioStep from '@/components/complete-profile/BioStep'
@@ -19,17 +22,18 @@ interface ProfileData {
 }
 
 const STEPS = [
-  { id: 1, title: 'Phone Number', component: 'phone' },
-  { id: 2, title: 'Job Title', component: 'title' },
-  { id: 3, title: 'Bio', component: 'bio' },
-  { id: 4, title: 'Profile Photo', component: 'photo' },
-  { id: 5, title: 'Social Links', component: 'social' },
-  { id: 6, title: 'Portfolio', component: 'portfolio' },
+  { id: 1, label: 'Phone Number' },
+  { id: 2, label: 'Job Title' },
+  { id: 3, label: 'Bio' },
+  { id: 4, label: 'Profile Photo' },
+  { id: 5, label: 'Social Links' },
+  { id: 6, label: 'Portfolio' },
 ] as const
 
 export default function CompleteProfilePage() {
   const router = useRouter()
   const [currentStep, setCurrentStep] = useState(1)
+  const [direction, setDirection] = useState(1)
   const [loading, setLoading] = useState(true)
   const [profileData, setProfileData] = useState<ProfileData>({
     phone: '',
@@ -40,7 +44,6 @@ export default function CompleteProfilePage() {
     social_links: [],
   })
 
-  // Fetch current profile data on mount
   useEffect(() => {
     async function fetchProfile() {
       try {
@@ -55,10 +58,7 @@ export default function CompleteProfilePage() {
             portfolio_or_website_link: data.profile?.portfolio_or_website_link || '',
             social_links: data.socialLinks || [],
           })
-
-          // Determine starting step based on what's already filled
-          const startStep = determineStartStep(data)
-          setCurrentStep(startStep)
+          setCurrentStep(determineStartStep(data))
         }
       } catch (error) {
         console.error('Error fetching profile:', error)
@@ -74,62 +74,58 @@ export default function CompleteProfilePage() {
     if (!data.profile?.title) return 2
     if (!data.profile?.bio || data.profile.bio.length < 50) return 3
     if (!data.profile?.profile_image_url) return 4
-    // Social links are optional, so always allow proceeding to step 6
     if (!data.profile?.portfolio_or_website_link) return 6
     return 6
   }
 
   const handleNext = () => {
     if (currentStep < STEPS.length) {
-      setCurrentStep(currentStep + 1)
+      setDirection(1)
+      setCurrentStep(s => s + 1)
     }
   }
 
   const handleBack = () => {
     if (currentStep > 1) {
-      setCurrentStep(currentStep - 1)
+      setDirection(-1)
+      setCurrentStep(s => s - 1)
     }
   }
 
   const handleComplete = async (): Promise<string | null> => {
     try {
-      // Trigger profile completion calculation
-      const res = await fetch('/api/user/complete-profile', {
-        method: 'POST',
-      })
-
+      const res = await fetch('/api/user/complete-profile', { method: 'POST' })
       if (res.ok) {
         router.push('/dashboard/profile')
         return null
-      } else {
-        const data = await res.json()
-        console.error('Failed to complete profile:', data)
-        // Return error message with details if available
-        const details = data.completion?.breakdown || data.completion?.details
-        if (details) {
-          const missing = Object.entries(details)
-            .filter(([, complete]) => !complete)
-            .map(([field]) => field.replace(/_/g, ' '))
-          if (missing.length > 0) {
-            return `Profile incomplete. Missing: ${missing.join(', ')}`
-          }
-        }
-        return data.error || 'Failed to complete profile. Please ensure all required fields are filled.'
       }
-    } catch (error) {
-      console.error('Error completing profile:', error)
+      const data = await res.json()
+      const details = data.completion?.breakdown || data.completion?.details
+      if (details) {
+        const missing = Object.entries(details)
+          .filter(([, complete]) => !complete)
+          .map(([field]) => field.replace(/_/g, ' '))
+        if (missing.length > 0) return `Missing: ${missing.join(', ')}`
+      }
+      return data.error || 'Failed to complete profile. Please ensure all fields are filled.'
+    } catch {
       return 'Something went wrong. Please try again.'
     }
   }
 
-  const updateProfileData = (updates: Partial<ProfileData>) => {
+  const updateProfileData = (updates: Partial<ProfileData>) =>
     setProfileData(prev => ({ ...prev, ...updates }))
+
+  const variants = {
+    enter: (d: number) => ({ x: d > 0 ? 40 : -40, opacity: 0 }),
+    center: { x: 0, opacity: 1, transition: { duration: 0.35, ease: 'easeOut' as const } },
+    exit: (d: number) => ({ x: d > 0 ? -40 : 40, opacity: 0, transition: { duration: 0.2 } }),
   }
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-mainPurple border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="w-7 h-7 border-[3px] border-mainPurple border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
@@ -137,79 +133,118 @@ export default function CompleteProfilePage() {
   const progress = (currentStep / STEPS.length) * 100
 
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <header className="bg-white border-b border-grey4 px-6 py-4">
-        <div className="max-w-lg mx-auto">
-          <div className="flex items-center justify-between mb-4">
-            <h1 className="text-xl font-bold font-satoshi text-grey1">
-              Complete Your Profile
-            </h1>
-            <span className="text-sm text-grey3">
-              Step {currentStep} of {STEPS.length}
-            </span>
-          </div>
+    <div className="min-h-screen bg-white flex flex-col">
 
-          {/* Progress Bar */}
-          <div className="h-2 bg-grey5 rounded-full overflow-hidden">
+      {/* ── Top bar ──────────────────────────────────────────────────────── */}
+      <header className="flex items-center justify-between px-6 py-4 border-b border-grey4 bg-white">
+        <Link href="/">
+          <Image
+            src="/wordmark_svg.svg"
+            alt="Segwae"
+            width={0}
+            height={0}
+            sizes="100vw"
+            className="h-6 w-auto!"
+          />
+        </Link>
+
+        {/* Step dots */}
+        <div className="flex items-center gap-1.5">
+          {STEPS.map((s) => (
             <div
-              className="h-full bg-mainPurple transition-all duration-300 ease-out rounded-full"
-              style={{ width: `${progress}%` }}
+              key={s.id}
+              className={`rounded-full transition-all duration-300 ${
+                s.id === currentStep
+                  ? 'w-5 h-2 bg-mainPurple'
+                  : s.id < currentStep
+                  ? 'w-2 h-2 bg-mainPurple/40'
+                  : 'w-2 h-2 bg-grey4'
+              }`}
             />
-          </div>
+          ))}
         </div>
+
+        <span className="font-spaceGrotesk text-xs text-grey3 w-14 text-right">
+          {currentStep} / {STEPS.length}
+        </span>
       </header>
 
-      {/* Content */}
-      <main className="flex-1 px-6 py-8">
-        <div className="max-w-lg mx-auto">
-          {currentStep === 1 && (
-            <PhoneStep
-              value={profileData.phone}
-              onUpdate={(phone) => updateProfileData({ phone })}
-              onNext={handleNext}
-            />
-          )}
-          {currentStep === 2 && (
-            <TitleStep
-              value={profileData.title}
-              onUpdate={(title) => updateProfileData({ title })}
-              onNext={handleNext}
-              onBack={handleBack}
-            />
-          )}
-          {currentStep === 3 && (
-            <BioStep
-              value={profileData.bio}
-              onUpdate={(bio) => updateProfileData({ bio })}
-              onNext={handleNext}
-              onBack={handleBack}
-            />
-          )}
-          {currentStep === 4 && (
-            <PhotoStep
-              value={profileData.profile_image_url}
-              onUpdate={(url) => updateProfileData({ profile_image_url: url })}
-              onNext={handleNext}
-              onBack={handleBack}
-            />
-          )}
-          {currentStep === 5 && (
-            <SocialLinksStep
-              value={profileData.social_links}
-              onUpdate={(links) => updateProfileData({ social_links: links })}
-              onNext={handleNext}
-              onBack={handleBack}
-            />
-          )}
-          {currentStep === 6 && (
-            <PortfolioStep
-              value={profileData.portfolio_or_website_link}
-              onUpdate={(url) => updateProfileData({ portfolio_or_website_link: url })}
-              onComplete={handleComplete}
-              onBack={handleBack}
-            />
-          )}
+      {/* Progress bar */}
+      <div className="h-0.5 bg-grey5">
+        <motion.div
+          className="h-full bg-mainPurple"
+          initial={false}
+          animate={{ width: `${progress}%` }}
+          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        />
+      </div>
+
+      {/* ── Content ──────────────────────────────────────────────────────── */}
+      <main className="flex-1 flex items-start justify-center px-6 py-12 overflow-hidden">
+        <div className="w-full max-w-md">
+          {/* Step label */}
+          <p className="font-spaceGrotesk text-xs font-semibold text-mainPurple uppercase tracking-[0.15em] mb-6">
+            {STEPS[currentStep - 1].label}
+          </p>
+
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div
+              key={currentStep}
+              custom={direction}
+              variants={variants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+            >
+              {currentStep === 1 && (
+                <PhoneStep
+                  value={profileData.phone}
+                  onUpdate={(phone) => updateProfileData({ phone })}
+                  onNext={handleNext}
+                />
+              )}
+              {currentStep === 2 && (
+                <TitleStep
+                  value={profileData.title}
+                  onUpdate={(title) => updateProfileData({ title })}
+                  onNext={handleNext}
+                  onBack={handleBack}
+                />
+              )}
+              {currentStep === 3 && (
+                <BioStep
+                  value={profileData.bio}
+                  onUpdate={(bio) => updateProfileData({ bio })}
+                  onNext={handleNext}
+                  onBack={handleBack}
+                />
+              )}
+              {currentStep === 4 && (
+                <PhotoStep
+                  value={profileData.profile_image_url}
+                  onUpdate={(url) => updateProfileData({ profile_image_url: url })}
+                  onNext={handleNext}
+                  onBack={handleBack}
+                />
+              )}
+              {currentStep === 5 && (
+                <SocialLinksStep
+                  value={profileData.social_links}
+                  onUpdate={(links) => updateProfileData({ social_links: links })}
+                  onNext={handleNext}
+                  onBack={handleBack}
+                />
+              )}
+              {currentStep === 6 && (
+                <PortfolioStep
+                  value={profileData.portfolio_or_website_link}
+                  onUpdate={(url) => updateProfileData({ portfolio_or_website_link: url })}
+                  onComplete={handleComplete}
+                  onBack={handleBack}
+                />
+              )}
+            </motion.div>
+          </AnimatePresence>
         </div>
       </main>
     </div>

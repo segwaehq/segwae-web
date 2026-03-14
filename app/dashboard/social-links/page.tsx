@@ -3,13 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useSocialPlatforms } from '@/hooks/useSocialPlatforms'
 import * as FaIcons from 'react-icons/fa6'
-import {
-  FaPlus,
-  FaSpinner,
-  FaPencil,
-  FaTrash,
-  FaXmark,
-} from 'react-icons/fa6'
+import { FaPlus, FaPencil, FaTrash, FaXmark } from 'react-icons/fa6'
 import { toast } from 'sonner'
 
 interface SocialLink {
@@ -19,33 +13,26 @@ interface SocialLink {
   created_at: string
 }
 
+const inputClass =
+  'w-full px-4 py-3 border border-grey4 rounded-xl focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 bg-white transition-colors'
+
 export default function SocialLinksPage() {
   const [socialLinks, setSocialLinks] = useState<SocialLink[]>([])
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
   const [editingLink, setEditingLink] = useState<SocialLink | null>(null)
   const [submitting, setSubmitting] = useState(false)
-
-  const [formData, setFormData] = useState({
-    platform: '',
-    url: '',
-  })
+  const [formData, setFormData] = useState({ platform: '', url: '' })
 
   const { platforms: dynamicPlatforms } = useSocialPlatforms()
 
-  useEffect(() => {
-    fetchSocialLinks()
-  }, [])
+  useEffect(() => { fetchSocialLinks() }, [])
 
   const fetchSocialLinks = async () => {
     try {
       setLoading(true)
       const response = await fetch('/api/user/social-links')
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch social links')
-      }
-
+      if (!response.ok) throw new Error('Failed to fetch social links')
       const data = await response.json()
       setSocialLinks(data.socialLinks)
     } catch (err) {
@@ -57,42 +44,24 @@ export default function SocialLinksPage() {
 
   const getIconComponent = (iconId: string) => {
     const iconName =
-      'Fa' +
-      iconId
-        .split('-')
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join('')
-
-    const IconComponent =
-      (
-        FaIcons as Record<
-          string,
-          React.ComponentType<React.SVGProps<SVGSVGElement>>
-        >
-      )[iconName] || FaIcons.FaLink
-
-    return IconComponent
+      'Fa' + iconId.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join('')
+    return (
+      (FaIcons as Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>>)[iconName] ||
+      FaIcons.FaLink
+    )
   }
 
   const getPlatformConfig = (platformIdentifier: string) => {
     const normalizedId =
-      platformIdentifier.toLowerCase() === 'portfolio'
-        ? 'global'
-        : platformIdentifier.toLowerCase()
-
-    const dynamicPlatform = dynamicPlatforms.find(
-      (p) => p.platform_identifier === normalizedId
-    )
-
+      platformIdentifier.toLowerCase() === 'portfolio' ? 'global' : platformIdentifier.toLowerCase()
+    const dynamicPlatform = dynamicPlatforms.find((p) => p.platform_identifier === normalizedId)
     if (dynamicPlatform) {
-      const IconComponent = getIconComponent(dynamicPlatform.icon_identifier)
       return {
         name: dynamicPlatform.platform_name,
         color: dynamicPlatform.color_hex,
-        icon: IconComponent,
+        icon: getIconComponent(dynamicPlatform.icon_identifier),
       }
     }
-
     return {
       name: normalizedId.charAt(0).toUpperCase() + normalizedId.slice(1),
       color: '#6B73FF',
@@ -121,42 +90,30 @@ export default function SocialLinksPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setSubmitting(true)
-
     try {
       if (editingLink) {
-        // Update existing link
         const response = await fetch(`/api/user/social-links/${editingLink.id}`, {
           method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData),
         })
-
         if (!response.ok) {
           const errorData = await response.json()
           throw new Error(errorData.error || 'Failed to update social link')
         }
-
-        toast.success('Social link updated successfully')
+        toast.success('Link updated')
       } else {
-        // Create new link
         const response = await fetch('/api/user/social-links', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData),
         })
-
         if (!response.ok) {
           const errorData = await response.json()
           throw new Error(errorData.error || 'Failed to create social link')
         }
-
-        toast.success('Social link added successfully')
+        toast.success('Link added')
       }
-
       await fetchSocialLinks()
       closeModal()
     } catch (err) {
@@ -167,117 +124,99 @@ export default function SocialLinksPage() {
   }
 
   const handleDelete = async (linkId: string) => {
-    if (!confirm('Are you sure you want to delete this social link?')) {
-      return
-    }
-
+    if (!confirm('Delete this social link?')) return
     try {
-      const response = await fetch(`/api/user/social-links/${linkId}`, {
-        method: 'DELETE',
-      })
-
-      if (!response.ok) {
-        throw new Error('Failed to delete social link')
-      }
-
-      toast.success('Social link deleted successfully')
+      const response = await fetch(`/api/user/social-links/${linkId}`, { method: 'DELETE' })
+      if (!response.ok) throw new Error('Failed to delete social link')
+      toast.success('Link deleted')
       await fetchSocialLinks()
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Failed to delete social link')
+      toast.error(err instanceof Error ? err.message : 'Failed to delete')
     }
   }
 
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <FaSpinner className="w-8 h-8 text-mainPurple animate-spin" />
+        <div className="w-7 h-7 border-[3px] border-mainPurple border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="bg-white rounded-2xl shadow-sm p-8">
-        {/* Header */}
-        <div className="mb-8 flex items-center justify-between">
-          <div>
-            <h1 className="font-satoshi font-bold text-3xl text-grey1 mb-2">
-              Social Links
-            </h1>
-            <p className="font-openSans text-grey3">
-              Manage your social media profiles and links
-            </p>
-          </div>
+    <div className="max-w-full">
+      {/* Page header */}
+      <div className="mb-8">
+        <p className="font-spaceGrotesk text-xs font-semibold text-mainPurple uppercase tracking-[0.15em] mb-1">
+          Dashboard
+        </p>
+        <div className="flex items-center justify-between">
+          <h1 className="font-satoshi font-black text-3xl text-grey1">Social Links</h1>
           <button
             onClick={openAddModal}
-            className="flex items-center gap-2 px-4 py-3 bg-mainPurple text-white rounded-lg font-spaceGrotesk font-semibold hover:opacity-90 transition-opacity"
+            className="flex items-center gap-2 px-4 py-2.5 bg-mainPurple text-white rounded-xl font-spaceGrotesk font-semibold text-sm hover:bg-[#7D0FC9] transition-colors cursor-pointer"
           >
-            <FaPlus className="w-4 h-4" />
+            <FaPlus className="w-3.5 h-3.5" />
             Add Link
           </button>
         </div>
+      </div>
 
-        {/* Social Links List */}
+      <div className="bg-white rounded-2xl border border-grey4/60 p-8">
         {socialLinks.length === 0 ? (
           <div className="text-center py-12">
-            <FaIcons.FaLink className="w-16 h-16 text-grey4 mx-auto mb-4" />
-            <h3 className="font-spaceGrotesk font-semibold text-xl text-grey1 mb-2">
-              No social links yet
+            <div className="w-14 h-14 rounded-2xl bg-grey5 flex items-center justify-center mx-auto mb-4">
+              <FaIcons.FaLink className="w-6 h-6 text-grey3" />
+            </div>
+            <h3 className="font-spaceGrotesk font-semibold text-lg text-grey1 mb-1">
+              No links yet
             </h3>
-            <p className="font-openSans text-grey3 mb-6">
-              Add your first social media profile to get started
+            <p className="font-openSans text-sm text-grey3 mb-6">
+              Add your social profiles to let people find you online.
             </p>
             <button
               onClick={openAddModal}
-              className="px-6 py-3 bg-mainPurple text-white rounded-lg font-spaceGrotesk font-semibold hover:opacity-90 transition-opacity"
+              className="px-6 py-3 bg-mainPurple text-white rounded-xl font-spaceGrotesk font-semibold text-sm hover:bg-[#7D0FC9] transition-colors cursor-pointer"
             >
               Add Your First Link
             </button>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-3">
             {socialLinks.map((link) => {
-              const platformConfig = getPlatformConfig(link.platform)
-              const Icon = platformConfig.icon
-
+              const config = getPlatformConfig(link.platform)
+              const Icon = config.icon
               return (
                 <div
                   key={link.id}
-                  className="flex items-center justify-between p-4 border border-grey4 rounded-lg hover:border-mainPurple transition-colors"
+                  className="flex items-center gap-4 p-4 border border-grey4 rounded-xl hover:border-mainPurple/40 transition-colors group"
                 >
-                  <div className="flex items-center gap-4 flex-1 min-w-0">
-                    <div
-                      className="p-3 rounded-lg"
-                      style={{ backgroundColor: `${platformConfig.color}20` }}
-                    >
-                      <Icon
-                        className="w-6 h-6"
-                        style={{ color: platformConfig.color }}
-                      />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-spaceGrotesk font-semibold text-grey1 mb-1">
-                        {platformConfig.name}
-                      </h3>
-                      <p className="font-openSans text-sm text-grey3 truncate">
-                        {link.url}
-                      </p>
-                    </div>
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                    style={{ backgroundColor: `${config.color}18` }}
+                  >
+                    <Icon className="w-5 h-5" style={{ color: config.color }} />
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex-1 min-w-0">
+                    <p className="font-spaceGrotesk font-semibold text-grey1 text-sm">
+                      {config.name}
+                    </p>
+                    <p className="font-openSans text-xs text-grey3 truncate mt-0.5">{link.url}</p>
+                  </div>
+                  <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button
                       onClick={() => openEditModal(link)}
-                      className="p-2 text-grey1 hover:bg-gray-100 rounded-lg transition-colors"
+                      className="p-2 text-grey3 hover:text-grey1 hover:bg-grey5 rounded-lg transition-colors cursor-pointer"
                       title="Edit"
                     >
-                      <FaPencil className="w-4 h-4" />
+                      <FaPencil className="w-3.5 h-3.5" />
                     </button>
                     <button
                       onClick={() => handleDelete(link.id)}
-                      className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                      className="p-2 text-grey3 hover:text-errorRed hover:bg-errorRed/5 rounded-lg transition-colors cursor-pointer"
                       title="Delete"
                     >
-                      <FaTrash className="w-4 h-4" />
+                      <FaTrash className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 </div>
@@ -289,90 +228,70 @@ export default function SocialLinksPage() {
 
       {/* Add/Edit Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-sm">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="font-satoshi font-bold text-2xl text-grey1">
-                {editingLink ? 'Edit Social Link' : 'Add Social Link'}
+              <h2 className="font-satoshi font-black text-2xl text-grey1">
+                {editingLink ? 'Edit Link' : 'Add Link'}
               </h2>
               <button
                 onClick={closeModal}
-                className="p-2 text-grey1 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-1.5 text-grey3 hover:text-grey1 hover:bg-grey5 rounded-lg transition-colors cursor-pointer"
               >
                 <FaXmark className="w-5 h-5" />
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Platform Selector */}
+            <form onSubmit={handleSubmit} className="space-y-5">
               <div>
-                <label
-                  htmlFor="platform"
-                  className="block text-sm font-semibold text-grey1 mb-2 font-spaceGrotesk"
-                >
+                <label htmlFor="platform" className="block text-xs font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
                   Platform
                 </label>
                 <select
                   id="platform"
                   value={formData.platform}
-                  onChange={(e) =>
-                    setFormData({ ...formData, platform: e.target.value })
-                  }
+                  onChange={(e) => setFormData({ ...formData, platform: e.target.value })}
                   required
-                  className="w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:ring-2 focus:ring-mainPurple focus:border-transparent font-openSans"
+                  className={inputClass}
                 >
                   <option value="">Select a platform</option>
                   {dynamicPlatforms.map((platform) => (
-                    <option
-                      key={platform.id}
-                      value={platform.platform_identifier}
-                    >
+                    <option key={platform.id} value={platform.platform_identifier}>
                       {platform.platform_name}
                     </option>
                   ))}
                 </select>
               </div>
 
-              {/* URL Input */}
               <div>
-                <label
-                  htmlFor="url"
-                  className="block text-sm font-semibold text-grey1 mb-2 font-spaceGrotesk"
-                >
+                <label htmlFor="url" className="block text-xs font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
                   URL
                 </label>
                 <input
                   type="url"
                   id="url"
                   value={formData.url}
-                  onChange={(e) =>
-                    setFormData({ ...formData, url: e.target.value })
-                  }
+                  onChange={(e) => setFormData({ ...formData, url: e.target.value })}
                   required
-                  className="w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:ring-2 focus:ring-mainPurple focus:border-transparent font-openSans"
+                  className={inputClass}
                   placeholder="https://example.com/yourprofile"
                 />
               </div>
 
-              {/* Buttons */}
-              <div className="flex gap-3 pt-4">
+              <div className="flex gap-3 pt-2">
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="flex-1 px-4 py-3 border border-grey4 text-grey1 rounded-lg font-spaceGrotesk font-semibold hover:bg-gray-50 transition-colors"
+                  className="flex-1 py-3 border border-grey4 text-grey2 rounded-xl font-spaceGrotesk font-semibold text-sm hover:border-grey3 transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="flex-1 px-4 py-3 bg-mainPurple text-white rounded-lg font-spaceGrotesk font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 py-3 bg-mainPurple text-white rounded-xl font-spaceGrotesk font-semibold text-sm hover:bg-[#7D0FC9] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors"
                 >
-                  {submitting
-                    ? 'Saving...'
-                    : editingLink
-                      ? 'Update Link'
-                      : 'Add Link'}
+                  {submitting ? 'Saving…' : editingLink ? 'Update' : 'Add Link'}
                 </button>
               </div>
             </form>
