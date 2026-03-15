@@ -182,11 +182,6 @@ export default function CompleteProfilePage() {
       {/* ── Content ──────────────────────────────────────────────────────── */}
       <main className="flex-1 flex items-start justify-center px-6 py-12 overflow-hidden">
         <div className="w-full max-w-md">
-          {/* Step label */}
-          <p className="font-spaceGrotesk text-xs font-semibold text-mainPurple uppercase tracking-[0.15em] mb-6">
-            {STEPS[currentStep - 1].label}
-          </p>
-
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={currentStep}
@@ -196,6 +191,11 @@ export default function CompleteProfilePage() {
               animate="center"
               exit="exit"
             >
+              {/* Step label — inside animation so it slides with the content */}
+              <p className="font-spaceGrotesk text-xs font-semibold text-mainPurple uppercase tracking-[0.15em] mb-6">
+                {STEPS[currentStep - 1].label}
+              </p>
+
               {currentStep === 1 && (
                 <PhoneStep
                   value={profileData.phone}

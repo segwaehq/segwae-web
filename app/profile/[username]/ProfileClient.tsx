@@ -273,13 +273,13 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
   const getContactIcon = (type: ContactModalData["type"]) => {
     switch (type) {
       case "email":
-        return <img src="/email_icon.svg" alt="" className="w-5 h-5" />;
+        return <Image src="/email_icon.svg" alt="" width={20} height={20} />;
       case "phone":
-        return <img src="/phone_icon.svg" alt="" className="w-5 h-5" />;
+        return <Image src="/phone_icon.svg" alt="" width={20} height={20} />;
       case "web":
-        return <img src="/web_icon.svg" alt="" className="w-5 h-5" />;
+        return <Image src="/web_icon.svg" alt="" width={20} height={20} />;
       case "resume":
-        return <img src="/resume_icon.svg" alt="" className="w-5 h-5" />;
+        return <Image src="/resume_icon.svg" alt="" width={20} height={20} />;
     }
   };
 
@@ -447,7 +447,7 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
                   }
                   className="flex-1 h-[52px] rounded-full bg-grey6 flex items-center justify-center hover:bg-gray-200 transition-colors cursor-pointer"
                 >
-                  <img src="/email_icon.svg" alt="" className="w-5 h-5" />
+                  <Image src="/email_icon.svg" alt="" width={20} height={20} />
                 </button>
               )}
               {showPhone && profile.phone && (
@@ -457,7 +457,7 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
                   }
                   className="flex-1 h-[52px] rounded-full bg-grey6 flex items-center justify-center hover:bg-gray-200 transition-colors cursor-pointer"
                 >
-                  <img src="/phone_icon.svg" alt="" className="w-5 h-5" />
+                  <Image src="/phone_icon.svg" alt="" width={20} height={20} />
                 </button>
               )}
               {showPortfolio && profile.portfolio_or_website_link && (
@@ -471,7 +471,7 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
                   }
                   className="flex-1 h-[52px] rounded-full bg-grey6 flex items-center justify-center hover:bg-gray-200 transition-colors cursor-pointer"
                 >
-                  <img src="/web_icon.svg" alt="" className="w-5 h-5" />
+                  <Image src="/web_icon.svg" alt="" width={20} height={20} />
                 </button>
               )}
               {showResume && profile.resume_file_url && (
@@ -485,7 +485,7 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
                   }
                   className="flex-1 h-[52px] rounded-full bg-grey6 flex items-center justify-center hover:bg-gray-200 transition-colors cursor-pointer"
                 >
-                  <img src="/resume_icon.svg" alt="" className="w-5 h-5" />
+                  <Image src="/resume_icon.svg" alt="" width={20} height={20} />
                 </button>
               )}
             </div>

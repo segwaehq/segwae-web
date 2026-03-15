@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { FaDownload, FaArrowUpRightFromSquare, FaCopy } from "react-icons/fa6";
 import { toast } from "sonner";
 import QRCode from "qrcode";
@@ -13,14 +13,6 @@ export default function QRCodePage() {
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [loading, setLoading] = useState(true);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => { fetchProfile(); }, []);
-
-  useEffect(() => {
-    if (profile?.username && canvasRef.current) {
-      generatePrettyQR();
-    }
-  }, [profile]);
 
   const fetchProfile = async () => {
     try {
@@ -41,11 +33,11 @@ export default function QRCodePage() {
     return `https://segwae.com/profile/${profile.username}`;
   };
 
-  const generatePrettyQR = async () => {
+  const generatePrettyQR = useCallback(async () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const profileUrl = getProfileUrl();
+    const profileUrl = profile?.username ? `https://segwae.com/profile/${profile.username}` : "";
     const size = 512;
     const margin = 4;
 
@@ -129,7 +121,15 @@ export default function QRCodePage() {
 
       ctx.drawImage(logo, logoX, logoY, logoWidth, logoHeight);
     };
-  };
+  }, [profile]);
+
+  useEffect(() => { fetchProfile(); }, []);
+
+  useEffect(() => {
+    if (profile?.username && canvasRef.current) {
+      generatePrettyQR();
+    }
+  }, [profile, generatePrettyQR]);
 
   const handleDownload = () => {
     const canvas = canvasRef.current;

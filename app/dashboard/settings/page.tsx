@@ -208,7 +208,7 @@ export default function SettingsPage() {
             <div>
               <h2 className="font-spaceGrotesk font-semibold text-grey1">Privacy Settings</h2>
               <p className="font-openSans text-xs text-grey3">
-                Control what's visible on your public profile
+                Control what&apos;s visible on your public profile
               </p>
             </div>
           </div>

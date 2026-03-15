@@ -360,9 +360,8 @@ export default function ProductsPage() {
                   )} */}
 
                   {formData.front_image_url && (
-                    <div className="relative mt-2 overflow-hidden">
-                      {/* <Image src={formData.front_image_url} alt="Front preview" className="object-contain object-left w-full h-auto" /> */}
-                      <img src={formData.front_image_url} alt="Front preview" className="object-contain object-left w-auto h-80 rounded" />
+                    <div className="relative mt-2 h-80 overflow-hidden">
+                      <Image src={formData.front_image_url} alt="Front preview" fill className="object-contain object-left rounded" />
                     </div>
                   )}
                 </div>
@@ -383,8 +382,8 @@ export default function ProductsPage() {
                     </div>
                   )} */}
                   {formData.back_image_url && (
-                    <div className="relative mt-2 overflow-hidden">
-                      <img src={formData.back_image_url} alt="Back preview" className="object-contain object-left w-auto h-80 rounded" />
+                    <div className="relative mt-2 h-80 overflow-hidden">
+                      <Image src={formData.back_image_url} alt="Back preview" fill className="object-contain object-left rounded" />
                     </div>
                   )}
                 </div>

@@ -167,13 +167,13 @@ export default function Home() {
               >
                 <Link
                   href="/signup"
-                  className="bg-mainPurple text-white px-8 py-[14px] rounded-full font-spaceGrotesk font-semibold text-base hover:bg-[#7D0FC9] transition-all shadow-[0_0_32px_rgba(106,13,173,0.45)] hover:shadow-[0_0_44px_rgba(106,13,173,0.65)] text-center"
+                  className="bg-mainPurple text-white px-8 py-3.5 rounded-full font-spaceGrotesk font-semibold text-base hover:bg-[#7D0FC9] transition-all shadow-[0_0_32px_rgba(106,13,173,0.45)] hover:shadow-[0_0_44px_rgba(106,13,173,0.65)] text-center"
                 >
                   Create Your Free Profile
                 </Link>
                 <Link
                   href="/store"
-                  className="border border-white/20 text-white px-8 py-[14px] rounded-full font-spaceGrotesk font-semibold text-base hover:border-white/40 hover:bg-white/[0.06] transition-all text-center"
+                  className="border border-white/20 text-white px-8 py-3.5 rounded-full font-spaceGrotesk font-semibold text-base hover:border-white/40 hover:bg-white/6 transition-all text-center"
                 >
                   Order NFC Card
                 </Link>
@@ -226,7 +226,7 @@ export default function Home() {
       </section>
 
       {/* ══ HOW IT WORKS ═══════════════════════════════════════════════════ */}
-      <section id="how-it-works" className="py-28 px-4 sm:px-6 lg:px-8 bg-[#F9F9FB]">
+      <section id="how-it-works" className="py-28 px-4 sm:px-6 lg:px-8 bg-grey6">
         <div className="max-w-7xl mx-auto">
 
           <InView className="text-center mb-20">
@@ -379,7 +379,7 @@ export default function Home() {
       </section>
 
       {/* ══ WAITLIST ════════════════════════════════════════════════════════ */}
-      <section id="waitlist" className="py-24 px-4 bg-[#F9F9FB]">
+      <section id="waitlist" className="py-24 px-4 bg-grey6">
         <div className="max-w-xl mx-auto">
           <div className="text-center mb-10">
             <p className="font-spaceGrotesk text-xs font-semibold text-mainPurple uppercase tracking-[0.15em] mb-4">

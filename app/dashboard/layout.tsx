@@ -96,7 +96,7 @@ export default function DashboardLayout({
                   ${
                     isActive
                       ? "bg-mainPurple text-white"
-                      : "text-white/50 hover:text-white hover:bg-white/[0.06]"
+                      : "text-white/50 hover:text-white hover:bg-white/6"
                   }
                 `}
               >
@@ -108,11 +108,11 @@ export default function DashboardLayout({
         </nav>
 
         {/* Logout */}
-        <div className="px-3 py-5 border-t border-white/[0.08]">
+        <div className="px-3 py-5 border-t border-white/8">
           <button
             onClick={handleLogout}
             disabled={loggingOut}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-spaceGrotesk font-medium text-sm text-white/40 hover:text-white/70 hover:bg-white/[0.06] transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-spaceGrotesk font-medium text-sm text-white/40 hover:text-white/70 hover:bg-white/6 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <FaArrowRightFromBracket className="w-4 h-4 shrink-0" />
             <span>{loggingOut ? "Logging out…" : "Log out"}</span>
