@@ -38,7 +38,7 @@ export default function PhoneStep({ value, onUpdate, onNext }: PhoneStepProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
       <div>
-        <h2 className="font-satoshi font-black text-3xl text-grey1 mb-2">
+        <h2 className="font-satoshi font-bold text-2xl text-grey1 mb-2">
           Add your phone number
         </h2>
         <p className="font-openSans text-grey3 text-sm leading-relaxed">
@@ -47,7 +47,7 @@ export default function PhoneStep({ value, onUpdate, onNext }: PhoneStepProps) {
       </div>
 
       <div>
-        <label htmlFor="phone" className="block text-sm font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
+        <label htmlFor="phone" className="block text-sm font-semibold text-grey1 mb-1.5 font-satoshi">
           Phone Number
         </label>
         <input
@@ -56,7 +56,7 @@ export default function PhoneStep({ value, onUpdate, onNext }: PhoneStepProps) {
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           placeholder="+234 800 000 0000"
-          className="w-full px-4 py-3 border border-grey4 rounded-xl focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 transition-colors"
+          className="w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 transition-colors"
           disabled={saving}
         />
         {error && <p className="mt-2 text-xs text-errorRed font-openSans">{error}</p>}
@@ -65,7 +65,7 @@ export default function PhoneStep({ value, onUpdate, onNext }: PhoneStepProps) {
       <button
         type="submit"
         disabled={saving}
-        className="w-full py-3.5 bg-mainPurple text-white rounded-xl font-spaceGrotesk font-semibold text-sm hover:bg-[#7D0FC9] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        className="w-full py-3.5 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
       >
         {saving ? 'Saving…' : 'Continue'}
       </button>

@@ -92,7 +92,7 @@ export default function QRCodePage() {
       ctx.roundRect(x + moduleSize, y + moduleSize, (fs - 2) * moduleSize, (fs - 2) * moduleSize, moduleSize * 1.5);
       ctx.fill();
 
-      ctx.fillStyle = "#6A0DAD";
+      ctx.fillStyle = "#4F46E5";
       ctx.beginPath();
       ctx.roundRect(x + moduleSize * 2, y + moduleSize * 2, (fs - 4) * moduleSize, (fs - 4) * moduleSize, moduleSize);
       ctx.fill();
@@ -163,16 +163,16 @@ export default function QRCodePage() {
     return (
       <div className="max-w-full">
         <div className="mb-8">
-          <p className="font-spaceGrotesk text-xs font-semibold text-mainPurple uppercase tracking-[0.15em] mb-1">
+          <p className="font-satoshi text-[11px] font-semibold text-mainPurple uppercase tracking-[0.22em] mb-1">
             Dashboard
           </p>
-          <h1 className="font-satoshi font-black text-3xl text-grey1">QR Code</h1>
+          <h1 className="font-satoshi font-bold text-2xl text-grey1">QR Code</h1>
         </div>
         <div className="bg-white rounded-2xl border border-grey4/60 p-12 text-center">
           <p className="font-openSans text-grey3 mb-4">
             You need a username to generate a QR code.
           </p>
-          <a href="/dashboard/profile" className="font-spaceGrotesk text-sm font-semibold text-mainPurple hover:opacity-70 transition-opacity">
+          <a href="/dashboard/profile" className="font-satoshi text-sm font-semibold text-mainPurple hover:opacity-70 transition-opacity">
             Complete your profile →
           </a>
         </div>
@@ -184,12 +184,11 @@ export default function QRCodePage() {
 
   return (
     <div className="max-w-full">
-      {/* Page header */}
       <div className="mb-8">
-        <p className="font-spaceGrotesk text-xs font-semibold text-mainPurple uppercase tracking-[0.15em] mb-1">
+        <p className="font-satoshi text-[11px] font-semibold text-mainPurple uppercase tracking-[0.22em] mb-1">
           Dashboard
         </p>
-        <h1 className="font-satoshi font-black text-3xl text-grey1">QR Code</h1>
+        <h1 className="font-satoshi font-bold text-2xl text-grey1">QR Code</h1>
       </div>
 
       <div className="bg-white rounded-2xl border border-grey4/60 p-8">
@@ -205,7 +204,7 @@ export default function QRCodePage() {
             </div>
             <button
               onClick={handleDownload}
-              className="flex items-center gap-2 px-5 py-2.5 bg-[#080B14] text-white rounded-xl font-spaceGrotesk font-semibold text-sm hover:bg-grey1 transition-colors cursor-pointer"
+              className="flex items-center gap-2 px-5 py-2.5 bg-[#111827] text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-grey2 transition-colors cursor-pointer"
             >
               <FaDownload className="w-3.5 h-3.5" />
               Download
@@ -215,10 +214,10 @@ export default function QRCodePage() {
           {/* Info */}
           <div className="flex-1 space-y-6">
             <div>
-              <p className="font-spaceGrotesk text-xs font-semibold text-grey2 uppercase tracking-[0.12em] mb-2">
+              <p className="font-satoshi text-xs font-semibold text-grey2 uppercase tracking-[0.12em] mb-2">
                 Profile URL
               </p>
-              <div className="flex items-center gap-2 p-3.5 bg-grey5 rounded-xl border border-grey4">
+              <div className="flex items-center gap-2 p-3.5 bg-grey5 rounded-lg border border-grey4">
                 <a
                   href={profileUrl}
                   target="_blank"
@@ -246,8 +245,8 @@ export default function QRCodePage() {
               </div>
             </div>
 
-            <div className="p-5 bg-[#080B14] rounded-xl text-white">
-              <p className="font-spaceGrotesk font-semibold text-sm mb-3">How to use</p>
+            <div className="p-5 bg-[#111827] rounded-xl text-white">
+              <p className="font-satoshi font-semibold text-sm mb-3">How to use</p>
               <ul className="space-y-2 font-openSans text-xs text-white/60">
                 <li>Print and attach to physical business cards</li>
                 <li>Add to your email signature or LinkedIn</li>

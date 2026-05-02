@@ -1,7 +1,7 @@
 'use client'
 
-import { Suspense, useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { toast } from 'sonner'
@@ -9,34 +9,33 @@ import { FaEye, FaEyeSlash, FaCheck, FaXmark } from 'react-icons/fa6'
 import AuthLayout from '@/components/AuthLayout'
 
 export default function SignupPasswordPage() {
-  return (
-    <Suspense fallback={<AuthLayout step={2} totalSteps={3}><div className="h-96" /></AuthLayout>}>
-      <PasswordContent />
-    </Suspense>
-  )
+  return <PasswordContent />
 }
 
 function PasswordContent() {
   const router = useRouter()
-  const searchParams = useSearchParams()
   const supabase = createClient()
 
-  const name = searchParams.get('name') || ''
-  const email = searchParams.get('email') || ''
-  const username = searchParams.get('username') || ''
-  const phone = searchParams.get('phone') || ''
-  const title = searchParams.get('title') || ''
-
+  const [signupData, setSignupData] = useState<{
+    name: string; email: string; username: string; phone: string; title: string; role: string
+  } | null>(null)
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  if (!name || !email || !username) {
-    router.push('/signup')
-    return null
-  }
+  useEffect(() => {
+    const raw = sessionStorage.getItem('signup_data')
+    if (!raw) { router.push('/signup'); return }
+    const data = JSON.parse(raw)
+    if (!data.name || !data.email || !data.username) { router.push('/signup'); return }
+    setSignupData(data)
+  }, [router])
+
+  if (!signupData) return <AuthLayout step={2} totalSteps={3}><div className="h-96" /></AuthLayout>
+
+  const { email } = signupData
 
   const getStrength = () => {
     if (!password) return { score: 0, label: '', color: '' }
@@ -70,11 +69,12 @@ function PasswordContent() {
     if (password !== confirmPassword) { toast.error('Passwords do not match'); return }
     setLoading(true)
     try {
+      const { name, username, phone, title, role } = signupData
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          data: { full_name: name, username, phone: phone || null, title: title || null },
+          data: { full_name: name, username, phone: phone || null, title: title || null, role },
           emailRedirectTo: `${window.location.origin}/dashboard/profile`,
         },
       })
@@ -90,12 +90,12 @@ function PasswordContent() {
     }
   }
 
-  const inputClass = "w-full px-4 py-3 border border-grey4 rounded-xl focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 transition-colors disabled:bg-grey6"
+  const inputClass = "w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 transition-colors disabled:bg-grey6"
 
   return (
     <AuthLayout step={2} totalSteps={3}>
       <div className="mb-7">
-        <h1 className="font-satoshi font-black text-3xl text-grey1 mb-2">
+        <h1 className="font-satoshi font-bold text-2xl text-grey1 mb-2">
           Set your password
         </h1>
         <p className="font-openSans text-grey3 text-sm">
@@ -105,9 +105,8 @@ function PasswordContent() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Password */}
         <div>
-          <label htmlFor="password" className="block text-sm font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
+          <label htmlFor="password" className="block text-sm font-medium text-grey2 mb-1.5 font-satoshi">
             Password
           </label>
           <div className="relative">
@@ -128,12 +127,11 @@ function PasswordContent() {
             </button>
           </div>
 
-          {/* Strength bar */}
           {password && (
             <div className="mt-2">
               <div className="flex gap-1 mb-1">
                 {[1, 2, 3].map((i) => (
-                  <div key={i} className={`h-1 flex-1 rounded-full transition-all duration-300 ${
+                  <div key={i} className={`h-0.5 flex-1 rounded-full transition-all duration-300 ${
                     strength.score >= i * 2 ? strength.color : 'bg-grey4'
                   }`} />
                 ))}
@@ -145,7 +143,6 @@ function PasswordContent() {
             </div>
           )}
 
-          {/* Requirements */}
           {password && (
             <div className="mt-3 grid grid-cols-1 gap-1">
               {requirements.map((r) => (
@@ -163,9 +160,8 @@ function PasswordContent() {
           )}
         </div>
 
-        {/* Confirm password */}
         <div>
-          <label htmlFor="confirmPassword" className="block text-sm font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
+          <label htmlFor="confirmPassword" className="block text-sm font-medium text-grey2 mb-1.5 font-satoshi">
             Confirm Password
           </label>
           <div className="relative">
@@ -199,11 +195,11 @@ function PasswordContent() {
 
         <div className="flex gap-3 pt-2">
           <button type="button" onClick={() => router.back()} disabled={loading}
-            className="flex-1 py-3 border border-grey4 text-grey2 rounded-xl font-spaceGrotesk font-semibold text-sm hover:border-grey3 transition-colors disabled:opacity-50 cursor-pointer">
+            className="flex-1 py-3 border border-grey4 text-grey2 rounded-lg font-satoshi font-semibold text-sm hover:border-grey3 hover:text-grey1 transition-colors disabled:opacity-50 cursor-pointer">
             Back
           </button>
           <button type="submit" disabled={loading || !passwordValid || !passwordsMatch}
-            className="flex-2 px-8 py-3 bg-mainPurple text-white rounded-xl font-spaceGrotesk font-semibold text-sm hover:bg-[#7D0FC9] transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
+            className="flex-2 px-8 py-3 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
             {loading ? 'Creating…' : 'Create Account'}
           </button>
         </div>

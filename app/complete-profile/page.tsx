@@ -192,7 +192,7 @@ export default function CompleteProfilePage() {
               exit="exit"
             >
               {/* Step label — inside animation so it slides with the content */}
-              <p className="font-spaceGrotesk text-xs font-semibold text-mainPurple uppercase tracking-[0.15em] mb-6">
+              <p className="font-syne text-[11px] font-bold text-mainPurple uppercase tracking-[0.22em] mb-6">
                 {STEPS[currentStep - 1].label}
               </p>
 

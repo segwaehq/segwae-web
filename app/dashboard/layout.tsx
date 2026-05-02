@@ -12,6 +12,12 @@ import {
   FaArrowRightFromBracket,
   FaBars,
   FaXmark,
+  FaBriefcase,
+  FaFileLines,
+  FaMagnifyingGlass,
+  FaEnvelope,
+  FaBuilding,
+  FaFolderOpen,
 } from "react-icons/fa6";
 import Image from "next/image";
 
@@ -33,6 +39,15 @@ export default function DashboardLayout({
     { href: "/dashboard/settings", label: "Settings", icon: FaGear },
   ];
 
+  const careersNavItems = [
+    { href: "/jobs", label: "Browse Jobs", icon: FaMagnifyingGlass },
+    { href: "/dashboard/applications", label: "My Applications", icon: FaFileLines },
+    { href: "/dashboard/resumes", label: "Resume Manager", icon: FaFolderOpen },
+    { href: "/dashboard/hiring", label: "Hiring Dashboard", icon: FaBriefcase },
+    { href: "/dashboard/hiring/company", label: "Company Profile", icon: FaBuilding },
+    { href: "/dashboard/hiring/templates", label: "Email Templates", icon: FaEnvelope },
+  ];
+
   const handleLogout = async () => {
     setLoggingOut(true);
     try {
@@ -47,11 +62,11 @@ export default function DashboardLayout({
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F3F1] flex">
+    <div className="min-h-screen bg-grey6 flex">
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/60 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -59,14 +74,14 @@ export default function DashboardLayout({
       {/* Sidebar */}
       <aside
         className={`
-          fixed top-0 left-0 h-full w-60 bg-[#080B14] z-50 flex flex-col
+          fixed top-0 left-0 h-full w-60 bg-[#111827] z-50 flex flex-col
           transform transition-transform duration-300 ease-in-out
           lg:translate-x-0
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
         `}
       >
         {/* Logo */}
-        <div className="px-6 py-7 border-b border-white/8">
+        <div className="px-5 py-6 border-b border-white/[0.07]">
           <Link href="/" onClick={() => setSidebarOpen(false)}>
             <Image
               src="/wordmark_white.png"
@@ -74,16 +89,16 @@ export default function DashboardLayout({
               width={0}
               height={0}
               sizes="100vw"
-              className="h-7 w-auto!"
+              className="h-6 w-auto!"
               priority
             />
           </Link>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 px-3 py-6 space-y-0.5">
+        <nav className="flex-1 px-3 py-5 space-y-0.5 overflow-y-auto">
           {navItems.map((item) => {
-            const isActive = pathname === item.href;
+            const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
             const Icon = item.icon;
             return (
               <Link
@@ -91,12 +106,42 @@ export default function DashboardLayout({
                 href={item.href}
                 onClick={() => setSidebarOpen(false)}
                 className={`
-                  flex items-center gap-3 px-3 py-2.5 rounded-xl font-spaceGrotesk font-medium text-sm
-                  transition-all duration-200
+                  flex items-center gap-3 px-3 py-2.5 rounded-lg font-satoshi font-medium text-sm
+                  transition-all duration-150
                   ${
                     isActive
                       ? "bg-mainPurple text-white"
-                      : "text-white/50 hover:text-white hover:bg-white/6"
+                      : "text-white/45 hover:text-white hover:bg-white/6"
+                  }
+                `}
+              >
+                <Icon className="w-4 h-4 shrink-0" />
+                <span>{item.label}</span>
+              </Link>
+            );
+          })}
+
+          <div className="pt-5 pb-1">
+            <p className="px-3 text-[10px] font-semibold text-white/20 uppercase tracking-widest font-satoshi">
+              Careers
+            </p>
+          </div>
+
+          {careersNavItems.map((item) => {
+            const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
+            const Icon = item.icon;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setSidebarOpen(false)}
+                className={`
+                  flex items-center gap-3 px-3 py-2.5 rounded-lg font-satoshi font-medium text-sm
+                  transition-all duration-150
+                  ${
+                    isActive
+                      ? "bg-mainPurple text-white"
+                      : "text-white/45 hover:text-white hover:bg-white/6"
                   }
                 `}
               >
@@ -108,11 +153,11 @@ export default function DashboardLayout({
         </nav>
 
         {/* Logout */}
-        <div className="px-3 py-5 border-t border-white/8">
+        <div className="px-3 py-4 border-t border-white/[0.07]">
           <button
             onClick={handleLogout}
             disabled={loggingOut}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-spaceGrotesk font-medium text-sm text-white/40 hover:text-white/70 hover:bg-white/6 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-satoshi font-medium text-sm text-white/35 hover:text-white/70 hover:bg-white/6 transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
           >
             <FaArrowRightFromBracket className="w-4 h-4 shrink-0" />
             <span>{loggingOut ? "Logging out…" : "Log out"}</span>
@@ -121,7 +166,7 @@ export default function DashboardLayout({
       </aside>
 
       {/* Mobile top bar */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 bg-[#080B14] px-5 py-4 flex items-center justify-between z-30">
+      <div className="lg:hidden fixed top-0 left-0 right-0 bg-[#111827] px-5 py-4 flex items-center justify-between z-30 border-b border-white/[0.07]">
         <Image
           src="/wordmark_white.png"
           alt="Segwae"
@@ -132,7 +177,7 @@ export default function DashboardLayout({
         />
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="p-1.5 text-white/60 hover:text-white transition-colors"
+          className="p-1.5 text-white/50 hover:text-white transition-colors"
         >
           {sidebarOpen ? (
             <FaXmark className="w-5 h-5" />

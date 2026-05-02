@@ -68,7 +68,7 @@ export default function PhotoStep({ value, onUpdate, onNext, onBack }: PhotoStep
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="font-satoshi font-black text-3xl text-grey1 mb-2">
+        <h2 className="font-satoshi font-bold text-2xl text-grey1 mb-2">
           Add a profile photo
         </h2>
         <p className="font-openSans text-grey3 text-sm leading-relaxed">
@@ -112,11 +112,11 @@ export default function PhotoStep({ value, onUpdate, onNext, onBack }: PhotoStep
 
       <div className="flex gap-3">
         <button type="button" onClick={onBack} disabled={uploading}
-          className="flex-1 py-3.5 border border-grey4 text-grey2 rounded-xl font-spaceGrotesk font-semibold text-sm hover:border-grey3 transition-colors disabled:opacity-50">
+          className="flex-1 py-3.5 border border-grey4 text-grey2 rounded-lg font-satoshi font-semibold text-sm hover:border-grey3 transition-colors disabled:opacity-50">
           Back
         </button>
         <button type="button" onClick={handleContinue} disabled={uploading}
-          className="flex-2 px-8 py-3.5 bg-mainPurple text-white rounded-xl font-spaceGrotesk font-semibold text-sm hover:bg-[#7D0FC9] disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+          className="flex-2 px-8 py-3.5 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
           Continue
         </button>
       </div>

@@ -169,34 +169,27 @@ export async function PATCH(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // 1) Define the only keys we accept, and derive their union type
-    const allowedKeys = [
-      "name",
-      "phone",
-      "bio",
-      "title",
-      "profile_image_url",
-      "portfolio_or_website_link",
-    ] as const;
-    type AllowedKey = typeof allowedKeys[number];
-
-    // 2) Define the shape of an update payload (only those keys + updated_at)
-    type ProfileUpdate = Partial<
-      Record<AllowedKey, string> & { updated_at: string }
-    >;
-
-    // 3) Parse body and constrain to allowed keys
     const raw = (await request.json()) as Record<string, unknown>;
-    const body = raw as Partial<Record<AllowedKey, unknown>>;
 
-    // 4) Build updateData with proper key typing
+    type ProfileUpdate = Partial<{
+      name: string;
+      phone: string;
+      bio: string;
+      title: string;
+      profile_image_url: string;
+      portfolio_or_website_link: string;
+      job_seeking_status: string | null;
+      open_to_work: boolean;
+      updated_at: string;
+    }>;
+
     const updateData: ProfileUpdate = {};
-    for (const key of allowedKeys) {
-      if (body[key] !== undefined) {
-        // You can add runtime validation here if you want (e.g., typeof body[key] === 'string')
-        updateData[key] = body[key] as string;
-      }
+
+    const stringKeys = ["name", "phone", "bio", "title", "profile_image_url", "portfolio_or_website_link", "job_seeking_status"] as const;
+    for (const key of stringKeys) {
+      if (raw[key] !== undefined) updateData[key] = raw[key] as string;
     }
+    if (typeof raw.open_to_work === "boolean") updateData.open_to_work = raw.open_to_work;
 
     if (Object.keys(updateData).length === 0) {
       return NextResponse.json(

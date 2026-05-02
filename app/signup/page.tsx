@@ -4,12 +4,15 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { toast } from 'sonner'
-import { FaSpinner, FaCheck, FaXmark } from 'react-icons/fa6'
+import { FaSpinner, FaCheck, FaXmark, FaBriefcase, FaMagnifyingGlass } from 'react-icons/fa6'
 import AuthLayout from '@/components/AuthLayout'
+
+type Role = 'seeker' | 'employer'
 
 export default function SignupPage() {
   const router = useRouter()
 
+  const [role, setRole] = useState<Role>('seeker')
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -66,21 +69,23 @@ export default function SignupPage() {
       return
     }
     setLoading(true)
-    router.push(`/signup/password?${new URLSearchParams({
+    sessionStorage.setItem('signup_data', JSON.stringify({
       name: formData.name,
       email: formData.email,
       username: formData.username,
       phone: formData.phone || '',
-      title: formData.title || '',
-    })}`)
+      title: role === 'seeker' ? (formData.title || '') : '',
+      role,
+    }))
+    router.push('/signup/password')
   }
 
-  const inputClass = "w-full px-4 py-3 border border-grey4 rounded-xl focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 transition-colors disabled:bg-grey6 disabled:cursor-not-allowed"
+  const inputClass = "w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 transition-colors disabled:bg-grey6 disabled:cursor-not-allowed"
 
   return (
     <AuthLayout step={1} totalSteps={3}>
       <div className="mb-7">
-        <h1 className="font-satoshi font-black text-3xl text-grey1 mb-2">
+        <h1 className="font-satoshi font-bold text-2xl text-grey1 mb-2">
           Create your account
         </h1>
         <p className="font-openSans text-grey3 text-sm">
@@ -88,10 +93,43 @@ export default function SignupPage() {
         </p>
       </div>
 
+      {/* Role toggle */}
+      <div className="flex gap-3 mb-6">
+        <button
+          type="button"
+          onClick={() => setRole('seeker')}
+          className={`flex-1 flex items-center gap-2.5 px-4 py-3 rounded-lg border transition-all cursor-pointer ${
+            role === 'seeker'
+              ? 'border-mainPurple bg-mainPurple/5 text-mainPurple'
+              : 'border-grey4 text-grey3 hover:border-grey3'
+          }`}
+        >
+          <FaMagnifyingGlass className="w-4 h-4 shrink-0" />
+          <div className="text-left">
+            <p className="font-satoshi font-semibold text-sm leading-none">Looking for work</p>
+            <p className="font-openSans text-xs mt-0.5 opacity-70">Find & apply to jobs</p>
+          </div>
+        </button>
+        <button
+          type="button"
+          onClick={() => setRole('employer')}
+          className={`flex-1 flex items-center gap-2.5 px-4 py-3 rounded-lg border transition-all cursor-pointer ${
+            role === 'employer'
+              ? 'border-mainPurple bg-mainPurple/5 text-mainPurple'
+              : 'border-grey4 text-grey3 hover:border-grey3'
+          }`}
+        >
+          <FaBriefcase className="w-4 h-4 shrink-0" />
+          <div className="text-left">
+            <p className="font-satoshi font-semibold text-sm leading-none">I&apos;m hiring</p>
+            <p className="font-openSans text-xs mt-0.5 opacity-70">Post jobs & find talent</p>
+          </div>
+        </button>
+      </div>
+
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Full Name */}
         <div>
-          <label htmlFor="name" className="block text-sm font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
+          <label htmlFor="name" className="block text-sm font-medium text-grey2 mb-1.5 font-satoshi">
             Full Name <span className="text-errorRed">*</span>
           </label>
           <input
@@ -106,9 +144,8 @@ export default function SignupPage() {
           />
         </div>
 
-        {/* Email */}
         <div>
-          <label htmlFor="email" className="block text-sm font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
+          <label htmlFor="email" className="block text-sm font-medium text-grey2 mb-1.5 font-satoshi">
             Email Address <span className="text-errorRed">*</span>
           </label>
           <input
@@ -123,9 +160,8 @@ export default function SignupPage() {
           />
         </div>
 
-        {/* Username */}
         <div>
-          <label htmlFor="username" className="block text-sm font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
+          <label htmlFor="username" className="block text-sm font-medium text-grey2 mb-1.5 font-satoshi">
             Username <span className="text-errorRed">*</span>
           </label>
           <div className="relative">
@@ -161,9 +197,8 @@ export default function SignupPage() {
           </p>
         </div>
 
-        {/* Phone */}
         <div>
-          <label htmlFor="phone" className="block text-sm font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
+          <label htmlFor="phone" className="block text-sm font-medium text-grey2 mb-1.5 font-satoshi">
             Phone Number <span className="text-grey3 font-normal">(optional)</span>
           </label>
           <input
@@ -177,26 +212,27 @@ export default function SignupPage() {
           />
         </div>
 
-        {/* Title */}
-        <div>
-          <label htmlFor="title" className="block text-sm font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
-            Professional Title <span className="text-grey3 font-normal">(optional)</span>
-          </label>
-          <input
-            type="text"
-            id="title"
-            value={formData.title}
-            onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-            className={inputClass}
-            placeholder="Software Engineer"
-            disabled={loading}
-          />
-        </div>
+        {role === 'seeker' && (
+          <div>
+            <label htmlFor="title" className="block text-sm font-medium text-grey2 mb-1.5 font-satoshi">
+              Professional Title <span className="text-grey3 font-normal">(optional)</span>
+            </label>
+            <input
+              type="text"
+              id="title"
+              value={formData.title}
+              onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+              className={inputClass}
+              placeholder="Software Engineer"
+              disabled={loading}
+            />
+          </div>
+        )}
 
         <button
           type="submit"
           disabled={loading || usernameStatus !== 'available'}
-          className="w-full bg-mainPurple text-white py-3 rounded-xl font-spaceGrotesk font-semibold text-sm hover:bg-[#7D0FC9] transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer mt-2"
+          className="w-full bg-mainPurple text-white py-3 rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer mt-2"
         >
           {loading ? 'Processing…' : 'Continue'}
         </button>

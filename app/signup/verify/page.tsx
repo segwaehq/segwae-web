@@ -22,6 +22,9 @@ function VerifyContent() {
   const supabase = createClient()
 
   const email = searchParams.get('email') || ''
+  const role = (() => {
+    try { return JSON.parse(sessionStorage.getItem('signup_data') || '{}').role || 'seeker' } catch { return 'seeker' }
+  })()
 
   const [otp, setOtp] = useState('')
   const [loading, setLoading] = useState(false)
@@ -51,8 +54,9 @@ function VerifyContent() {
     try {
       const { error } = await supabase.auth.verifyOtp({ email, token: otp, type: 'signup' })
       if (error) throw error
+      sessionStorage.removeItem('signup_data')
       toast.success('Email verified! Welcome to Segwae!')
-      router.push('/complete-profile')
+      router.push(role === 'employer' ? '/dashboard/hiring' : '/complete-profile')
       router.refresh()
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Invalid verification code')
@@ -80,20 +84,20 @@ function VerifyContent() {
   return (
     <AuthLayout step={3} totalSteps={3}>
       <div className="mb-8">
-        <h1 className="font-satoshi font-black text-3xl text-grey1 mb-2">
+        <h1 className="font-satoshi font-bold text-2xl text-grey1 mb-2">
           Check your email
         </h1>
         <p className="font-openSans text-grey3 text-sm">
           We sent a 6-digit code to
         </p>
-        <p className="font-spaceGrotesk font-semibold text-grey1 text-sm mt-0.5">
+        <p className="font-satoshi font-semibold text-grey1 text-sm mt-0.5">
           {email}
         </p>
       </div>
 
       <form onSubmit={handleVerify} className="space-y-5">
         <div>
-          <label htmlFor="otp" className="block text-sm font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
+          <label htmlFor="otp" className="block text-sm font-medium text-grey2 mb-1.5 font-satoshi">
             Verification Code
           </label>
           <input
@@ -105,7 +109,7 @@ function VerifyContent() {
             maxLength={6}
             inputMode="numeric"
             autoComplete="one-time-code"
-            className="w-full px-4 py-4 border border-grey4 rounded-xl focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-satoshi font-bold text-center text-3xl tracking-[0.6em] text-grey1 placeholder:text-grey4 placeholder:tracking-[0.3em] transition-colors"
+            className="w-full px-4 py-4 border border-grey4 rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-satoshi font-bold text-center text-3xl tracking-[0.6em] text-grey1 placeholder:text-grey4 placeholder:tracking-[0.3em] transition-colors"
             placeholder="······"
             disabled={loading}
           />
@@ -117,7 +121,7 @@ function VerifyContent() {
         <button
           type="submit"
           disabled={loading || otp.length !== 6}
-          className="w-full bg-mainPurple text-white py-3 rounded-xl font-spaceGrotesk font-semibold text-sm hover:bg-[#7D0FC9] transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          className="w-full bg-mainPurple text-white py-3 rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
         >
           {loading ? (
             <span className="flex items-center justify-center gap-2">

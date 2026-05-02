@@ -196,6 +196,13 @@ export default function RootLayout({
           `}
         </Script>
 
+        <meta name="google-adsense-account" content="ca-pub-4398584928051251"></meta>
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4398584928051251"
+          crossOrigin="anonymous"
+        />
+
         <link rel="image_src" href="https://segwae.com/og-image.png" />
       </head>
       <body

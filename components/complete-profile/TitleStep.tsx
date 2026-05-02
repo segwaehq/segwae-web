@@ -39,7 +39,7 @@ export default function TitleStep({ value, onUpdate, onNext, onBack }: TitleStep
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
       <div>
-        <h2 className="font-satoshi font-black text-3xl text-grey1 mb-2">
+        <h2 className="font-satoshi font-bold text-2xl text-grey1 mb-2">
           What&apos;s your job title?
         </h2>
         <p className="font-openSans text-grey3 text-sm leading-relaxed">
@@ -48,7 +48,7 @@ export default function TitleStep({ value, onUpdate, onNext, onBack }: TitleStep
       </div>
 
       <div>
-        <label htmlFor="title" className="block text-sm font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
+        <label htmlFor="title" className="block text-sm font-semibold text-grey1 mb-1.5 font-satoshi">
           Job Title / Position
         </label>
         <input
@@ -57,7 +57,7 @@ export default function TitleStep({ value, onUpdate, onNext, onBack }: TitleStep
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="e.g. Software Engineer, Product Designer"
-          className="w-full px-4 py-3 border border-grey4 rounded-xl focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 transition-colors"
+          className="w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 transition-colors"
           disabled={saving}
         />
         {error && <p className="mt-2 text-xs text-errorRed font-openSans">{error}</p>}
@@ -65,11 +65,11 @@ export default function TitleStep({ value, onUpdate, onNext, onBack }: TitleStep
 
       <div className="flex gap-3">
         <button type="button" onClick={onBack} disabled={saving}
-          className="flex-1 py-3.5 border border-grey4 text-grey2 rounded-xl font-spaceGrotesk font-semibold text-sm hover:border-grey3 transition-colors disabled:opacity-50">
+          className="flex-1 py-3.5 border border-grey4 text-grey2 rounded-lg font-satoshi font-semibold text-sm hover:border-grey3 transition-colors disabled:opacity-50">
           Back
         </button>
         <button type="submit" disabled={saving}
-          className="flex-2 px-8 py-3.5 bg-mainPurple text-white rounded-xl font-spaceGrotesk font-semibold text-sm hover:bg-[#7D0FC9] disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+          className="flex-2 px-8 py-3.5 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
           {saving ? 'Saving…' : 'Continue'}
         </button>
       </div>

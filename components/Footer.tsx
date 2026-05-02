@@ -6,6 +6,7 @@ import { useState } from "react"
 import AppDownloadModal from "@/components/AppDownloadModal"
 
 const product = [
+  { href: "/jobs", label: "Browse Jobs" },
   { href: "/#how-it-works", label: "How It Works" },
   { href: "/about", label: "About" },
   { href: "/store", label: "Store" },
@@ -28,7 +29,7 @@ export default function Footer() {
 
   return (
     <>
-      <footer className="bg-[#080B14] text-white border-t border-white/[0.06]">
+      <footer className="bg-[#111827] text-white border-t border-white/[0.06]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-14">
 
@@ -44,14 +45,14 @@ export default function Footer() {
                   className="h-7 w-auto!"
                 />
               </Link>
-              <p className="font-openSans text-[#55556A] text-sm leading-relaxed">
+              <p className="font-openSans text-white/35 text-sm leading-relaxed">
                 Small Talk to Big Deals.
               </p>
             </div>
 
             {/* Product */}
             <div>
-              <h4 className="font-spaceGrotesk text-xs font-semibold uppercase tracking-[0.12em] text-[#55556A] mb-5">
+              <h4 className="font-satoshi text-xs font-semibold uppercase tracking-[0.14em] text-white/30 mb-5">
                 Product
               </h4>
               <ul className="space-y-3">
@@ -59,7 +60,7 @@ export default function Footer() {
                   <li key={l.href}>
                     <Link
                       href={l.href}
-                      className="font-openSans text-sm text-[#8E8E9A] hover:text-white transition-colors"
+                      className="font-openSans text-sm text-white/50 hover:text-white transition-colors"
                     >
                       {l.label}
                     </Link>
@@ -68,7 +69,7 @@ export default function Footer() {
                 <li>
                   <button
                     onClick={() => setIsModalOpen(true)}
-                    className="font-openSans text-sm text-[#8E8E9A] hover:text-white transition-colors text-left"
+                    className="font-openSans text-sm text-white/50 hover:text-white transition-colors text-left cursor-pointer"
                   >
                     Get the App
                   </button>
@@ -78,7 +79,7 @@ export default function Footer() {
 
             {/* Company */}
             <div>
-              <h4 className="font-spaceGrotesk text-xs font-semibold uppercase tracking-[0.12em] text-[#55556A] mb-5">
+              <h4 className="font-satoshi text-xs font-semibold uppercase tracking-[0.14em] text-white/30 mb-5">
                 Company
               </h4>
               <ul className="space-y-3">
@@ -86,7 +87,7 @@ export default function Footer() {
                   <li key={l.href}>
                     <Link
                       href={l.href}
-                      className="font-openSans text-sm text-[#8E8E9A] hover:text-white transition-colors"
+                      className="font-openSans text-sm text-white/50 hover:text-white transition-colors"
                     >
                       {l.label}
                     </Link>
@@ -97,7 +98,7 @@ export default function Footer() {
 
             {/* Social */}
             <div>
-              <h4 className="font-spaceGrotesk text-xs font-semibold uppercase tracking-[0.12em] text-[#55556A] mb-5">
+              <h4 className="font-satoshi text-xs font-semibold uppercase tracking-[0.14em] text-white/30 mb-5">
                 Follow Us
               </h4>
               <ul className="space-y-3">
@@ -107,7 +108,7 @@ export default function Footer() {
                       href={l.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-openSans text-sm text-[#8E8E9A] hover:text-white transition-colors"
+                      className="font-openSans text-sm text-white/50 hover:text-white transition-colors"
                     >
                       {l.label}
                     </a>
@@ -117,11 +118,11 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="border-t border-white/[0.06] pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p className="font-openSans text-[#55556A] text-xs">
+          <div className="border-t border-white/[0.07] pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p className="font-openSans text-white/30 text-xs">
               © 2025 Segwae Technologies. All rights reserved.
             </p>
-            <p className="font-openSans text-[#55556A] text-xs">
+            <p className="font-openSans text-white/30 text-xs">
               Made in Nigeria 🇳🇬
             </p>
           </div>

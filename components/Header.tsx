@@ -9,6 +9,7 @@ import { FaBars, FaXmark } from "react-icons/fa6"
 import type { User } from "@supabase/supabase-js"
 
 const navLinks = [
+  { href: "/jobs", label: "Jobs" },
   { href: "/#how-it-works", label: "How It Works" },
   { href: "/about", label: "About" },
   { href: "/store", label: "Store" },
@@ -23,9 +24,6 @@ export default function Header() {
   const pathname = usePathname()
   const supabase = createClient()
 
-  const isHome = pathname === '/'
-  const transparent = isHome && !scrolled
-
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user)
@@ -38,7 +36,7 @@ export default function Header() {
   }, [supabase.auth])
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24)
+    const onScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener('scroll', onScroll, { passive: true })
     onScroll()
     return () => window.removeEventListener('scroll', onScroll)
@@ -51,19 +49,19 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        transparent
-          ? 'bg-transparent border-b border-transparent'
-          : 'bg-white/95 backdrop-blur-md border-b border-grey4 shadow-sm'
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 bg-white ${
+        scrolled
+          ? 'border-b border-grey4 shadow-[0_1px_4px_rgba(0,0,0,0.06)]'
+          : 'border-b border-transparent'
       }`}
     >
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
 
           {/* Logo */}
-          <Link href="/" className="flex items-center z-50">
+          <Link href="/" className="flex items-center z-50 shrink-0">
             <Image
-              src={transparent ? "/wordmark_white.png" : "/wordmark_svg.svg"}
+              src="/wordmark_svg.svg"
               alt="Segwae"
               width={0}
               height={0}
@@ -73,15 +71,15 @@ export default function Header() {
           </Link>
 
           {/* Desktop nav — centred */}
-          <div className="hidden md:flex items-center space-x-8 absolute left-1/2 -translate-x-1/2">
+          <div className="hidden md:flex items-center gap-7 absolute left-1/2 -translate-x-1/2">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`font-spaceGrotesk text-sm font-medium transition-colors ${
-                  transparent
-                    ? 'text-white/65 hover:text-white'
-                    : 'text-grey2 hover:text-mainPurple'
+                className={`font-satoshi text-sm font-medium transition-colors ${
+                  pathname === link.href
+                    ? 'text-grey1'
+                    : 'text-grey3 hover:text-grey1'
                 }`}
               >
                 {link.label}
@@ -90,13 +88,13 @@ export default function Header() {
           </div>
 
           {/* Desktop auth */}
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-2 shrink-0">
             {loading ? (
               <div className="w-32 h-9" />
             ) : user ? (
               <Link
                 href="/dashboard/profile"
-                className="bg-mainPurple text-white px-5 py-2 rounded-full font-spaceGrotesk font-semibold text-sm hover:opacity-90 transition-all"
+                className="bg-mainPurple text-white px-5 py-2 rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] transition-colors"
               >
                 Dashboard
               </Link>
@@ -104,19 +102,15 @@ export default function Header() {
               <>
                 <Link
                   href="/login"
-                  className={`px-5 py-2 rounded-full font-spaceGrotesk font-semibold text-sm transition-all ${
-                    transparent
-                      ? 'text-white/75 hover:text-white hover:bg-white/10'
-                      : 'text-mainPurple border border-mainPurple/25 hover:bg-lightPurple'
-                  }`}
+                  className="px-4 py-2 text-grey2 font-satoshi font-medium text-sm hover:text-grey1 transition-colors"
                 >
-                  Login
+                  Log in
                 </Link>
                 <Link
                   href="/signup"
-                  className="bg-mainPurple text-white px-5 py-2 rounded-full font-spaceGrotesk font-semibold text-sm hover:opacity-90 transition-all"
+                  className="bg-mainPurple text-white px-5 py-2 rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] transition-colors"
                 >
-                  Sign Up
+                  Sign up
                 </Link>
               </>
             )}
@@ -125,9 +119,7 @@ export default function Header() {
           {/* Mobile hamburger */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className={`md:hidden p-2 transition-colors z-50 ${
-              transparent ? 'text-white' : 'text-grey1 hover:text-mainPurple'
-            }`}
+            className="md:hidden p-2 text-grey2 hover:text-grey1 transition-colors z-50"
             aria-label="Toggle menu"
           >
             {mobileMenuOpen
@@ -142,29 +134,29 @@ export default function Header() {
       {mobileMenuOpen && (
         <>
           <div
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden"
+            className="fixed inset-0 bg-black/40 z-40 md:hidden"
             onClick={() => setMobileMenuOpen(false)}
           />
-          <div className="fixed top-16 left-0 right-0 bg-white border-b border-grey4 shadow-xl z-40 md:hidden">
-            <div className="px-4 py-6 space-y-1">
+          <div className="fixed top-16 left-0 right-0 bg-white border-b border-grey4 shadow-lg z-40 md:hidden">
+            <div className="px-4 py-5 space-y-0.5">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block py-2.5 font-spaceGrotesk text-sm text-grey2 hover:text-mainPurple transition-colors"
+                  className="block py-2.5 px-2 font-satoshi text-sm font-medium text-grey2 hover:text-grey1 rounded-lg hover:bg-grey6 transition-colors"
                 >
                   {link.label}
                 </Link>
               ))}
-              <div className="border-t border-grey4 pt-4 mt-4 space-y-3">
+              <div className="border-t border-grey4 pt-4 mt-3 space-y-2">
                 {loading ? (
                   <div className="h-20" />
                 ) : user ? (
                   <Link
                     href="/dashboard/profile"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block w-full text-center bg-mainPurple text-white px-6 py-3 rounded-xl font-spaceGrotesk font-semibold text-sm"
+                    className="block w-full text-center bg-mainPurple text-white px-6 py-2.5 rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] transition-colors"
                   >
                     Go to Dashboard
                   </Link>
@@ -173,16 +165,16 @@ export default function Header() {
                     <Link
                       href="/login"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="block w-full text-center border border-mainPurple/30 text-mainPurple px-6 py-3 rounded-xl font-spaceGrotesk font-semibold text-sm hover:bg-lightPurple transition-all"
+                      className="block w-full text-center border border-grey4 text-grey2 px-6 py-2.5 rounded-lg font-satoshi font-semibold text-sm hover:border-grey3 transition-colors"
                     >
-                      Login
+                      Log in
                     </Link>
                     <Link
                       href="/signup"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="block w-full text-center bg-mainPurple text-white px-6 py-3 rounded-xl font-spaceGrotesk font-semibold text-sm"
+                      className="block w-full text-center bg-mainPurple text-white px-6 py-2.5 rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] transition-colors"
                     >
-                      Sign Up
+                      Sign up
                     </Link>
                   </>
                 )}

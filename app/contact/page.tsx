@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { FaEnvelope, FaInstagram, FaLinkedinIn, FaXTwitter, FaArrowLeft } from 'react-icons/fa6'
 
 const inputClass =
-  'w-full px-4 py-3 border border-grey4 rounded-xl focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 bg-white transition-colors'
+  'w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 bg-white transition-colors'
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -49,12 +49,12 @@ export default function Contact() {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center px-6">
         <div className="max-w-sm w-full text-center">
-          <div className="w-14 h-14 rounded-2xl bg-successGreen/10 border border-successGreen/20 flex items-center justify-center mx-auto mb-6">
+          <div className="w-14 h-14 rounded-xl bg-successGreen/10 border border-successGreen/20 flex items-center justify-center mx-auto mb-6">
             <svg className="w-6 h-6 text-successGreen" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h2 className="font-satoshi font-black text-3xl text-grey1 mb-2">Message sent</h2>
+          <h2 className="font-satoshi font-bold text-2xl text-grey1 mb-2">Message sent</h2>
           <p className="font-openSans text-sm text-grey3 leading-relaxed mb-8">
             Thanks for reaching out. We&apos;ll get back to you as soon as possible.
           </p>
@@ -64,13 +64,13 @@ export default function Contact() {
                 setSubmitted(false)
                 setFormData({ name: '', email: '', subject: '', message: '' })
               }}
-              className="px-6 py-3 bg-mainPurple text-white rounded-xl font-spaceGrotesk font-semibold text-sm hover:bg-[#7D0FC9] transition-colors"
+              className="px-6 py-3 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] transition-colors"
             >
               Send Another Message
             </button>
             <Link
               href="/"
-              className="px-6 py-3 border border-grey4 text-grey2 rounded-xl font-spaceGrotesk font-semibold text-sm hover:border-grey3 transition-colors"
+              className="px-6 py-3 border border-grey4 text-grey2 rounded-lg font-satoshi font-semibold text-sm hover:border-grey3 transition-colors"
             >
               Back to Home
             </Link>
@@ -83,17 +83,14 @@ export default function Contact() {
   return (
     <div className="min-h-screen flex flex-col lg:flex-row">
       {/* ── Left panel ────────────────────────────────────────────── */}
-      <div className="relative lg:w-[42%] bg-[#080B14] flex flex-col px-10 py-12 lg:py-16 overflow-hidden">
-        {/* Background dot grid */}
+      <div className="relative lg:w-[42%] bg-[#111827] flex flex-col px-10 py-12 lg:py-16 overflow-hidden">
         <div
-          className="absolute inset-0 opacity-[0.04]"
+          className="absolute inset-0 opacity-[0.03]"
           style={{
-            backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)',
-            backgroundSize: '28px 28px',
+            backgroundImage: 'linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)',
+            backgroundSize: '64px 64px',
           }}
         />
-        {/* Purple glow */}
-        <div className="absolute top-0 left-0 w-80 h-80 rounded-full bg-mainPurple/20 blur-[100px] -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
 
         {/* Logo */}
         <div className="relative z-10 mb-16">
@@ -111,10 +108,10 @@ export default function Contact() {
 
         {/* Content */}
         <div className="relative z-10 flex-1">
-          <p className="font-spaceGrotesk text-xs font-semibold text-mainPurple/80 uppercase tracking-[0.2em] mb-4">
+          <p className="font-satoshi text-xs font-semibold text-mainPurple/80 uppercase tracking-[0.2em] mb-4">
             Contact
           </p>
-          <h1 className="font-satoshi font-black text-4xl lg:text-5xl text-white leading-[1.05] mb-6">
+          <h1 className="font-dmSerif text-4xl lg:text-5xl text-white leading-[1.05] mb-6">
             Let&apos;s talk.
           </h1>
           <p className="font-openSans text-white/50 text-sm leading-relaxed max-w-xs mb-12">
@@ -128,7 +125,7 @@ export default function Contact() {
                 <FaEnvelope className="w-3.5 h-3.5 text-white/60" />
               </div>
               <div>
-                <p className="font-spaceGrotesk text-xs text-white/30 mb-0.5 uppercase tracking-[0.12em]">Email</p>
+                <p className="font-satoshi text-xs text-white/30 mb-0.5 uppercase tracking-[0.12em]">Email</p>
                 <a
                   href="mailto:hello@segwae.com"
                   className="font-openSans text-sm text-white/80 hover:text-white transition-colors"
@@ -145,7 +142,7 @@ export default function Contact() {
                 </svg>
               </div>
               <div>
-                <p className="font-spaceGrotesk text-xs text-white/30 mb-0.5 uppercase tracking-[0.12em]">Response time</p>
+                <p className="font-satoshi text-xs text-white/30 mb-0.5 uppercase tracking-[0.12em]">Response time</p>
                 <p className="font-openSans text-sm text-white/80">Within 24 hours</p>
               </div>
             </div>
@@ -153,7 +150,7 @@ export default function Contact() {
 
           {/* Social */}
           <div>
-            <p className="font-spaceGrotesk text-xs text-white/30 uppercase tracking-[0.12em] mb-4">Follow us</p>
+            <p className="font-satoshi text-xs text-white/30 uppercase tracking-[0.12em] mb-4">Follow us</p>
             <div className="flex gap-3">
               {[
                 { href: 'https://x.com/segwaehq', icon: FaXTwitter, label: 'X' },
@@ -179,7 +176,7 @@ export default function Contact() {
         <div className="relative z-10 mt-16">
           <Link
             href="/"
-            className="flex items-center gap-2 font-spaceGrotesk text-xs text-white/30 hover:text-white/60 transition-colors"
+            className="flex items-center gap-2 font-satoshi text-xs text-white/30 hover:text-white/60 transition-colors"
           >
             <FaArrowLeft className="w-3 h-3" />
             Back to home
@@ -191,14 +188,14 @@ export default function Contact() {
       <div className="flex-1 bg-white flex items-center justify-center px-8 py-16 lg:px-16">
         <div className="w-full max-w-md">
           <div className="mb-8">
-            <h2 className="font-satoshi font-black text-3xl text-grey1 mb-1">Send a message</h2>
+            <h2 className="font-satoshi font-bold text-2xl text-grey1 mb-1">Send a message</h2>
             <p className="font-openSans text-sm text-grey3">Fill in the form and we&apos;ll be in touch.</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label htmlFor="name" className="block text-xs font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
+                <label htmlFor="name" className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
                   Name
                 </label>
                 <input
@@ -213,7 +210,7 @@ export default function Contact() {
                 />
               </div>
               <div>
-                <label htmlFor="email" className="block text-xs font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
+                <label htmlFor="email" className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
                   Email
                 </label>
                 <input
@@ -230,7 +227,7 @@ export default function Contact() {
             </div>
 
             <div>
-              <label htmlFor="subject" className="block text-xs font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
+              <label htmlFor="subject" className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
                 Subject
               </label>
               <select
@@ -251,7 +248,7 @@ export default function Contact() {
             </div>
 
             <div>
-              <label htmlFor="message" className="block text-xs font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
+              <label htmlFor="message" className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
                 Message
               </label>
               <textarea
@@ -273,7 +270,7 @@ export default function Contact() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 bg-mainPurple text-white rounded-xl font-spaceGrotesk font-semibold text-sm hover:bg-[#7D0FC9] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="w-full py-3.5 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {loading ? 'Sending…' : 'Send Message'}
             </button>

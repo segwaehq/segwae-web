@@ -16,10 +16,19 @@ export default function LoginPage() {
   )
 }
 
+function getFriendlyError(err: unknown): string {
+  const msg = err instanceof Error ? err.message.toLowerCase() : ''
+  if (msg.includes('invalid login credentials')) return 'Incorrect email or password'
+  if (msg.includes('email not confirmed')) return 'Please verify your email before signing in'
+  if (msg.includes('too many requests')) return 'Too many attempts — please wait a moment and try again'
+  return 'Something went wrong. Please try again.'
+}
+
 function LoginContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const redirectTo = searchParams.get('redirect') || '/dashboard/profile'
+  const raw = searchParams.get('redirect') || '/dashboard/profile'
+  const redirectTo = raw.startsWith('/') && !raw.startsWith('//') ? raw : '/dashboard/profile'
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -38,16 +47,18 @@ function LoginContent() {
       router.push(redirectTo)
       router.refresh()
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Invalid email or password')
+      toast.error(getFriendlyError(err))
     } finally {
       setLoading(false)
     }
   }
 
+  const inputClass = "w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 transition-colors"
+
   return (
     <AuthLayout>
       <div className="mb-8">
-        <h1 className="font-satoshi font-black text-3xl text-grey1 mb-2">
+        <h1 className="font-satoshi font-bold text-2xl text-grey1 mb-2">
           Welcome back
         </h1>
         <p className="font-openSans text-grey3 text-sm">
@@ -57,7 +68,7 @@ function LoginContent() {
 
       <form onSubmit={handleLogin} className="space-y-5">
         <div>
-          <label htmlFor="email" className="block text-sm font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
+          <label htmlFor="email" className="block text-sm font-medium text-grey2 mb-1.5 font-satoshi">
             Email address
           </label>
           <input
@@ -66,14 +77,14 @@ function LoginContent() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full px-4 py-3 border border-grey4 rounded-xl focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 transition-colors"
+            className={inputClass}
             placeholder="you@example.com"
             disabled={loading}
           />
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-sm font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
+          <label htmlFor="password" className="block text-sm font-medium text-grey2 mb-1.5 font-satoshi">
             Password
           </label>
           <div className="relative">
@@ -83,7 +94,7 @@ function LoginContent() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-3 pr-12 border border-grey4 rounded-xl focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 transition-colors"
+              className={`${inputClass} pr-12`}
               placeholder="Enter your password"
               disabled={loading}
             />
@@ -100,10 +111,16 @@ function LoginContent() {
           </div>
         </div>
 
+        <div className="flex justify-end -mt-2">
+          <Link href="/forgot-password" className="font-openSans text-sm text-mainPurple hover:underline">
+            Forgot password?
+          </Link>
+        </div>
+
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-mainPurple text-white py-3 rounded-xl font-spaceGrotesk font-semibold text-sm hover:bg-[#7D0FC9] transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer mt-2"
+          className="w-full bg-mainPurple text-white py-3 rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer mt-2"
         >
           {loading ? 'Signing in…' : 'Sign In'}
         </button>

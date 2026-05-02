@@ -3,23 +3,12 @@ import Image from 'next/image'
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-[#080B14] flex flex-col overflow-hidden relative">
-      {/* Dot grid */}
-      <div
-        className="absolute inset-0 opacity-[0.04]"
-        style={{
-          backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)',
-          backgroundSize: '28px 28px',
-        }}
-      />
-      {/* Purple glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-mainPurple/20 blur-[120px] pointer-events-none" />
-
+    <div className="min-h-screen bg-white flex flex-col">
       {/* Logo */}
-      <header className="relative z-10 px-8 py-7">
+      <header className="px-8 py-7 border-b border-grey4">
         <Link href="/">
           <Image
-            src="/wordmark_white.png"
+            src="/wordmark_svg.svg"
             alt="Segwae"
             width={0}
             height={0}
@@ -30,26 +19,26 @@ export default function NotFound() {
       </header>
 
       {/* Content */}
-      <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 text-center">
-        <p className="font-spaceGrotesk text-xs font-semibold text-mainPurple uppercase tracking-[0.2em] mb-4">
+      <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
+        <p className="font-satoshi text-[11px] font-semibold text-mainPurple uppercase tracking-[0.18em] mb-4">
           Error 404
         </p>
-        <h1 className="font-satoshi font-black text-7xl md:text-9xl text-white leading-none mb-6">
+        <h1 className="font-dmSerif text-[7rem] md:text-[10rem] text-grey1 leading-none mb-4">
           404
         </h1>
-        <p className="font-openSans text-white/40 text-base md:text-lg max-w-sm leading-relaxed mb-10">
+        <p className="font-openSans text-grey3 text-base md:text-lg max-w-sm leading-relaxed mb-10">
           The page you&apos;re looking for doesn&apos;t exist or has been moved.
         </p>
         <div className="flex flex-col sm:flex-row gap-3">
           <Link
             href="/"
-            className="px-7 py-3.5 bg-mainPurple text-white rounded-xl font-spaceGrotesk font-semibold text-sm hover:bg-[#7D0FC9] transition-colors"
+            className="px-6 py-3 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] transition-colors"
           >
             Back to Home
           </Link>
           <Link
             href="/contact"
-            className="px-7 py-3.5 border border-white/20 text-white/70 rounded-xl font-spaceGrotesk font-semibold text-sm hover:border-white/40 hover:text-white transition-colors"
+            className="px-6 py-3 border border-grey4 text-grey2 rounded-lg font-satoshi font-semibold text-sm hover:border-grey3 hover:text-grey1 transition-colors"
           >
             Contact Us
           </Link>

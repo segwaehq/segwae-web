@@ -18,7 +18,7 @@ interface ProfileData {
 }
 
 const inputClass =
-  'w-full px-4 py-3 border border-grey4 rounded-xl focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 bg-white transition-colors'
+  'w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 bg-white transition-colors'
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState<ProfileData | null>(null)
@@ -127,19 +127,18 @@ export default function ProfilePage() {
 
   return (
     <div className="max-w-full">
-      {/* Page header */}
       <div className="mb-8">
-        <p className="font-spaceGrotesk text-xs font-semibold text-mainPurple uppercase tracking-[0.15em] mb-1">
+        <p className="font-satoshi text-[11px] font-semibold text-mainPurple uppercase tracking-[0.22em] mb-1">
           Dashboard
         </p>
         <div className="flex items-center justify-between">
-          <h1 className="font-satoshi font-black text-3xl text-grey1">Edit Profile</h1>
+          <h1 className="font-satoshi font-bold text-2xl text-grey1">Edit Profile</h1>
           {profile?.username && (
             <a
               href={`/profile/${profile.username}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 font-spaceGrotesk text-xs font-semibold text-mainPurple hover:opacity-70 transition-opacity"
+              className="flex items-center gap-1.5 font-satoshi text-xs font-semibold text-mainPurple hover:opacity-70 transition-opacity"
             >
               View profile
               <FaArrowUpRightFromSquare className="w-3 h-3" />
@@ -169,7 +168,7 @@ export default function ProfilePage() {
             </div>
             <label
               htmlFor="avatar-upload"
-              className="absolute -bottom-0.5 -right-0.5 w-7 h-7 bg-mainPurple text-white rounded-full flex items-center justify-center cursor-pointer hover:bg-[#7D0FC9] transition-colors"
+              className="absolute -bottom-0.5 -right-0.5 w-7 h-7 bg-mainPurple text-white rounded-full flex items-center justify-center cursor-pointer hover:bg-[#4338CA] transition-colors"
             >
               {uploading ? (
                 <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -187,7 +186,7 @@ export default function ProfilePage() {
             </label>
           </div>
           <div>
-            <p className="font-spaceGrotesk font-semibold text-grey1 text-sm">Profile Photo</p>
+            <p className="font-satoshi font-semibold text-grey1 text-sm">Profile Photo</p>
             <p className="font-openSans text-xs text-grey3 mt-0.5">JPG, PNG or GIF · Max 5 MB</p>
           </div>
         </div>
@@ -196,7 +195,7 @@ export default function ProfilePage() {
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
-              <label htmlFor="name" className="block text-xs font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
+              <label htmlFor="name" className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
                 Full Name
               </label>
               <input
@@ -211,7 +210,7 @@ export default function ProfilePage() {
               />
             </div>
             <div>
-              <label htmlFor="title" className="block text-xs font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
+              <label htmlFor="title" className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
                 Professional Title
               </label>
               <input
@@ -227,7 +226,7 @@ export default function ProfilePage() {
           </div>
 
           <div>
-            <label htmlFor="phone" className="block text-xs font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
+            <label htmlFor="phone" className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
               Phone Number
             </label>
             <input
@@ -242,7 +241,7 @@ export default function ProfilePage() {
           </div>
 
           <div>
-            <label htmlFor="bio" className="block text-xs font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
+            <label htmlFor="bio" className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
               Bio
             </label>
             <textarea
@@ -258,7 +257,7 @@ export default function ProfilePage() {
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-xs font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
+            <label htmlFor="email" className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
               Email Address
             </label>
             <input
@@ -273,7 +272,7 @@ export default function ProfilePage() {
 
           {profile?.username && (
             <div>
-              <label htmlFor="username" className="block text-xs font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
+              <label htmlFor="username" className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
                 Username
               </label>
               <div className="flex items-center gap-2">
@@ -293,7 +292,7 @@ export default function ProfilePage() {
             <button
               type="submit"
               disabled={saving}
-              className="px-8 py-3 bg-mainPurple text-white rounded-xl font-spaceGrotesk font-semibold text-sm hover:bg-[#7D0FC9] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors"
+              className="px-8 py-3 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors"
             >
               {saving ? 'Saving…' : 'Save Changes'}
             </button>

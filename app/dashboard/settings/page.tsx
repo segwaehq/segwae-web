@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { FaLock, FaEye, FaEyeSlash } from 'react-icons/fa6'
+import { FaLock, FaEye, FaEyeSlash, FaBriefcase } from 'react-icons/fa6'
 import { toast } from 'sonner'
 
 interface PrivacySettings {
@@ -10,13 +10,19 @@ interface PrivacySettings {
   show_email: boolean
 }
 
+interface CareerSettings {
+  open_to_work: boolean
+  job_seeking_status: string
+}
+
 const inputClass =
-  'w-full px-4 py-3 border border-grey4 rounded-xl focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 bg-white transition-colors'
+  'w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 bg-white transition-colors'
 
 export default function SettingsPage() {
   const [loading, setLoading] = useState(true)
   const [savingPassword, setSavingPassword] = useState(false)
   const [savingPrivacy, setSavingPrivacy] = useState(false)
+  const [savingCareer, setSavingCareer] = useState(false)
 
   const [passwordData, setPasswordData] = useState({
     currentPassword: '',
@@ -34,19 +40,31 @@ export default function SettingsPage() {
     show_email: true,
   })
 
+  const [careerSettings, setCareerSettings] = useState<CareerSettings>({
+    open_to_work: false,
+    job_seeking_status: 'actively_looking',
+  })
+
   const supabase = createClient()
 
-  useEffect(() => { fetchPrivacySettings() }, [])
+  useEffect(() => { fetchSettings() }, [])
 
-  const fetchPrivacySettings = async () => {
+  const fetchSettings = async () => {
     try {
       setLoading(true)
-      const response = await fetch('/api/user/privacy')
-      if (!response.ok) throw new Error('Failed to fetch privacy settings')
-      const data = await response.json()
-      setPrivacySettings(data.privacySettings)
+      const [privacyRes, profileRes] = await Promise.all([
+        fetch('/api/user/privacy'),
+        fetch('/api/user/profile'),
+      ])
+      if (!privacyRes.ok || !profileRes.ok) throw new Error('Failed to fetch settings')
+      const [privacyData, profileData] = await Promise.all([privacyRes.json(), profileRes.json()])
+      setPrivacySettings(privacyData.privacySettings)
+      setCareerSettings({
+        open_to_work: profileData.profile?.open_to_work ?? false,
+        job_seeking_status: profileData.profile?.job_seeking_status ?? 'actively_looking',
+      })
     } catch (err) {
-      console.error('Error fetching privacy settings:', err)
+      console.error('Error fetching settings:', err)
     } finally {
       setLoading(false)
     }
@@ -95,6 +113,30 @@ export default function SettingsPage() {
     }
   }
 
+  const handleCareerChange = async (patch: Partial<CareerSettings>) => {
+    const prev = careerSettings
+    const next = { ...prev, ...patch }
+    setCareerSettings(next)
+    setSavingCareer(true)
+    try {
+      const res = await fetch('/api/user/profile', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          open_to_work: next.open_to_work,
+          job_seeking_status: next.open_to_work ? next.job_seeking_status : null,
+        }),
+      })
+      if (!res.ok) throw new Error((await res.json()).error)
+      toast.success('Career status updated')
+    } catch (err) {
+      setCareerSettings(prev)
+      toast.error(err instanceof Error ? err.message : 'Failed to update')
+    } finally {
+      setSavingCareer(false)
+    }
+  }
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
@@ -103,11 +145,11 @@ export default function SettingsPage() {
     )
   }
 
-  const Toggle = ({ checked, onChange }: { checked: boolean; onChange: () => void }) => (
+  const Toggle = ({ checked, onChange, disabled }: { checked: boolean; onChange: () => void; disabled?: boolean }) => (
     <button
       type="button"
       onClick={onChange}
-      disabled={savingPrivacy}
+      disabled={disabled}
       className={`relative inline-flex h-7 w-12 items-center rounded-full transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
         checked ? 'bg-mainPurple' : 'bg-grey4'
       }`}
@@ -122,12 +164,11 @@ export default function SettingsPage() {
 
   return (
     <div className="max-w-full">
-      {/* Page header */}
       <div className="mb-8">
-        <p className="font-spaceGrotesk text-xs font-semibold text-mainPurple uppercase tracking-[0.15em] mb-1">
+        <p className="font-satoshi text-[11px] font-semibold text-mainPurple uppercase tracking-[0.22em] mb-1">
           Dashboard
         </p>
-        <h1 className="font-satoshi font-black text-3xl text-grey1">Settings</h1>
+        <h1 className="font-satoshi font-bold text-2xl text-grey1">Settings</h1>
       </div>
 
       <div className="space-y-5">
@@ -138,7 +179,7 @@ export default function SettingsPage() {
               <FaLock className="w-4 h-4 text-mainPurple" />
             </div>
             <div>
-              <h2 className="font-spaceGrotesk font-semibold text-grey1">Change Password</h2>
+              <h2 className="font-satoshi font-semibold text-grey1">Change Password</h2>
               <p className="font-openSans text-xs text-grey3">Keep your account secure</p>
             </div>
           </div>
@@ -152,7 +193,7 @@ export default function SettingsPage() {
               ] as const
             ).map(({ id, label, key }) => (
               <div key={id}>
-                <label htmlFor={id} className="block text-xs font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
+                <label htmlFor={id} className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
                   {label}
                 </label>
                 <div className="relative">
@@ -191,7 +232,7 @@ export default function SettingsPage() {
               <button
                 type="submit"
                 disabled={savingPassword}
-                className="px-6 py-3 bg-mainPurple text-white rounded-xl font-spaceGrotesk font-semibold text-sm hover:bg-[#7D0FC9] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                className="px-6 py-3 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors"
               >
                 {savingPassword ? 'Updating…' : 'Update Password'}
               </button>
@@ -202,11 +243,11 @@ export default function SettingsPage() {
         {/* Privacy */}
         <div className="bg-white rounded-2xl border border-grey4/60 p-8">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-9 h-9 rounded-xl bg-blue/10 flex items-center justify-center shrink-0">
-              <FaEye className="w-4 h-4 text-blue" />
+            <div className="w-9 h-9 rounded-xl bg-mainPurple/10 flex items-center justify-center shrink-0">
+              <FaEye className="w-4 h-4 text-mainPurple" />
             </div>
             <div>
-              <h2 className="font-spaceGrotesk font-semibold text-grey1">Privacy Settings</h2>
+              <h2 className="font-satoshi font-semibold text-grey1">Privacy Settings</h2>
               <p className="font-openSans text-xs text-grey3">
                 Control what&apos;s visible on your public profile
               </p>
@@ -214,9 +255,9 @@ export default function SettingsPage() {
           </div>
 
           <div className="space-y-4">
-            <div className="flex items-center justify-between p-4 border border-grey4 rounded-xl">
+            <div className="flex items-center justify-between p-4 border border-grey4 rounded-lg">
               <div>
-                <p className="font-spaceGrotesk font-semibold text-grey1 text-sm">Show Phone Number</p>
+                <p className="font-satoshi font-semibold text-grey1 text-sm">Show Phone Number</p>
                 <p className="font-openSans text-xs text-grey3 mt-0.5">
                   Display your phone on your public profile
                 </p>
@@ -224,12 +265,13 @@ export default function SettingsPage() {
               <Toggle
                 checked={privacySettings.show_phone}
                 onChange={() => handlePrivacyToggle('show_phone')}
+                disabled={savingPrivacy}
               />
             </div>
 
-            <div className="flex items-center justify-between p-4 border border-grey4 rounded-xl">
+            <div className="flex items-center justify-between p-4 border border-grey4 rounded-lg">
               <div>
-                <p className="font-spaceGrotesk font-semibold text-grey1 text-sm">Show Email Address</p>
+                <p className="font-satoshi font-semibold text-grey1 text-sm">Show Email Address</p>
                 <p className="font-openSans text-xs text-grey3 mt-0.5">
                   Display your email on your public profile
                 </p>
@@ -237,6 +279,7 @@ export default function SettingsPage() {
               <Toggle
                 checked={privacySettings.show_email}
                 onChange={() => handlePrivacyToggle('show_email')}
+                disabled={savingPrivacy}
               />
             </div>
           </div>
@@ -244,6 +287,72 @@ export default function SettingsPage() {
           <p className="mt-5 font-openSans text-xs text-grey3 border-t border-grey4/60 pt-4">
             Hiding contact info may make it harder for others to connect with you.
           </p>
+        </div>
+
+        {/* Career */}
+        <div className="bg-white rounded-2xl border border-grey4/60 p-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-9 h-9 rounded-xl bg-mainPurple/10 flex items-center justify-center shrink-0">
+              <FaBriefcase className="w-4 h-4 text-mainPurple" />
+            </div>
+            <div>
+              <h2 className="font-satoshi font-semibold text-grey1">Career Status</h2>
+              <p className="font-openSans text-xs text-grey3">
+                Let employers know you&apos;re available
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-4 border border-grey4 rounded-lg">
+              <div>
+                <p className="font-satoshi font-semibold text-grey1 text-sm">Open to work</p>
+                <p className="font-openSans text-xs text-grey3 mt-0.5">
+                  Show employers you&apos;re looking for opportunities
+                </p>
+              </div>
+              <Toggle
+                checked={careerSettings.open_to_work}
+                onChange={() => handleCareerChange({ open_to_work: !careerSettings.open_to_work })}
+                disabled={savingCareer}
+              />
+            </div>
+
+            {careerSettings.open_to_work && (
+              <div className="p-4 border border-grey4 rounded-lg space-y-3">
+                <p className="font-satoshi font-semibold text-grey1 text-sm">Availability</p>
+                {(
+                  [
+                    { value: 'actively_looking', label: 'Actively looking', desc: 'Ready to start soon, actively applying' },
+                    { value: 'open_to_offers', label: 'Open to offers', desc: 'Employed but open to the right opportunity' },
+                  ] as const
+                ).map(({ value, label, desc }) => (
+                  <label
+                    key={value}
+                    className={`flex items-start gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${
+                      careerSettings.job_seeking_status === value
+                        ? 'border-mainPurple bg-lightPurple'
+                        : 'border-grey4 hover:border-grey3'
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="job_seeking_status"
+                      value={value}
+                      checked={careerSettings.job_seeking_status === value}
+                      onChange={() => handleCareerChange({ job_seeking_status: value })}
+                      disabled={savingCareer}
+                      className="mt-0.5 accent-mainPurple"
+                    />
+                    <div>
+                      <p className="font-satoshi font-semibold text-sm text-grey1">{label}</p>
+                      <p className="font-openSans text-xs text-grey3 mt-0.5">{desc}</p>
+                    </div>
+                  </label>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

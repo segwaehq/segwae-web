@@ -77,12 +77,12 @@ export default function SocialLinksStep({ value, onUpdate, onNext, onBack }: Soc
     }
   }
 
-  const inputClass = "w-full px-4 py-3 border border-grey4 rounded-xl focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 bg-white transition-colors"
+  const inputClass = "w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 bg-white transition-colors"
 
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="font-satoshi font-black text-3xl text-grey1 mb-2">
+        <h2 className="font-satoshi font-bold text-2xl text-grey1 mb-2">
           Add your social links
         </h2>
         <p className="font-openSans text-grey3 text-sm leading-relaxed">
@@ -96,15 +96,15 @@ export default function SocialLinksStep({ value, onUpdate, onNext, onBack }: Soc
           {links.map((link) => {
             const platform = platforms.find(p => p.platform_identifier === link.platform)
             return (
-              <div key={link.id} className="flex items-center gap-3 p-3 border border-grey4 rounded-xl">
+              <div key={link.id} className="flex items-center gap-3 p-3 border border-grey4 rounded-lg">
                 <div
                   className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-xs font-bold shrink-0"
-                  style={{ backgroundColor: platform?.color_hex || '#6A0DAD' }}
+                  style={{ backgroundColor: platform?.color_hex || '#4F46E5' }}
                 >
                   {(platform?.platform_name || link.platform).charAt(0).toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-spaceGrotesk font-semibold text-grey1 text-xs">
+                  <p className="font-satoshi font-semibold text-grey1 text-xs">
                     {platform?.platform_name || link.platform}
                   </p>
                   <p className="font-openSans text-xs text-grey3 truncate">{link.url}</p>
@@ -124,8 +124,8 @@ export default function SocialLinksStep({ value, onUpdate, onNext, onBack }: Soc
       )}
 
       {/* Add new */}
-      <div className="border border-grey4 rounded-xl p-4 space-y-3">
-        <p className="font-spaceGrotesk text-xs font-semibold text-grey2">Add a link</p>
+      <div className="border border-grey4 rounded-lg p-4 space-y-3">
+        <p className="font-satoshi text-xs font-semibold text-grey2">Add a link</p>
         <select value={newPlatform} onChange={(e) => setNewPlatform(e.target.value)} className={inputClass}>
           <option value="">Select platform</option>
           {platforms.map(p => (
@@ -141,7 +141,7 @@ export default function SocialLinksStep({ value, onUpdate, onNext, onBack }: Soc
         />
         {error && <p className="text-xs text-errorRed font-openSans">{error}</p>}
         <button onClick={handleAdd} disabled={saving}
-          className="w-full py-2.5 border border-mainPurple/30 text-mainPurple rounded-xl font-spaceGrotesk font-semibold text-sm hover:bg-mainPurple/5 disabled:opacity-50 transition-colors flex items-center justify-center gap-2">
+          className="w-full py-2.5 border border-mainPurple/30 text-mainPurple rounded-lg font-satoshi font-semibold text-sm hover:bg-mainPurple/5 disabled:opacity-50 transition-colors flex items-center justify-center gap-2">
           {saving
             ? <div className="w-4 h-4 border-2 border-mainPurple border-t-transparent rounded-full animate-spin" />
             : <><FaPlus className="w-3.5 h-3.5" /> Add Link</>
@@ -151,11 +151,11 @@ export default function SocialLinksStep({ value, onUpdate, onNext, onBack }: Soc
 
       <div className="flex gap-3">
         <button type="button" onClick={onBack}
-          className="flex-1 py-3.5 border border-grey4 text-grey2 rounded-xl font-spaceGrotesk font-semibold text-sm hover:border-grey3 transition-colors">
+          className="flex-1 py-3.5 border border-grey4 text-grey2 rounded-lg font-satoshi font-semibold text-sm hover:border-grey3 transition-colors">
           Back
         </button>
         <button type="button" onClick={onNext}
-          className="flex-2 px-8 py-3.5 bg-mainPurple text-white rounded-xl font-spaceGrotesk font-semibold text-sm hover:bg-[#7D0FC9] transition-colors">
+          className="flex-2 px-8 py-3.5 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] transition-colors">
           {links.length > 0 ? 'Continue' : 'Skip'}
         </button>
       </div>

@@ -44,7 +44,7 @@ export default function BioStep({ value, onUpdate, onNext, onBack }: BioStepProp
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
       <div>
-        <h2 className="font-satoshi font-black text-3xl text-grey1 mb-2">
+        <h2 className="font-satoshi font-bold text-2xl text-grey1 mb-2">
           Tell us about yourself
         </h2>
         <p className="font-openSans text-grey3 text-sm leading-relaxed">
@@ -53,7 +53,7 @@ export default function BioStep({ value, onUpdate, onNext, onBack }: BioStepProp
       </div>
 
       <div>
-        <label htmlFor="bio" className="block text-sm font-semibold text-grey1 mb-1.5 font-spaceGrotesk">
+        <label htmlFor="bio" className="block text-sm font-semibold text-grey1 mb-1.5 font-satoshi">
           Bio
         </label>
         <textarea
@@ -62,7 +62,7 @@ export default function BioStep({ value, onUpdate, onNext, onBack }: BioStepProp
           onChange={(e) => setBio(e.target.value)}
           placeholder="I'm a passionate professional who loves…"
           rows={5}
-          className="w-full px-4 py-3 border border-grey4 rounded-xl focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 transition-colors resize-none"
+          className="w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 transition-colors resize-none"
           disabled={saving}
         />
         <div className="flex justify-between items-center mt-2">
@@ -81,11 +81,11 @@ export default function BioStep({ value, onUpdate, onNext, onBack }: BioStepProp
 
       <div className="flex gap-3">
         <button type="button" onClick={onBack} disabled={saving}
-          className="flex-1 py-3.5 border border-grey4 text-grey2 rounded-xl font-spaceGrotesk font-semibold text-sm hover:border-grey3 transition-colors disabled:opacity-50">
+          className="flex-1 py-3.5 border border-grey4 text-grey2 rounded-lg font-satoshi font-semibold text-sm hover:border-grey3 transition-colors disabled:opacity-50">
           Back
         </button>
         <button type="submit" disabled={saving || !isValid}
-          className="flex-2 px-8 py-3.5 bg-mainPurple text-white rounded-xl font-spaceGrotesk font-semibold text-sm hover:bg-[#7D0FC9] disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+          className="flex-2 px-8 py-3.5 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
           {saving ? 'Saving…' : 'Continue'}
         </button>
       </div>
