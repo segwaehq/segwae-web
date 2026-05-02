@@ -7,40 +7,13 @@ import {
   logApplicationEmail,
 } from '@/lib/hiring/queries'
 import { resolveMergeTags } from '@/lib/hiring/templates'
+import { sendViaZeptomail } from '@/lib/hiring/mailer'
 
 async function getAuthedUser() {
   const supabase = await createClient()
   const { data: { user }, error } = await supabase.auth.getUser()
   if (error || !user) return null
   return user
-}
-
-async function sendViaZeptomail(to: string, subject: string, htmlBody: string): Promise<void> {
-  const apiKey = process.env.ZEPTOMAIL_API_KEY
-  if (!apiKey) {
-    // In development / before key is configured: log and continue
-    console.warn('[Zeptomail] ZEPTOMAIL_API_KEY not set — email not sent')
-    return
-  }
-
-  const res = await fetch('https://api.zeptomail.com/v1.1/email', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Zoho-enczapikey ${apiKey}`,
-    },
-    body: JSON.stringify({
-      from: { address: process.env.ZEPTOMAIL_FROM_ADDRESS ?? 'noreply@segwae.com', name: 'Segwae Hiring' },
-      to: [{ email_address: { address: to } }],
-      subject,
-      htmlbody: htmlBody,
-    }),
-  })
-
-  if (!res.ok) {
-    const err = await res.text()
-    throw new Error(`Zeptomail error: ${err}`)
-  }
 }
 
 export async function POST(request: Request) {

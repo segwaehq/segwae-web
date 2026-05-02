@@ -42,10 +42,13 @@ interface UserProfile {
   portfolio_or_website_link: string | null
 }
 
-function AdGate({ onComplete }: { onComplete: () => void }) {
+function AdGate({ onComplete }: { onComplete: (watched: boolean) => void }) {
+  const [adStatus, setAdStatus] = useState<'detecting' | 'filled'>('detecting')
   const [seconds, setSeconds] = useState(5)
   const [ready, setReady] = useState(false)
+  const insRef = useRef<HTMLElement>(null)
   const pushed = useRef(false)
+  const resolved = useRef(false)
 
   useEffect(() => {
     if (!pushed.current) {
@@ -55,28 +58,52 @@ function AdGate({ onComplete }: { onComplete: () => void }) {
         const w = window as any
         w.adsbygoogle = w.adsbygoogle || []
         w.adsbygoogle.push({})
-      } catch {
-        // blocked or not loaded — countdown still proceeds
+      } catch {}
+    }
+
+    const ins = insRef.current
+    if (!ins) { onComplete(false); return }
+
+    const resolve = (loaded: boolean) => {
+      if (resolved.current) return
+      resolved.current = true
+      if (!loaded) {
+        onComplete(false)
+      } else {
+        setAdStatus('filled')
       }
     }
 
+    const observer = new MutationObserver(() => {
+      const s = ins.getAttribute('data-ad-status')
+      if (s === 'filled') resolve(true)
+      else if (s === 'unfilled') resolve(false)
+    })
+    observer.observe(ins, { attributes: true, attributeFilter: ['data-ad-status'] })
+    const timeout = setTimeout(() => resolve(false), 3000)
+
+    return () => { observer.disconnect(); clearTimeout(timeout) }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (adStatus !== 'filled') return
     const id = setInterval(() => {
       setSeconds((s) => {
         if (s <= 1) { clearInterval(id); setReady(true); return 0 }
         return s - 1
       })
     }, 1000)
-
     return () => clearInterval(id)
-  }, [])
+  }, [adStatus])
 
   return (
     <div className="p-6 flex-1 flex flex-col">
       <p className="font-openSans text-sm text-grey3 text-center mb-4">
         Support Segwae by viewing this ad
       </p>
-      <div className="rounded-xl overflow-hidden bg-grey6 border border-grey4/60 mb-5 min-h-[120px] flex items-center justify-center">
+      <div className="relative rounded-xl overflow-hidden bg-grey6 border border-grey4/60 mb-5 min-h-[120px] flex items-center justify-center">
         <ins
+          ref={insRef as React.RefObject<HTMLModElement>}
           className="adsbygoogle"
           style={{ display: 'block', width: '100%' }}
           data-ad-client="ca-pub-4398584928051251"
@@ -84,13 +111,18 @@ function AdGate({ onComplete }: { onComplete: () => void }) {
           data-ad-format="auto"
           data-full-width-responsive="true"
         />
+        {adStatus === 'detecting' && (
+          <div className="absolute inset-0 flex items-center justify-center bg-grey6">
+            <div className="w-5 h-5 border-2 border-mainPurple/30 border-t-mainPurple rounded-full animate-spin" />
+          </div>
+        )}
       </div>
       <button
-        onClick={onComplete}
-        disabled={!ready}
+        onClick={() => onComplete(true)}
+        disabled={!ready || adStatus !== 'filled'}
         className="w-full py-3 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
       >
-        {ready ? 'Continue to application →' : `Continue in ${seconds}s`}
+        {adStatus === 'detecting' ? 'Loading ad…' : ready ? 'Continue to application →' : `Continue in ${seconds}s`}
       </button>
     </div>
   )
@@ -230,7 +262,7 @@ function ApplyModal({
 
         {/* Ad gate */}
         {step === 'ad_gate' && (
-          <AdGate onComplete={() => { setAdWatched(true); setStep('form') }} />
+          <AdGate onComplete={(watched) => { setAdWatched(watched); setStep('form') }} />
         )}
 
         {/* Application form */}

@@ -50,7 +50,7 @@ function ProductCard({ product }: { product: Product }) {
 
         {/* Side indicator */}
         <div className="absolute top-3 right-3 px-2.5 py-1 bg-black/50 rounded-lg backdrop-blur-sm">
-          <span className="font-spaceGrotesk text-[10px] font-semibold text-white/80 uppercase tracking-[0.1em]">
+          <span className="font-satoshi text-[10px] font-semibold text-white/80 uppercase tracking-[0.1em]">
             {isHovered ? 'Back' : 'Front'}
           </span>
         </div>
@@ -58,7 +58,7 @@ function ProductCard({ product }: { product: Product }) {
 
       {/* Info */}
       <div className="p-6">
-        <h3 className="font-spaceGrotesk font-semibold text-grey1 mb-1">
+        <h3 className="font-satoshi font-semibold text-grey1 mb-1">
           {product.name}
         </h3>
         {product.description && (
