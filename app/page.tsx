@@ -120,7 +120,7 @@ export default function Home() {
           }}
         />
         {/* Fade bottom */}
-        <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-40 bg-linear-to-t from-white to-transparent pointer-events-none" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-32 pb-20 lg:pt-44 lg:pb-28">
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">

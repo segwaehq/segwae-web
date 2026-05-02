@@ -182,12 +182,47 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${satoshi.variable}`}>
       <head>
+        {/* Google Consent Mode v2 — must run before any gtag calls */}
+        <Script id="google-consent-mode" strategy="beforeInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('consent', 'default', {
+              'ad_storage': 'denied',
+              'ad_user_data': 'denied',
+              'ad_personalization': 'denied',
+              'analytics_storage': 'denied',
+              'wait_for_update': 500
+            });
+            gtag('set', 'url_passthrough', true);
+          `}
+        </Script>
+
+        {/* Google Funding Choices CMP — shows consent dialog to EEA/UK/Switzerland users */}
+        <Script
+          async
+          src="https://fundingchoicesmessages.google.com/i/pub-4398584928051251?ers=1"
+          strategy="afterInteractive"
+        />
+        <Script id="google-fc-init" strategy="afterInteractive">
+          {`
+            (function() {
+              function signalGooglefcPresent() {
+                if (!window.googletag) { window.googletag = { cmd: [] }; }
+                if (googletag.replayFailedRequests) googletag.replayFailedRequests();
+              }
+              signalGooglefcPresent();
+            })();
+          `}
+        </Script>
+
         {/* Google Analytics */}
         <Script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-FRLK75T2CW"
+          strategy="afterInteractive"
         />
-        <Script id="google-analytics">
+        <Script id="google-analytics" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
@@ -196,11 +231,13 @@ export default function RootLayout({
           `}
         </Script>
 
-        <meta name="google-adsense-account" content="ca-pub-4398584928051251"></meta>
+        {/* Google AdSense */}
+        <meta name="google-adsense-account" content="ca-pub-4398584928051251" />
         <Script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4398584928051251"
           crossOrigin="anonymous"
+          strategy="afterInteractive"
         />
 
         <link rel="image_src" href="https://segwae.com/og-image.png" />
