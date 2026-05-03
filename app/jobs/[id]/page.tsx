@@ -30,7 +30,7 @@ function formatSalary(min: number | null, max: number | null) {
   return `Up to ${fmt(max!)} / month`
 }
 
-type ModalStep = 'loading' | 'no_resumes' | 'ad_gate' | 'form' | 'success'
+type ModalStep = 'loading' | 'no_resumes' | 'form' | 'success'
 
 interface UserProfile {
   id: string
@@ -97,33 +97,40 @@ function AdGate({ onComplete }: { onComplete: (watched: boolean) => void }) {
   }, [adStatus])
 
   return (
-    <div className="p-6 flex-1 flex flex-col">
-      <p className="font-openSans text-sm text-grey3 text-center mb-4">
-        Support Segwae by viewing this ad
-      </p>
-      <div className="relative rounded-xl overflow-hidden bg-grey6 border border-grey4/60 mb-5 min-h-[120px] flex items-center justify-center">
-        <ins
-          ref={insRef as React.RefObject<HTMLModElement>}
-          className="adsbygoogle"
-          style={{ display: 'block', width: '100%' }}
-          data-ad-client="ca-pub-4398584928051251"
-          data-ad-slot="8641598883"
-          data-ad-format="auto"
-          data-full-width-responsive="true"
-        />
-        {adStatus === 'detecting' && (
-          <div className="absolute inset-0 flex items-center justify-center bg-grey6">
-            <div className="w-5 h-5 border-2 border-mainPurple/30 border-t-mainPurple rounded-full animate-spin" />
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+      <div className="bg-white w-full sm:max-w-lg rounded-t-3xl sm:rounded-2xl shadow-2xl flex flex-col animate-scaleIn">
+        <div className="flex items-center px-6 py-4 border-b border-grey4/60 shrink-0">
+          <p className="font-satoshi font-semibold text-sm text-grey1">Quick break</p>
+        </div>
+        <div className="p-6 flex flex-col">
+          <p className="font-openSans text-sm text-grey3 text-center mb-4">
+            Support Segwae by viewing this ad
+          </p>
+          <div className="relative rounded-xl bg-grey6 border border-grey4/60 mb-5 min-h-[120px] flex items-center justify-center">
+            <ins
+              ref={insRef as React.RefObject<HTMLModElement>}
+              className="adsbygoogle"
+              style={{ display: 'block', width: '100%' }}
+              data-ad-client="ca-pub-4398584928051251"
+              data-ad-slot="8641598883"
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            />
+            {adStatus === 'detecting' && (
+              <div className="absolute inset-0 flex items-center justify-center bg-grey6 rounded-xl">
+                <div className="w-5 h-5 border-2 border-mainPurple/30 border-t-mainPurple rounded-full animate-spin" />
+              </div>
+            )}
           </div>
-        )}
+          <button
+            onClick={() => onComplete(true)}
+            disabled={!ready || adStatus !== 'filled'}
+            className="w-full py-3 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          >
+            {adStatus === 'detecting' ? 'Loading ad…' : ready ? 'Continue to application →' : `Continue in ${seconds}s`}
+          </button>
+        </div>
       </div>
-      <button
-        onClick={() => onComplete(true)}
-        disabled={!ready || adStatus !== 'filled'}
-        className="w-full py-3 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-      >
-        {adStatus === 'detecting' ? 'Loading ad…' : ready ? 'Continue to application →' : `Continue in ${seconds}s`}
-      </button>
     </div>
   )
 }
@@ -132,10 +139,12 @@ function ApplyModal({
   job,
   onClose,
   onSuccess,
+  adWatched,
 }: {
   job: Job
   onClose: () => void
   onSuccess: () => void
+  adWatched: boolean
 }) {
   const [step, setStep] = useState<ModalStep>('loading')
   const [profile, setProfile] = useState<UserProfile | null>(null)
@@ -143,20 +152,17 @@ function ApplyModal({
   const [selectedResumeId, setSelectedResumeId] = useState<string | null>(null)
   const [coverNote, setCoverNote] = useState('')
   const [submitting, setSubmitting] = useState(false)
-  const [adWatched, setAdWatched] = useState(false)
 
   useEffect(() => {
     const init = async () => {
       try {
-        const [profileRes, resumesRes, countRes] = await Promise.all([
+        const [profileRes, resumesRes] = await Promise.all([
           fetch('/api/user/profile'),
           fetch('/api/hiring/resumes'),
-          fetch('/api/hiring/applications?today_count=true'),
         ])
-        const [profileData, resumesData, countData] = await Promise.all([
+        const [profileData, resumesData] = await Promise.all([
           profileRes.json(),
           resumesRes.json(),
-          countRes.json(),
         ])
 
         setProfile(profileData.profile ?? null)
@@ -164,14 +170,7 @@ function ApplyModal({
         setResumes(r)
         setSelectedResumeId(r.find((x) => x.is_default)?.id ?? r[0]?.id ?? null)
 
-        if (r.length === 0) {
-          setStep('no_resumes')
-          return
-        }
-
-        const todayCount: number = countData.count ?? 0
-        const nextN = todayCount + 1
-        setStep(nextN % 2 === 0 ? 'ad_gate' : 'form')
+        setStep(r.length === 0 ? 'no_resumes' : 'form')
       } catch {
         setStep('form')
       }
@@ -212,7 +211,6 @@ function ApplyModal({
   const stepTitle = {
     loading: 'Preparing…',
     no_resumes: 'Resume required',
-    ad_gate: 'Quick break',
     form: 'Apply with Segwae',
     success: 'Application sent!',
   }[step]
@@ -258,11 +256,6 @@ function ApplyModal({
               </button>
             </div>
           </div>
-        )}
-
-        {/* Ad gate */}
-        {step === 'ad_gate' && (
-          <AdGate onComplete={(watched) => { setAdWatched(watched); setStep('form') }} />
         )}
 
         {/* Application form */}
@@ -395,6 +388,23 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
   const [authUser, setAuthUser] = useState<{ id: string } | null | undefined>(undefined)
   const [existingApp, setExistingApp] = useState<{ id: string; status: string } | null>(null)
   const [modalOpen, setModalOpen] = useState(false)
+  const [adGateOpen, setAdGateOpen] = useState(false)
+  const [adWatched, setAdWatched] = useState(false)
+
+  const handleApplyClick = async () => {
+    try {
+      const res = await fetch('/api/hiring/applications?today_count=true')
+      const data = await res.json()
+      const nextN = (data.count ?? 0) + 1
+      if (nextN % 2 === 0) {
+        setAdGateOpen(true)
+      } else {
+        setModalOpen(true)
+      }
+    } catch {
+      setModalOpen(true)
+    }
+  }
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -488,7 +498,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
 
     return (
       <button
-        onClick={() => setModalOpen(true)}
+        onClick={handleApplyClick}
         className="w-full py-3.5 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] transition-colors"
       >
         Apply with Segwae profile
@@ -674,9 +684,17 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
         </div>
       </div>
 
+      {adGateOpen && (
+        <AdGate onComplete={(watched) => {
+          setAdWatched(watched)
+          setAdGateOpen(false)
+          setModalOpen(true)
+        }} />
+      )}
       {modalOpen && (
         <ApplyModal
           job={job}
+          adWatched={adWatched}
           onClose={() => setModalOpen(false)}
           onSuccess={() => setExistingApp({ id: 'pending', status: 'applied' })}
         />
