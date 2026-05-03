@@ -56,7 +56,7 @@ function LoginContent() {
   const inputClass = "w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 transition-colors"
 
   return (
-    <AuthLayout>
+    <AuthLayout justify='justify-center'>
       <div className="mb-8">
         <h1 className="font-satoshi font-bold text-2xl text-grey1 mb-2">
           Welcome back

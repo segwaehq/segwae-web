@@ -247,7 +247,7 @@ function ApplyModal({
             </p>
             <div className="flex flex-col gap-2">
               <Link
-                href="/dashboard/settings?tab=resumes"
+                href="/dashboard/resumes"
                 className="w-full py-3 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] transition-colors text-center"
                 onClick={onClose}
               >

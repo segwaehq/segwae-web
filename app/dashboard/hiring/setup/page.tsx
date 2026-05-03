@@ -74,7 +74,7 @@ export default function CompanySetupPage() {
   }
 
   return (
-    <div className="max-w-2xl">
+    <div className="max-w-full">
       <div className="mb-8">
         <p className="font-satoshi text-[11px] font-semibold text-mainPurple uppercase tracking-[0.22em] mb-1">
           Hiring

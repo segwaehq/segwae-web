@@ -25,10 +25,13 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
   // Hide header and footer on contact page (full-screen split layout)
   const isContactPage = pathname === '/contact'
 
+  // Hide header and footer on job detail pages (they have their own custom header)
+  const isJobDetailPage = !!pathname?.match(/^\/jobs\/[^/]+$/)
+
   // Alternative: Hide header and footer on admin dashboard pages only (uncomment to use)
   // const isAdminPage = pathname?.startsWith('/admin') && !pathname?.startsWith('/admin/login')
 
-  if (isProfilePage || isAdminPage || isDashboardPage || isAuthPage || isOnboardingPage || isContactPage) {
+  if (isProfilePage || isAdminPage || isDashboardPage || isAuthPage || isOnboardingPage || isContactPage || isJobDetailPage) {
     return <>{children}</>
   }
 

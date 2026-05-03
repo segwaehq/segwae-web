@@ -113,7 +113,7 @@ export default function PostJobPage() {
   }
 
   return (
-    <div className="max-w-2xl">
+    <div className="max-w-full">
       <div className="mb-8">
         <Link
           href="/dashboard/hiring"

@@ -45,6 +45,12 @@ html {
   scroll-behavior: smooth;
 }
 
+@layer base {
+  button, [role="button"], a, label[for], select {
+    cursor: pointer;
+  }
+}
+
 body {
   @apply bg-white text-grey1;
 }

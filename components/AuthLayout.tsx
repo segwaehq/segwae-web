@@ -5,14 +5,16 @@ interface AuthLayoutProps {
   children: React.ReactNode
   step?: number
   totalSteps?: number
+  justify?: string
 }
 
-export default function AuthLayout({ children, step, totalSteps }: AuthLayoutProps) {
+export default function AuthLayout({ children, step, totalSteps, justify }: AuthLayoutProps) {
   return (
-    <div className="min-h-screen flex">
+    // <div className="min-h-screen flex">
+    <div className="max-h-screen flex">
 
       {/* ── Left panel ─────────────────────────────────────────────────── */}
-      <div className="hidden lg:flex lg:w-[42%] bg-[#111827] flex-col justify-between p-12 relative overflow-hidden">
+      <div className="hidden h-screen lg:flex lg:w-[42%] bg-[#111827] flex-col justify-between p-12 relative overflow-hidden">
         {/* Subtle line grid */}
         <div
           className="absolute inset-0 pointer-events-none"
@@ -53,7 +55,7 @@ export default function AuthLayout({ children, step, totalSteps }: AuthLayoutPro
       </div>
 
       {/* ── Right panel ────────────────────────────────────────────────── */}
-      <div className="flex-1 flex flex-col items-center justify-center p-6 sm:p-10 bg-white min-h-screen">
+      <div className={`flex-1 flex flex-col items-center overflow-y-auto ${justify} p-6 sm:p-10 bg-white min-h-screen`}>
 
         {/* Mobile logo */}
         <div className="lg:hidden mb-8 self-start">

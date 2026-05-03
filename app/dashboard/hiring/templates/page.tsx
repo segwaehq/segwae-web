@@ -237,7 +237,7 @@ export default function TemplatesPage() {
   }
 
   return (
-    <div className="max-w-2xl">
+    <div className="max-w-full">
       <div className="mb-8">
         <Link href="/dashboard/hiring" className="inline-flex items-center gap-1.5 text-xs font-semibold text-grey3 hover:text-grey1 font-satoshi transition-colors mb-4">
           <FaArrowLeft className="w-3 h-3" /> Back to jobs
