@@ -13,7 +13,7 @@ export async function sendViaZeptomail(to: string, subject: string, htmlBody: st
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Zoho-enczapikey ${apiKey}`,
+      Authorization: apiKey,
     },
     body: JSON.stringify({
       from: {

@@ -40,17 +40,21 @@ const satoshi = localFont({
 
 
 export const metadata: Metadata = {
-  title: 'Segwae - The Smarter Way to Network',
+  title: 'Segwae - Find Work That Matters',
   description:
-    'Skip the small talk. Segwae lets you share your socials, email, and contact info instantly with one QR code or NFC card — no app download needed.',
+    'Segwae connects professionals with great roles at companies that value their work. Browse open positions, build your profile, and share it instantly with a QR code or NFC card.',
   keywords: [
-    'smart business card',
-    'networking app',
-    'QR code',
-    'NFC card',
-    'contact sharing',
+    'job search',
+    'find jobs',
+    'job board',
+    'hiring',
+    'recruitment',
+    'careers',
+    'professional profile',
+    'QR code business card',
     'digital identity',
     'Segwae',
+    'remote jobs',
     'professional networking',
   ],
   authors: [{ name: 'Segwae' }],
@@ -58,9 +62,9 @@ export const metadata: Metadata = {
     canonical: 'https://segwae.com',
   },
   openGraph: {
-    title: 'Segwae - The Smarter Way to Network',
+    title: 'Segwae - Find Work That Matters',
     description:
-      'Share your profile instantly with a single tap or scan. Meet smarter, connect faster, and turn first impressions into real connections.',
+      'Browse open roles, build a shareable professional profile, and connect with companies that value your work — all in one place.',
     url: 'https://segwae.com',
     siteName: 'Segwae',
     images: [
@@ -75,9 +79,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Segwae - The Smarter Way to Network',
+    title: 'Segwae - Find Work That Matters',
     description:
-      'Share your profile instantly with a single tap or scan. Meet smarter, connect faster, and turn first impressions into real connections.',
+      'Browse open roles, build a shareable professional profile, and connect with companies that value your work — all in one place.',
     images: ['https://segwae.com/og-image.png'],
   },
 };
