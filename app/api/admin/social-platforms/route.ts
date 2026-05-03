@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server'
-import { createAdminClient } from '@/lib/adminAuth'
+import { createAdminClient, checkAdminAuth } from '@/lib/adminAuth'
 
 // GET /api/admin/social-platforms - Get all platforms
 export async function GET() {
   try {
+    await checkAdminAuth()
     const supabase = createAdminClient()
 
     const { data, error } = await supabase
@@ -26,6 +27,7 @@ export async function GET() {
 // POST /api/admin/social-platforms - Create new platform
 export async function POST(request: Request) {
   try {
+    await checkAdminAuth()
     const supabase = createAdminClient()
     const body = await request.json()
 

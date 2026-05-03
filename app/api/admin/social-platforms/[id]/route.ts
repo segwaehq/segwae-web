@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createAdminClient } from '@/lib/adminAuth'
+import { createAdminClient, checkAdminAuth } from '@/lib/adminAuth'
 
 // GET /api/admin/social-platforms/[id] - Get single platform
 export async function GET(
@@ -7,6 +7,7 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await checkAdminAuth()
     const supabase = createAdminClient()
     const { id } = await params
 
@@ -42,6 +43,7 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await checkAdminAuth()
     const supabase = createAdminClient()
     const { id } = await params
     const body = await request.json()
@@ -153,6 +155,7 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await checkAdminAuth()
     const supabase = createAdminClient()
     const { id } = await params
 

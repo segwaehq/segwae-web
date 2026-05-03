@@ -30,8 +30,6 @@ export async function POST() {
     const result = Array.isArray(completion) ? completion[0] : completion
     const isComplete = result?.is_complete ?? false
 
-    console.log('Profile completion result:', result)
-
     if (!isComplete) {
       return NextResponse.json(
         {
@@ -113,7 +111,6 @@ async function manuallyUpdateCompletion(
     const percentage = (completedFields / totalFields) * 100
     const isComplete = percentage >= 80
 
-    console.log('Manual completion check:', { completedFields, totalFields, percentage, isComplete, breakdown })
 
     // Update the user's profile completion status
     const { error: updateError } = await supabase

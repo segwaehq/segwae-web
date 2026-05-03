@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server'
-import { createAdminClient } from '@/lib/adminAuth'
+import { createAdminClient, checkAdminAuth } from '@/lib/adminAuth'
 
 // PATCH /api/admin/social-platforms/reorder - Bulk reorder platforms
 export async function PATCH(request: Request) {
   try {
+    await checkAdminAuth()
     const supabase = createAdminClient()
     const body = await request.json()
 

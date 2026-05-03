@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server'
-import { createAdminClient } from '@/lib/adminAuth'
+import { createAdminClient, checkAdminAuth } from '@/lib/adminAuth'
 
 export async function POST(request: Request) {
   try {
+    await checkAdminAuth()
     const supabase = createAdminClient()
     const body = await request.json()
 
@@ -65,6 +66,7 @@ export async function POST(request: Request) {
 
 export async function GET() {
   try {
+    await checkAdminAuth()
     const supabase = createAdminClient()
 
     const { data, error } = await supabase
