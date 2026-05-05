@@ -111,7 +111,7 @@ function SendEmailModal({
 
   if (sent) {
     return (
-      <div className="fixed inset-0 bg-black/50 z-[200] flex items-center justify-center p-4">
+      <div className="fixed inset-0 bg-black/50 z-200 flex items-center justify-center p-4">
         <div className="bg-white rounded-2xl w-full max-w-sm p-10 flex flex-col items-center shadow-2xl animate-scaleIn">
           <div className="w-14 h-14 rounded-full bg-successGreen/10 flex items-center justify-center mb-4">
             <FaCheck className="w-6 h-6 text-successGreen" />
@@ -129,7 +129,7 @@ function SendEmailModal({
   }
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-[200] flex items-center justify-center p-4">
+    <div className="fixed inset-0 bg-black/50 z-200 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] flex flex-col shadow-2xl animate-scaleIn">
         <div className="flex items-center justify-between px-6 py-4 border-b border-grey4/60 shrink-0">
           <p className="font-satoshi font-semibold text-sm text-grey1">Email — {profile?.name ?? 'Applicant'}</p>
@@ -197,7 +197,7 @@ function SendEmailModal({
           <button
             onClick={handleSend}
             disabled={sending || !subject.trim() || !body.trim()}
-            className="flex-[2] flex items-center justify-center gap-2 py-2.5 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="flex-2 flex items-center justify-center gap-2 py-2.5 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             {sending ? (
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -267,7 +267,7 @@ function ScheduleInterviewModal({
     })
     const timeStr = new Date(result.scheduled_at).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
     return (
-      <div className="fixed inset-0 bg-black/50 z-[200] flex items-center justify-center p-4">
+      <div className="fixed inset-0 bg-black/50 z-200 flex items-center justify-center p-4">
         <div className="bg-white rounded-2xl w-full max-w-sm p-10 flex flex-col items-center shadow-2xl animate-scaleIn">
           <div className="w-14 h-14 rounded-full bg-successGreen/10 flex items-center justify-center mb-4">
             <FaCheck className="w-6 h-6 text-successGreen" />
@@ -293,7 +293,7 @@ function ScheduleInterviewModal({
   }
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-[200] flex items-center justify-center p-4">
+    <div className="fixed inset-0 bg-black/50 z-200 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] flex flex-col shadow-2xl animate-scaleIn">
         <div className="flex items-center justify-between px-6 py-4 border-b border-grey4/60 shrink-0">
           <p className="font-satoshi font-semibold text-sm text-grey1">
@@ -367,7 +367,7 @@ function ScheduleInterviewModal({
           <button
             onClick={handleSchedule}
             disabled={saving || !date || !time}
-            className="flex-[2] flex items-center justify-center gap-2 py-2.5 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="flex-2 flex items-center justify-center gap-2 py-2.5 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             {saving ? (
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -479,7 +479,7 @@ function KanbanBoard({
             onDragOver={(e) => onDragOver(e, stage.key)}
             onDragLeave={onDragLeave}
             onDrop={(e) => onDrop(e, stage.key)}
-            className={`flex-shrink-0 w-52 flex flex-col rounded-xl border-2 transition-colors ${
+            className={`shrink-0 w-52 flex flex-col rounded-xl border-2 transition-colors ${
               isDragTarget ? 'border-mainPurple bg-lightPurple/30' : 'border-grey4/60 bg-grey6/50'
             }`}
           >
