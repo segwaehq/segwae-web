@@ -60,6 +60,7 @@ export async function POST(request: Request) {
   try {
     const job = await createJob(company.id, user.id, {
       title, description,
+      company_name: null,
       requirements: requirements || null,
       location: location || null,
       job_type,

@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="fixed inset-0 z-100 bg-white flex flex-col">
       {/* Logo */}
       <header className="px-8 py-7 border-b border-grey4">
         <Link href="/">
