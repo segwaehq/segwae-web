@@ -50,6 +50,9 @@ export async function POST(request: Request) {
   const job = await getJobById(job_id)
   if (!job) return NextResponse.json({ error: 'Job not found' }, { status: 404 })
   if (job.status !== 'active') return NextResponse.json({ error: 'Job is not accepting applications' }, { status: 400 })
+  if (job.application_deadline && new Date(job.application_deadline) < new Date()) {
+    return NextResponse.json({ error: 'Application deadline has passed' }, { status: 400 })
+  }
   if (job.posting_mode !== 'internal') return NextResponse.json({ error: 'Cannot apply to external jobs through Segwae' }, { status: 400 })
 
   // Block duplicate applications

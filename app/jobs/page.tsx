@@ -63,7 +63,7 @@ function JobCard({ job }: { job: Job }) {
                 </span>
               )}
             </div>
-            <p className="font-openSans text-sm text-grey3 mt-0.5">{company?.name ?? '—'}</p>
+            <p className="font-openSans text-sm text-grey3 mt-0.5">{company?.name ?? job.company_name ?? '—'}</p>
           </div>
         </div>
 

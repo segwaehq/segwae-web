@@ -484,7 +484,7 @@ function ApplyModal({
             </p>
             <p className="font-openSans text-sm text-grey3 mb-8">
               Your Segwae profile has been shared with{" "}
-              {job.companies?.name ?? "the company"}. Track your progress in
+              {job.companies?.name ?? job.company_name ?? "the company"}. Track your progress in
               Applications.
             </p>
             <div className="flex flex-col gap-2">
@@ -707,7 +707,7 @@ export default function JobDetailPage({
                     {job.title}
                   </h1>
                   <p className="font-openSans text-sm text-grey2 mt-0.5">
-                    {company?.name}
+                    {company?.name ?? job.company_name}
                   </p>
                 </div>
               </div>
@@ -823,14 +823,14 @@ export default function JobDetailPage({
             )}
 
             {/* Company info */}
-            {company && (
+            {(company || job.company_name) && (
               <div className="bg-white rounded-2xl border border-grey4/60 p-6">
                 <h2 className="font-satoshi font-semibold text-grey1 mb-4">
-                  About {company.name}
+                  About {company?.name ?? job.company_name}
                 </h2>
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-xl overflow-hidden bg-grey5 flex items-center justify-center shrink-0">
-                    {company.logo_url ? (
+                    {company?.logo_url ? (
                       <Image
                         src={company.logo_url}
                         alt={company.name}
@@ -844,39 +844,43 @@ export default function JobDetailPage({
                   </div>
                   <div>
                     <p className="font-satoshi font-semibold text-sm text-grey1">
-                      {company.name}
+                      {company?.name ?? job.company_name}
                     </p>
-                    <div className="flex items-center gap-3 mt-1 flex-wrap">
-                      {company.industry && (
-                        <span className="font-openSans text-xs text-grey3">
-                          {company.industry}
-                        </span>
-                      )}
-                      {company.size && (
-                        <span className="font-openSans text-xs text-grey3">
-                          {company.size} employees
-                        </span>
-                      )}
-                      {company.location && (
-                        <span className="font-openSans text-xs text-grey3">
-                          {company.location}
-                        </span>
-                      )}
-                    </div>
-                    {company.description && (
-                      <p className="font-openSans text-sm text-grey2 mt-3 leading-relaxed">
-                        {company.description}
-                      </p>
-                    )}
-                    {company.website && (
-                      <a
-                        href={company.website}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 mt-3 text-xs font-satoshi font-semibold text-mainPurple hover:opacity-70 transition-opacity"
-                      >
-                        <FaGlobe className="w-3 h-3" /> {company.website}
-                      </a>
+                    {company && (
+                      <>
+                        <div className="flex items-center gap-3 mt-1 flex-wrap">
+                          {company.industry && (
+                            <span className="font-openSans text-xs text-grey3">
+                              {company.industry}
+                            </span>
+                          )}
+                          {company.size && (
+                            <span className="font-openSans text-xs text-grey3">
+                              {company.size} employees
+                            </span>
+                          )}
+                          {company.location && (
+                            <span className="font-openSans text-xs text-grey3">
+                              {company.location}
+                            </span>
+                          )}
+                        </div>
+                        {company.description && (
+                          <p className="font-openSans text-sm text-grey2 mt-3 leading-relaxed">
+                            {company.description}
+                          </p>
+                        )}
+                        {company.website && (
+                          <a
+                            href={company.website}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 mt-3 text-xs font-satoshi font-semibold text-mainPurple hover:opacity-70 transition-opacity"
+                          >
+                            <FaGlobe className="w-3 h-3" /> {company.website}
+                          </a>
+                        )}
+                      </>
                     )}
                   </div>
                 </div>

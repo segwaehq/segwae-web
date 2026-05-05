@@ -58,6 +58,7 @@ export async function getActiveJobs(filters?: {
       job_applications ( count )
     `)
     .eq('status', 'active')
+    .or(`application_deadline.is.null,application_deadline.gt.${new Date().toISOString()}`)
     .order('created_at', { ascending: false })
 
   if (filters?.job_type) query = query.eq('job_type', filters.job_type)

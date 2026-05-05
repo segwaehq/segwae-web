@@ -94,7 +94,8 @@ export interface Company {
 
 export interface Job {
   id: string
-  company_id: string
+  company_id: string | null
+  company_name: string | null
   posted_by: string
   title: string
   description: string
