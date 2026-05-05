@@ -2,7 +2,8 @@
 
 import Link from 'next/link'
 import { motion, useInView } from 'framer-motion'
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import {
   FaArrowRight,
   FaLocationDot,
@@ -104,6 +105,18 @@ const STEPS = [
 ]
 
 export default function Home() {
+  const router = useRouter()
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const hash = new URLSearchParams(window.location.hash.slice(1))
+    const errorCode = params.get('error_code') || hash.get('error_code')
+    const error = params.get('error') || hash.get('error')
+    if (errorCode || error === 'access_denied') {
+      router.replace('/forgot-password?error=link_expired')
+    }
+  }, [router])
+
   return (
     <div className="overflow-x-hidden">
 

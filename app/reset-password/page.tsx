@@ -21,7 +21,18 @@ export default function ResetPasswordPage() {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    const timeout = setTimeout(() => setInvalid(true), 5000)
+    const hasCode = new URLSearchParams(window.location.search).has('code')
+    const timeout = setTimeout(() => setInvalid(true), 10000)
+
+    // Supabase auto-exchanges the PKCE code — check if it already happened
+    if (hasCode) {
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        if (session) {
+          clearTimeout(timeout)
+          setReady(true)
+        }
+      })
+    }
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
       if (event === 'PASSWORD_RECOVERY') {
