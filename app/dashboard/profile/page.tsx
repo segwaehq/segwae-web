@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { createClient } from '@/lib/supabase/client'
 import Image from 'next/image'
 import { FaCamera, FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import { toast } from 'sonner'
@@ -32,8 +31,6 @@ export default function ProfilePage() {
     bio: '',
     title: '',
   })
-
-  const supabase = createClient()
 
   useEffect(() => {
     fetchProfile()
@@ -74,12 +71,21 @@ export default function ProfilePage() {
     setUploading(true)
     try {
       const fileExt = file.name.split('.').pop()
-      const filePath = `${profile.id}/${Date.now()}.${fileExt}`
-      const { error: uploadError } = await supabase.storage
-        .from('avatars').upload(filePath, file, { cacheControl: '3600', upsert: false })
-      if (uploadError) throw uploadError
+      const uploadRes = await fetch('/api/upload/avatar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contentType: file.type, fileExt }),
+      })
+      if (!uploadRes.ok) throw new Error('Failed to get upload URL')
+      const { presignedUrl, publicUrl } = await uploadRes.json()
 
-      const { data: { publicUrl } } = supabase.storage.from('avatars').getPublicUrl(filePath)
+      const putRes = await fetch(presignedUrl, {
+        method: 'PUT',
+        body: file,
+        headers: { 'Content-Type': file.type },
+      })
+      if (!putRes.ok) throw new Error('Failed to upload photo')
+
       const response = await fetch('/api/user/profile', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },

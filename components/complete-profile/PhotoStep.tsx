@@ -2,7 +2,6 @@
 
 import { useState, useRef } from 'react'
 import Image from 'next/image'
-import { createBrowserClient } from '@supabase/ssr'
 import { FaCamera } from 'react-icons/fa6'
 
 interface PhotoStepProps {
@@ -18,11 +17,6 @@ export default function PhotoStep({ value, onUpdate, onNext, onBack }: PhotoStep
   const [uploading, setUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
-
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
@@ -33,17 +27,21 @@ export default function PhotoStep({ value, onUpdate, onNext, onBack }: PhotoStep
 
     setUploading(true)
     try {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) { setError('Not authenticated'); return }
-
       const fileExt = file.name.split('.').pop()
-      const fileName = `${user.id}/profile-${Date.now()}.${fileExt}`
+      const uploadRes = await fetch('/api/upload/avatar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contentType: file.type, fileExt }),
+      })
+      if (!uploadRes.ok) { setError('Failed to upload image. Please try again.'); return }
+      const { presignedUrl, publicUrl } = await uploadRes.json()
 
-      const { error: uploadError } = await supabase.storage
-        .from('avatars').upload(fileName, file, { upsert: true })
-      if (uploadError) { setError('Failed to upload image. Please try again.'); return }
-
-      const { data: { publicUrl } } = supabase.storage.from('avatars').getPublicUrl(fileName)
+      const putRes = await fetch(presignedUrl, {
+        method: 'PUT',
+        body: file,
+        headers: { 'Content-Type': file.type },
+      })
+      if (!putRes.ok) { setError('Failed to upload image. Please try again.'); return }
 
       const res = await fetch('/api/user/profile', {
         method: 'PATCH',

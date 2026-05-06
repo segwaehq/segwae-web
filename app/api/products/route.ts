@@ -149,11 +149,19 @@ export async function POST(request: Request) {
       )
     }
 
+    // Generate unique slug from name
+    const baseSlug = name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '')
+    const slug = `${baseSlug}-${Date.now()}`
+
     // Insert product
     const { data: product, error } = await supabase
       .from('products')
       .insert({
         name,
+        slug,
         description,
         front_image_url,
         back_image_url,

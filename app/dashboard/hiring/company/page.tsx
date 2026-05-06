@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { toast } from 'sonner'
 import { FaBuilding, FaCheck, FaPen } from 'react-icons/fa6'
-import { createClient } from '@/lib/supabase/client'
 import type { Company } from '@/lib/types'
 
 const COMPANY_SIZES = [
@@ -28,7 +27,6 @@ const inputClass =
 
 export default function CompanyProfilePage() {
   const router = useRouter()
-  const supabase = createClient()
   const fileRef = useRef<HTMLInputElement>(null)
 
   const [loading, setLoading] = useState(true)
@@ -77,16 +75,21 @@ export default function CompanyProfilePage() {
 
     setUploadingLogo(true)
     try {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) throw new Error('Not authenticated')
+      const fileExt = file.name.split('.').pop()
+      const uploadRes = await fetch('/api/upload/company-logo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contentType: file.type, fileExt }),
+      })
+      if (!uploadRes.ok) throw new Error('Failed to get upload URL')
+      const { presignedUrl, publicUrl: logoUrl } = await uploadRes.json()
 
-      const ext = file.name.split('.').pop()
-      const path = `company-logos/${user.id}/${Date.now()}.${ext}`
-      const { error: uploadErr } = await supabase.storage.from('user-uploads').upload(path, file, { upsert: true })
-      if (uploadErr) throw uploadErr
-
-      const { data: urlData } = supabase.storage.from('user-uploads').getPublicUrl(path)
-      const logoUrl = urlData.publicUrl
+      const putRes = await fetch(presignedUrl, {
+        method: 'PUT',
+        body: file,
+        headers: { 'Content-Type': file.type },
+      })
+      if (!putRes.ok) throw new Error('Failed to upload logo')
 
       const res = await fetch('/api/hiring/company', {
         method: 'PATCH',
