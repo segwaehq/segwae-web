@@ -55,6 +55,9 @@ export async function POST(request: Request) {
     if (!external_url?.trim()) {
       return NextResponse.json({ error: 'External URL is required' }, { status: 400 })
     }
+    if (salary_min != null && salary_max != null && Number(salary_min) > Number(salary_max)) {
+      return NextResponse.json({ error: 'Minimum salary cannot be greater than maximum salary' }, { status: 400 })
+    }
 
     const { data, error } = await supabase
       .from('jobs')
@@ -85,6 +88,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ job: data }, { status: 201 })
   } catch (err) {
     console.error('Error creating admin job:', err)
+    const pg = err as { code?: string }
+    if (pg.code === '23514') {
+      return NextResponse.json({ error: 'Minimum salary cannot be greater than maximum salary' }, { status: 400 })
+    }
     return NextResponse.json({ error: 'Failed to create job' }, { status: 500 })
   }
 }

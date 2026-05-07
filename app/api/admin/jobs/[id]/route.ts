@@ -44,6 +44,12 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     if (application_deadline !== undefined) patch.application_deadline = application_deadline || null
     if (status !== undefined) patch.status = status
 
+    const resolvedMin = salary_min !== undefined ? salary_min : undefined
+    const resolvedMax = salary_max !== undefined ? salary_max : undefined
+    if (resolvedMin != null && resolvedMax != null && Number(resolvedMin) > Number(resolvedMax)) {
+      return NextResponse.json({ error: 'Minimum salary cannot be greater than maximum salary' }, { status: 400 })
+    }
+
     const { data, error } = await supabase
       .from('jobs')
       .update(patch)
@@ -57,6 +63,10 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     return NextResponse.json({ job: data })
   } catch (err) {
     console.error('Error updating admin job:', err)
+    const pg = err as { code?: string }
+    if (pg.code === '23514') {
+      return NextResponse.json({ error: 'Minimum salary cannot be greater than maximum salary' }, { status: 400 })
+    }
     return NextResponse.json({ error: 'Failed to update job' }, { status: 500 })
   }
 }
