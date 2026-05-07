@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { FaArrowLeft, FaCircleInfo } from 'react-icons/fa6'
 import Link from 'next/link'
+import { CURRENCIES } from '@/lib/currencies'
 
 const inputClass =
   'w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 bg-white transition-colors'
@@ -40,6 +41,7 @@ export default function PostJobPage() {
     experience_years_min: '0',
     salary_min: '',
     salary_max: '',
+    salary_currency: 'NGN',
     salary_visible: true,
     description: '',
     requirements: '',
@@ -82,6 +84,7 @@ export default function PostJobPage() {
         status,
         salary_min: form.salary_min ? parseFloat(form.salary_min) : undefined,
         salary_max: form.salary_max ? parseFloat(form.salary_max) : undefined,
+        salary_currency: form.salary_currency,
         salary_visible: form.salary_visible,
         experience_years_min: parseInt(form.experience_years_min) || 0,
         tags: tagsArr,
@@ -258,10 +261,20 @@ export default function PostJobPage() {
               placeholder="0"
             />
           </div>
+          <div>
+            <label className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
+              Currency
+            </label>
+            <select name="salary_currency" value={form.salary_currency} onChange={handleChange} className={inputClass}>
+              {CURRENCIES.map((c) => (
+                <option key={c.code} value={c.code}>{c.label}</option>
+              ))}
+            </select>
+          </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
-                Salary Min (₦)
+                Salary Min
               </label>
               <input
                 type="number"
@@ -274,7 +287,7 @@ export default function PostJobPage() {
             </div>
             <div>
               <label className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
-                Salary Max (₦)
+                Salary Max
               </label>
               <input
                 type="number"

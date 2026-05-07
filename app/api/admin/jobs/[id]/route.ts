@@ -22,6 +22,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
       requirements,
       salary_min,
       salary_max,
+      salary_currency,
       salary_visible,
       experience_years_min,
       tags,
@@ -40,6 +41,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     if (requirements !== undefined) patch.requirements = requirements?.trim() || null
     if (salary_min !== undefined) patch.salary_min = salary_min
     if (salary_max !== undefined) patch.salary_max = salary_max
+    if (salary_currency !== undefined) patch.salary_currency = salary_currency
     if (salary_visible !== undefined) patch.salary_visible = salary_visible
     if (experience_years_min !== undefined) patch.experience_years_min = experience_years_min
     if (tags !== undefined) patch.tags = Array.isArray(tags) ? tags : []

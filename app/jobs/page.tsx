@@ -7,6 +7,7 @@ import {
 import type { Job } from '@/lib/types'
 import { getActiveJobs } from '@/lib/hiring/queries'
 import { JobFilters } from '@/components/hiring/JobFilters'
+import { formatSalary } from '@/lib/currencies'
 
 const JOB_TYPE_LABELS: Record<string, string> = {
   full_time: 'Full-time', part_time: 'Part-time', contract: 'Contract', internship: 'Internship',
@@ -27,17 +28,10 @@ function timeAgo(dateStr: string) {
   return new Date(dateStr).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
 }
 
-function formatSalary(min: number | null, max: number | null) {
-  if (!min && !max) return null
-  const fmt = (n: number) => n >= 1_000_000 ? `₦${(n / 1_000_000).toFixed(1)}M` : `₦${(n / 1000).toFixed(0)}k`
-  if (min && max) return `${fmt(min)} – ${fmt(max)}`
-  if (min) return `From ${fmt(min)}`
-  return `Up to ${fmt(max!)}`
-}
 
 function JobCard({ job }: { job: Job }) {
   const company = job.companies
-  const salary = job.salary_visible ? formatSalary(job.salary_min, job.salary_max) : null
+  const salary = job.salary_visible ? formatSalary(job.salary_min, job.salary_max, job.salary_currency) : null
   const modeStyle = WORK_MODE_STYLES[job.work_mode] ?? 'text-grey2 bg-grey5'
   const modeLabel = WORK_MODE_LABELS[job.work_mode] ?? job.work_mode
 

@@ -48,7 +48,7 @@ export async function POST(request: Request) {
   const {
     title, description, requirements, location, job_type, work_mode,
     posting_mode, external_url, status, salary_min, salary_max,
-    salary_visible, experience_years_min, tags, application_deadline,
+    salary_currency, salary_visible, experience_years_min, tags, application_deadline,
   } = body
 
   if (!title?.trim()) return NextResponse.json({ error: 'Title is required' }, { status: 400 })
@@ -70,6 +70,7 @@ export async function POST(request: Request) {
       status: status ?? 'draft',
       salary_min: salary_min ?? null,
       salary_max: salary_max ?? null,
+      salary_currency: salary_currency ?? 'NGN',
       salary_visible: salary_visible ?? true,
       experience_years_min: experience_years_min ?? 0,
       tags: tags ?? [],

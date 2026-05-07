@@ -21,6 +21,7 @@ import {
 } from "react-icons/fa6";
 import { createClient } from "@/lib/supabase/client";
 import type { Job, Resume } from "@/lib/types";
+import { formatSalary } from "@/lib/currencies";
 
 const JOB_TYPE_LABELS: Record<string, string> = {
   full_time: "Full-time",
@@ -39,16 +40,6 @@ const WORK_MODE_COLORS: Record<string, string> = {
   hybrid: "text-mainPurple bg-lightPurple",
 };
 
-function formatSalary(min: number | null, max: number | null) {
-  if (!min && !max) return null;
-  const fmt = (n: number) =>
-    n >= 1_000_000
-      ? `₦${(n / 1_000_000).toFixed(1)}M`
-      : `₦${(n / 1000).toFixed(0)}k`;
-  if (min && max) return `${fmt(min)} – ${fmt(max)} / month`;
-  if (min) return `From ${fmt(min)} / month`;
-  return `Up to ${fmt(max!)} / month`;
-}
 
 type ModalStep = "loading" | "no_resumes" | "form" | "success";
 
@@ -613,7 +604,7 @@ export default function JobDetailPage({
 
   const company = job.companies;
   const salary = job.salary_visible
-    ? formatSalary(job.salary_min, job.salary_max)
+    ? formatSalary(job.salary_min, job.salary_max, job.salary_currency)
     : null;
 
   const renderCTA = () => {

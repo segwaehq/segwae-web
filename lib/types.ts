@@ -108,6 +108,7 @@ export interface Job {
   status: 'draft' | 'active' | 'paused' | 'archived'
   salary_min: number | null
   salary_max: number | null
+  salary_currency: string
   salary_visible: boolean
   experience_years_min: number
   tags: string[]

@@ -14,6 +14,7 @@ import {
   FaCircle,
 } from "react-icons/fa6";
 import type { Job } from "@/lib/types";
+import { CURRENCIES } from "@/lib/currencies";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -56,6 +57,7 @@ const blankForm = () => ({
   requirements: "",
   salary_min: "",
   salary_max: "",
+  salary_currency: "NGN",
   salary_visible: false,
   experience_years_min: "0",
   tags: "",
@@ -110,6 +112,7 @@ function jobToForm(job: Job): FormState {
     requirements: job.requirements ?? "",
     salary_min: job.salary_min?.toString() ?? "",
     salary_max: job.salary_max?.toString() ?? "",
+    salary_currency: job.salary_currency ?? "NGN",
     salary_visible: job.salary_visible,
     experience_years_min: job.experience_years_min?.toString() ?? "0",
     tags: (job.tags ?? []).join(", "),
@@ -132,6 +135,7 @@ function formToPayload(form: FormState) {
     requirements: form.requirements.trim() || null,
     salary_min: form.salary_min ? Number(form.salary_min) : null,
     salary_max: form.salary_max ? Number(form.salary_max) : null,
+    salary_currency: form.salary_currency,
     salary_visible: form.salary_visible,
     experience_years_min: Number(form.experience_years_min) || 0,
     tags: form.tags
@@ -337,8 +341,20 @@ function JobDrawer({
 
             <div className="space-y-4">
               <p className="font-satoshi font-semibold text-xs text-mainPurple uppercase tracking-widest">
-                Salary (₦ / month)
+                Salary
               </p>
+              <div>
+                <label className={labelCls}>Currency</label>
+                <select
+                  className={inputCls}
+                  value={form.salary_currency}
+                  onChange={(e) => set("salary_currency", e.target.value)}
+                >
+                  {CURRENCIES.map((c) => (
+                    <option key={c.code} value={c.code}>{c.label}</option>
+                  ))}
+                </select>
+              </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className={labelCls}>Minimum</label>
