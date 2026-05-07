@@ -1,11 +1,13 @@
 import { NextResponse } from 'next/server'
-import { checkAdminAuth, createAdminClient } from '@/lib/adminAuth'
+import { createAdminClient } from '@/lib/adminAuth'
+import { checkJobManagerAuth } from '@/lib/jobManagerAuth'
 
 // GET /api/admin/jobs — list all admin-posted external jobs (company_id IS NULL)
 export async function GET() {
+  const auth = await checkJobManagerAuth()
+  void auth
+
   try {
-    const user = await checkAdminAuth()
-    void user
     const supabase = createAdminClient()
 
     const { data, error } = await supabase
@@ -23,9 +25,10 @@ export async function GET() {
 
 // POST /api/admin/jobs — create a new admin-posted external job
 export async function POST(request: Request) {
+  const auth = await checkJobManagerAuth()
+  const supabase = createAdminClient()
+
   try {
-    const user = await checkAdminAuth()
-    const supabase = createAdminClient()
     const body = await request.json()
 
     const {
@@ -64,7 +67,7 @@ export async function POST(request: Request) {
       .insert({
         company_id: null,
         company_name: company_name.trim(),
-        posted_by: user.id,
+        posted_by: auth.id,
         title: title.trim(),
         posting_mode: 'external',
         external_url: external_url.trim(),

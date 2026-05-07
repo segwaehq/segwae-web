@@ -1,12 +1,14 @@
 import { NextResponse } from 'next/server'
-import { checkAdminAuth, createAdminClient } from '@/lib/adminAuth'
+import { createAdminClient } from '@/lib/adminAuth'
+import { checkJobManagerAuth } from '@/lib/jobManagerAuth'
 
 // PATCH /api/admin/jobs/[id] — update an admin-posted job
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  await checkJobManagerAuth()
+  const supabase = createAdminClient()
+  const { id } = await params
+
   try {
-    await checkAdminAuth()
-    const supabase = createAdminClient()
-    const { id } = await params
     const body = await request.json()
 
     const {
@@ -73,11 +75,11 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 
 // DELETE /api/admin/jobs/[id] — delete an admin-posted job
 export async function DELETE(_request: Request, { params }: { params: Promise<{ id: string }> }) {
-  try {
-    await checkAdminAuth()
-    const supabase = createAdminClient()
-    const { id } = await params
+  await checkJobManagerAuth()
+  const supabase = createAdminClient()
+  const { id } = await params
 
+  try {
     const { error } = await supabase
       .from('jobs')
       .delete()
