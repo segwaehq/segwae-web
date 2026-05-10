@@ -44,22 +44,30 @@ export async function updateCompany(
 
 // ─── Jobs ─────────────────────────────────────────────────────────────────────
 
+const JOBS_PAGE_SIZE = 20
+
 export async function getActiveJobs(filters?: {
   search?: string
   job_type?: string
   work_mode?: string
-}): Promise<Job[]> {
+  page?: number
+}): Promise<{ jobs: Job[]; total: number }> {
   const supabase = await createClient()
+  const page = Math.max(1, filters?.page ?? 1)
+  const from = (page - 1) * JOBS_PAGE_SIZE
+  const to = from + JOBS_PAGE_SIZE - 1
+
   let query = supabase
     .from('jobs')
     .select(`
       *,
       companies ( id, name, logo_url, location ),
       job_applications ( count )
-    `)
+    `, { count: 'exact' })
     .eq('status', 'active')
     .or(`application_deadline.is.null,application_deadline.gt.${new Date().toISOString()}`)
     .order('created_at', { ascending: false })
+    .range(from, to)
 
   if (filters?.job_type) query = query.eq('job_type', filters.job_type)
   if (filters?.work_mode) query = query.eq('work_mode', filters.work_mode)
@@ -67,14 +75,16 @@ export async function getActiveJobs(filters?: {
     query = query.or(`title.ilike.%${filters.search}%,description.ilike.%${filters.search}%`)
   }
 
-  const { data, error } = await query
+  const { data, error, count } = await query
   if (error) throw new Error(error.message)
 
   type RawRow = Omit<Job, 'application_count'> & { job_applications?: { count: number }[]; companies?: Job['companies'] }
-  return (data ?? []).map((row: RawRow): Job => {
+  const jobs = (data ?? []).map((row: RawRow): Job => {
     const { job_applications, ...rest } = row
     return { ...rest, application_count: job_applications?.[0]?.count ?? 0 }
   })
+
+  return { jobs, total: count ?? 0 }
 }
 
 export async function getJobsByCompany(companyId: string): Promise<Job[]> {

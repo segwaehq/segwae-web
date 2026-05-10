@@ -12,6 +12,7 @@ import {
   FaLocationDot,
   FaCheck,
   FaCircle,
+  FaMagnifyingGlass,
 } from "react-icons/fa6";
 import type { Job } from "@/lib/types";
 import { CURRENCIES } from "@/lib/currencies";
@@ -657,10 +658,14 @@ function JobRow({
 
 // ─── Main export ──────────────────────────────────────────────────────────────
 
+const PAGE_SIZE = 25;
+
 export default function JobsManager() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<StatusFilter>("all");
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editingJob, setEditingJob] = useState<Job | null>(null);
   const [deletingJob, setDeletingJob] = useState<Job | null>(null);
@@ -709,8 +714,19 @@ export default function JobsManager() {
     setDeletingJob(null);
   };
 
-  const filtered =
-    filter === "all" ? jobs : jobs.filter((j) => j.status === filter);
+  useEffect(() => { setPage(1); }, [filter, search]);
+
+  const byStatus = filter === "all" ? jobs : jobs.filter((j) => j.status === filter);
+  const q = search.trim().toLowerCase();
+  const filtered = q
+    ? byStatus.filter(
+        (j) =>
+          j.title.toLowerCase().includes(q) ||
+          (j.company_name ?? "").toLowerCase().includes(q),
+      )
+    : byStatus;
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   const counts = {
     all: jobs.length,
@@ -777,20 +793,32 @@ export default function JobsManager() {
         </div>
       </div>
 
-      <div className="flex gap-1 mb-5 bg-white border border-grey4/50 rounded-xl p-1.5 w-fit">
-        {tabs.map((tab) => (
-          <button
-            key={tab.key}
-            onClick={() => setFilter(tab.key)}
-            className={`px-3 py-1.5 rounded-lg font-satoshi font-semibold text-xs transition-all whitespace-nowrap ${
-              filter === tab.key
-                ? "bg-mainPurple text-white"
-                : "text-grey3 hover:text-grey1 hover:bg-grey5"
-            }`}
-          >
-            {tab.label}
-          </button>
-        ))}
+      <div className="flex items-center justify-between gap-4 mb-5">
+        <div className="flex gap-1 bg-white border border-grey4/50 rounded-xl p-1.5 overflow-x-auto shrink-0">
+          {tabs.map((tab) => (
+            <button
+              key={tab.key}
+              onClick={() => setFilter(tab.key)}
+              className={`px-3 py-1.5 rounded-lg font-satoshi font-semibold text-xs transition-all whitespace-nowrap ${
+                filter === tab.key
+                  ? "bg-mainPurple text-white"
+                  : "text-grey3 hover:text-grey1 hover:bg-grey5"
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+        <div className="relative w-56 shrink-0">
+          <FaMagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-grey3 pointer-events-none" />
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search title or company…"
+            className="w-full pl-9 pr-3 py-2 border border-grey4 rounded-lg font-openSans text-sm text-grey1 placeholder:text-grey3 focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple bg-white transition-colors"
+          />
+        </div>
       </div>
 
       {loading ? (
@@ -803,14 +831,23 @@ export default function JobsManager() {
             <FaBriefcase className="w-6 h-6 text-mainPurple" />
           </div>
           <p className="font-satoshi font-bold text-lg text-grey1">
-            No jobs yet
+            No jobs found
           </p>
           <p className="font-openSans text-sm text-grey3 text-center max-w-xs">
-            {filter === "all"
-              ? "Post your first external job to populate the job board."
-              : `No ${filter} jobs at the moment.`}
+            {q
+              ? "No jobs match your search."
+              : filter === "all"
+                ? "Post your first external job to populate the job board."
+                : `No ${filter} jobs at the moment.`}
           </p>
-          {filter === "all" && (
+          {q ? (
+            <button
+              onClick={() => setSearch("")}
+              className="mt-1 px-5 py-2 border border-grey4 text-grey1 rounded-lg font-satoshi font-semibold text-sm hover:bg-grey5 transition-colors"
+            >
+              Clear search
+            </button>
+          ) : filter === "all" ? (
             <button
               onClick={openCreate}
               className="mt-1 flex items-center gap-2 px-5 py-2.5 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] transition-colors"
@@ -818,19 +855,74 @@ export default function JobsManager() {
               <FaPlus className="w-3.5 h-3.5" />
               Post First Job
             </button>
-          )}
+          ) : null}
         </div>
       ) : (
-        <div className="space-y-3">
-          {filtered.map((job) => (
-            <JobRow
-              key={job.id}
-              job={job}
-              onEdit={openEdit}
-              onDelete={setDeletingJob}
-            />
-          ))}
-        </div>
+        <>
+          <div className="flex items-center justify-between mb-3">
+            <p className="font-openSans text-sm text-grey3">
+              {filtered.length} {filtered.length === 1 ? "job" : "jobs"}
+              {totalPages > 1 && (
+                <span className="ml-1 text-grey4">· page {page} of {totalPages}</span>
+              )}
+            </p>
+          </div>
+          <div className="space-y-3">
+            {paginated.map((job) => (
+              <JobRow
+                key={job.id}
+                job={job}
+                onEdit={openEdit}
+                onDelete={setDeletingJob}
+              />
+            ))}
+          </div>
+          {totalPages > 1 && (
+            <div className="flex items-center justify-center gap-1.5 mt-6">
+              <button
+                onClick={() => setPage((p) => p - 1)}
+                disabled={page === 1}
+                className="px-3 py-2 rounded-lg font-satoshi font-semibold text-sm transition-colors disabled:text-grey4 disabled:pointer-events-none text-grey2 hover:bg-grey5"
+              >
+                ← Prev
+              </button>
+              {(totalPages <= 7
+                ? Array.from({ length: totalPages }, (_, i) => i + 1)
+                : [
+                    1,
+                    ...(page > 3 ? ["ellipsis" as const] : []),
+                    ...Array.from(
+                      { length: Math.min(3, totalPages - 2) },
+                      (_, i) => Math.max(2, page - 1) + i,
+                    ).filter((p) => p > 1 && p < totalPages),
+                    ...(page < totalPages - 2 ? ["ellipsis" as const] : []),
+                    totalPages,
+                  ]
+              ).map((p, i) =>
+                p === "ellipsis" ? (
+                  <span key={`e${i}`} className="px-2 text-grey3 font-openSans text-sm select-none">…</span>
+                ) : (
+                  <button
+                    key={p}
+                    onClick={() => setPage(p)}
+                    className={`w-9 h-9 rounded-lg font-satoshi font-semibold text-sm transition-colors ${
+                      p === page ? "bg-mainPurple text-white" : "text-grey2 hover:bg-grey5"
+                    }`}
+                  >
+                    {p}
+                  </button>
+                ),
+              )}
+              <button
+                onClick={() => setPage((p) => p + 1)}
+                disabled={page === totalPages}
+                className="px-3 py-2 rounded-lg font-satoshi font-semibold text-sm transition-colors disabled:text-grey4 disabled:pointer-events-none text-grey2 hover:bg-grey5"
+              >
+                Next →
+              </button>
+            </div>
+          )}
+        </>
       )}
 
       {drawerOpen && (

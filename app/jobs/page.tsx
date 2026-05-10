@@ -105,15 +105,100 @@ function JobCard({ job }: { job: Job }) {
   )
 }
 
+const PAGE_SIZE = 20
+
+function buildPageUrl(sp: Record<string, string | undefined>, page: number) {
+  const params = new URLSearchParams()
+  if (sp.search) params.set('search', sp.search)
+  if (sp.job_type) params.set('job_type', sp.job_type)
+  if (sp.work_mode) params.set('work_mode', sp.work_mode)
+  if (page > 1) params.set('page', String(page))
+  const qs = params.toString()
+  return `/jobs${qs ? `?${qs}` : ''}`
+}
+
+function PaginationControls({
+  currentPage,
+  totalPages,
+  sp,
+}: {
+  currentPage: number
+  totalPages: number
+  sp: Record<string, string | undefined>
+}) {
+  if (totalPages <= 1) return null
+
+  const pages: (number | 'ellipsis')[] = []
+  if (totalPages <= 7) {
+    for (let i = 1; i <= totalPages; i++) pages.push(i)
+  } else {
+    pages.push(1)
+    if (currentPage > 3) pages.push('ellipsis')
+    for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
+      pages.push(i)
+    }
+    if (currentPage < totalPages - 2) pages.push('ellipsis')
+    pages.push(totalPages)
+  }
+
+  return (
+    <div className="flex items-center justify-center gap-1.5 mt-8">
+      <Link
+        href={buildPageUrl(sp, currentPage - 1)}
+        aria-disabled={currentPage === 1}
+        className={`px-3 py-2 rounded-lg font-satoshi font-semibold text-sm transition-colors ${
+          currentPage === 1
+            ? 'pointer-events-none text-grey4'
+            : 'text-grey2 hover:bg-grey5'
+        }`}
+      >
+        ← Prev
+      </Link>
+
+      {pages.map((p, i) =>
+        p === 'ellipsis' ? (
+          <span key={`e${i}`} className="px-2 text-grey3 font-openSans text-sm select-none">…</span>
+        ) : (
+          <Link
+            key={p}
+            href={buildPageUrl(sp, p)}
+            className={`w-9 h-9 rounded-lg flex items-center justify-center font-satoshi font-semibold text-sm transition-colors ${
+              p === currentPage
+                ? 'bg-mainPurple text-white'
+                : 'text-grey2 hover:bg-grey5'
+            }`}
+          >
+            {p}
+          </Link>
+        )
+      )}
+
+      <Link
+        href={buildPageUrl(sp, currentPage + 1)}
+        aria-disabled={currentPage === totalPages}
+        className={`px-3 py-2 rounded-lg font-satoshi font-semibold text-sm transition-colors ${
+          currentPage === totalPages
+            ? 'pointer-events-none text-grey4'
+            : 'text-grey2 hover:bg-grey5'
+        }`}
+      >
+        Next →
+      </Link>
+    </div>
+  )
+}
+
 export default async function JobsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ search?: string; job_type?: string; work_mode?: string }>
+  searchParams: Promise<{ search?: string; job_type?: string; work_mode?: string; page?: string }>
 }) {
   const sp = await searchParams
-  const { search, job_type, work_mode } = sp
+  const { search, job_type, work_mode, page: pageParam } = sp
+  const currentPage = Math.max(1, parseInt(pageParam ?? '1', 10))
 
-  const jobs = await getActiveJobs({ search, job_type, work_mode })
+  const { jobs, total } = await getActiveJobs({ search, job_type, work_mode, page: currentPage })
+  const totalPages = Math.ceil(total / PAGE_SIZE)
   const hasFilters = !!(search || job_type || work_mode)
 
   return (
@@ -152,7 +237,10 @@ export default async function JobsPage({
       <div className="max-w-5xl mx-auto px-5 py-8">
         <div className="flex items-center justify-between mb-6">
           <p className="font-openSans text-sm text-grey3">
-            {jobs.length} {jobs.length === 1 ? 'role' : 'roles'} found
+            {total} {total === 1 ? 'role' : 'roles'} found
+            {totalPages > 1 && (
+              <span className="ml-1 text-grey4">· page {currentPage} of {totalPages}</span>
+            )}
           </p>
           {hasFilters && (
             <Link href="/jobs" className="font-satoshi font-semibold text-xs text-mainPurple hover:opacity-70 transition-opacity">
@@ -179,9 +267,12 @@ export default async function JobsPage({
             )}
           </div>
         ) : (
-          <div className="grid gap-4 md:grid-cols-2">
-            {jobs.map((job) => <JobCard key={job.id} job={job} />)}
-          </div>
+          <>
+            <div className="grid gap-4 md:grid-cols-2">
+              {jobs.map((job) => <JobCard key={job.id} job={job} />)}
+            </div>
+            <PaginationControls currentPage={currentPage} totalPages={totalPages} sp={{ search, job_type, work_mode }} />
+          </>
         )}
 
         <div className="mt-12 bg-[#111827] rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
