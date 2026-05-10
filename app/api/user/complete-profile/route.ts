@@ -93,8 +93,8 @@ async function manuallyUpdateCompletion(
     breakdown.phone = !!profile.phone
     if (breakdown.phone) completedFields++
 
-    breakdown.bio = !!(profile.bio && profile.bio.length >= 50)
-    if (breakdown.bio) completedFields++
+    breakdown.bio = true
+    completedFields++
 
     breakdown.title = !!profile.title
     if (breakdown.title) completedFields++

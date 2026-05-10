@@ -72,7 +72,6 @@ export default function CompleteProfilePage() {
   function determineStartStep(data: { profile: ProfileData; socialLinks: ProfileData['social_links'] }): number {
     if (!data.profile?.phone) return 1
     if (!data.profile?.title) return 2
-    if (!data.profile?.bio || data.profile.bio.length < 50) return 3
     if (!data.profile?.profile_image_url) return 4
     if (!data.profile?.portfolio_or_website_link) return 6
     return 6
