@@ -651,6 +651,14 @@ export default function JobDetailPage({
       );
     }
 
+    if (job.application_deadline && new Date(job.application_deadline) < new Date()) {
+      return (
+        <div className="w-full flex items-center justify-center py-3.5 bg-grey5 text-grey3 rounded-lg font-satoshi font-semibold text-sm cursor-default">
+          Application deadline has passed
+        </div>
+      );
+    }
+
     return (
       <button
         onClick={handleApplyClick}

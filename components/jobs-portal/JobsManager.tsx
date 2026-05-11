@@ -43,7 +43,7 @@ const STATUSES = [
   { value: "archived", label: "Archived", color: "text-grey3 bg-grey5" },
 ] as const;
 
-type StatusFilter = "all" | Job["status"];
+type StatusFilter = "all" | "expired" | Job["status"];
 
 // ─── Blank form ───────────────────────────────────────────────────────────────
 
@@ -86,6 +86,10 @@ function jobTypeLabel(t: Job["job_type"]) {
 
 function workModeLabel(m: Job["work_mode"]) {
   return WORK_MODES.find((x) => x.value === m)?.label ?? m;
+}
+
+function isExpired(job: Job) {
+  return !!job.application_deadline && new Date(job.application_deadline) < new Date();
 }
 
 function timeAgo(dateStr: string) {
@@ -586,11 +590,17 @@ function JobRow({
       <div className="flex items-start gap-4">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap mb-0.5">
-            <span
-              className={`text-[10px] font-satoshi font-semibold px-2 py-0.5 rounded-full ${statusStyle(job.status)}`}
-            >
-              {statusLabel(job.status)}
-            </span>
+            {isExpired(job) ? (
+              <span className="text-[10px] font-satoshi font-semibold px-2 py-0.5 rounded-full text-red-600 bg-red-50">
+                Expired
+              </span>
+            ) : (
+              <span
+                className={`text-[10px] font-satoshi font-semibold px-2 py-0.5 rounded-full ${statusStyle(job.status)}`}
+              >
+                {statusLabel(job.status)}
+              </span>
+            )}
             <span className="text-[10px] font-satoshi font-semibold px-2 py-0.5 rounded-full text-blue bg-blue/10">
               External
             </span>
@@ -716,7 +726,14 @@ export default function JobsManager() {
 
   useEffect(() => { setPage(1); }, [filter, search]);
 
-  const byStatus = filter === "all" ? jobs : jobs.filter((j) => j.status === filter);
+  const byStatus =
+    filter === "all"
+      ? jobs
+      : filter === "expired"
+        ? jobs.filter(isExpired)
+        : filter === "active"
+          ? jobs.filter((j) => j.status === "active" && !isExpired(j))
+          : jobs.filter((j) => j.status === filter);
   const q = search.trim().toLowerCase();
   const filtered = q
     ? byStatus.filter(
@@ -730,7 +747,8 @@ export default function JobsManager() {
 
   const counts = {
     all: jobs.length,
-    active: jobs.filter((j) => j.status === "active").length,
+    active: jobs.filter((j) => j.status === "active" && !isExpired(j)).length,
+    expired: jobs.filter(isExpired).length,
     draft: jobs.filter((j) => j.status === "draft").length,
     paused: jobs.filter((j) => j.status === "paused").length,
     archived: jobs.filter((j) => j.status === "archived").length,
@@ -739,6 +757,7 @@ export default function JobsManager() {
   const tabs: { key: StatusFilter; label: string }[] = [
     { key: "all", label: `All (${counts.all})` },
     { key: "active", label: `Active (${counts.active})` },
+    { key: "expired", label: `Expired (${counts.expired})` },
     { key: "draft", label: `Draft (${counts.draft})` },
     { key: "paused", label: `Paused (${counts.paused})` },
     { key: "archived", label: `Archived (${counts.archived})` },
@@ -838,7 +857,9 @@ export default function JobsManager() {
               ? "No jobs match your search."
               : filter === "all"
                 ? "Post your first external job to populate the job board."
-                : `No ${filter} jobs at the moment.`}
+                : filter === "expired"
+                  ? "No jobs have passed their deadline yet."
+                  : `No ${filter} jobs at the moment.`}
           </p>
           {q ? (
             <button
