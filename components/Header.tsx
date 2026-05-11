@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { usePathname } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { FaBars, FaXmark } from "react-icons/fa6"
@@ -22,7 +22,7 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
-  const supabase = createClient()
+  const supabase = useMemo(() => createClient(), [])
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
@@ -66,6 +66,7 @@ export default function Header() {
               width={0}
               height={0}
               sizes="100vw"
+              loading="eager"
               className="h-7 w-auto!"
             />
           </Link>

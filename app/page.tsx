@@ -135,7 +135,8 @@ export default function Home() {
         {/* Fade bottom */}
         <div className="absolute bottom-0 left-0 right-0 h-40 bg-linear-to-t from-white to-transparent pointer-events-none" />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-32 pb-20 lg:pt-44 lg:pb-28">
+        {/* <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-32 pb-20 lg:pt-44 lg:pb-28"> */}
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-20 pb-10 lg:pt-32 lg:pb-18">
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
 
             {/* Left — headline + CTAs */}
@@ -258,7 +259,7 @@ export default function Home() {
       </section>
 
       {/* ═══ OPEN POSITIONS ══════════════════════════════════════════════════ */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-grey6">
+      <section className="py-12 md:py-24 px-4 sm:px-6 lg:px-8 bg-grey6">
         <div className="max-w-6xl mx-auto">
 
           <InView className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
@@ -357,7 +358,7 @@ export default function Home() {
       </section>
 
       {/* ═══ HOW IT WORKS ════════════════════════════════════════════════════ */}
-      <section id="how-it-works" className="py-24 px-4 sm:px-6 lg:px-8 bg-white">
+      <section id="how-it-works" className="py-12 md:py-24 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-6xl mx-auto">
 
           <InView className="mb-16">
@@ -387,7 +388,7 @@ export default function Home() {
       </section>
 
       {/* ═══ FOR EMPLOYERS ═══════════════════════════════════════════════════ */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-[#111827]">
+      <section className="py-12 md:py-24 px-4 sm:px-6 lg:px-8 bg-[#111827]">
         <div className="max-w-6xl mx-auto">
           <InView className="grid md:grid-cols-2 gap-12 items-center">
             <motion.div variants={fadeUp}>
@@ -429,7 +430,7 @@ export default function Home() {
       </section>
 
       {/* ═══ DIGITAL IDENTITY ════════════════════════════════════════════════ */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-grey6">
+      <section className="py-12 md:py-24 px-4 sm:px-6 lg:px-8 bg-grey6">
         <div className="max-w-6xl mx-auto">
           <div className="bg-white rounded-2xl border border-grey4 p-8 md:p-12">
             <InView className="grid md:grid-cols-2 gap-12 items-center">
@@ -475,7 +476,7 @@ export default function Home() {
       </section>
 
       {/* ═══ FINAL CTA ═══════════════════════════════════════════════════════ */}
-      <section className="py-28 px-4 bg-[#111827]">
+      <section className="py-14 md:py-28 px-4 bg-[#111827]">
         <InView className="max-w-3xl mx-auto text-center">
           <motion.h2
             variants={fadeUp}
