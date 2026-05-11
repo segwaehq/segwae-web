@@ -72,7 +72,7 @@ const PREVIEW_JOBS = [
     company: 'Canva',
     location: 'Sydney',
     mode: 'On-site',
-    salary: 'A$95k – $130k',
+    salary: '$95k – $130k',
     tags: ['Growth', 'Brand'],
     color: '#00C4CC',
     initials: 'CV',
