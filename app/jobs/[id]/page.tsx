@@ -18,6 +18,9 @@ import {
   FaFileLines,
   FaGlobe,
   FaTriangleExclamation,
+  FaInstagram,
+  FaXTwitter,
+  FaLinkedin,
 } from "react-icons/fa6";
 import { createClient } from "@/lib/supabase/client";
 import type { Job, Resume } from "@/lib/types";
@@ -207,6 +210,87 @@ function AdGate({ onComplete }: { onComplete: (watched: boolean) => void }) {
               : ready
                 ? "Continue to application →"
                 : `Continue in ${seconds}s`}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FollowModal({ onComplete }: { onComplete: () => void }) {
+  return (
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+      <div className="bg-white w-full sm:max-w-lg rounded-t-3xl sm:rounded-2xl shadow-2xl flex flex-col animate-scaleIn">
+        <div className="flex items-center px-6 py-4 border-b border-grey4/60 shrink-0">
+          <p className="font-satoshi font-semibold text-sm text-grey1">
+            Follow Segwae
+          </p>
+        </div>
+        <div className="p-6 flex flex-col">
+          <div className="w-14 h-14 rounded-2xl bg-lightPurple flex items-center justify-center mx-auto mb-4">
+            <span className="text-2xl">👋</span>
+          </div>
+          <p className="font-satoshi font-bold text-lg text-grey1 text-center mb-1">
+            You&apos;re on a roll!
+          </p>
+          <p className="font-openSans text-sm text-grey3 text-center mb-6">
+            Stay updated with the latest jobs and opportunities. Follow us on socials — it only takes a second.
+          </p>
+          <div className="flex flex-col gap-3 mb-6">
+            <a
+              href="https://www.instagram.com/segwaehq"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 px-4 py-3 rounded-xl border border-grey4/60 hover:border-pink-400 hover:bg-pink-50 transition-colors group"
+            >
+              <FaInstagram className="w-5 h-5 text-pink-500 shrink-0" />
+              <span className="font-satoshi font-semibold text-sm text-grey1 group-hover:text-pink-600">
+                Instagram
+              </span>
+              <span className="ml-auto font-openSans text-xs text-grey3">
+                @segwaehq
+              </span>
+            </a>
+            <a
+              href="https://x.com/segwaehq"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 px-4 py-3 rounded-xl border border-grey4/60 hover:border-grey1 hover:bg-grey5 transition-colors group"
+            >
+              <FaXTwitter className="w-5 h-5 text-grey1 shrink-0" />
+              <span className="font-satoshi font-semibold text-sm text-grey1">
+                X (Twitter)
+              </span>
+              <span className="ml-auto font-openSans text-xs text-grey3">
+                @segwaehq
+              </span>
+            </a>
+            <a
+              href="https://www.linkedin.com/company/segwaehq"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 px-4 py-3 rounded-xl border border-grey4/60 hover:border-blue-500 hover:bg-blue-50 transition-colors group"
+            >
+              <FaLinkedin className="w-5 h-5 text-blue shrink-0" />
+              <span className="font-satoshi font-semibold text-sm text-grey1 group-hover:text-blue">
+                LinkedIn
+              </span>
+              <span className="ml-auto font-openSans text-xs text-grey3">
+                segwaehq
+              </span>
+            </a>
+          </div>
+          <button
+            onClick={onComplete}
+            className="w-full py-3 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] transition-colors"
+          >
+            Continue to application →
+          </button>
+          <button
+            onClick={onComplete}
+            className="w-full py-2.5 mt-2 text-grey3 font-openSans text-sm hover:text-grey1 transition-colors"
+          >
+            Skip for now
           </button>
         </div>
       </div>
@@ -532,14 +616,21 @@ export default function JobDetailPage({
   } | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [adGateOpen, setAdGateOpen] = useState(false);
+  const [followModalOpen, setFollowModalOpen] = useState(false);
   const [adWatched, setAdWatched] = useState(false);
+  const [pendingExternalUrl, setPendingExternalUrl] = useState<string | null>(null);
 
   const handleApplyClick = async () => {
     try {
       const res = await fetch("/api/hiring/applications?today_count=true");
       const data = await res.json();
       const nextN = (data.count ?? 0) + 1;
-      if (nextN % 2 === 0) {
+      const totalNext = (data.total_count ?? 0) + 1;
+      const hasSeenFollow = localStorage.getItem("segwae_follow_prompted") === "true";
+
+      if (totalNext === 7 && !hasSeenFollow) {
+        setFollowModalOpen(true);
+      } else if (nextN % 2 === 0) {
         setAdGateOpen(true);
       } else {
         setModalOpen(true);
@@ -547,6 +638,36 @@ export default function JobDetailPage({
     } catch {
       setModalOpen(true);
     }
+  };
+
+  const handleExternalClick = (url: string) => {
+    const hasSeenFollow = localStorage.getItem("segwae_follow_prompted") === "true";
+
+    if (!hasSeenFollow) {
+      const prevCount = parseInt(localStorage.getItem("segwae_external_clicks") ?? "0", 10);
+      const newCount = prevCount + 1;
+      localStorage.setItem("segwae_external_clicks", String(newCount));
+
+      if (newCount >= 5) {
+        setPendingExternalUrl(url);
+        setFollowModalOpen(true);
+        return;
+      }
+    }
+
+    const today = new Date().toISOString().slice(0, 10);
+    const stored = JSON.parse(localStorage.getItem("segwae_external_ad_clicks") ?? "null");
+    const prevAdCount = stored?.date === today ? (stored.count ?? 0) : 0;
+    const newAdCount = prevAdCount + 1;
+    localStorage.setItem("segwae_external_ad_clicks", JSON.stringify({ count: newAdCount, date: today }));
+
+    if (newAdCount % 2 === 0) {
+      setPendingExternalUrl(url);
+      setAdGateOpen(true);
+      return;
+    }
+
+    window.open(url, "_blank", "noopener,noreferrer");
   };
 
   useEffect(() => {
@@ -610,15 +731,13 @@ export default function JobDetailPage({
   const renderCTA = () => {
     if (job.posting_mode === "external") {
       return (
-        <a
-          href={job.external_url!}
-          target="_blank"
-          rel="noopener noreferrer"
+        <button
+          onClick={() => handleExternalClick(job.external_url!)}
           className="w-full flex items-center justify-center gap-2 py-3.5 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] transition-colors"
         >
           Apply on company website{" "}
           <FaArrowUpRightFromSquare className="w-3 h-3" />
-        </a>
+        </button>
       );
     }
 
@@ -940,12 +1059,31 @@ export default function JobDetailPage({
         </div>
       </div>
 
+      {followModalOpen && (
+        <FollowModal
+          onComplete={() => {
+            localStorage.setItem("segwae_follow_prompted", "true");
+            setFollowModalOpen(false);
+            if (pendingExternalUrl) {
+              window.open(pendingExternalUrl, "_blank", "noopener,noreferrer");
+              setPendingExternalUrl(null);
+            } else {
+              setModalOpen(true);
+            }
+          }}
+        />
+      )}
       {adGateOpen && (
         <AdGate
           onComplete={(watched) => {
             setAdWatched(watched);
             setAdGateOpen(false);
-            setModalOpen(true);
+            if (pendingExternalUrl) {
+              window.open(pendingExternalUrl, "_blank", "noopener,noreferrer");
+              setPendingExternalUrl(null);
+            } else {
+              setModalOpen(true);
+            }
           }}
         />
       )}

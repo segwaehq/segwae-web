@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import {
   getMyApplications,
   getTodayApplicationCount,
+  getTotalApplicationCount,
   getExistingApplication,
   getJobById,
   getResumes,
@@ -23,8 +24,11 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
 
   if (searchParams.get('today_count') === 'true') {
-    const count = await getTodayApplicationCount(user.id)
-    return NextResponse.json({ count })
+    const [count, total_count] = await Promise.all([
+      getTodayApplicationCount(user.id),
+      getTotalApplicationCount(user.id),
+    ])
+    return NextResponse.json({ count, total_count })
   }
 
   const checkJobId = searchParams.get('check_job_id')
