@@ -18,24 +18,27 @@ export default function PortfolioStep({ value, onUpdate, onComplete, onBack }: P
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
-    if (!url.trim()) { setError('Portfolio / website URL is required'); return }
-    try { new URL(url) } catch { setError('Please enter a valid URL (e.g. https://example.com)'); return }
+    if (url.trim()) {
+      try { new URL(url) } catch { setError('Please enter a valid URL (e.g. https://example.com)'); return }
+    }
 
     setSaving(true)
     try {
-      const res = await fetch('/api/user/profile', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ portfolio_or_website_link: url.trim() }),
-      })
-      if (res.ok) {
+      if (url.trim()) {
+        const res = await fetch('/api/user/profile', {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ portfolio_or_website_link: url.trim() }),
+        })
+        if (!res.ok) {
+          setError('Failed to save. Please try again.')
+          setSaving(false)
+          return
+        }
         onUpdate(url.trim())
-        const err = await onComplete()
-        if (err) { setError(err); setSaving(false) }
-      } else {
-        setError('Failed to save. Please try again.')
-        setSaving(false)
       }
+      const err = await onComplete()
+      if (err) { setError(err); setSaving(false) }
     } catch {
       setError('Something went wrong. Please try again.')
       setSaving(false)
@@ -49,13 +52,13 @@ export default function PortfolioStep({ value, onUpdate, onComplete, onBack }: P
           Add your portfolio or website
         </h2>
         <p className="font-openSans text-grey3 text-sm leading-relaxed">
-          Share a link to your portfolio, personal website, or any page that showcases your work.
+          Share a link to your portfolio, personal website, or any page that showcases your work. This is optional — you can skip it and add one later.
         </p>
       </div>
 
       <div>
         <label htmlFor="portfolio" className="block text-sm font-semibold text-grey1 mb-1.5 font-satoshi">
-          Portfolio / Website URL
+          Portfolio / Website URL <span className="text-grey3 font-normal">(optional)</span>
         </label>
         <input
           type="url"
