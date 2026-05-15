@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Suspense } from 'react'
@@ -8,6 +9,18 @@ import type { Job } from '@/lib/types'
 import { getActiveJobs } from '@/lib/hiring/queries'
 import { JobFilters } from '@/components/hiring/JobFilters'
 import { formatSalary } from '@/lib/currencies'
+
+export const metadata: Metadata = {
+  title: 'Browse Jobs | Segwae',
+  description: 'Explore full-time, part-time, remote, and contract job opportunities. Find your next role on Segwae.',
+  alternates: { canonical: 'https://segwae.com/jobs' },
+  openGraph: {
+    title: 'Browse Jobs | Segwae',
+    description: 'Explore full-time, part-time, remote, and contract job opportunities. Find your next role on Segwae.',
+    url: 'https://segwae.com/jobs',
+    type: 'website',
+  },
+}
 
 const JOB_TYPE_LABELS: Record<string, string> = {
   full_time: 'Full-time', part_time: 'Part-time', contract: 'Contract', internship: 'Internship',
