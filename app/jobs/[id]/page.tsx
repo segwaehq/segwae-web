@@ -43,7 +43,6 @@ const WORK_MODE_COLORS: Record<string, string> = {
   hybrid: "text-mainPurple bg-lightPurple",
 };
 
-
 type ModalStep = "loading" | "no_resumes" | "form" | "success";
 
 interface UserProfile {
@@ -56,164 +55,29 @@ interface UserProfile {
   portfolio_or_website_link: string | null;
 }
 
-function AdGate({ onComplete }: { onComplete: (watched: boolean) => void }) {
-  const [adStatus, setAdStatus] = useState<"detecting" | "filled">("detecting");
-  const [seconds, setSeconds] = useState(5);
-  const [ready, setReady] = useState(false);
-  const insRef = useRef<HTMLElement>(null);
+function AdUnit({ slot }: { slot: string }) {
   const pushed = useRef(false);
-  const resolved = useRef(false);
-
-  // useEffect(() => {
-  //   if (!pushed.current) {
-  //     pushed.current = true
-  //     try {
-  //       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  //       const w = window as any
-  //       w.adsbygoogle = w.adsbygoogle || []
-  //       w.adsbygoogle.push({})
-  //     } catch {}
-  //   }
-
-  //   const ins = insRef.current
-  //   if (!ins) { onComplete(false); return }
-
-  //   const resolve = (loaded: boolean) => {
-  //     if (resolved.current) return
-  //     resolved.current = true
-  //     if (!loaded) {
-  //       onComplete(false)
-  //     } else {
-  //       setAdStatus('filled')
-  //     }
-  //   }
-
-  //   const observer = new MutationObserver(() => {
-  //     const s = ins.getAttribute('data-ad-status')
-  //     if (s === 'filled') resolve(true)
-  //     else if (s === 'unfilled') resolve(false)
-  //   })
-  //   observer.observe(ins, { attributes: true, attributeFilter: ['data-ad-status'] })
-  //   const timeout = setTimeout(() => resolve(false), 3000)
-
-  //   return () => { observer.disconnect(); clearTimeout(timeout) }
-  // }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if (!pushed.current) {
-      pushed.current = true;
-      try {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const w = window as any;
-        w.adsbygoogle = w.adsbygoogle || [];
-        w.adsbygoogle.push({});
-      } catch {}
-    }
-
-    const ins = insRef.current;
-    if (!ins) {
-      onComplete(false);
-      return;
-    }
-
-    const resolve = (loaded: boolean, reason: string) => {
-      if (resolved.current) return;
-      resolved.current = true;
-      if (!loaded) {
-        console.warn(`[AdGate] Skipping ad: ${reason}`);
-        onComplete(false);
-      } else {
-        setAdStatus("filled");
-      }
-    };
-
-    const observer = new MutationObserver(() => {
-      const s = ins.getAttribute("data-ad-status");
-      if (s === "filled") resolve(true, "filled");
-      else if (s === "unfilled") resolve(false, "unfilled (no ad available)");
-    });
-    observer.observe(ins, {
-      attributes: true,
-      attributeFilter: ["data-ad-status"],
-    });
-
-    // 5s gives slow networks + pending accounts a fair shot.
-    const timeout = setTimeout(() => {
+    if (pushed.current) return;
+    pushed.current = true;
+    try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const ab = (window as any).adsbygoogle;
-      // AdSense replaces the array with an object (and sets .loaded) once the script runs.
-      const scriptLoaded = ab && (ab.loaded === true || !Array.isArray(ab));
-      resolve(
-        false,
-        scriptLoaded
-          ? "script loaded but slot never filled — account likely pending or slot is new"
-          : "AdSense script never executed — blocked by client, network, or CSP",
-      );
-    }, 5000);
-
-    return () => {
-      observer.disconnect();
-      clearTimeout(timeout);
-    };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    if (adStatus !== "filled") return;
-    const id = setInterval(() => {
-      setSeconds((s) => {
-        if (s <= 1) {
-          clearInterval(id);
-          setReady(true);
-          return 0;
-        }
-        return s - 1;
-      });
-    }, 1000);
-    return () => clearInterval(id);
-  }, [adStatus]);
+      const w = window as any;
+      w.adsbygoogle = w.adsbygoogle || [];
+      w.adsbygoogle.push({});
+    } catch {}
+  }, []);
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
-      <div className="bg-white w-full sm:max-w-lg rounded-t-3xl sm:rounded-2xl shadow-2xl flex flex-col animate-scaleIn">
-        <div className="flex items-center px-6 py-4 border-b border-grey4/60 shrink-0">
-          <p className="font-satoshi font-semibold text-sm text-grey1">
-            Quick break
-          </p>
-        </div>
-        <div className="p-6 flex flex-col">
-          <p className="font-openSans text-sm text-grey3 text-center mb-4">
-            Support Segwae by viewing this ad
-          </p>
-          <div className="relative rounded-xl bg-grey6 border border-grey4/60 mb-5 min-h-[120px] flex items-center justify-center">
-            <ins
-              ref={insRef as React.RefObject<HTMLModElement>}
-              className="adsbygoogle"
-              style={{ display: "block", width: "100%" }}
-              data-ad-client="ca-pub-4398584928051251"
-              data-ad-slot="8641598883"
-              data-ad-format="auto"
-              data-full-width-responsive="true"
-            />
-            {adStatus === "detecting" && (
-              <div className="absolute inset-0 flex items-center justify-center bg-grey6 rounded-xl">
-                <div className="w-5 h-5 border-2 border-mainPurple/30 border-t-mainPurple rounded-full animate-spin" />
-              </div>
-            )}
-          </div>
-          <button
-            onClick={() => onComplete(true)}
-            disabled={!ready || adStatus !== "filled"}
-            className="w-full py-3 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-          >
-            {adStatus === "detecting"
-              ? "Loading ad…"
-              : ready
-                ? "Continue to application →"
-                : `Continue in ${seconds}s`}
-          </button>
-        </div>
-      </div>
-    </div>
+    <ins
+      className="adsbygoogle"
+      style={{ display: "block" }}
+      data-ad-client="ca-pub-4398584928051251"
+      data-ad-slot={slot}
+      data-ad-format="auto"
+      data-full-width-responsive="true"
+    />
   );
 }
 
@@ -234,7 +98,8 @@ function FollowModal({ onComplete }: { onComplete: () => void }) {
             You&apos;re on a roll!
           </p>
           <p className="font-openSans text-sm text-grey3 text-center mb-6">
-            Stay updated with the latest jobs and opportunities. Follow us on socials — it only takes a second.
+            Stay updated with the latest jobs and opportunities. Follow us on
+            socials — it only takes a second.
           </p>
           <div className="flex flex-col gap-3 mb-6">
             <a
@@ -302,12 +167,10 @@ function ApplyModal({
   job,
   onClose,
   onSuccess,
-  adWatched,
 }: {
   job: Job;
   onClose: () => void;
   onSuccess: () => void;
-  adWatched: boolean;
 }) {
   const [step, setStep] = useState<ModalStep>("loading");
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -353,7 +216,6 @@ function ApplyModal({
           job_id: job.id,
           cover_note: coverNote || undefined,
           resume_id: selectedResumeId,
-          ad_watched: adWatched,
         }),
       });
       const data = await res.json();
@@ -559,8 +421,8 @@ function ApplyModal({
             </p>
             <p className="font-openSans text-sm text-grey3 mb-8">
               Your Segwae profile has been shared with{" "}
-              {job.companies?.name ?? job.company_name ?? "the company"}. Track your progress in
-              Applications.
+              {job.companies?.name ?? job.company_name ?? "the company"}. Track
+              your progress in Applications.
             </p>
             <div className="flex flex-col gap-2">
               <Link
@@ -615,23 +477,21 @@ export default function JobDetailPage({
     status: string;
   } | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [adGateOpen, setAdGateOpen] = useState(false);
   const [followModalOpen, setFollowModalOpen] = useState(false);
-  const [adWatched, setAdWatched] = useState(false);
-  const [pendingExternalUrl, setPendingExternalUrl] = useState<string | null>(null);
+  const [pendingExternalUrl, setPendingExternalUrl] = useState<string | null>(
+    null,
+  );
 
   const handleApplyClick = async () => {
     try {
       const res = await fetch("/api/hiring/applications?today_count=true");
       const data = await res.json();
-      const nextN = (data.count ?? 0) + 1;
       const totalNext = (data.total_count ?? 0) + 1;
-      const hasSeenFollow = localStorage.getItem("segwae_follow_prompted") === "true";
+      const hasSeenFollow =
+        localStorage.getItem("segwae_follow_prompted") === "true";
 
       if (totalNext === 7 && !hasSeenFollow) {
         setFollowModalOpen(true);
-      } else if (nextN % 2 === 0) {
-        setAdGateOpen(true);
       } else {
         setModalOpen(true);
       }
@@ -641,10 +501,14 @@ export default function JobDetailPage({
   };
 
   const handleExternalClick = (url: string) => {
-    const hasSeenFollow = localStorage.getItem("segwae_follow_prompted") === "true";
+    const hasSeenFollow =
+      localStorage.getItem("segwae_follow_prompted") === "true";
 
     if (!hasSeenFollow) {
-      const prevCount = parseInt(localStorage.getItem("segwae_external_clicks") ?? "0", 10);
+      const prevCount = parseInt(
+        localStorage.getItem("segwae_external_clicks") ?? "0",
+        10,
+      );
       const newCount = prevCount + 1;
       localStorage.setItem("segwae_external_clicks", String(newCount));
 
@@ -653,18 +517,6 @@ export default function JobDetailPage({
         setFollowModalOpen(true);
         return;
       }
-    }
-
-    const today = new Date().toISOString().slice(0, 10);
-    const stored = JSON.parse(localStorage.getItem("segwae_external_ad_clicks") ?? "null");
-    const prevAdCount = stored?.date === today ? (stored.count ?? 0) : 0;
-    const newAdCount = prevAdCount + 1;
-    localStorage.setItem("segwae_external_ad_clicks", JSON.stringify({ count: newAdCount, date: today }));
-
-    if (newAdCount % 2 === 0) {
-      setPendingExternalUrl(url);
-      setAdGateOpen(true);
-      return;
     }
 
     window.open(url, "_blank", "noopener,noreferrer");
@@ -770,7 +622,10 @@ export default function JobDetailPage({
       );
     }
 
-    if (job.application_deadline && new Date(job.application_deadline) < new Date()) {
+    if (
+      job.application_deadline &&
+      new Date(job.application_deadline) < new Date()
+    ) {
       return (
         <div className="w-full flex items-center justify-center py-3.5 bg-grey5 text-grey3 rounded-lg font-satoshi font-semibold text-sm cursor-default">
           Application deadline has passed
@@ -914,6 +769,14 @@ export default function JobDetailPage({
               </div>
             </div>
 
+            {/* In-article ad */}
+            <div className="bg-white rounded-2xl border border-grey4/60 p-4">
+              <p className="font-satoshi text-[10px] font-semibold text-grey4 uppercase tracking-widest mb-3 text-center">
+                Advertisement
+              </p>
+              <AdUnit slot="8703773096" />
+            </div>
+
             {/* Requirements */}
             {job.requirements && (
               <div className="bg-white rounded-2xl border border-grey4/60 p-6">
@@ -1054,6 +917,13 @@ export default function JobDetailPage({
                   </div>
                 )}
               </div>
+              {/* Sidebar ad */}
+              <div className="bg-white rounded-2xl border border-grey4/60 p-4">
+                <p className="font-satoshi text-[10px] font-semibold text-grey4 uppercase tracking-widest mb-3 text-center">
+                  Advertisement
+                </p>
+                <AdUnit slot="3842858885" />
+              </div>
             </div>
           </div>
         </div>
@@ -1073,24 +943,9 @@ export default function JobDetailPage({
           }}
         />
       )}
-      {adGateOpen && (
-        <AdGate
-          onComplete={(watched) => {
-            setAdWatched(watched);
-            setAdGateOpen(false);
-            if (pendingExternalUrl) {
-              window.open(pendingExternalUrl, "_blank", "noopener,noreferrer");
-              setPendingExternalUrl(null);
-            } else {
-              setModalOpen(true);
-            }
-          }}
-        />
-      )}
       {modalOpen && (
         <ApplyModal
           job={job}
-          adWatched={adWatched}
           onClose={() => setModalOpen(false)}
           onSuccess={() => setExistingApp({ id: "pending", status: "applied" })}
         />
