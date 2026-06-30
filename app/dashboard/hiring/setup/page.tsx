@@ -6,7 +6,7 @@ import { toast } from 'sonner'
 import { FaBuilding } from 'react-icons/fa6'
 
 const inputClass =
-  'w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 bg-white transition-colors'
+  'w-full px-4 py-3 border border-[#E2E1EA] rounded-xl focus:outline-none focus:border-[#A98BE8] text-sm font-medium text-[#15131C] placeholder:text-[#9098A3] bg-white transition-colors'
 
 const COMPANY_SIZES = [
   { value: '1-10', label: '1–10 employees' },
@@ -68,7 +68,7 @@ export default function CompanySetupPage() {
   if (checking) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="w-7 h-7 border-[3px] border-mainPurple border-t-transparent rounded-full animate-spin" />
+        <div className="w-7 h-7 border-[3px] border-[#5A2DD4] border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
@@ -76,30 +76,30 @@ export default function CompanySetupPage() {
   return (
     <div className="max-w-full">
       <div className="mb-8">
-        <p className="font-satoshi text-[11px] font-semibold text-mainPurple uppercase tracking-[0.22em] mb-1">
+        <p className="font-satoshi text-[12px] font-bold text-[#5A2DD4] uppercase tracking-[0.14em] mb-1.5">
           Hiring
         </p>
-        <h1 className="font-satoshi font-bold text-2xl text-grey1">Set up your company</h1>
-        <p className="font-openSans text-sm text-grey3 mt-2">
+        <h1 className="font-satoshi font-black tracking-[-0.02em] text-[26px] text-[#15131C]">Set up your company</h1>
+        <p className="text-sm text-[#9098A3] mt-2">
           Create your company profile before posting jobs. You can update this at any time.
         </p>
       </div>
 
-      <div className="bg-white rounded-2xl border border-grey4/60 p-8">
-        <div className="flex items-center gap-3 mb-8 pb-6 border-b border-grey4/60">
-          <div className="w-12 h-12 rounded-xl bg-lightPurple flex items-center justify-center">
-            <FaBuilding className="w-5 h-5 text-mainPurple" />
+      <div className="bg-white rounded-[18px] border border-[#E8E8EF] p-8">
+        <div className="flex items-center gap-3 mb-8 pb-6 border-b border-[#E8E8EF]">
+          <div className="w-12 h-12 rounded-xl bg-[#F1ECFD] flex items-center justify-center">
+            <FaBuilding className="w-5 h-5 text-[#5A2DD4]" />
           </div>
           <div>
-            <p className="font-satoshi font-semibold text-grey1 text-sm">Company Profile</p>
-            <p className="font-openSans text-xs text-grey3 mt-0.5">Visible to job seekers on all your listings</p>
+            <p className="font-satoshi font-bold text-[#15131C] text-sm">Company profile</p>
+            <p className="text-xs text-[#9098A3] mt-0.5">Visible to job seekers on all your listings</p>
           </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
-              Company Name <span className="text-errorRed">*</span>
+            <label className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">
+              Company name <span className="text-[#B6463C]">*</span>
             </label>
             <input
               type="text"
@@ -114,7 +114,7 @@ export default function CompanySetupPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
-              <label className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
+              <label className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">
                 Industry
               </label>
               <select name="industry" value={form.industry} onChange={handleChange} className={inputClass}>
@@ -123,8 +123,8 @@ export default function CompanySetupPage() {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
-                Company Size
+              <label className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">
+                Company size
               </label>
               <select name="size" value={form.size} onChange={handleChange} className={inputClass}>
                 <option value="">Select size</option>
@@ -134,7 +134,7 @@ export default function CompanySetupPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
+            <label className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">
               Location
             </label>
             <input
@@ -148,7 +148,7 @@ export default function CompanySetupPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
+            <label className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">
               Website
             </label>
             <input
@@ -162,8 +162,8 @@ export default function CompanySetupPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
-              About the Company
+            <label className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">
+              About the company
             </label>
             <textarea
               name="description"
@@ -179,9 +179,9 @@ export default function CompanySetupPage() {
             <button
               type="submit"
               disabled={saving}
-              className="px-8 py-3 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors"
+              className="px-8 py-3 bg-brand-gradient text-white rounded-xl font-satoshi font-bold text-sm shadow-[0_10px_24px_-6px_rgba(74,55,216,0.45)] hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 transition-transform"
             >
-              {saving ? 'Creating…' : 'Create Company'}
+              {saving ? 'Creating…' : 'Create company'}
             </button>
           </div>
         </form>

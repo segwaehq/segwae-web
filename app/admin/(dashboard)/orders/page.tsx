@@ -18,6 +18,8 @@ interface OrderListItem {
     name: string;
     email: string;
   };
+  guest_name?: string | null;
+  guest_email?: string | null;
   order_items?: Array<{ id: string; quantity: string }>
   // order_items?: { id: string; quantity: string };
 }
@@ -31,14 +33,16 @@ export default async function OrdersPage() {
     .select("*, order_items(*)")
     .order("created_at", { ascending: false });
 
-  // Fetch user data separately and merge
+  // Fetch user data separately and merge. Guest (web store) orders have a
+  // null user_id — exclude those so the uuid `in` filter stays valid.
   let orders = ordersData;
   if (ordersData && ordersData.length > 0) {
-    const userIds = [...new Set(ordersData.map((order) => order.user_id))];
-    const { data: usersData } = await supabase
-      .from("users")
-      .select("id, name, email")
-      .in("id", userIds);
+    const userIds = [
+      ...new Set(ordersData.map((order) => order.user_id).filter(Boolean)),
+    ];
+    const { data: usersData } = userIds.length
+      ? await supabase.from("users").select("id, name, email").in("id", userIds)
+      : { data: [] };
 
     // Merge user data into orders
     orders = ordersData.map((order) => ({
@@ -100,8 +104,8 @@ export default async function OrdersPage() {
                     </div>
                     <div className="space-y-1 text-sm text-grey2 font-openSans">
                       <p>
-                        Customer: {order.users?.name || "N/A"} (
-                        {order.users?.email})
+                        Customer: {order.users?.name || order.guest_name || "N/A"} (
+                        {order.users?.email || order.guest_email || "guest"})
                       </p>
                       <p>Items: {order.order_items?.at(0)?.quantity || 0}</p>
                       <p>

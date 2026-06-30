@@ -72,3 +72,150 @@ body {
 .animate-scaleIn {
   animation: scaleIn 300ms ease-out;
 }
+
+/* ── Brand v-next — opt-in utilities used by the new homepage + shared chrome.
+   Scoped on purpose: does NOT redefine the global color tokens above, so other
+   pages keep their current palette until they're individually revamped. ── */
+.bg-brand-gradient {
+  background-image: linear-gradient(118deg, #6D1FB3 0%, #4A37D8 52%, #2563EB 100%);
+}
+.text-brand-gradient {
+  background-image: linear-gradient(118deg, #6D1FB3 0%, #4A37D8 52%, #2563EB 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.text-brand-gradient-light {
+  background-image: linear-gradient(118deg, #9D5CE6 0%, #6D8BF2 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ── Blog article typography — scoped to rendered post HTML (Tiptap output).
+   Kept self-contained so we don't need the @tailwindcss/typography plugin. ── */
+.prose-blog {
+  font-family: "DM Sans", sans-serif;
+  color: #2B2735;
+  font-size: 17px;
+  line-height: 1.75;
+}
+.prose-blog > * + * {
+  margin-top: 1.25em;
+}
+.prose-blog h2 {
+  font-family: "Satoshi", sans-serif;
+  font-weight: 800;
+  font-size: 1.5rem;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: #15131C;
+  margin-top: 2.25rem;
+}
+.prose-blog h3 {
+  font-family: "Satoshi", sans-serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  letter-spacing: -0.01em;
+  color: #15131C;
+  margin-top: 1.75rem;
+}
+.prose-blog p {
+  color: #4B4658;
+}
+.prose-blog a {
+  color: #5A2DD4;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.prose-blog a:hover {
+  opacity: 0.75;
+}
+.prose-blog strong {
+  color: #15131C;
+  font-weight: 700;
+}
+.prose-blog ul,
+.prose-blog ol {
+  padding-left: 1.4em;
+  color: #4B4658;
+}
+.prose-blog ul {
+  list-style: disc;
+}
+.prose-blog ol {
+  list-style: decimal;
+}
+.prose-blog li {
+  margin-top: 0.5em;
+  padding-left: 0.25em;
+}
+.prose-blog li::marker {
+  color: #A98BE8;
+}
+.prose-blog blockquote {
+  border-left: 3px solid #C9BCF2;
+  background: #F8F6FE;
+  border-radius: 0 12px 12px 0;
+  padding: 0.9em 1.2em;
+  color: #4B4658;
+  font-style: italic;
+}
+.prose-blog blockquote p {
+  margin: 0;
+}
+.prose-blog code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  background: #F3F3F7;
+  color: #5A2DD4;
+  padding: 0.15em 0.4em;
+  border-radius: 6px;
+  font-size: 0.88em;
+}
+.prose-blog pre {
+  background: #15131C;
+  color: #F4F3F7;
+  padding: 1.1em 1.3em;
+  border-radius: 14px;
+  overflow-x: auto;
+  font-size: 0.9em;
+}
+.prose-blog pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+}
+.prose-blog img {
+  border-radius: 14px;
+  width: 100%;
+}
+.prose-blog hr {
+  border: 0;
+  border-top: 1px solid #ECECF1;
+  margin: 2rem 0;
+}
+/* Tiptap empty-editor placeholder (Content Studio). */
+.prose-blog p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: #9098A3;
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+@keyframes brandPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+.animate-brand-pulse {
+  animation: brandPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+.animate-slideInRight {
+  animation: slideInRight 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}

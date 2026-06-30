@@ -132,7 +132,7 @@ export default function ResumeManagerPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="w-7 h-7 border-[3px] border-mainPurple border-t-transparent rounded-full animate-spin" />
+        <div className="w-7 h-7 border-[3px] border-[#5A2DD4] border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
@@ -140,11 +140,11 @@ export default function ResumeManagerPage() {
   return (
     <div className="max-w-full">
       <div className="mb-8">
-        <p className="font-satoshi text-[11px] font-semibold text-mainPurple uppercase tracking-[0.22em] mb-1">
+        <p className="font-satoshi text-[12px] font-bold text-[#5A2DD4] uppercase tracking-[0.14em] mb-1.5">
           Careers
         </p>
-        <h1 className="font-satoshi font-bold text-2xl text-grey1">Resume Manager</h1>
-        <p className="font-openSans text-sm text-grey3 mt-1">
+        <h1 className="font-satoshi font-black tracking-[-0.02em] text-[26px] text-[#15131C]">Resume manager</h1>
+        <p className="text-sm text-[#9098A3] mt-1">
           Upload and manage your resumes. Your default resume is sent when you apply.
         </p>
       </div>
@@ -156,7 +156,7 @@ export default function ResumeManagerPage() {
         onDrop={handleDrop}
         onClick={() => !uploading && fileRef.current?.click()}
         className={`relative border-2 border-dashed rounded-2xl p-10 text-center cursor-pointer transition-all mb-6 ${
-          dragActive ? 'border-mainPurple bg-lightPurple' : 'border-grey4 bg-grey6 hover:border-mainPurple/50 hover:bg-grey5/50'
+          dragActive ? 'border-[#A98BE8] bg-[#F4F0FE]' : 'border-[#E2E1EA] bg-[#FAFAFB] hover:border-[#C9BCF2] hover:bg-[#F7F7F9]'
         }`}
       >
         <input
@@ -168,16 +168,16 @@ export default function ResumeManagerPage() {
         />
         {uploading ? (
           <div className="flex flex-col items-center gap-3">
-            <div className="w-8 h-8 border-[3px] border-mainPurple border-t-transparent rounded-full animate-spin" />
-            <p className="font-openSans text-sm text-grey3">Uploading…</p>
+            <div className="w-8 h-8 border-[3px] border-[#5A2DD4] border-t-transparent rounded-full animate-spin" />
+            <p className="text-sm text-[#9098A3]">Uploading…</p>
           </div>
         ) : (
           <>
-            <div className="w-12 h-12 rounded-2xl bg-lightPurple flex items-center justify-center mx-auto mb-3">
-              <FaFileLines className="w-5 h-5 text-mainPurple" />
+            <div className="w-12 h-12 rounded-2xl bg-[#F1ECFD] flex items-center justify-center mx-auto mb-3">
+              <FaFileLines className="w-5 h-5 text-[#5A2DD4]" />
             </div>
-            <p className="font-satoshi font-semibold text-sm text-grey1 mb-1">Drop your resume here or click to upload</p>
-            <p className="font-openSans text-xs text-grey3">PDF, DOC, DOCX · Max 5 MB</p>
+            <p className="font-satoshi font-bold text-sm text-[#15131C] mb-1">Drop your resume here or click to upload</p>
+            <p className="text-xs text-[#9098A3]">PDF, DOC, DOCX · Max 5 MB</p>
           </>
         )}
       </div>
@@ -186,16 +186,16 @@ export default function ResumeManagerPage() {
       <div className="space-y-3">
         {resumes.length === 0 ? (
           <div className="text-center py-10">
-            <p className="font-openSans text-sm text-grey3">No resumes yet. Upload your first one above.</p>
+            <p className="text-sm text-[#9098A3]">No resumes yet. Upload your first one above.</p>
           </div>
         ) : (
           resumes.map((resume) => (
             <div
               key={resume.id}
-              className="bg-white rounded-2xl border border-grey4/60 p-4 flex items-center gap-4"
+              className="bg-white rounded-[18px] border border-[#E8E8EF] p-4 flex items-center gap-4"
             >
-              <div className="w-11 h-12 rounded-xl bg-lightPurple flex items-center justify-center shrink-0">
-                <FaFileLines className="w-5 h-5 text-mainPurple" />
+              <div className="w-11 h-12 rounded-xl bg-[#F1ECFD] flex items-center justify-center shrink-0">
+                <FaFileLines className="w-5 h-5 text-[#5A2DD4]" />
               </div>
 
               <div className="flex-1 min-w-0">
@@ -206,33 +206,33 @@ export default function ResumeManagerPage() {
                       onChange={(e) => setEditLabel(e.target.value)}
                       onKeyDown={(e) => e.key === 'Enter' && saveLabel(resume.id)}
                       autoFocus
-                      className="flex-1 px-2.5 py-1.5 border border-mainPurple rounded-lg font-openSans text-sm text-grey1 focus:outline-none"
+                      className="flex-1 px-2.5 py-1.5 border border-[#A98BE8] rounded-lg text-sm font-medium text-[#15131C] focus:outline-none"
                     />
                     <button
                       onClick={() => saveLabel(resume.id)}
                       disabled={saving === resume.id}
-                      className="w-7 h-7 flex items-center justify-center rounded-lg bg-mainPurple text-white hover:bg-[#4338CA] disabled:opacity-50 transition-colors"
+                      className="w-7 h-7 flex items-center justify-center rounded-lg bg-[#5A2DD4] text-white hover:opacity-90 disabled:opacity-50 transition-opacity"
                     >
                       <FaCheck className="w-3 h-3" />
                     </button>
                     <button
                       onClick={() => setEditId(null)}
-                      className="w-7 h-7 flex items-center justify-center rounded-lg text-grey3 hover:text-grey1 hover:bg-grey5 transition-colors"
+                      className="w-7 h-7 flex items-center justify-center rounded-lg text-[#9098A3] hover:text-[#15131C] hover:bg-[#F4F3F8] transition-colors"
                     >
                       <FaXmark className="w-3 h-3" />
                     </button>
                   </div>
                 ) : (
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="font-satoshi font-semibold text-sm text-grey1">{resume.label}</span>
+                    <span className="font-satoshi font-bold text-sm text-[#15131C]">{resume.label}</span>
                     {resume.is_default && (
-                      <span className="text-[10px] font-semibold font-satoshi px-2 py-0.5 rounded-full text-successGreen bg-successGreen/10">
+                      <span className="text-[10px] font-semibold font-satoshi px-2 py-0.5 rounded-full text-[#16895E] bg-[#E7F6EF]">
                         Default
                       </span>
                     )}
                   </div>
                 )}
-                <p className="font-openSans text-xs text-grey3 mt-0.5">
+                <p className="text-xs text-[#9098A3] mt-0.5">
                   Uploaded {new Date(resume.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
                 </p>
               </div>
@@ -242,14 +242,14 @@ export default function ResumeManagerPage() {
                   href={resume.file_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-8 h-8 flex items-center justify-center rounded-lg text-grey3 hover:text-mainPurple hover:bg-lightPurple transition-colors"
+                  className="w-8 h-8 flex items-center justify-center rounded-lg text-[#9098A3] hover:text-[#5A2DD4] hover:bg-[#F1ECFD] transition-colors"
                   title="View resume"
                 >
                   <FaFileLines className="w-3.5 h-3.5" />
                 </a>
                 <button
                   onClick={() => { setEditId(resume.id); setEditLabel(resume.label) }}
-                  className="w-8 h-8 flex items-center justify-center rounded-lg text-grey3 hover:text-grey1 hover:bg-grey5 transition-colors"
+                  className="w-8 h-8 flex items-center justify-center rounded-lg text-[#9098A3] hover:text-[#15131C] hover:bg-[#F4F3F8] transition-colors"
                   title="Rename"
                 >
                   <FaPen className="w-3 h-3" />
@@ -258,15 +258,15 @@ export default function ResumeManagerPage() {
                   <button
                     onClick={() => setDefault(resume.id)}
                     disabled={saving === resume.id}
-                    className="px-3 h-8 rounded-lg border border-grey4 font-satoshi font-semibold text-[11px] text-grey2 hover:border-mainPurple hover:text-mainPurple disabled:opacity-50 transition-colors whitespace-nowrap"
+                    className="px-3 h-8 rounded-lg border border-[#E2E1EA] font-satoshi font-bold text-[11px] text-[#6B6478] hover:border-[#A98BE8] hover:text-[#5A2DD4] disabled:opacity-50 transition-colors whitespace-nowrap"
                   >
-                    Set Default
+                    Set default
                   </button>
                 )}
                 <button
                   onClick={() => deleteResume(resume.id)}
                   disabled={saving === resume.id}
-                  className="w-8 h-8 flex items-center justify-center rounded-lg text-grey3 hover:text-errorRed hover:bg-errorRed/10 disabled:opacity-50 transition-colors"
+                  className="w-8 h-8 flex items-center justify-center rounded-lg text-[#9098A3] hover:text-[#B6463C] hover:bg-[#FBEAE8] disabled:opacity-50 transition-colors"
                   title="Delete"
                 >
                   <FaTrash className="w-3 h-3" />
@@ -278,9 +278,9 @@ export default function ResumeManagerPage() {
       </div>
 
       {resumes.length > 0 && (
-        <div className="mt-5 flex items-start gap-3 p-4 bg-lightPurple rounded-xl">
-          <span className="text-mainPurple text-base mt-0.5">💡</span>
-          <p className="font-openSans text-xs text-mainPurple leading-relaxed">
+        <div className="mt-5 flex items-start gap-3 p-4 bg-[#F4F0FE] rounded-xl">
+          <span className="text-[#5A2DD4] text-base mt-0.5">💡</span>
+          <p className="text-xs font-medium text-[#5A2DD4] leading-relaxed">
             Your <strong>default resume</strong> is automatically attached when you apply to a job. You can always pick a different one from the application form.
           </p>
         </div>

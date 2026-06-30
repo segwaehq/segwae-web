@@ -30,11 +30,19 @@ const STEPS = [
   { id: 6, label: 'Portfolio' },
 ] as const
 
+function initialsOf(name: string): string {
+  const parts = name.trim().split(/\s+/).filter(Boolean)
+  if (!parts.length) return 'U'
+  return parts.map((p) => p[0]).join('').slice(0, 2).toUpperCase()
+}
+
 export default function CompleteProfilePage() {
   const router = useRouter()
   const [currentStep, setCurrentStep] = useState(1)
   const [direction, setDirection] = useState(1)
   const [loading, setLoading] = useState(true)
+  const [done, setDone] = useState(false)
+  const [identity, setIdentity] = useState({ name: '', username: '' })
   const [profileData, setProfileData] = useState<ProfileData>({
     phone: '',
     title: '',
@@ -50,6 +58,10 @@ export default function CompleteProfilePage() {
         const res = await fetch('/api/user/profile')
         if (res.ok) {
           const data = await res.json()
+          setIdentity({
+            name: data.profile?.name || '',
+            username: data.profile?.custom_username || data.profile?.username || '',
+          })
           setProfileData({
             phone: data.profile?.phone || '',
             title: data.profile?.title || '',
@@ -95,7 +107,7 @@ export default function CompleteProfilePage() {
     try {
       const res = await fetch('/api/user/complete-profile', { method: 'POST' })
       if (res.ok) {
-        router.push('/dashboard/profile')
+        setDone(true)
         return null
       }
       const data = await res.json()
@@ -121,66 +133,87 @@ export default function CompleteProfilePage() {
     exit: (d: number) => ({ x: d > 0 ? -40 : 40, opacity: 0, transition: { duration: 0.2 } }),
   }
 
+  const handle = identity.username || identity.name.replace(/\s+/g, '').toLowerCase() || 'yourname'
+  const firstName = (identity.name || 'there').trim().split(/\s+/)[0]
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="w-7 h-7 border-[3px] border-mainPurple border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen flex items-center justify-center bg-[#F4F3F8]">
+        <div className="w-7 h-7 border-[3px] border-[#5A2DD4] border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
 
-  const progress = (currentStep / STEPS.length) * 100
+  /* ── Success ──────────────────────────────────────────────────────────── */
+  if (done) {
+    return (
+      <div
+        className="min-h-screen flex flex-col items-center justify-center px-6 py-12 text-center"
+        style={{ background: 'radial-gradient(circle at 50% 0%, #EBE3FB 0%, #F4F3F8 55%, #F4F3F8 100%)' }}
+      >
+        <div className="w-[88px] h-[88px] rounded-full bg-brand-gradient flex items-center justify-center shadow-[0_18px_40px_-10px_rgba(74,55,216,0.5)] animate-scaleIn">
+          <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M20 6L9 17l-5-5" />
+          </svg>
+        </div>
+        <h1 className="font-satoshi font-black text-[32px] tracking-[-0.03em] text-[#15131C] mt-7 mb-2">
+          You&apos;re all set, {firstName}!
+        </h1>
+        <p className="text-base font-medium text-grey3 max-w-[380px] leading-relaxed">
+          Your profile is live at{' '}
+          <span className="font-extrabold text-[#5A2DD4]">segwae.com/{handle}</span>. Time to get discovered.
+        </p>
+        <div className="flex flex-wrap gap-3 justify-center mt-8">
+          <Link
+            href={identity.username ? `/profile/${identity.username}` : '/dashboard/profile'}
+            className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-brand-gradient text-white text-[15px] font-bold shadow-[0_10px_24px_-6px_rgba(74,55,216,0.45)] hover:-translate-y-0.5 transition-transform"
+          >
+            View my profile
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </Link>
+          <Link
+            href="/dashboard/profile"
+            className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-white border border-[#E2E1EA] text-[15px] font-bold text-[#15131C] hover:border-[#B9B9C6] transition-colors"
+          >
+            Go to dashboard
+          </Link>
+        </div>
+      </div>
+    )
+  }
 
+  /* ── Builder ──────────────────────────────────────────────────────────── */
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen lg:grid lg:grid-cols-[1fr_480px] bg-white">
 
-      {/* ── Top bar ──────────────────────────────────────────────────────── */}
-      <header className="flex items-center justify-between px-6 py-4 border-b border-grey4 bg-white">
-        <Link href="/">
-          <Image
-            src="/wordmark_svg.svg"
-            alt="Segwae"
-            width={0}
-            height={0}
-            sizes="100vw"
-            className="h-6 w-auto!"
-          />
-        </Link>
+      {/* LEFT: steps */}
+      <div className="flex flex-col px-6 py-8 sm:px-10 lg:px-12 min-w-0">
+        {/* header */}
+        <div className="flex items-center justify-between">
+          <Link href="/" className="inline-flex items-center" aria-label="Segwae home">
+            <Image src="/wordmark.png" alt="Segwae" width={3834} height={992} className="h-7 w-auto" />
+          </Link>
+          <span className="text-[13px] font-semibold text-[#9098A3]">
+            Step {currentStep} of {STEPS.length}
+          </span>
+        </div>
 
-        {/* Step dots */}
-        <div className="flex items-center gap-1.5">
+        {/* progress */}
+        <div className="flex gap-1.5 mt-7 mb-9">
           {STEPS.map((s) => (
             <div
               key={s.id}
-              className={`rounded-full transition-all duration-300 ${
-                s.id === currentStep
-                  ? 'w-5 h-2 bg-mainPurple'
-                  : s.id < currentStep
-                  ? 'w-2 h-2 bg-mainPurple/40'
-                  : 'w-2 h-2 bg-grey4'
+              className={`flex-1 h-[5px] rounded-full transition-colors duration-300 ${
+                s.id <= currentStep ? 'bg-brand-gradient' : 'bg-[#E2DFEC]'
               }`}
             />
           ))}
         </div>
 
-        <span className="font-spaceGrotesk text-xs text-grey3 w-14 text-right">
-          {currentStep} / {STEPS.length}
-        </span>
-      </header>
-
-      {/* Progress bar */}
-      <div className="h-0.5 bg-grey5">
-        <motion.div
-          className="h-full bg-mainPurple"
-          initial={false}
-          animate={{ width: `${progress}%` }}
-          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        />
-      </div>
-
-      {/* ── Content ──────────────────────────────────────────────────────── */}
-      <main className="flex-1 flex items-start justify-center px-6 py-12 overflow-hidden">
-        <div className="w-full max-w-md">
+        {/* step body */}
+        <div className="flex-1 w-full max-w-[520px]">
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={currentStep}
@@ -190,11 +223,6 @@ export default function CompleteProfilePage() {
               animate="center"
               exit="exit"
             >
-              {/* Step label — inside animation so it slides with the content */}
-              <p className="font-syne text-[11px] font-bold text-mainPurple uppercase tracking-[0.22em] mb-6">
-                {STEPS[currentStep - 1].label}
-              </p>
-
               {currentStep === 1 && (
                 <PhoneStep
                   value={profileData.phone}
@@ -245,7 +273,77 @@ export default function CompleteProfilePage() {
             </motion.div>
           </AnimatePresence>
         </div>
-      </main>
+      </div>
+
+      {/* RIGHT: live preview */}
+      <div
+        className="hidden lg:flex flex-col items-center justify-center p-10 border-l border-[#E4E2EC]"
+        style={{ background: 'radial-gradient(circle at 50% 0%, #EBE3FB 0%, #E7E5EE 60%, #E7E5EE 100%)' }}
+      >
+        <p className="text-xs font-bold tracking-[0.08em] uppercase text-[#A29CB0] mb-[18px]">Live preview</p>
+
+        <div className="w-[300px] bg-[#0D0D11] rounded-[42px] p-2.5 shadow-[0_40px_80px_-30px_rgba(38,22,82,0.5)]">
+          <div className="bg-white rounded-[33px] overflow-hidden">
+            {/* gradient header band */}
+            <div className="h-24 bg-brand-gradient relative">
+              <div
+                className="absolute inset-0 opacity-50"
+                style={{
+                  backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.16) 1px, transparent 1px)',
+                  backgroundSize: '20px 20px',
+                }}
+              />
+            </div>
+
+            <div className="px-[18px] pb-[22px]">
+              {/* avatar */}
+              <div className="w-[72px] h-[72px] rounded-full p-[3px] bg-brand-gradient -mt-9">
+                <div className="relative w-full h-full rounded-full border-[3px] border-white overflow-hidden bg-brand-gradient flex items-center justify-center text-[22px] font-black text-white">
+                  {profileData.profile_image_url ? (
+                    <Image src={profileData.profile_image_url} alt="" fill className="object-cover" />
+                  ) : (
+                    initialsOf(identity.name)
+                  )}
+                </div>
+              </div>
+
+              <div className="text-[19px] font-black tracking-[-0.02em] text-[#15131C] mt-[11px]">
+                {identity.name || 'Your name'}
+              </div>
+              <div className="text-[13px] font-medium text-[#8B8499] mt-0.5">
+                {profileData.title || 'Your title'}
+              </div>
+              <p className="text-[12.5px] leading-[1.55] font-medium text-[#4B4658] mt-3 min-h-[18px]">
+                {profileData.bio || 'Your bio will appear here as you write it.'}
+              </p>
+
+              {(profileData.social_links.length > 0 || profileData.portfolio_or_website_link) && (
+                <div className="flex gap-[7px] mt-4">
+                  {profileData.social_links.slice(0, 4).map((lk) => (
+                    <div
+                      key={lk.id}
+                      className="w-[34px] h-[34px] rounded-full bg-[#F4F0FE] flex items-center justify-center text-[11px] font-extrabold text-[#5A2DD4]"
+                    >
+                      {(lk.platform || '?').charAt(0).toUpperCase()}
+                    </div>
+                  ))}
+                  {profileData.portfolio_or_website_link && (
+                    <div className="w-[34px] h-[34px] rounded-full bg-[#F4F0FE] flex items-center justify-center text-[#5A2DD4]">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M7 17L17 7M9 7h8v8" />
+                      </svg>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <div className="flex items-center justify-center mt-[18px] text-[11px] font-semibold text-[#B6B0C0]">
+                segwae.com/{handle}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

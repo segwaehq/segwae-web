@@ -14,7 +14,7 @@ interface SocialLink {
 }
 
 const inputClass =
-  'w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 bg-white transition-colors'
+  'w-full px-4 py-3 border border-[#E2E1EA] rounded-xl focus:outline-none focus:border-[#A98BE8] text-sm font-medium text-[#15131C] placeholder:text-[#9098A3] bg-white transition-colors'
 
 export default function SocialLinksPage() {
   const [socialLinks, setSocialLinks] = useState<SocialLink[]>([])
@@ -64,7 +64,7 @@ export default function SocialLinksPage() {
     }
     return {
       name: normalizedId.charAt(0).toUpperCase() + normalizedId.slice(1),
-      color: '#4F46E5',
+      color: '#5A2DD4',
       icon: FaIcons.FaLink,
     }
   }
@@ -138,7 +138,7 @@ export default function SocialLinksPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="w-7 h-7 border-[3px] border-mainPurple border-t-transparent rounded-full animate-spin" />
+        <div className="w-7 h-7 border-[3px] border-[#5A2DD4] border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
@@ -146,38 +146,38 @@ export default function SocialLinksPage() {
   return (
     <div className="max-w-full">
       <div className="mb-8">
-        <p className="font-satoshi text-[11px] font-semibold text-mainPurple uppercase tracking-[0.22em] mb-1">
+        <p className="font-satoshi text-[12px] font-bold text-[#5A2DD4] uppercase tracking-[0.14em] mb-1.5">
           Dashboard
         </p>
         <div className="flex items-center justify-between">
-          <h1 className="font-satoshi font-bold text-2xl text-grey1">Social Links</h1>
+          <h1 className="font-satoshi font-black tracking-[-0.02em] text-[26px] text-[#15131C]">Social links</h1>
           <button
             onClick={openAddModal}
-            className="flex items-center gap-2 px-4 py-2.5 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] transition-colors cursor-pointer"
+            className="flex items-center gap-2 px-4 py-2.5 bg-brand-gradient text-white rounded-xl font-satoshi font-bold text-sm shadow-[0_10px_24px_-6px_rgba(74,55,216,0.45)] hover:-translate-y-0.5 transition-transform cursor-pointer"
           >
             <FaPlus className="w-3.5 h-3.5" />
-            Add Link
+            Add link
           </button>
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl border border-grey4/60 p-8">
+      <div className="bg-white rounded-[18px] border border-[#E8E8EF] p-8">
         {socialLinks.length === 0 ? (
           <div className="text-center py-12">
-            <div className="w-14 h-14 rounded-2xl bg-grey5 flex items-center justify-center mx-auto mb-4">
-              <FaIcons.FaLink className="w-6 h-6 text-grey3" />
+            <div className="w-14 h-14 rounded-2xl bg-[#F1F0F6] flex items-center justify-center mx-auto mb-4">
+              <FaIcons.FaLink className="w-6 h-6 text-[#9098A3]" />
             </div>
-            <h3 className="font-satoshi font-semibold text-lg text-grey1 mb-1">
+            <h3 className="font-satoshi font-bold text-lg text-[#15131C] mb-1">
               No links yet
             </h3>
-            <p className="font-openSans text-sm text-grey3 mb-6">
+            <p className="text-sm text-[#9098A3] mb-6">
               Add your social profiles to let people find you online.
             </p>
             <button
               onClick={openAddModal}
-              className="px-6 py-3 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] transition-colors cursor-pointer"
+              className="px-6 py-3 bg-brand-gradient text-white rounded-xl font-satoshi font-bold text-sm shadow-[0_10px_24px_-6px_rgba(74,55,216,0.45)] hover:-translate-y-0.5 transition-transform cursor-pointer"
             >
-              Add Your First Link
+              Add your first link
             </button>
           </div>
         ) : (
@@ -188,31 +188,31 @@ export default function SocialLinksPage() {
               return (
                 <div
                   key={link.id}
-                  className="flex items-center gap-4 p-4 border border-grey4 rounded-lg hover:border-mainPurple/40 transition-colors group"
+                  className="flex items-center gap-4 p-4 border border-[#E8E8EF] rounded-[14px] hover:border-[#C9BCF2] transition-colors group"
                 >
                   <div
-                    className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
+                    className="w-10 h-10 rounded-[11px] flex items-center justify-center shrink-0"
                     style={{ backgroundColor: `${config.color}18` }}
                   >
                     <Icon className="w-5 h-5" style={{ color: config.color }} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-satoshi font-semibold text-grey1 text-sm">
+                    <p className="font-satoshi font-bold text-[#15131C] text-sm">
                       {config.name}
                     </p>
-                    <p className="font-openSans text-xs text-grey3 truncate mt-0.5">{link.url}</p>
+                    <p className="text-xs text-[#9098A3] truncate mt-0.5">{link.url}</p>
                   </div>
                   <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button
                       onClick={() => openEditModal(link)}
-                      className="p-2 text-grey3 hover:text-grey1 hover:bg-grey5 rounded-lg transition-colors cursor-pointer"
+                      className="p-2 text-[#9098A3] hover:text-[#15131C] hover:bg-[#F4F3F8] rounded-lg transition-colors cursor-pointer"
                       title="Edit"
                     >
                       <FaPencil className="w-3.5 h-3.5" />
                     </button>
                     <button
                       onClick={() => handleDelete(link.id)}
-                      className="p-2 text-grey3 hover:text-errorRed hover:bg-errorRed/5 rounded-lg transition-colors cursor-pointer"
+                      className="p-2 text-[#9098A3] hover:text-[#B6463C] hover:bg-[#FBEAE8] rounded-lg transition-colors cursor-pointer"
                       title="Delete"
                     >
                       <FaTrash className="w-3.5 h-3.5" />
@@ -227,15 +227,15 @@ export default function SocialLinksPage() {
 
       {/* Add/Edit Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-sm">
+        <div className="fixed inset-0 bg-[#0F1115]/45 backdrop-blur-[2px] z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-[18px] shadow-2xl p-8 w-full max-w-sm animate-scaleIn">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="font-satoshi font-bold text-xl text-grey1">
-                {editingLink ? 'Edit Link' : 'Add Link'}
+              <h2 className="font-satoshi font-black text-xl text-[#15131C]">
+                {editingLink ? 'Edit link' : 'Add link'}
               </h2>
               <button
                 onClick={closeModal}
-                className="p-1.5 text-grey3 hover:text-grey1 hover:bg-grey5 rounded-lg transition-colors cursor-pointer"
+                className="p-1.5 text-[#9098A3] hover:text-[#15131C] hover:bg-[#F4F3F8] rounded-lg transition-colors cursor-pointer"
               >
                 <FaXmark className="w-5 h-5" />
               </button>
@@ -243,7 +243,7 @@ export default function SocialLinksPage() {
 
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
-                <label htmlFor="platform" className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
+                <label htmlFor="platform" className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">
                   Platform
                 </label>
                 <select
@@ -263,7 +263,7 @@ export default function SocialLinksPage() {
               </div>
 
               <div>
-                <label htmlFor="url" className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
+                <label htmlFor="url" className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">
                   URL
                 </label>
                 <input
@@ -281,16 +281,16 @@ export default function SocialLinksPage() {
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="flex-1 py-3 border border-grey4 text-grey2 rounded-lg font-satoshi font-semibold text-sm hover:border-grey3 transition-colors cursor-pointer"
+                  className="flex-1 py-3 border border-[#E2E1EA] text-[#6B6478] rounded-xl font-satoshi font-bold text-sm hover:border-[#B9B9C6] transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="flex-1 py-3 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                  className="flex-1 py-3 bg-brand-gradient text-white rounded-xl font-satoshi font-bold text-sm shadow-[0_10px_24px_-6px_rgba(74,55,216,0.45)] hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 transition-transform"
                 >
-                  {submitting ? 'Saving…' : editingLink ? 'Update' : 'Add Link'}
+                  {submitting ? 'Saving…' : editingLink ? 'Update' : 'Add link'}
                 </button>
               </div>
             </form>

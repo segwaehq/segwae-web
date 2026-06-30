@@ -77,15 +77,15 @@ export default function SocialLinksStep({ value, onUpdate, onNext, onBack }: Soc
     }
   }
 
-  const inputClass = "w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 bg-white transition-colors"
+  const inputClass = "w-full px-[15px] py-[13px] border border-[#E2E1EA] rounded-xl bg-white text-[14.5px] font-medium text-[#15131C] placeholder:text-[#B6B0C0] outline-none focus:border-[#A98BE8] transition-colors"
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-7">
       <div>
-        <h2 className="font-satoshi font-bold text-2xl text-grey1 mb-2">
+        <h2 className="font-satoshi font-black text-[27px] tracking-[-0.03em] leading-[1.12] text-[#15131C] mb-1.5">
           Add your social links
         </h2>
-        <p className="font-openSans text-grey3 text-sm leading-relaxed">
+        <p className="text-[15px] font-medium text-[#8B8499] leading-relaxed">
           Help people connect with you online. This step is optional.
         </p>
       </div>
@@ -96,36 +96,36 @@ export default function SocialLinksStep({ value, onUpdate, onNext, onBack }: Soc
           {links.map((link) => {
             const platform = platforms.find(p => p.platform_identifier === link.platform)
             return (
-              <div key={link.id} className="flex items-center gap-3 p-3 border border-grey4 rounded-lg">
+              <div key={link.id} className="flex items-center gap-3 p-3 border border-[#E8E8EF] rounded-xl bg-white">
                 <div
                   className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-xs font-bold shrink-0"
-                  style={{ backgroundColor: platform?.color_hex || '#4F46E5' }}
+                  style={{ backgroundColor: platform?.color_hex || '#5A2DD4' }}
                 >
                   {(platform?.platform_name || link.platform).charAt(0).toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-satoshi font-semibold text-grey1 text-xs">
+                  <p className="text-xs font-bold text-[#15131C]">
                     {platform?.platform_name || link.platform}
                   </p>
-                  <p className="font-openSans text-xs text-grey3 truncate">{link.url}</p>
+                  <p className="text-xs font-medium text-[#9098A3] truncate">{link.url}</p>
                 </div>
                 <button onClick={() => handleDelete(link.id)} disabled={deleting === link.id}
-                  className="p-1.5 text-grey3 hover:text-errorRed transition-colors shrink-0">
+                  className="p-1.5 text-[#9098A3] hover:text-errorRed transition-colors shrink-0">
                   {deleting === link.id
-                    ? <div className="w-3.5 h-3.5 border-2 border-grey3 border-t-transparent rounded-full animate-spin" />
+                    ? <div className="w-3.5 h-3.5 border-2 border-[#9098A3] border-t-transparent rounded-full animate-spin" />
                     : <FaTrash className="w-3.5 h-3.5" />
                   }
                 </button>
               </div>
             )
           })}
-          <p className="font-openSans text-xs text-grey3">{links.length} link{links.length !== 1 ? 's' : ''} added</p>
+          <p className="text-xs font-medium text-[#9098A3]">{links.length} link{links.length !== 1 ? 's' : ''} added</p>
         </div>
       )}
 
       {/* Add new */}
-      <div className="border border-grey4 rounded-lg p-4 space-y-3">
-        <p className="font-satoshi text-xs font-semibold text-grey2">Add a link</p>
+      <div className="border border-[#E8E8EF] rounded-2xl p-4 space-y-3 bg-[#FAFAFB]">
+        <p className="text-xs font-bold text-[#15131C]">Add a link</p>
         <select value={newPlatform} onChange={(e) => setNewPlatform(e.target.value)} className={inputClass}>
           <option value="">Select platform</option>
           {platforms.map(p => (
@@ -139,11 +139,11 @@ export default function SocialLinksStep({ value, onUpdate, onNext, onBack }: Soc
           placeholder="https://…"
           className={inputClass}
         />
-        {error && <p className="text-xs text-errorRed font-openSans">{error}</p>}
+        {error && <p className="text-xs font-medium text-errorRed">{error}</p>}
         <button onClick={handleAdd} disabled={saving}
-          className="w-full py-2.5 border border-mainPurple/30 text-mainPurple rounded-lg font-satoshi font-semibold text-sm hover:bg-mainPurple/5 disabled:opacity-50 transition-colors flex items-center justify-center gap-2">
+          className="w-full py-2.5 border border-[#DDCEFA] text-[#5A2DD4] rounded-xl text-sm font-bold hover:bg-[#F4F0FE] disabled:opacity-50 transition-colors flex items-center justify-center gap-2">
           {saving
-            ? <div className="w-4 h-4 border-2 border-mainPurple border-t-transparent rounded-full animate-spin" />
+            ? <div className="w-4 h-4 border-2 border-[#5A2DD4] border-t-transparent rounded-full animate-spin" />
             : <><FaPlus className="w-3.5 h-3.5" /> Add Link</>
           }
         </button>
@@ -151,11 +151,11 @@ export default function SocialLinksStep({ value, onUpdate, onNext, onBack }: Soc
 
       <div className="flex gap-3">
         <button type="button" onClick={onBack}
-          className="flex-1 py-3.5 border border-grey4 text-grey2 rounded-lg font-satoshi font-semibold text-sm hover:border-grey3 transition-colors">
+          className="flex-1 py-3.5 rounded-xl border border-[#E2E1EA] bg-white text-[14px] font-bold text-[#374151] hover:border-[#B9B9C6] transition-colors">
           Back
         </button>
         <button type="button" onClick={onNext}
-          className="flex-2 px-8 py-3.5 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] transition-colors">
+          className="flex-2 inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-brand-gradient text-white text-[15px] font-bold shadow-[0_10px_24px_-6px_rgba(74,55,216,0.45)] hover:-translate-y-px transition-transform">
           {links.length > 0 ? 'Continue' : 'Skip'}
         </button>
       </div>

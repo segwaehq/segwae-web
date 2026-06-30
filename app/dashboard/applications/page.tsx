@@ -8,11 +8,11 @@ import { createClient } from '@/lib/supabase/client'
 import type { JobApplication } from '@/lib/types'
 
 const STATUS_CONFIG: Record<string, { label: string; color: string }> = {
-  applied: { label: 'Application sent', color: 'text-blue bg-blue/10' },
-  under_review: { label: 'Under review', color: 'text-warningYellow bg-warningYellow/10' },
-  shortlisted: { label: 'Shortlisted', color: 'text-mainPurple bg-lightPurple' },
-  accepted: { label: "Congratulations! You've been accepted", color: 'text-successGreen bg-successGreen/10' },
-  rejected: { label: 'Not selected', color: 'text-errorRed bg-errorRed/10' },
+  applied: { label: 'Application sent', color: 'text-[#5A2DD4] bg-[#F1ECFD]' },
+  under_review: { label: 'Under review', color: 'text-[#1E5BBF] bg-[#E8EFFB]' },
+  shortlisted: { label: 'Shortlisted', color: 'text-[#C2410C] bg-[#FDF0E7]' },
+  accepted: { label: "Congratulations! You've been accepted", color: 'text-[#16895E] bg-[#E7F6EF]' },
+  rejected: { label: 'Not selected', color: 'text-[#9098A3] bg-[#F3F3F7]' },
 }
 
 type JobWithCompany = { title: string; companies?: { name: string; logo_url: string | null } | null }
@@ -25,33 +25,33 @@ function ApplicationCard({ app }: { app: JobApplication }) {
   const schedule = app.interview_schedules
 
   return (
-    <div className="bg-white rounded-2xl border border-grey4/60 p-6">
+    <div className="bg-white rounded-[18px] border border-[#E8E8EF] p-6">
       <div className="flex items-start gap-4">
-        <div className="w-12 h-12 rounded-xl overflow-hidden bg-grey5 flex items-center justify-center shrink-0">
+        <div className="w-12 h-12 rounded-xl overflow-hidden bg-[#F1F0F6] flex items-center justify-center shrink-0">
           {company?.logo_url ? (
             <Image src={company.logo_url} alt={company.name} width={48} height={48} className="object-cover w-full h-full" />
           ) : (
-            <FaBuilding className="w-5 h-5 text-grey3" />
+            <FaBuilding className="w-5 h-5 text-[#9098A3]" />
           )}
         </div>
 
         <div className="flex-1 min-w-0">
-          <p className="font-satoshi font-bold text-lg text-grey1 leading-tight">{jobTitle ?? '—'}</p>
-          <p className="font-openSans text-sm text-grey2 mt-0.5">{company?.name ?? '—'}</p>
+          <p className="font-satoshi font-bold text-lg text-[#15131C] leading-tight">{jobTitle ?? '—'}</p>
+          <p className="text-sm font-medium text-[#6B6478] mt-0.5">{company?.name ?? '—'}</p>
 
           <div className="flex items-center gap-2 mt-3 flex-wrap">
             <span className={`text-xs font-semibold font-satoshi px-2.5 py-1 rounded-full ${config.color}`}>
               {config.label}
             </span>
-            <span className="font-openSans text-xs text-grey3">
+            <span className="text-xs text-[#9098A3]">
               Applied {new Date(app.applied_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
             </span>
           </div>
 
           {app.status === 'accepted' && schedule && (
-            <div className="mt-4 p-4 bg-successGreen/5 border border-successGreen/20 rounded-lg">
-              <p className="font-satoshi font-semibold text-xs text-successGreen mb-1">Interview Scheduled</p>
-              <p className="font-openSans text-sm text-grey1">
+            <div className="mt-4 p-4 bg-[#E7F6EF] border border-[#D0EADD] rounded-xl">
+              <p className="font-satoshi font-bold text-xs text-[#16895E] mb-1">Interview scheduled</p>
+              <p className="text-sm font-medium text-[#15131C]">
                 {new Date(schedule.scheduled_at).toLocaleDateString('en-GB', {
                   weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
                 })}{' '}
@@ -62,9 +62,9 @@ function ApplicationCard({ app }: { app: JobApplication }) {
                   href={schedule.meet_link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 mt-2 px-3 py-1.5 bg-successGreen text-white rounded-lg font-satoshi font-semibold text-xs hover:opacity-90 transition-opacity"
+                  className="inline-flex items-center gap-2 mt-2 px-3 py-1.5 bg-[#16895E] text-white rounded-lg font-satoshi font-bold text-xs hover:opacity-90 transition-opacity"
                 >
-                  <FaVideo className="w-3 h-3" /> Join Meeting
+                  <FaVideo className="w-3 h-3" /> Join meeting
                 </a>
               )}
             </div>
@@ -112,7 +112,7 @@ export default function ApplicationsPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="w-7 h-7 border-[3px] border-mainPurple border-t-transparent rounded-full animate-spin" />
+        <div className="w-7 h-7 border-[3px] border-[#5A2DD4] border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
@@ -120,16 +120,16 @@ export default function ApplicationsPage() {
   return (
     <div className="max-w-full">
       <div className="mb-8">
-        <p className="font-satoshi text-[11px] font-semibold text-mainPurple uppercase tracking-[0.22em] mb-1">Jobs</p>
+        <p className="font-satoshi text-[12px] font-bold text-[#5A2DD4] uppercase tracking-[0.14em] mb-1.5">Jobs</p>
         <div className="flex items-center justify-between">
-          <h1 className="font-satoshi font-bold text-2xl text-grey1">My Applications</h1>
+          <h1 className="font-satoshi font-black tracking-[-0.02em] text-[26px] text-[#15131C]">My applications</h1>
           <div className="flex items-center gap-3">
             {realtimeConnected && (
-              <span className="flex items-center gap-1.5 font-openSans text-[11px] text-successGreen">
+              <span className="flex items-center gap-1.5 text-[11px] font-medium text-[#16895E]">
                 <FaCircle className="w-1.5 h-1.5" /> Live
               </span>
             )}
-            <Link href="/jobs" className="text-xs font-semibold font-satoshi text-mainPurple hover:opacity-70 transition-opacity">
+            <Link href="/jobs" className="text-xs font-bold font-satoshi text-[#5A2DD4] hover:opacity-70 transition-opacity">
               Browse jobs →
             </Link>
           </div>
@@ -137,17 +137,17 @@ export default function ApplicationsPage() {
       </div>
 
       {applications.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-grey4/60 py-20 flex flex-col items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-lightPurple flex items-center justify-center">
-            <FaBuilding className="w-5 h-5 text-mainPurple" />
+        <div className="bg-white rounded-[18px] border border-[#E8E8EF] py-20 flex flex-col items-center gap-4">
+          <div className="w-14 h-14 rounded-2xl bg-[#F1ECFD] flex items-center justify-center">
+            <FaBuilding className="w-5 h-5 text-[#5A2DD4]" />
           </div>
-          <p className="font-satoshi font-semibold text-grey1">No applications yet</p>
-          <p className="font-openSans text-sm text-grey3">Apply to jobs and track your progress here</p>
+          <p className="font-satoshi font-bold text-[#15131C]">No applications yet</p>
+          <p className="text-sm text-[#9098A3]">Apply to jobs and track your progress here</p>
           <Link
             href="/jobs"
-            className="mt-2 px-6 py-2.5 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] transition-colors"
+            className="mt-2 px-6 py-2.5 bg-brand-gradient text-white rounded-xl font-satoshi font-bold text-sm shadow-[0_10px_24px_-6px_rgba(74,55,216,0.45)] hover:-translate-y-0.5 transition-transform"
           >
-            Browse Jobs
+            Browse jobs
           </Link>
         </div>
       ) : (

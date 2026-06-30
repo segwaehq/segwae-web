@@ -46,40 +46,40 @@ export default function PortfolioStep({ value, onUpdate, onComplete, onBack }: P
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8">
+    <form onSubmit={handleSubmit} className="space-y-7">
       <div>
-        <h2 className="font-satoshi font-bold text-2xl text-grey1 mb-2">
+        <h2 className="font-satoshi font-black text-[27px] tracking-[-0.03em] leading-[1.12] text-[#15131C] mb-1.5">
           Add your portfolio or website
         </h2>
-        <p className="font-openSans text-grey3 text-sm leading-relaxed">
+        <p className="text-[15px] font-medium text-[#8B8499] leading-relaxed">
           Share a link to your portfolio, personal website, or any page that showcases your work. This is optional — you can skip it and add one later.
         </p>
       </div>
 
       <div>
-        <label htmlFor="portfolio" className="block text-sm font-semibold text-grey1 mb-1.5 font-satoshi">
-          Portfolio / Website URL <span className="text-grey3 font-normal">(optional)</span>
+        <label htmlFor="portfolio" className="block text-[13px] font-bold text-[#15131C] mb-1.5">
+          Portfolio / Website URL <span className="text-[#9098A3] font-medium">(optional)</span>
         </label>
         <input
           type="url"
           id="portfolio"
           value={url}
-          onChange={(e) => setUrl(e.target.value)}
+          onChange={(e) => { setUrl(e.target.value); onUpdate(e.target.value) }}
           placeholder="https://yourwebsite.com"
-          className="w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 transition-colors"
+          className="w-full px-[15px] py-[13px] border border-[#E2E1EA] rounded-xl bg-white text-[14.5px] font-medium text-[#15131C] placeholder:text-[#B6B0C0] outline-none focus:border-[#A98BE8] transition-colors"
           disabled={saving}
         />
-        {error && <p className="mt-2 text-xs text-errorRed font-openSans">{error}</p>}
+        {error && <p className="mt-2 text-xs font-medium text-errorRed">{error}</p>}
       </div>
 
       {/* Finish callout */}
-      <div className="flex items-center gap-3 p-4 bg-mainPurple/5 border border-mainPurple/15 rounded-lg">
-        <div className="w-9 h-9 rounded-lg bg-mainPurple flex items-center justify-center shrink-0">
+      <div className="flex items-center gap-3 p-4 rounded-2xl bg-[#F4F0FE] border border-[#E6DCFB]">
+        <div className="w-9 h-9 rounded-xl bg-brand-gradient flex items-center justify-center shrink-0">
           <FaArrowRight className="w-3.5 h-3.5 text-white" />
         </div>
         <div>
-          <p className="font-satoshi font-semibold text-grey1 text-sm">Almost done</p>
-          <p className="font-openSans text-xs text-grey2 mt-0.5">
+          <p className="text-sm font-bold text-[#15131C]">Almost done</p>
+          <p className="text-xs font-medium text-[#6B6478] mt-0.5 leading-relaxed">
             After this step your profile goes live and becomes visible to everyone.
           </p>
         </div>
@@ -87,11 +87,11 @@ export default function PortfolioStep({ value, onUpdate, onComplete, onBack }: P
 
       <div className="flex gap-3">
         <button type="button" onClick={onBack} disabled={saving}
-          className="flex-1 py-3.5 border border-grey4 text-grey2 rounded-lg font-satoshi font-semibold text-sm hover:border-grey3 transition-colors disabled:opacity-50">
+          className="flex-1 py-3.5 rounded-xl border border-[#E2E1EA] bg-white text-[14px] font-bold text-[#374151] hover:border-[#B9B9C6] transition-colors disabled:opacity-50">
           Back
         </button>
         <button type="submit" disabled={saving}
-          className="flex-2 px-8 py-3.5 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+          className="flex-2 inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-brand-gradient text-white text-[15px] font-bold shadow-[0_10px_24px_-6px_rgba(74,55,216,0.45)] hover:-translate-y-px transition-transform disabled:opacity-50 disabled:cursor-not-allowed">
           {saving ? 'Finishing…' : 'Complete Profile'}
         </button>
       </div>

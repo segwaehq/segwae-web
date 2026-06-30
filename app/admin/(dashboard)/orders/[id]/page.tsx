@@ -25,12 +25,17 @@ export default async function OrderDetailPage({
     notFound()
   }
 
-  // Fetch user data separately
-  const { data: userData } = await supabase
-    .from('users')
-    .select('id, name, email, phone, username, custom_username')
-    .eq('id', order.user_id)
-    .single()
+  // Fetch user data separately. Web/guest orders have no user_id —
+  // their contact details live on the order (guest_* + delivery_address).
+  let userData = null
+  if (order.user_id) {
+    const { data } = await supabase
+      .from('users')
+      .select('id, name, email, phone, username, custom_username')
+      .eq('id', order.user_id)
+      .single()
+    userData = data
+  }
 
   // Merge user data into order
   const orderWithUser = {

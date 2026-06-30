@@ -34,7 +34,7 @@ interface OrderItem {
 interface Order {
   id: string
   order_number: string
-  user_id: string
+  user_id: string | null
   status: string
   subtotal: number
   shipping_cost: number
@@ -46,6 +46,10 @@ interface Order {
   created_at: string
   updated_at: string
   order_items: OrderItem[]
+  // Guest (web store) orders have no linked account — contact lives here.
+  guest_name?: string | null
+  guest_email?: string | null
+  guest_phone?: string | null
   users: {
     id: string
     name: string
@@ -53,7 +57,7 @@ interface Order {
     phone?: string
     username?: string
     custom_username?: string
-  }
+  } | null
 }
 
 interface Props {
@@ -89,7 +93,14 @@ export default function OrderEditForm({ order }: Props) {
   const [itemQuantity, setItemQuantity] = useState<number>(0)
   const [itemUnitPrice, setItemUnitPrice] = useState<number>(0)
 
-  const profileLink = `https://segwae.com/${order.users.custom_username || order.users.username}`
+  // Web/guest orders have no account; fall back to the details captured at checkout.
+  const isGuest = !order.users
+  const customerName = order.users?.name || order.guest_name || 'Guest'
+  const customerEmail = order.users?.email || order.guest_email || '—'
+  const customerPhone = order.users?.phone || order.guest_phone || ''
+  const profileLink = order.users
+    ? `https://segwae.com/${order.users.custom_username || order.users.username}`
+    : null
 
   const handleStatusUpdate = async () => {
     if (!statusNote.trim()) {
@@ -228,33 +239,42 @@ export default function OrderEditForm({ order }: Props) {
 
       {/* Customer Information (Read-only) */}
       <div className="bg-white rounded-2xl p-6 shadow-lg">
-        <h2 className="font-spaceGrotesk font-bold text-xl mb-4">Customer Information</h2>
+        <div className="flex items-center gap-3 mb-4">
+          <h2 className="font-spaceGrotesk font-bold text-xl">Customer Information</h2>
+          {isGuest && (
+            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-warningYellow/10 text-warningYellow">
+              Guest · Web store
+            </span>
+          )}
+        </div>
         <div className="grid md:grid-cols-2 gap-4 font-openSans text-sm">
           <div>
             <p className="text-grey3 mb-1">Name</p>
-            <p className="font-semibold">{order.users.name}</p>
+            <p className="font-semibold">{customerName}</p>
           </div>
           <div>
             <p className="text-grey3 mb-1">Email</p>
-            <p className="font-semibold">{order.users.email}</p>
+            <p className="font-semibold">{customerEmail}</p>
           </div>
-          {order.users.phone && (
+          {customerPhone && (
             <div>
               <p className="text-grey3 mb-1">Phone</p>
-              <p className="font-semibold">{order.users.phone}</p>
+              <p className="font-semibold">{customerPhone}</p>
             </div>
           )}
-          <div>
-            <p className="text-grey3 mb-1">Profile</p>
-            <a
-              href={profileLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-semibold text-mainPurple hover:underline"
-            >
-              {profileLink}
-            </a>
-          </div>
+          {profileLink && (
+            <div>
+              <p className="text-grey3 mb-1">Profile</p>
+              <a
+                href={profileLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-mainPurple hover:underline"
+              >
+                {profileLink}
+              </a>
+            </div>
+          )}
         </div>
       </div>
 

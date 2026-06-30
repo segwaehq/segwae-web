@@ -17,7 +17,7 @@ interface ProfileData {
 }
 
 const inputClass =
-  'w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 bg-white transition-colors'
+  'w-full px-4 py-3 border border-[#E2E1EA] rounded-xl focus:outline-none focus:border-[#A98BE8] text-sm font-medium text-[#15131C] placeholder:text-[#9098A3] bg-white transition-colors'
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState<ProfileData | null>(null)
@@ -126,7 +126,7 @@ export default function ProfilePage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="w-7 h-7 border-[3px] border-mainPurple border-t-transparent rounded-full animate-spin" />
+        <div className="w-7 h-7 border-[3px] border-[#5A2DD4] border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
@@ -134,17 +134,17 @@ export default function ProfilePage() {
   return (
     <div className="max-w-full">
       <div className="mb-8">
-        <p className="font-satoshi text-[11px] font-semibold text-mainPurple uppercase tracking-[0.22em] mb-1">
+        <p className="font-satoshi text-[12px] font-bold text-[#5A2DD4] uppercase tracking-[0.14em] mb-1.5">
           Dashboard
         </p>
         <div className="flex items-center justify-between">
-          <h1 className="font-satoshi font-bold text-2xl text-grey1">Edit Profile</h1>
+          <h1 className="font-satoshi font-black tracking-[-0.02em] text-[26px] text-[#15131C]">Edit profile</h1>
           {profile?.username && (
             <a
               href={`/profile/${profile.username}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 font-satoshi text-xs font-semibold text-mainPurple hover:opacity-70 transition-opacity"
+              className="flex items-center gap-1.5 font-satoshi text-xs font-bold text-[#5A2DD4] hover:opacity-70 transition-opacity"
             >
               View profile
               <FaArrowUpRightFromSquare className="w-3 h-3" />
@@ -153,11 +153,11 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl border border-grey4/60 p-8 space-y-8">
+      <div className="bg-white rounded-[18px] border border-[#E8E8EF] p-8 space-y-8">
         {/* Avatar */}
         <div className="flex items-center gap-5">
           <div className="relative shrink-0">
-            <div className="w-20 h-20 rounded-full overflow-hidden bg-grey5 flex items-center justify-center">
+            <div className="w-20 h-20 rounded-full overflow-hidden bg-[#F1F0F6] flex items-center justify-center">
               {profile?.profile_image_url ? (
                 <Image
                   src={profile.profile_image_url}
@@ -167,14 +167,14 @@ export default function ProfilePage() {
                   className="object-cover w-full h-full"
                 />
               ) : (
-                <span className="text-2xl font-satoshi font-bold text-grey2">
+                <span className="text-2xl font-satoshi font-black text-[#5A2DD4]">
                   {profile?.name?.charAt(0).toUpperCase() || 'U'}
                 </span>
               )}
             </div>
             <label
               htmlFor="avatar-upload"
-              className="absolute -bottom-0.5 -right-0.5 w-7 h-7 bg-mainPurple text-white rounded-full flex items-center justify-center cursor-pointer hover:bg-[#4338CA] transition-colors"
+              className="absolute -bottom-0.5 -right-0.5 w-7 h-7 bg-brand-gradient text-white rounded-full flex items-center justify-center cursor-pointer shadow-[0_4px_12px_-2px_rgba(74,55,216,0.5)] hover:-translate-y-0.5 transition-transform"
             >
               {uploading ? (
                 <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -192,8 +192,8 @@ export default function ProfilePage() {
             </label>
           </div>
           <div>
-            <p className="font-satoshi font-semibold text-grey1 text-sm">Profile Photo</p>
-            <p className="font-openSans text-xs text-grey3 mt-0.5">JPG, PNG or GIF · Max 5 MB</p>
+            <p className="font-satoshi font-bold text-[#15131C] text-sm">Profile photo</p>
+            <p className="text-xs text-[#9098A3] mt-0.5">JPG, PNG or GIF · Max 5 MB</p>
           </div>
         </div>
 
@@ -201,7 +201,7 @@ export default function ProfilePage() {
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
-              <label htmlFor="name" className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
+              <label htmlFor="name" className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">
                 Full Name
               </label>
               <input
@@ -216,7 +216,7 @@ export default function ProfilePage() {
               />
             </div>
             <div>
-              <label htmlFor="title" className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
+              <label htmlFor="title" className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">
                 Professional Title
               </label>
               <input
@@ -232,7 +232,7 @@ export default function ProfilePage() {
           </div>
 
           <div>
-            <label htmlFor="phone" className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
+            <label htmlFor="phone" className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">
               Phone Number
             </label>
             <input
@@ -247,7 +247,7 @@ export default function ProfilePage() {
           </div>
 
           <div>
-            <label htmlFor="bio" className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
+            <label htmlFor="bio" className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">
               Bio
             </label>
             <textarea
@@ -259,11 +259,11 @@ export default function ProfilePage() {
               className={`${inputClass} resize-none`}
               placeholder="Tell us about yourself…"
             />
-            <p className="mt-1.5 text-xs text-grey3 font-openSans tabular-nums">{formData.bio.length} characters</p>
+            <p className="mt-1.5 text-xs text-[#9098A3] tabular-nums">{formData.bio.length} characters</p>
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
+            <label htmlFor="email" className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">
               Email Address
             </label>
             <input
@@ -271,24 +271,24 @@ export default function ProfilePage() {
               id="email"
               value={profile?.email || ''}
               disabled
-              className={`${inputClass} bg-grey5 text-grey3 cursor-not-allowed`}
+              className={`${inputClass} bg-[#F4F3F8] text-[#9098A3] cursor-not-allowed`}
             />
-            <p className="mt-1.5 text-xs text-grey3 font-openSans">Email cannot be changed</p>
+            <p className="mt-1.5 text-xs text-[#9098A3]">Email cannot be changed</p>
           </div>
 
           {profile?.username && (
             <div>
-              <label htmlFor="username" className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
+              <label htmlFor="username" className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">
                 Username
               </label>
               <div className="flex items-center gap-2">
-                <span className="font-openSans text-sm text-grey3 whitespace-nowrap">segwae.com/</span>
+                <span className="text-sm font-medium text-[#9098A3] whitespace-nowrap">segwae.com/</span>
                 <input
                   type="text"
                   id="username"
                   value={profile.username}
                   disabled
-                  className={`${inputClass} bg-grey5 text-grey3 cursor-not-allowed`}
+                  className={`${inputClass} bg-[#F4F3F8] text-[#9098A3] cursor-not-allowed`}
                 />
               </div>
             </div>
@@ -298,9 +298,9 @@ export default function ProfilePage() {
             <button
               type="submit"
               disabled={saving}
-              className="px-8 py-3 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors"
+              className="px-8 py-3 bg-brand-gradient text-white rounded-xl font-satoshi font-bold text-sm shadow-[0_10px_24px_-6px_rgba(74,55,216,0.45)] hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 transition-transform"
             >
-              {saving ? 'Saving…' : 'Save Changes'}
+              {saving ? 'Saving…' : 'Save changes'}
             </button>
           </div>
         </form>

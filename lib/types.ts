@@ -201,3 +201,23 @@ export interface InterviewSchedule {
   created_at: string
   updated_at: string
 }
+
+export interface BlogPost {
+  id: string
+  slug: string
+  title: string
+  excerpt: string | null
+  body_html: string
+  cover_image_url: string | null
+  category: string | null
+  tags: string[]
+  author_name: string
+  author_avatar_url: string | null
+  reading_minutes: number
+  seo_title: string | null
+  seo_description: string | null
+  status: 'draft' | 'published'
+  published_at: string | null
+  created_at: string
+  updated_at: string
+}

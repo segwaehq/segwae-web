@@ -7,6 +7,7 @@ import AppDownloadModal from "@/components/AppDownloadModal"
 
 const product = [
   { href: "/jobs", label: "Browse Jobs" },
+  { href: "/blog", label: "Career Blog" },
   { href: "/#how-it-works", label: "How It Works" },
   { href: "/about", label: "About" },
   { href: "/store", label: "Store" },
@@ -29,24 +30,23 @@ export default function Footer() {
 
   return (
     <>
-      <footer className="bg-[#111827] text-white border-t border-white/[0.06]">
+      <footer className="bg-[#0F1115] text-white border-t border-white/6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-14">
 
             {/* Brand */}
             <div className="col-span-1 space-y-4">
-              <Link href="/">
+              <Link href="/" className="inline-block" aria-label="Segwae home">
                 <Image
                   src="/wordmark_white.png"
                   alt="Segwae"
-                  width={0}
-                  height={0}
-                  sizes="100vw"
-                  className="h-7 w-auto!"
+                  width={3834}
+                  height={992}
+                  className="h-7 w-auto"
                 />
               </Link>
-              <p className="font-openSans text-white/35 text-sm leading-relaxed">
-                Small Talk to Big Deals.
+              <p className="font-openSans text-white/40 text-sm leading-relaxed max-w-[260px]">
+                Where ambitious professionals find work that matters — and the identity to be remembered by.
               </p>
             </div>
 

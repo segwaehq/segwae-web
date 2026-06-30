@@ -16,7 +16,7 @@ interface CareerSettings {
 }
 
 const inputClass =
-  'w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 bg-white transition-colors'
+  'w-full px-4 py-3 border border-[#E2E1EA] rounded-xl focus:outline-none focus:border-[#A98BE8] text-sm font-medium text-[#15131C] placeholder:text-[#9098A3] bg-white transition-colors'
 
 export default function SettingsPage() {
   const [loading, setLoading] = useState(true)
@@ -140,7 +140,7 @@ export default function SettingsPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="w-7 h-7 border-[3px] border-mainPurple border-t-transparent rounded-full animate-spin" />
+        <div className="w-7 h-7 border-[3px] border-[#5A2DD4] border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
@@ -151,7 +151,7 @@ export default function SettingsPage() {
       onClick={onChange}
       disabled={disabled}
       className={`relative inline-flex h-7 w-12 items-center rounded-full transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
-        checked ? 'bg-mainPurple' : 'bg-grey4'
+        checked ? 'bg-brand-gradient' : 'bg-[#D8D5E2]'
       }`}
     >
       <span
@@ -165,35 +165,35 @@ export default function SettingsPage() {
   return (
     <div className="max-w-full">
       <div className="mb-8">
-        <p className="font-satoshi text-[11px] font-semibold text-mainPurple uppercase tracking-[0.22em] mb-1">
+        <p className="font-satoshi text-[12px] font-bold text-[#5A2DD4] uppercase tracking-[0.14em] mb-1.5">
           Dashboard
         </p>
-        <h1 className="font-satoshi font-bold text-2xl text-grey1">Settings</h1>
+        <h1 className="font-satoshi font-black tracking-[-0.02em] text-[26px] text-[#15131C]">Settings</h1>
       </div>
 
       <div className="space-y-5">
         {/* Password */}
-        <div className="bg-white rounded-2xl border border-grey4/60 p-8">
+        <div className="bg-white rounded-[18px] border border-[#E8E8EF] p-8">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-9 h-9 rounded-xl bg-mainPurple/10 flex items-center justify-center shrink-0">
-              <FaLock className="w-4 h-4 text-mainPurple" />
+            <div className="w-9 h-9 rounded-xl bg-[#F1ECFD] flex items-center justify-center shrink-0">
+              <FaLock className="w-4 h-4 text-[#5A2DD4]" />
             </div>
             <div>
-              <h2 className="font-satoshi font-semibold text-grey1">Change Password</h2>
-              <p className="font-openSans text-xs text-grey3">Keep your account secure</p>
+              <h2 className="font-satoshi font-bold text-[#15131C]">Change password</h2>
+              <p className="text-xs text-[#9098A3]">Keep your account secure</p>
             </div>
           </div>
 
           <form onSubmit={handlePasswordChange} className="space-y-4">
             {(
               [
-                { id: 'currentPassword', label: 'Current Password', key: 'current' as const },
-                { id: 'newPassword', label: 'New Password', key: 'new' as const },
-                { id: 'confirmPassword', label: 'Confirm New Password', key: 'confirm' as const },
+                { id: 'currentPassword', label: 'Current password', key: 'current' as const },
+                { id: 'newPassword', label: 'New password', key: 'new' as const },
+                { id: 'confirmPassword', label: 'Confirm new password', key: 'confirm' as const },
               ] as const
             ).map(({ id, label, key }) => (
               <div key={id}>
-                <label htmlFor={id} className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
+                <label htmlFor={id} className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">
                   {label}
                 </label>
                 <div className="relative">
@@ -213,7 +213,7 @@ export default function SettingsPage() {
                     onClick={() =>
                       setShowPasswords({ ...showPasswords, [key]: !showPasswords[key] })
                     }
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-grey3 hover:text-grey1 transition-colors cursor-pointer"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#9098A3] hover:text-[#15131C] transition-colors cursor-pointer"
                   >
                     {showPasswords[key] ? (
                       <FaEyeSlash className="w-4 h-4" />
@@ -223,7 +223,7 @@ export default function SettingsPage() {
                   </button>
                 </div>
                 {id === 'newPassword' && (
-                  <p className="mt-1.5 text-xs text-grey3 font-openSans">At least 8 characters</p>
+                  <p className="mt-1.5 text-xs text-[#9098A3]">At least 8 characters</p>
                 )}
               </div>
             ))}
@@ -232,33 +232,33 @@ export default function SettingsPage() {
               <button
                 type="submit"
                 disabled={savingPassword}
-                className="px-6 py-3 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                className="px-6 py-3 bg-brand-gradient text-white rounded-xl font-satoshi font-bold text-sm shadow-[0_10px_24px_-6px_rgba(74,55,216,0.45)] hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 transition-transform"
               >
-                {savingPassword ? 'Updating…' : 'Update Password'}
+                {savingPassword ? 'Updating…' : 'Update password'}
               </button>
             </div>
           </form>
         </div>
 
         {/* Privacy */}
-        <div className="bg-white rounded-2xl border border-grey4/60 p-8">
+        <div className="bg-white rounded-[18px] border border-[#E8E8EF] p-8">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-9 h-9 rounded-xl bg-mainPurple/10 flex items-center justify-center shrink-0">
-              <FaEye className="w-4 h-4 text-mainPurple" />
+            <div className="w-9 h-9 rounded-xl bg-[#F1ECFD] flex items-center justify-center shrink-0">
+              <FaEye className="w-4 h-4 text-[#5A2DD4]" />
             </div>
             <div>
-              <h2 className="font-satoshi font-semibold text-grey1">Privacy Settings</h2>
-              <p className="font-openSans text-xs text-grey3">
+              <h2 className="font-satoshi font-bold text-[#15131C]">Privacy settings</h2>
+              <p className="text-xs text-[#9098A3]">
                 Control what&apos;s visible on your public profile
               </p>
             </div>
           </div>
 
           <div className="space-y-4">
-            <div className="flex items-center justify-between p-4 border border-grey4 rounded-lg">
+            <div className="flex items-center justify-between p-4 border border-[#E8E8EF] rounded-xl">
               <div>
-                <p className="font-satoshi font-semibold text-grey1 text-sm">Show Phone Number</p>
-                <p className="font-openSans text-xs text-grey3 mt-0.5">
+                <p className="font-satoshi font-bold text-[#15131C] text-sm">Show phone number</p>
+                <p className="text-xs text-[#9098A3] mt-0.5">
                   Display your phone on your public profile
                 </p>
               </div>
@@ -269,10 +269,10 @@ export default function SettingsPage() {
               />
             </div>
 
-            <div className="flex items-center justify-between p-4 border border-grey4 rounded-lg">
+            <div className="flex items-center justify-between p-4 border border-[#E8E8EF] rounded-xl">
               <div>
-                <p className="font-satoshi font-semibold text-grey1 text-sm">Show Email Address</p>
-                <p className="font-openSans text-xs text-grey3 mt-0.5">
+                <p className="font-satoshi font-bold text-[#15131C] text-sm">Show email address</p>
+                <p className="text-xs text-[#9098A3] mt-0.5">
                   Display your email on your public profile
                 </p>
               </div>
@@ -284,30 +284,30 @@ export default function SettingsPage() {
             </div>
           </div>
 
-          <p className="mt-5 font-openSans text-xs text-grey3 border-t border-grey4/60 pt-4">
+          <p className="mt-5 text-xs text-[#9098A3] border-t border-[#E8E8EF] pt-4">
             Hiding contact info may make it harder for others to connect with you.
           </p>
         </div>
 
         {/* Career */}
-        <div className="bg-white rounded-2xl border border-grey4/60 p-8">
+        <div className="bg-white rounded-[18px] border border-[#E8E8EF] p-8">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-9 h-9 rounded-xl bg-mainPurple/10 flex items-center justify-center shrink-0">
-              <FaBriefcase className="w-4 h-4 text-mainPurple" />
+            <div className="w-9 h-9 rounded-xl bg-[#F1ECFD] flex items-center justify-center shrink-0">
+              <FaBriefcase className="w-4 h-4 text-[#5A2DD4]" />
             </div>
             <div>
-              <h2 className="font-satoshi font-semibold text-grey1">Career Status</h2>
-              <p className="font-openSans text-xs text-grey3">
+              <h2 className="font-satoshi font-bold text-[#15131C]">Career status</h2>
+              <p className="text-xs text-[#9098A3]">
                 Let employers know you&apos;re available
               </p>
             </div>
           </div>
 
           <div className="space-y-4">
-            <div className="flex items-center justify-between p-4 border border-grey4 rounded-lg">
+            <div className="flex items-center justify-between p-4 border border-[#E8E8EF] rounded-xl">
               <div>
-                <p className="font-satoshi font-semibold text-grey1 text-sm">Open to work</p>
-                <p className="font-openSans text-xs text-grey3 mt-0.5">
+                <p className="font-satoshi font-bold text-[#15131C] text-sm">Open to work</p>
+                <p className="text-xs text-[#9098A3] mt-0.5">
                   Show employers you&apos;re looking for opportunities
                 </p>
               </div>
@@ -319,8 +319,8 @@ export default function SettingsPage() {
             </div>
 
             {careerSettings.open_to_work && (
-              <div className="p-4 border border-grey4 rounded-lg space-y-3">
-                <p className="font-satoshi font-semibold text-grey1 text-sm">Availability</p>
+              <div className="p-4 border border-[#E8E8EF] rounded-xl space-y-3">
+                <p className="font-satoshi font-bold text-[#15131C] text-sm">Availability</p>
                 {(
                   [
                     { value: 'actively_looking', label: 'Actively looking', desc: 'Ready to start soon, actively applying' },
@@ -329,10 +329,10 @@ export default function SettingsPage() {
                 ).map(({ value, label, desc }) => (
                   <label
                     key={value}
-                    className={`flex items-start gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${
+                    className={`flex items-start gap-3 p-3 rounded-xl border cursor-pointer transition-colors ${
                       careerSettings.job_seeking_status === value
-                        ? 'border-mainPurple bg-lightPurple'
-                        : 'border-grey4 hover:border-grey3'
+                        ? 'border-[#A98BE8] bg-[#F4F0FE]'
+                        : 'border-[#E8E8EF] hover:border-[#C9BCF2]'
                     }`}
                   >
                     <input
@@ -342,11 +342,11 @@ export default function SettingsPage() {
                       checked={careerSettings.job_seeking_status === value}
                       onChange={() => handleCareerChange({ job_seeking_status: value })}
                       disabled={savingCareer}
-                      className="mt-0.5 accent-mainPurple"
+                      className="mt-0.5 accent-[#5A2DD4]"
                     />
                     <div>
-                      <p className="font-satoshi font-semibold text-sm text-grey1">{label}</p>
-                      <p className="font-openSans text-xs text-grey3 mt-0.5">{desc}</p>
+                      <p className="font-satoshi font-bold text-sm text-[#15131C]">{label}</p>
+                      <p className="text-xs text-[#9098A3] mt-0.5">{desc}</p>
                     </div>
                   </label>
                 ))}

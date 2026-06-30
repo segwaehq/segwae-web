@@ -64,12 +64,12 @@ export default function PhotoStep({ value, onUpdate, onNext, onBack }: PhotoStep
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-7">
       <div>
-        <h2 className="font-satoshi font-bold text-2xl text-grey1 mb-2">
+        <h2 className="font-satoshi font-black text-[27px] tracking-[-0.03em] leading-[1.12] text-[#15131C] mb-1.5">
           Add a profile photo
         </h2>
-        <p className="font-openSans text-grey3 text-sm leading-relaxed">
+        <p className="text-[15px] font-medium text-[#8B8499] leading-relaxed">
           A good photo helps people recognise you and builds trust.
         </p>
       </div>
@@ -79,7 +79,7 @@ export default function PhotoStep({ value, onUpdate, onNext, onBack }: PhotoStep
           type="button"
           onClick={() => fileInputRef.current?.click()}
           disabled={uploading}
-          className="relative w-36 h-36 rounded-full bg-grey5 border-2 border-dashed border-grey4 hover:border-mainPurple cursor-pointer transition-colors overflow-hidden group disabled:cursor-not-allowed"
+          className="relative w-36 h-36 rounded-full bg-[#F4F0FE] border-2 border-dashed border-[#D8D5E2] hover:border-[#A98BE8] cursor-pointer transition-colors overflow-hidden group disabled:cursor-not-allowed"
         >
           {imageUrl ? (
             <>
@@ -89,32 +89,32 @@ export default function PhotoStep({ value, onUpdate, onNext, onBack }: PhotoStep
               </div>
             </>
           ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center text-grey3 gap-2">
+            <div className="w-full h-full flex flex-col items-center justify-center text-[#9098A3] group-hover:text-[#5A2DD4] gap-2 transition-colors">
               <FaCamera className="w-7 h-7" />
-              <span className="font-openSans text-xs">Upload photo</span>
+              <span className="text-xs font-semibold">Upload photo</span>
             </div>
           )}
 
           {uploading && (
             <div className="absolute inset-0 bg-white/80 flex items-center justify-center">
-              <div className="w-7 h-7 border-[3px] border-mainPurple border-t-transparent rounded-full animate-spin" />
+              <div className="w-7 h-7 border-[3px] border-[#5A2DD4] border-t-transparent rounded-full animate-spin" />
             </div>
           )}
         </button>
 
         <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileSelect} className="hidden" />
 
-        <p className="font-openSans text-xs text-grey3">JPG, PNG or GIF · Max 5 MB</p>
-        {error && <p className="text-xs text-errorRed font-openSans">{error}</p>}
+        <p className="text-xs font-medium text-[#9098A3]">JPG, PNG or GIF · Max 5 MB</p>
+        {error && <p className="text-xs font-medium text-errorRed">{error}</p>}
       </div>
 
       <div className="flex gap-3">
         <button type="button" onClick={onBack} disabled={uploading}
-          className="flex-1 py-3.5 border border-grey4 text-grey2 rounded-lg font-satoshi font-semibold text-sm hover:border-grey3 transition-colors disabled:opacity-50">
+          className="flex-1 py-3.5 rounded-xl border border-[#E2E1EA] bg-white text-[14px] font-bold text-[#374151] hover:border-[#B9B9C6] transition-colors disabled:opacity-50">
           Back
         </button>
         <button type="button" onClick={handleContinue} disabled={uploading}
-          className="flex-2 px-8 py-3.5 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+          className="flex-2 inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-brand-gradient text-white text-[15px] font-bold shadow-[0_10px_24px_-6px_rgba(74,55,216,0.45)] hover:-translate-y-px transition-transform disabled:opacity-50 disabled:cursor-not-allowed">
           Continue
         </button>
       </div>

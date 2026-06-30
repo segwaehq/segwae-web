@@ -23,7 +23,7 @@ const INDUSTRIES = [
 ]
 
 const inputClass =
-  'w-full px-4 py-3 border border-grey4 rounded-xl focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 bg-white transition-colors'
+  'w-full px-4 py-3 border border-[#E2E1EA] rounded-xl focus:outline-none focus:border-[#A98BE8] text-sm font-medium text-[#15131C] placeholder:text-[#9098A3] bg-white transition-colors'
 
 export default function CompanyProfilePage() {
   const router = useRouter()
@@ -132,7 +132,7 @@ export default function CompanyProfilePage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="w-7 h-7 border-[3px] border-mainPurple border-t-transparent rounded-full animate-spin" />
+        <div className="w-7 h-7 border-[3px] border-[#5A2DD4] border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
@@ -140,32 +140,32 @@ export default function CompanyProfilePage() {
   return (
     <div className="max-w-full">
       <div className="mb-8">
-        <p className="font-satoshi text-[11px] font-semibold text-mainPurple uppercase tracking-[0.22em] mb-1">
+        <p className="font-satoshi text-[12px] font-bold text-[#5A2DD4] uppercase tracking-[0.14em] mb-1.5">
           Hiring
         </p>
-        <h1 className="font-satoshi font-bold text-2xl text-grey1">Company Profile</h1>
-        <p className="font-openSans text-sm text-grey3 mt-1">
+        <h1 className="font-satoshi font-black tracking-[-0.02em] text-[26px] text-[#15131C]">Company profile</h1>
+        <p className="text-sm text-[#9098A3] mt-1">
           Visible to all job seekers on your listings.
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5">
         {/* Logo upload */}
-        <div className="bg-white rounded-2xl border border-grey4/60 p-6">
-          <p className="font-satoshi font-semibold text-sm text-grey1 mb-4">Company Logo</p>
+        <div className="bg-white rounded-[18px] border border-[#E8E8EF] p-6">
+          <p className="font-satoshi font-bold text-sm text-[#15131C] mb-4">Company logo</p>
           <div className="flex items-center gap-5">
             <div
-              className="relative w-20 h-20 rounded-2xl border-2 border-dashed border-mainPurple overflow-hidden cursor-pointer group"
+              className="relative w-20 h-20 rounded-2xl border-2 border-dashed border-[#A98BE8] overflow-hidden cursor-pointer group"
               onClick={() => !uploadingLogo && fileRef.current?.click()}
             >
               {logoPreview ? (
                 <Image src={logoPreview} alt="Logo" fill className="object-cover" />
               ) : (
-                <div className="w-full h-full bg-lightPurple flex items-center justify-center">
-                  <FaBuilding className="w-7 h-7 text-mainPurple" />
+                <div className="w-full h-full bg-[#F1ECFD] flex items-center justify-center">
+                  <FaBuilding className="w-7 h-7 text-[#5A2DD4]" />
                 </div>
               )}
-              <div className="absolute inset-0 bg-mainPurple/70 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+              <div className="absolute inset-0 bg-[#5A2DD4]/70 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
                 {uploadingLogo ? (
                   <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                 ) : (
@@ -181,30 +181,30 @@ export default function CompanyProfilePage() {
               />
             </div>
             <div>
-              <p className="font-satoshi font-semibold text-sm text-grey1">{form.name || 'Your Company'}</p>
+              <p className="font-satoshi font-bold text-sm text-[#15131C]">{form.name || 'Your company'}</p>
               {company?.is_verified && (
-                <span className="inline-flex items-center gap-1 mt-1 text-[10px] font-semibold font-satoshi text-successGreen bg-successGreen/10 px-2 py-0.5 rounded-full">
+                <span className="inline-flex items-center gap-1 mt-1 text-[10px] font-semibold font-satoshi text-[#16895E] bg-[#E7F6EF] px-2 py-0.5 rounded-full">
                   <FaCheck className="w-2.5 h-2.5" /> Verified
                 </span>
               )}
-              <p className="font-openSans text-xs text-grey3 mt-1">Click the logo to upload a new one</p>
+              <p className="text-xs text-[#9098A3] mt-1">Click the logo to upload a new one</p>
             </div>
           </div>
         </div>
 
         {/* Fields */}
-        <div className="bg-white rounded-2xl border border-grey4/60 p-6 space-y-4">
-          <p className="font-satoshi font-semibold text-sm text-grey1 mb-2">Company Details</p>
+        <div className="bg-white rounded-[18px] border border-[#E8E8EF] p-6 space-y-4">
+          <p className="font-satoshi font-bold text-sm text-[#15131C] mb-2">Company details</p>
 
           <div>
-            <label className="block font-satoshi font-semibold text-xs text-grey3 mb-1.5">
-              Company Name <span className="text-errorRed">*</span>
+            <label className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">
+              Company name <span className="text-[#B6463C]">*</span>
             </label>
             <input name="name" value={form.name} onChange={handleChange} required placeholder="e.g. Flutterwave" className={inputClass} />
           </div>
 
           <div>
-            <label className="block font-satoshi font-semibold text-xs text-grey3 mb-1.5">Industry</label>
+            <label className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">Industry</label>
             <select name="industry" value={form.industry} onChange={handleChange} className={inputClass}>
               <option value="">Select industry</option>
               {INDUSTRIES.map((ind) => (
@@ -214,7 +214,7 @@ export default function CompanyProfilePage() {
           </div>
 
           <div>
-            <label className="block font-satoshi font-semibold text-xs text-grey3 mb-1.5">Company Size</label>
+            <label className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">Company size</label>
             <select name="size" value={form.size} onChange={handleChange} className={inputClass}>
               <option value="">Select size</option>
               {COMPANY_SIZES.map((s) => (
@@ -224,17 +224,17 @@ export default function CompanyProfilePage() {
           </div>
 
           <div>
-            <label className="block font-satoshi font-semibold text-xs text-grey3 mb-1.5">Location</label>
+            <label className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">Location</label>
             <input name="location" value={form.location} onChange={handleChange} placeholder="e.g. Lagos, Nigeria" className={inputClass} />
           </div>
 
           <div>
-            <label className="block font-satoshi font-semibold text-xs text-grey3 mb-1.5">Website</label>
+            <label className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">Website</label>
             <input name="website" value={form.website} onChange={handleChange} type="url" placeholder="https://yourcompany.com" className={inputClass} />
           </div>
 
           <div>
-            <label className="block font-satoshi font-semibold text-xs text-grey3 mb-1.5">About the Company</label>
+            <label className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">About the company</label>
             <textarea
               name="description"
               value={form.description}
@@ -249,14 +249,14 @@ export default function CompanyProfilePage() {
         <button
           type="submit"
           disabled={saving}
-          className="w-full flex items-center justify-center gap-2 py-3 bg-mainPurple text-white rounded-xl font-satoshi font-semibold text-sm hover:bg-[#4338CA] disabled:opacity-60 transition-colors"
+          className="w-full flex items-center justify-center gap-2 py-3 bg-brand-gradient text-white rounded-xl font-satoshi font-bold text-sm shadow-[0_10px_24px_-6px_rgba(74,55,216,0.45)] hover:-translate-y-0.5 disabled:opacity-60 disabled:hover:translate-y-0 transition-transform"
         >
           {saving ? (
             <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
           ) : saved ? (
             <FaCheck className="w-4 h-4" />
           ) : null}
-          {saving ? 'Saving…' : saved ? 'Saved!' : 'Save Changes'}
+          {saving ? 'Saving…' : saved ? 'Saved!' : 'Save changes'}
         </button>
       </form>
     </div>

@@ -11,7 +11,7 @@ export default function CompleteProfileLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="min-h-screen bg-grey6">
+    <div className="min-h-screen bg-[#F4F3F8]">
       {children}
     </div>
   )

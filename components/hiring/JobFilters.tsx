@@ -2,8 +2,7 @@
 
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { useCallback, useTransition } from 'react'
-import { FaMagnifyingGlass, FaSliders } from 'react-icons/fa6'
-import { useState } from 'react'
+import { FaMagnifyingGlass } from 'react-icons/fa6'
 
 const JOB_TYPES = [
   { value: 'full_time', label: 'Full-time' },
@@ -21,10 +20,10 @@ function FilterPill({ label, active, onClick }: { label: string; active: boolean
   return (
     <button
       onClick={onClick}
-      className={`px-3.5 py-1.5 rounded-full font-satoshi font-bold text-xs transition-all ${
+      className={`px-[15px] py-2 rounded-[9px] font-satoshi text-[13px] whitespace-nowrap transition-all ${
         active
-          ? 'bg-mainPurple text-white'
-          : 'bg-white/8 border border-white/14 text-white/55 hover:text-white hover:border-white/28'
+          ? 'bg-brand-gradient text-white font-bold border border-transparent'
+          : 'bg-white/8 border border-white/16 text-white/70 font-semibold hover:text-white hover:border-white/28'
       }`}
     >
       {label}
@@ -37,7 +36,6 @@ export function JobFilters() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const [, startTransition] = useTransition()
-  const [filtersOpen, setFiltersOpen] = useState(false)
 
   const currentSearch = searchParams.get('search') ?? ''
   const currentType = searchParams.get('job_type') ?? ''
@@ -56,77 +54,40 @@ export function JobFilters() {
     [searchParams, router, pathname]
   )
 
-  const clearAll = useCallback(() => {
-    startTransition(() => {
-      router.replace(pathname, { scroll: false })
-    })
-  }, [router, pathname])
-
-  const activeFilterCount = [currentType, currentMode].filter(Boolean).length
-
   return (
     <>
-      <div className="flex gap-3">
-        <div className="relative flex-1">
-          <FaMagnifyingGlass className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-grey3" />
-          <input
-            type="text"
-            defaultValue={currentSearch}
-            onChange={(e) => updateParam('search', e.target.value || null)}
-            placeholder="Search jobs, companies, keywords…"
-            className="w-full pl-11 pr-4 py-3.5 bg-white rounded-lg font-openSans text-sm text-grey1 placeholder:text-grey3 outline-none focus:ring-2 focus:ring-mainPurple/30 transition-all"
-          />
-        </div>
-        <button
-          onClick={() => setFiltersOpen((o) => !o)}
-          className={`px-4 py-3.5 rounded-lg font-satoshi font-bold text-sm flex items-center gap-2 transition-all ${
-            filtersOpen || activeFilterCount > 0
-              ? 'bg-mainPurple text-white'
-              : 'bg-white/8 border border-white/14 text-white/70 hover:border-white/28'
-          }`}
-        >
-          <FaSliders className="w-4 h-4" />
-          <span className="hidden sm:inline">Filters</span>
-          {activeFilterCount > 0 && (
-            <span className="w-4 h-4 rounded-full bg-accent text-[#111827] text-[10px] font-bold flex items-center justify-center">
-              {activeFilterCount}
-            </span>
-          )}
-        </button>
+      <div className="relative">
+        <FaMagnifyingGlass className="absolute left-4 top-1/2 -translate-y-1/2 w-[17px] h-[17px] text-[#9098A3]" />
+        <input
+          type="text"
+          defaultValue={currentSearch}
+          onChange={(e) => updateParam('search', e.target.value || null)}
+          placeholder="Search jobs, companies, keywords…"
+          className="w-full pl-[42px] pr-4 py-[13px] bg-white rounded-[11px] font-satoshi text-sm font-medium text-[#15131C] placeholder:text-[#9098A3] outline-none focus:ring-2 focus:ring-[#5A2DD4]/30 transition-all"
+        />
       </div>
 
-      {filtersOpen && (
-        <div className="mt-4 p-4 bg-white/5 border border-white/10 rounded-lg flex flex-wrap gap-4 items-center">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="font-satoshi text-[11px] font-bold text-white/35 uppercase tracking-wider mr-1">Type</span>
-            {JOB_TYPES.map((t) => (
-              <FilterPill
-                key={t.value}
-                label={t.label}
-                active={currentType === t.value}
-                onClick={() => updateParam('job_type', currentType === t.value ? null : t.value)}
-              />
-            ))}
-          </div>
-          <div className="w-px bg-white/10 hidden sm:block self-stretch" />
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="font-satoshi text-[11px] font-bold text-white/35 uppercase tracking-wider mr-1">Mode</span>
-            {WORK_MODES.map((m) => (
-              <FilterPill
-                key={m.value}
-                label={m.label}
-                active={currentMode === m.value}
-                onClick={() => updateParam('work_mode', currentMode === m.value ? null : m.value)}
-              />
-            ))}
-          </div>
-          {activeFilterCount > 0 && (
-            <button onClick={clearAll} className="ml-auto font-satoshi font-bold text-xs text-white/50 hover:text-white transition-colors">
-              Clear
-            </button>
-          )}
-        </div>
-      )}
+      <div className="flex flex-wrap gap-2 items-center mt-3.5">
+        <span className="font-satoshi text-[11px] font-bold uppercase tracking-[0.08em] text-white/30 mr-0.5">Type</span>
+        {JOB_TYPES.map((t) => (
+          <FilterPill
+            key={t.value}
+            label={t.label}
+            active={currentType === t.value}
+            onClick={() => updateParam('job_type', currentType === t.value ? null : t.value)}
+          />
+        ))}
+        <span className="w-px h-5 bg-white/12 mx-1.5" />
+        <span className="font-satoshi text-[11px] font-bold uppercase tracking-[0.08em] text-white/30 mr-0.5">Mode</span>
+        {WORK_MODES.map((m) => (
+          <FilterPill
+            key={m.value}
+            label={m.label}
+            active={currentMode === m.value}
+            onClick={() => updateParam('work_mode', currentMode === m.value ? null : m.value)}
+          />
+        ))}
+      </div>
     </>
   )
 }

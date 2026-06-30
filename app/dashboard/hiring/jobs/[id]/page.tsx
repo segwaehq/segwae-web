@@ -7,7 +7,7 @@ import { toast } from 'sonner'
 import {
   FaArrowLeft, FaCheck, FaXmark, FaArrowUpRightFromSquare,
   FaUser, FaEnvelope, FaPhone, FaFileLines, FaLink, FaGlobe,
-  FaCalendarPlus, FaTableList, FaSquareFull,
+  FaCalendarPlus, FaCalendarCheck, FaTableList, FaTableColumns,
 } from 'react-icons/fa6'
 import type { JobApplication, Job, ApplicantProfile, EmailTemplate, InterviewSchedule } from '@/lib/types'
 
@@ -21,20 +21,42 @@ const STATUS_LABEL: Record<string, string> = {
   accepted: 'Accepted', rejected: 'Rejected',
 }
 const STATUS_COLORS: Record<string, string> = {
-  applied: 'text-blue bg-blue/10',
-  under_review: 'text-warningYellow bg-warningYellow/10',
-  shortlisted: 'text-mainPurple bg-lightPurple',
-  accepted: 'text-successGreen bg-successGreen/10',
-  rejected: 'text-errorRed bg-errorRed/10',
+  applied: 'text-[#5A2DD4] bg-[#F1ECFD]',
+  under_review: 'text-[#1E5BBF] bg-[#E8EFFB]',
+  shortlisted: 'text-[#C2410C] bg-[#FDF0E7]',
+  accepted: 'text-[#16895E] bg-[#E7F6EF]',
+  rejected: 'text-[#9098A3] bg-[#F3F3F7]',
 }
 
 const PIPELINE_STAGES = [
-  { key: 'applied', label: 'Applied', color: 'text-blue', border: 'border-blue' },
-  { key: 'under_review', label: 'Under Review', color: 'text-warningYellow', border: 'border-warningYellow' },
-  { key: 'shortlisted', label: 'Shortlisted', color: 'text-mainPurple', border: 'border-mainPurple' },
-  { key: 'accepted', label: 'Accepted', color: 'text-successGreen', border: 'border-successGreen' },
-  { key: 'rejected', label: 'Rejected', color: 'text-errorRed', border: 'border-errorRed' },
+  { key: 'applied', label: 'Applied', dot: '#5A2DD4' },
+  { key: 'under_review', label: 'Under Review', dot: '#1E5BBF' },
+  { key: 'shortlisted', label: 'Shortlisted', dot: '#C2410C' },
+  { key: 'accepted', label: 'Accepted', dot: '#16895E' },
+  { key: 'rejected', label: 'Rejected', dot: '#9098A3' },
 ] as const
+
+const AVATAR_GRADIENTS = [
+  'linear-gradient(135deg,#7C5AF6,#2563EB)',
+  'linear-gradient(135deg,#16895E,#34D399)',
+  'linear-gradient(135deg,#C2410C,#F59E0B)',
+  'linear-gradient(135deg,#DB2777,#F472B6)',
+  'linear-gradient(135deg,#0891B2,#22D3EE)',
+  'linear-gradient(135deg,#4F46E5,#818CF8)',
+]
+function avatarFor(seed: string): string {
+  let h = 0
+  for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0
+  return AVATAR_GRADIENTS[h % AVATAR_GRADIENTS.length]
+}
+function initialsOf(name: string | null | undefined): string {
+  const parts = (name || '').trim().split(/\s+/).filter(Boolean)
+  if (!parts.length) return '—'
+  return parts.map((p) => p[0]).join('').slice(0, 2).toUpperCase()
+}
+
+const INPUT_CLASS =
+  'w-full px-3.5 py-2.5 border border-[#E2E1EA] rounded-xl text-sm font-medium text-[#15131C] placeholder:text-[#B6B0C0] outline-none focus:border-[#A98BE8] transition-colors'
 
 // ─── Send Email Modal ─────────────────────────────────────────────────────────
 
@@ -111,16 +133,16 @@ function SendEmailModal({
 
   if (sent) {
     return (
-      <div className="fixed inset-0 bg-black/50 z-200 flex items-center justify-center p-4">
-        <div className="bg-white rounded-2xl w-full max-w-sm p-10 flex flex-col items-center shadow-2xl animate-scaleIn">
-          <div className="w-14 h-14 rounded-full bg-successGreen/10 flex items-center justify-center mb-4">
-            <FaCheck className="w-6 h-6 text-successGreen" />
+      <div className="fixed inset-0 bg-[#0F1115]/45 backdrop-blur-[2px] z-200 flex items-center justify-center p-4">
+        <div className="bg-white rounded-2xl w-full max-w-sm p-10 flex flex-col items-center shadow-[0_24px_60px_-15px_rgba(15,17,21,0.4)] animate-scaleIn">
+          <div className="w-14 h-14 rounded-full bg-[#E7F6EF] flex items-center justify-center mb-4">
+            <FaCheck className="w-6 h-6 text-[#16895E]" />
           </div>
-          <h3 className="font-satoshi font-bold text-xl text-grey1 mb-2">Email sent!</h3>
-          <p className="font-openSans text-sm text-grey3 text-center mb-6">
+          <h3 className="font-satoshi font-black text-xl text-[#15131C] mb-2">Email sent</h3>
+          <p className="text-sm font-medium text-[#8B8499] text-center mb-6">
             Your message was delivered to {applicantEmail}
           </p>
-          <button onClick={onClose} className="w-full py-2.5 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] transition-colors">
+          <button onClick={onClose} className="w-full py-2.5 bg-brand-gradient text-white rounded-xl font-bold text-sm shadow-[0_8px_18px_-6px_rgba(74,55,216,0.45)] hover:-translate-y-px transition-transform">
             Done
           </button>
         </div>
@@ -129,11 +151,11 @@ function SendEmailModal({
   }
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-200 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] flex flex-col shadow-2xl animate-scaleIn">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-grey4/60 shrink-0">
-          <p className="font-satoshi font-semibold text-sm text-grey1">Email — {profile?.name ?? 'Applicant'}</p>
-          <button onClick={onClose} className="w-8 h-8 flex items-center justify-center rounded-lg text-grey3 hover:text-grey1 hover:bg-grey5 transition-colors">
+    <div className="fixed inset-0 bg-[#0F1115]/45 backdrop-blur-[2px] z-200 flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] flex flex-col shadow-[0_24px_60px_-15px_rgba(15,17,21,0.4)] animate-scaleIn">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#ECECF1] shrink-0">
+          <p className="font-satoshi font-bold text-sm text-[#15131C]">Email — {profile?.name ?? 'Applicant'}</p>
+          <button onClick={onClose} className="w-8 h-8 flex items-center justify-center rounded-lg text-[#9098A3] hover:text-[#15131C] hover:bg-[#F3F3F7] transition-colors">
             <FaXmark className="w-4 h-4" />
           </button>
         </div>
@@ -141,20 +163,20 @@ function SendEmailModal({
         <div className="flex-1 overflow-y-auto px-6 py-5 space-y-4">
           {loadingTemplates ? (
             <div className="flex justify-center py-4">
-              <div className="w-5 h-5 border-2 border-mainPurple border-t-transparent rounded-full animate-spin" />
+              <div className="w-5 h-5 border-2 border-[#5A2DD4] border-t-transparent rounded-full animate-spin" />
             </div>
           ) : templates.length > 0 ? (
             <div>
-              <p className="font-satoshi font-semibold text-xs text-grey3 mb-2">Template</p>
+              <p className="text-xs font-bold text-[#9098A3] mb-2">Template</p>
               <div className="flex flex-wrap gap-2">
                 {templates.map((t) => (
                   <button
                     key={t.id}
                     onClick={() => handleTemplateSelect(t.id)}
-                    className={`px-3 py-1.5 rounded-full text-xs font-semibold font-satoshi border transition-colors ${
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-colors ${
                       selectedTemplateId === t.id
-                        ? 'border-mainPurple bg-lightPurple text-mainPurple'
-                        : 'border-grey4 text-grey2 hover:border-mainPurple/50'
+                        ? 'border-[#DDCEFA] bg-[#F4F0FE] text-[#5A2DD4]'
+                        : 'border-[#E8E8EF] text-[#6B6478] hover:border-[#C9BCF2]'
                     }`}
                   >
                     {t.label}
@@ -164,40 +186,40 @@ function SendEmailModal({
             </div>
           ) : null}
 
-          <div className="flex items-center gap-2 px-3 py-2.5 bg-grey6 rounded-lg">
-            <FaEnvelope className="w-3.5 h-3.5 text-grey3 shrink-0" />
-            <span className="font-openSans text-xs text-grey3">To: <span className="text-grey1 font-semibold">{applicantEmail}</span></span>
+          <div className="flex items-center gap-2 px-3.5 py-2.5 bg-[#FAFAFB] border border-[#EFEEF4] rounded-xl">
+            <FaEnvelope className="w-3.5 h-3.5 text-[#9098A3] shrink-0" />
+            <span className="text-xs font-medium text-[#9098A3]">To: <span className="text-[#15131C] font-bold">{applicantEmail}</span></span>
           </div>
 
           <div>
-            <label className="block font-satoshi font-semibold text-xs text-grey3 mb-1.5">Subject</label>
+            <label className="block text-xs font-bold text-[#15131C] mb-1.5">Subject</label>
             <input
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
               placeholder="Email subject"
-              className="w-full px-3 py-2.5 border border-grey4 rounded-lg font-openSans text-sm text-grey1 focus:outline-none focus:border-mainPurple transition-colors"
+              className={INPUT_CLASS}
             />
           </div>
 
           <div>
-            <label className="block font-satoshi font-semibold text-xs text-grey3 mb-1.5">Message</label>
+            <label className="block text-xs font-bold text-[#15131C] mb-1.5">Message</label>
             <textarea
               value={body}
               onChange={(e) => setBody(e.target.value)}
               rows={8}
-              className="w-full px-3 py-2.5 border border-grey4 rounded-lg font-openSans text-sm text-grey1 focus:outline-none focus:border-mainPurple transition-colors resize-none"
+              className={`${INPUT_CLASS} resize-none`}
             />
           </div>
         </div>
 
-        <div className="shrink-0 px-6 py-4 border-t border-grey4/60 flex gap-3">
-          <button onClick={onClose} className="flex-1 py-2.5 border border-grey4 text-grey1 rounded-lg font-satoshi font-semibold text-sm hover:bg-grey5 transition-colors">
+        <div className="shrink-0 px-6 py-4 border-t border-[#ECECF1] flex gap-3">
+          <button onClick={onClose} className="flex-1 py-2.5 border border-[#E2E1EA] bg-white text-[#374151] rounded-xl font-bold text-sm hover:border-[#B9B9C6] transition-colors">
             Cancel
           </button>
           <button
             onClick={handleSend}
             disabled={sending || !subject.trim() || !body.trim()}
-            className="flex-2 flex items-center justify-center gap-2 py-2.5 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="flex-2 flex items-center justify-center gap-2 py-2.5 bg-brand-gradient text-white rounded-xl font-bold text-sm shadow-[0_8px_18px_-6px_rgba(74,55,216,0.45)] hover:-translate-y-px disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 transition-transform"
           >
             {sending ? (
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -267,24 +289,24 @@ function ScheduleInterviewModal({
     })
     const timeStr = new Date(result.scheduled_at).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
     return (
-      <div className="fixed inset-0 bg-black/50 z-200 flex items-center justify-center p-4">
-        <div className="bg-white rounded-2xl w-full max-w-sm p-10 flex flex-col items-center shadow-2xl animate-scaleIn">
-          <div className="w-14 h-14 rounded-full bg-successGreen/10 flex items-center justify-center mb-4">
-            <FaCheck className="w-6 h-6 text-successGreen" />
+      <div className="fixed inset-0 bg-[#0F1115]/45 backdrop-blur-[2px] z-200 flex items-center justify-center p-4">
+        <div className="bg-white rounded-2xl w-full max-w-sm p-10 flex flex-col items-center shadow-[0_24px_60px_-15px_rgba(15,17,21,0.4)] animate-scaleIn">
+          <div className="w-14 h-14 rounded-full bg-[#E7F6EF] flex items-center justify-center mb-4">
+            <FaCheck className="w-6 h-6 text-[#16895E]" />
           </div>
-          <h3 className="font-satoshi font-bold text-xl text-grey1 mb-1">Interview Scheduled!</h3>
-          <p className="font-openSans text-sm text-grey3 text-center mb-1">{dateStr} at {timeStr}</p>
-          <p className="font-openSans text-xs text-grey3 text-center mb-5">{duration} minutes</p>
+          <h3 className="font-satoshi font-black text-xl text-[#15131C] mb-1">Interview scheduled</h3>
+          <p className="text-sm font-medium text-[#8B8499] text-center mb-1">{dateStr} at {timeStr}</p>
+          <p className="text-xs font-medium text-[#9098A3] text-center mb-5">{duration} minutes</p>
           {result.meet_link && (
-            <div className="w-full p-3 bg-lightPurple rounded-lg mb-5">
-              <p className="font-satoshi font-semibold text-[11px] text-mainPurple mb-1">Meeting Link</p>
+            <div className="w-full p-3 bg-[#F4F0FE] rounded-xl mb-5">
+              <p className="text-[11px] font-bold text-[#5A2DD4] mb-1">Meeting link</p>
               <a href={result.meet_link} target="_blank" rel="noopener noreferrer"
-                className="font-openSans text-xs text-mainPurple break-all hover:underline">
+                className="text-xs font-medium text-[#5A2DD4] break-all hover:underline">
                 {result.meet_link}
               </a>
             </div>
           )}
-          <button onClick={onClose} className="w-full py-2.5 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] transition-colors">
+          <button onClick={onClose} className="w-full py-2.5 bg-brand-gradient text-white rounded-xl font-bold text-sm shadow-[0_8px_18px_-6px_rgba(74,55,216,0.45)] hover:-translate-y-px transition-transform">
             Done
           </button>
         </div>
@@ -293,13 +315,13 @@ function ScheduleInterviewModal({
   }
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-200 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] flex flex-col shadow-2xl animate-scaleIn">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-grey4/60 shrink-0">
-          <p className="font-satoshi font-semibold text-sm text-grey1">
-            Schedule Interview — {profile?.name ?? 'Applicant'}
+    <div className="fixed inset-0 bg-[#0F1115]/45 backdrop-blur-[2px] z-200 flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] flex flex-col shadow-[0_24px_60px_-15px_rgba(15,17,21,0.4)] animate-scaleIn">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#ECECF1] shrink-0">
+          <p className="font-satoshi font-bold text-sm text-[#15131C]">
+            Schedule interview — {profile?.name ?? 'Applicant'}
           </p>
-          <button onClick={onClose} className="w-8 h-8 flex items-center justify-center rounded-lg text-grey3 hover:text-grey1 hover:bg-grey5 transition-colors">
+          <button onClick={onClose} className="w-8 h-8 flex items-center justify-center rounded-lg text-[#9098A3] hover:text-[#15131C] hover:bg-[#F3F3F7] transition-colors">
             <FaXmark className="w-4 h-4" />
           </button>
         </div>
@@ -307,32 +329,32 @@ function ScheduleInterviewModal({
         <div className="flex-1 overflow-y-auto px-6 py-5 space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block font-satoshi font-semibold text-xs text-grey3 mb-1.5">Date</label>
+              <label className="block text-xs font-bold text-[#15131C] mb-1.5">Date</label>
               <input
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
                 min={defaultDate}
-                className="w-full px-3 py-2.5 border border-grey4 rounded-lg font-openSans text-sm text-grey1 focus:outline-none focus:border-mainPurple transition-colors"
+                className={INPUT_CLASS}
               />
             </div>
             <div>
-              <label className="block font-satoshi font-semibold text-xs text-grey3 mb-1.5">Time</label>
+              <label className="block text-xs font-bold text-[#15131C] mb-1.5">Time</label>
               <input
                 type="time"
                 value={time}
                 onChange={(e) => setTime(e.target.value)}
-                className="w-full px-3 py-2.5 border border-grey4 rounded-lg font-openSans text-sm text-grey1 focus:outline-none focus:border-mainPurple transition-colors"
+                className={INPUT_CLASS}
               />
             </div>
           </div>
 
           <div>
-            <label className="block font-satoshi font-semibold text-xs text-grey3 mb-1.5">Duration</label>
+            <label className="block text-xs font-bold text-[#15131C] mb-1.5">Duration</label>
             <select
               value={duration}
               onChange={(e) => setDuration(e.target.value)}
-              className="w-full px-3 py-2.5 border border-grey4 rounded-lg font-openSans text-sm text-grey1 focus:outline-none focus:border-mainPurple transition-colors bg-white"
+              className={`${INPUT_CLASS} bg-white`}
             >
               <option value="30">30 minutes</option>
               <option value="45">45 minutes</option>
@@ -341,33 +363,33 @@ function ScheduleInterviewModal({
             </select>
           </div>
 
-          <div className="p-3 bg-lightPurple rounded-lg">
-            <p className="font-satoshi font-semibold text-xs text-mainPurple mb-1">Video Link</p>
-            <p className="font-openSans text-xs text-mainPurple/80">
+          <div className="p-3.5 bg-[#F4F0FE] border border-[#E6DCFB] rounded-xl">
+            <p className="text-xs font-bold text-[#5A2DD4] mb-1">Video link</p>
+            <p className="text-xs font-medium text-[#6B6478]">
               A Jitsi Meet link will be auto-generated and shared with the applicant.
             </p>
           </div>
 
           <div>
-            <label className="block font-satoshi font-semibold text-xs text-grey3 mb-1.5">Internal Notes</label>
+            <label className="block text-xs font-bold text-[#15131C] mb-1.5">Internal notes</label>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={3}
               placeholder="Interviewer prep notes, topics to cover…"
-              className="w-full px-3 py-2.5 border border-grey4 rounded-lg font-openSans text-sm text-grey1 focus:outline-none focus:border-mainPurple transition-colors resize-none"
+              className={`${INPUT_CLASS} resize-none`}
             />
           </div>
         </div>
 
-        <div className="shrink-0 px-6 py-4 border-t border-grey4/60 flex gap-3">
-          <button onClick={onClose} className="flex-1 py-2.5 border border-grey4 text-grey1 rounded-lg font-satoshi font-semibold text-sm hover:bg-grey5 transition-colors">
+        <div className="shrink-0 px-6 py-4 border-t border-[#ECECF1] flex gap-3">
+          <button onClick={onClose} className="flex-1 py-2.5 border border-[#E2E1EA] bg-white text-[#374151] rounded-xl font-bold text-sm hover:border-[#B9B9C6] transition-colors">
             Cancel
           </button>
           <button
             onClick={handleSchedule}
             disabled={saving || !date || !time}
-            className="flex-2 flex items-center justify-center gap-2 py-2.5 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="flex-2 flex items-center justify-center gap-2 py-2.5 bg-brand-gradient text-white rounded-xl font-bold text-sm shadow-[0_8px_18px_-6px_rgba(74,55,216,0.45)] hover:-translate-y-px disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 transition-transform"
           >
             {saving ? (
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -378,6 +400,39 @@ function ScheduleInterviewModal({
           </button>
         </div>
       </div>
+    </div>
+  )
+}
+
+// ─── Applicant Avatar ─────────────────────────────────────────────────────────
+
+function Avatar({
+  profile,
+  size,
+  ring,
+}: {
+  profile: ApplicantProfile | undefined
+  size: number
+  ring?: boolean
+}) {
+  const name = profile?.name ?? ''
+  const fontSize = Math.round(size * 0.32)
+  if (profile?.profile_image_url) {
+    return (
+      <div
+        className={`rounded-full overflow-hidden shrink-0 ${ring ? 'border-4 border-white' : ''}`}
+        style={{ width: size, height: size }}
+      >
+        <Image src={profile.profile_image_url} alt={name} width={size} height={size} className="object-cover w-full h-full" />
+      </div>
+    )
+  }
+  return (
+    <div
+      className={`rounded-full flex items-center justify-center font-black text-white shrink-0 ${ring ? 'border-4 border-white' : ''}`}
+      style={{ width: size, height: size, fontSize, background: avatarFor(name || profile?.id || 'x') }}
+    >
+      {name ? initialsOf(name) : <FaUser style={{ width: fontSize, height: fontSize }} />}
     </div>
   )
 }
@@ -401,29 +456,23 @@ function KanbanCard({
       draggable
       onDragStart={(e) => onDragStart(e, application.id)}
       onClick={onClick}
-      className="bg-white border border-grey4/70 hover:border-mainPurple rounded-xl p-3 cursor-pointer transition-all hover:shadow-[0_4px_16px_rgba(79,70,229,0.12)] active:opacity-75 select-none"
+      className="bg-white border border-[#E8E8EF] rounded-[13px] p-[13px] cursor-grab active:cursor-grabbing transition-all hover:shadow-[0_8px_20px_-10px_rgba(31,18,72,0.3)] hover:border-[#D6CEEC] active:opacity-75 select-none"
     >
-      <div className="flex items-center gap-2.5 mb-2">
-        <div className="w-8 h-8 rounded-full overflow-hidden bg-grey5 flex items-center justify-center shrink-0">
-          {profile?.profile_image_url ? (
-            <Image src={profile.profile_image_url} alt={profile.name ?? ''} width={32} height={32} className="object-cover w-full h-full" />
-          ) : (
-            <FaUser className="w-3.5 h-3.5 text-grey3" />
-          )}
-        </div>
+      <div className="flex items-center gap-2.5">
+        <Avatar profile={profile} size={38} />
         <div className="flex-1 min-w-0">
-          <p className="font-satoshi font-semibold text-xs text-grey1 truncate">{profile?.name ?? '—'}</p>
-          {profile?.title && <p className="font-openSans text-[10px] text-grey3 truncate">{profile.title}</p>}
+          <p className="font-bold text-[13.5px] text-[#15131C] truncate">{profile?.name ?? '—'}</p>
+          {profile?.title && <p className="text-[11.5px] font-medium text-[#9098A3] truncate">{profile.title}</p>}
         </div>
       </div>
-      <div className="flex items-center justify-between">
-        <span className="font-openSans text-[10px] text-grey3">
+      <div className="flex items-center justify-between mt-2.5">
+        <span className="text-[11px] font-medium text-[#B6B0C0]">
           {new Date(application.applied_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
         </span>
-        <div className="flex gap-1">
-          {application.resume_url && <span className="text-[10px] text-grey3" title="Resume">📄</span>}
-          {profile?.portfolio_or_website_link && <span className="text-[10px] text-grey3" title="Portfolio">🌐</span>}
-          {hasInterview && <span className="text-[10px] text-successGreen" title="Interview scheduled">📅</span>}
+        <div className="flex items-center gap-1.5 text-[#B6B0C0]">
+          {application.resume_url && <FaFileLines className="w-3 h-3" title="Resume attached" />}
+          {profile?.portfolio_or_website_link && <FaGlobe className="w-3 h-3" title="Portfolio" />}
+          {hasInterview && <FaCalendarCheck className="w-3 h-3 text-[#16895E]" title="Interview scheduled" />}
         </div>
       </div>
     </div>
@@ -469,7 +518,7 @@ function KanbanBoard({
   }
 
   return (
-    <div className="flex gap-3 overflow-x-auto pb-4 min-h-[60vh]">
+    <div className="flex gap-3.5 overflow-x-auto pb-4 min-h-[60vh]">
       {PIPELINE_STAGES.map((stage) => {
         const colApps = applications.filter((a) => a.status === stage.key)
         const isDragTarget = dragOverCol === stage.key
@@ -479,17 +528,20 @@ function KanbanBoard({
             onDragOver={(e) => onDragOver(e, stage.key)}
             onDragLeave={onDragLeave}
             onDrop={(e) => onDrop(e, stage.key)}
-            className={`shrink-0 w-52 flex flex-col rounded-xl border-2 transition-colors ${
-              isDragTarget ? 'border-mainPurple bg-lightPurple/30' : 'border-grey4/60 bg-grey6/50'
+            className={`shrink-0 w-[266px] flex flex-col rounded-2xl p-3 transition-colors ${
+              isDragTarget ? 'bg-[#F0EBFC] outline-2 outline-dashed outline-[#C9BCF2] -outline-offset-2' : 'bg-[#F1F1F4]'
             }`}
           >
-            <div className="px-3 py-2.5 flex items-center justify-between shrink-0">
-              <span className={`font-satoshi font-semibold text-xs ${stage.color}`}>{stage.label}</span>
-              <span className="font-satoshi font-semibold text-[10px] px-1.5 py-0.5 rounded-full bg-white border border-grey4/60 text-grey3">
+            <div className="px-1 pb-3 flex items-center justify-between shrink-0">
+              <div className="flex items-center gap-2">
+                <span className="w-[9px] h-[9px] rounded-full" style={{ background: stage.dot }} />
+                <span className="font-extrabold text-[13px] text-[#15131C]">{stage.label}</span>
+              </div>
+              <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-[#E7E6EE] text-[#6B6478]">
                 {colApps.length}
               </span>
             </div>
-            <div className="flex-1 px-2 pb-2 space-y-2 overflow-y-auto">
+            <div className="flex-1 space-y-2.5 min-h-[60px]">
               {colApps.map((app) => (
                 <KanbanCard
                   key={app.id}
@@ -499,10 +551,10 @@ function KanbanBoard({
                 />
               ))}
               {colApps.length === 0 && (
-                <div className={`h-16 flex items-center justify-center rounded-lg border-2 border-dashed transition-colors ${
-                  isDragTarget ? 'border-mainPurple' : 'border-grey4'
+                <div className={`h-16 flex items-center justify-center rounded-xl border-2 border-dashed transition-colors ${
+                  isDragTarget ? 'border-[#C9BCF2]' : 'border-[#DEDDE6]'
                 }`}>
-                  <span className="font-openSans text-[11px] text-grey3">Drop here</span>
+                  <span className="text-[11px] font-medium text-[#9098A3]">Drop here</span>
                 </div>
               )}
             </div>
@@ -513,7 +565,7 @@ function KanbanBoard({
   )
 }
 
-// ─── Applicant Drawer ─────────────────────────────────────────────────────────
+// ─── Applicant Slide-over ─────────────────────────────────────────────────────
 
 function ApplicantDrawer({
   application,
@@ -554,124 +606,174 @@ function ApplicantDrawer({
 
   return (
     <>
-      <div className="fixed inset-0 bg-black/40 z-40" onClick={onClose} />
-      <aside className="fixed right-0 top-0 h-full w-full max-w-md bg-white z-50 shadow-2xl flex flex-col overflow-hidden animate-scaleIn">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-grey4/60 shrink-0">
-          <p className="font-satoshi font-semibold text-sm text-grey1">Applicant Profile</p>
-          <button onClick={onClose} className="w-8 h-8 flex items-center justify-center rounded-lg text-grey3 hover:text-grey1 hover:bg-grey5 transition-colors">
+      <div className="fixed inset-0 bg-[#0F1115]/45 backdrop-blur-[2px] z-40 animate-fadeIn" onClick={onClose} />
+      <aside className="fixed right-0 top-0 h-full w-[460px] max-w-[94vw] bg-white z-50 shadow-[-20px_0_60px_-20px_rgba(15,17,21,0.4)] flex flex-col overflow-hidden animate-slideInRight">
+        {/* Cover */}
+        <div className="h-[88px] bg-brand-gradient relative shrink-0">
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 w-[34px] h-[34px] rounded-[9px] bg-white/18 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/28 transition-colors"
+          >
             <FaXmark className="w-4 h-4" />
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto">
-          {/* Profile hero */}
-          <div className="px-6 py-6 border-b border-grey4/60">
-            <div className="flex items-start gap-4">
-              <div className="w-16 h-16 rounded-full overflow-hidden bg-grey5 flex items-center justify-center shrink-0">
-                {profile?.profile_image_url ? (
-                  <Image src={profile.profile_image_url} alt={profile.name ?? ''} width={64} height={64} className="object-cover w-full h-full" />
-                ) : (
-                  <FaUser className="w-6 h-6 text-grey3" />
-                )}
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="font-satoshi font-bold text-xl text-grey1">{profile?.name ?? 'Unknown'}</p>
-                {profile?.title && <p className="font-openSans text-sm text-grey2 mt-0.5">{profile.title}</p>}
-                <div className="flex items-center gap-2 mt-2 flex-wrap">
-                  <span className={`text-xs font-semibold font-satoshi px-2.5 py-0.5 rounded-full ${STATUS_COLORS[localApp.status]}`}>
-                    {STATUS_LABEL[localApp.status]}
-                  </span>
-                  {profile?.open_to_work && (
-                    <span className="text-xs font-semibold font-satoshi px-2.5 py-0.5 rounded-full text-successGreen bg-successGreen/10">
-                      Open to work
-                    </span>
-                  )}
-                </div>
-              </div>
+        <div className="flex-1 overflow-y-auto px-6 pb-6">
+          {/* Identity */}
+          <div className="flex items-end gap-3.5 -mt-[34px]">
+            <Avatar profile={profile} size={80} ring />
+            <div className="pb-1.5">
+              <span className={`text-[11px] font-bold px-2.5 py-1 rounded-lg ${STATUS_COLORS[localApp.status]}`}>
+                {STATUS_LABEL[localApp.status]}
+              </span>
             </div>
-            {profile?.bio && (
-              <p className="font-openSans text-sm text-grey2 mt-4 leading-relaxed">{profile.bio}</p>
-            )}
           </div>
 
-          {/* Contact */}
-          <div className="px-6 py-5 border-b border-grey4/60 space-y-3">
-            {profile?.email && (
-              <a href={`mailto:${profile.email}`} className="flex items-center gap-3 group">
-                <FaEnvelope className="w-4 h-4 text-grey3 shrink-0" />
-                <span className="font-openSans text-sm text-grey1 group-hover:text-mainPurple transition-colors">{profile.email}</span>
-              </a>
-            )}
-            {profile?.phone && (
-              <a href={`tel:${profile.phone}`} className="flex items-center gap-3 group">
-                <FaPhone className="w-4 h-4 text-grey3 shrink-0" />
-                <span className="font-openSans text-sm text-grey1 group-hover:text-mainPurple transition-colors">{profile.phone}</span>
-              </a>
-            )}
+          <h2 className="font-satoshi font-black text-[21px] tracking-[-0.02em] text-[#15131C] mt-3.5 mb-0.5">
+            {profile?.name ?? 'Unknown'}
+          </h2>
+          <p className="text-sm font-medium text-[#8B8499]">
+            {profile?.title ?? 'Candidate'}
             {profile?.years_experience != null && (
-              <div className="flex items-center gap-3">
-                <span className="w-4 h-4 text-[10px] font-bold text-grey3 flex items-center justify-center shrink-0">YR</span>
-                <span className="font-openSans text-sm text-grey1">
-                  {profile.years_experience} year{profile.years_experience !== 1 ? 's' : ''} experience
-                </span>
+              <> · {profile.years_experience} yr{profile.years_experience !== 1 ? 's' : ''} experience</>
+            )}
+          </p>
+          {profile?.open_to_work && (
+            <span className="inline-block mt-2.5 text-[11px] font-bold px-2.5 py-1 rounded-lg text-[#16895E] bg-[#E7F6EF]">
+              Open to work
+            </span>
+          )}
+
+          {profile?.bio && (
+            <p className="text-sm font-medium text-[#4B4658] leading-relaxed mt-4">{profile.bio}</p>
+          )}
+
+          {/* Actions */}
+          {!isResolved && (
+            <div className="flex gap-2.5 mt-5">
+              <button
+                onClick={() => updateStatus('accepted')}
+                disabled={!!busy}
+                className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-[#16895E] text-white text-sm font-bold hover:bg-[#147A53] disabled:opacity-50 transition-colors"
+              >
+                {busy === 'accepted'
+                  ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  : <FaCheck className="w-3.5 h-3.5" />}
+                Accept
+              </button>
+              <button
+                onClick={() => updateStatus('rejected')}
+                disabled={!!busy}
+                className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl border border-[#F0C9C4] text-[#B6463C] text-sm font-bold hover:bg-[#FBEAE8] disabled:opacity-50 transition-colors"
+              >
+                {busy === 'rejected'
+                  ? <div className="w-4 h-4 border-2 border-[#B6463C] border-t-transparent rounded-full animate-spin" />
+                  : <FaXmark className="w-3.5 h-3.5" />}
+                Reject
+              </button>
+            </div>
+          )}
+
+          {/* Stage progression */}
+          {!isResolved && (localApp.status === 'applied' || localApp.status === 'under_review') && (
+            <button
+              onClick={() => updateStatus(localApp.status === 'applied' ? 'under_review' : 'shortlisted')}
+              disabled={!!busy}
+              className={`w-full mt-2.5 py-2.5 rounded-xl text-[13px] font-bold transition-colors disabled:opacity-50 ${
+                localApp.status === 'applied'
+                  ? 'border border-[#E2E1EA] text-[#6B6478] hover:bg-[#FAFAFB]'
+                  : 'border border-[#DDCEFA] text-[#5A2DD4] hover:bg-[#F4F0FE]'
+              }`}
+            >
+              {localApp.status === 'applied' ? 'Move to Under Review' : 'Shortlist candidate'}
+            </button>
+          )}
+
+          {/* Note from candidate */}
+          {localApp.cover_note && (
+            <div className="mt-5 p-4 rounded-2xl bg-[#FAFAFB] border border-[#EFEEF4]">
+              <p className="text-[11px] font-bold tracking-[0.06em] uppercase text-[#9098A3] mb-2">Note from candidate</p>
+              <p className="text-sm font-medium text-[#4B4658] leading-relaxed italic">“{localApp.cover_note}”</p>
+            </div>
+          )}
+
+          {/* Resume */}
+          {localApp.resume_url && (
+            <a
+              href={localApp.resume_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 mt-3.5 p-3.5 rounded-[13px] border border-[#E8E8EF] hover:border-[#C9BCF2] transition-colors"
+            >
+              <div className="w-10 h-10 rounded-[10px] bg-[#F4F0FE] flex items-center justify-center text-[#5A2DD4] shrink-0">
+                <FaFileLines className="w-[18px] h-[18px]" />
               </div>
-            )}
-            {localApp.resume_url && (
-              <a href={localApp.resume_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 group">
-                <FaFileLines className="w-4 h-4 text-grey3 shrink-0" />
-                <span className="font-openSans text-sm text-mainPurple group-hover:underline">View Resume</span>
-                <FaArrowUpRightFromSquare className="w-3 h-3 text-mainPurple" />
-              </a>
-            )}
-            {profile?.portfolio_or_website_link && (
-              <a href={profile.portfolio_or_website_link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 group">
-                <FaGlobe className="w-4 h-4 text-grey3 shrink-0" />
-                <span className="font-openSans text-sm text-mainPurple group-hover:underline truncate">{profile.portfolio_or_website_link}</span>
-                <FaArrowUpRightFromSquare className="w-3 h-3 text-mainPurple shrink-0" />
-              </a>
-            )}
+              <div className="flex-1 min-w-0">
+                <div className="text-[13.5px] font-bold text-[#15131C]">Résumé</div>
+                <div className="text-xs font-medium text-[#9098A3]">Tap to view</div>
+              </div>
+              <FaArrowUpRightFromSquare className="w-3.5 h-3.5 text-[#A8A2B4] shrink-0" />
+            </a>
+          )}
+
+          {/* Contact */}
+          <div className="mt-6">
+            <p className="text-[11px] font-bold tracking-[0.06em] uppercase text-[#9098A3] mb-3">Contact</p>
+            <div className="space-y-3">
+              {profile?.email && (
+                <a href={`mailto:${profile.email}`} className="flex items-center gap-3 group">
+                  <FaEnvelope className="w-4 h-4 text-[#9098A3] shrink-0" />
+                  <span className="text-sm font-medium text-[#15131C] group-hover:text-[#5A2DD4] transition-colors truncate">{profile.email}</span>
+                </a>
+              )}
+              {profile?.phone && (
+                <a href={`tel:${profile.phone}`} className="flex items-center gap-3 group">
+                  <FaPhone className="w-4 h-4 text-[#9098A3] shrink-0" />
+                  <span className="text-sm font-medium text-[#15131C] group-hover:text-[#5A2DD4] transition-colors">{profile.phone}</span>
+                </a>
+              )}
+              {profile?.portfolio_or_website_link && (
+                <a href={profile.portfolio_or_website_link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 group">
+                  <FaGlobe className="w-4 h-4 text-[#9098A3] shrink-0" />
+                  <span className="text-sm font-medium text-[#5A2DD4] group-hover:underline truncate">{profile.portfolio_or_website_link}</span>
+                  <FaArrowUpRightFromSquare className="w-3 h-3 text-[#5A2DD4] shrink-0" />
+                </a>
+              )}
+            </div>
           </div>
 
           {/* Social links */}
           {profile?.social_links && profile.social_links.filter((s) => s.is_enabled).length > 0 && (
-            <div className="px-6 py-5 border-b border-grey4/60">
-              <p className="font-satoshi font-semibold text-xs text-grey3 uppercase tracking-wide mb-3">Social Links</p>
+            <div className="mt-6">
+              <p className="text-[11px] font-bold tracking-[0.06em] uppercase text-[#9098A3] mb-3">Social links</p>
               <div className="flex flex-wrap gap-2">
                 {profile.social_links.filter((s) => s.is_enabled).map((s) => (
                   <a key={s.platform} href={s.url} target="_blank" rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 px-3 py-1.5 bg-grey6 hover:bg-grey5 rounded-lg transition-colors">
-                    <FaLink className="w-3 h-3 text-grey3" />
-                    <span className="font-satoshi text-xs font-semibold text-grey1 capitalize">{s.platform}</span>
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-[#F6F5FA] hover:bg-[#EFEEF4] rounded-lg transition-colors">
+                    <FaLink className="w-3 h-3 text-[#9098A3]" />
+                    <span className="text-xs font-bold text-[#15131C] capitalize">{s.platform}</span>
                   </a>
                 ))}
               </div>
             </div>
           )}
 
-          {/* Cover note */}
-          {localApp.cover_note && (
-            <div className="px-6 py-5 border-b border-grey4/60">
-              <p className="font-satoshi font-semibold text-xs text-grey3 uppercase tracking-wide mb-2">Cover Note</p>
-              <p className="font-openSans text-sm text-grey1 leading-relaxed">{localApp.cover_note}</p>
-            </div>
-          )}
-
           {/* Interview details */}
           {localApp.interview_schedules && (
-            <div className="px-6 py-5 border-b border-grey4/60">
-              <p className="font-satoshi font-semibold text-xs text-grey3 uppercase tracking-wide mb-3">Scheduled Interview</p>
-              <div className="p-4 bg-successGreen/5 border border-successGreen/20 rounded-xl">
-                <p className="font-satoshi font-semibold text-xs text-successGreen mb-1">
+            <div className="mt-6">
+              <p className="text-[11px] font-bold tracking-[0.06em] uppercase text-[#9098A3] mb-3">Scheduled interview</p>
+              <div className="p-4 bg-[#E7F6EF] border border-[#C9ECDC] rounded-2xl">
+                <p className="text-xs font-bold text-[#16895E] mb-1">
                   {new Date(localApp.interview_schedules.scheduled_at).toLocaleDateString('en-GB', {
                     weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
                   })}{' '}
                   at {new Date(localApp.interview_schedules.scheduled_at).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}
                 </p>
-                <p className="font-openSans text-xs text-grey3 mb-2">{localApp.interview_schedules.duration_minutes} minutes</p>
+                <p className="text-xs font-medium text-[#16895E]/80 mb-2">{localApp.interview_schedules.duration_minutes} minutes</p>
                 {localApp.interview_schedules.meet_link && (
                   <a href={localApp.interview_schedules.meet_link} target="_blank" rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold font-satoshi text-successGreen hover:underline">
-                    Join Meeting →
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#16895E] hover:underline">
+                    Join meeting →
                   </a>
                 )}
               </div>
@@ -679,99 +781,53 @@ function ApplicantDrawer({
           )}
 
           {/* Quick actions */}
-          <div className="px-6 py-5">
-            <p className="font-satoshi font-semibold text-xs text-grey3 uppercase tracking-wide mb-3">Quick Actions</p>
+          <div className="mt-6">
+            <p className="text-[11px] font-bold tracking-[0.06em] uppercase text-[#9098A3] mb-3">Actions</p>
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={() => setEmailModal(true)}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-grey5 hover:bg-grey4/60 rounded-lg font-satoshi font-semibold text-xs text-grey1 transition-colors"
+                className="flex items-center gap-1.5 px-3 py-2 bg-[#F3F3F7] hover:bg-[#ECEBF2] rounded-lg text-xs font-bold text-[#15131C] transition-colors"
               >
-                <FaEnvelope className="w-3 h-3" /> Send Email
+                <FaEnvelope className="w-3 h-3" /> Send email
               </button>
               {canSchedule && !localApp.interview_schedules && (
                 <button
                   onClick={() => setScheduleModal(true)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 bg-grey5 hover:bg-grey4/60 rounded-lg font-satoshi font-semibold text-xs text-grey1 transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-2 bg-[#F3F3F7] hover:bg-[#ECEBF2] rounded-lg text-xs font-bold text-[#15131C] transition-colors"
                 >
-                  <FaCalendarPlus className="w-3 h-3" /> Schedule Interview
+                  <FaCalendarPlus className="w-3 h-3" /> Schedule interview
                 </button>
               )}
             </div>
           </div>
 
           {/* Application meta */}
-          <div className="px-6 pb-6">
-            <p className="font-satoshi font-semibold text-xs text-grey3 uppercase tracking-wide mb-3">Application</p>
+          <div className="mt-6">
+            <p className="text-[11px] font-bold tracking-[0.06em] uppercase text-[#9098A3] mb-3">Application</p>
             <div className="space-y-2">
               <div className="flex justify-between">
-                <span className="font-openSans text-xs text-grey3">Applied</span>
-                <span className="font-openSans text-xs text-grey1">
+                <span className="text-xs font-medium text-[#9098A3]">Applied</span>
+                <span className="text-xs font-semibold text-[#15131C]">
                   {new Date(localApp.applied_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
                 </span>
               </div>
               {localApp.reviewed_at && (
                 <div className="flex justify-between">
-                  <span className="font-openSans text-xs text-grey3">Reviewed</span>
-                  <span className="font-openSans text-xs text-grey1">
+                  <span className="text-xs font-medium text-[#9098A3]">Reviewed</span>
+                  <span className="text-xs font-semibold text-[#15131C]">
                     {new Date(localApp.reviewed_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
                   </span>
                 </div>
               )}
             </div>
           </div>
-        </div>
 
-        {/* Footer actions */}
-        {!isResolved ? (
-          <div className="shrink-0 border-t border-grey4/60 px-6 py-4 space-y-2">
-            <div className="flex gap-3">
-              <button
-                onClick={() => updateStatus('rejected')}
-                disabled={!!busy}
-                className="flex-1 flex items-center justify-center gap-2 py-2.5 border border-errorRed text-errorRed rounded-lg font-satoshi font-semibold text-sm hover:bg-errorRed/5 disabled:opacity-50 transition-colors"
-              >
-                {busy === 'rejected'
-                  ? <div className="w-4 h-4 border-2 border-errorRed border-t-transparent rounded-full animate-spin" />
-                  : <FaXmark className="w-3.5 h-3.5" />}
-                Reject
-              </button>
-              <button
-                onClick={() => updateStatus('accepted')}
-                disabled={!!busy}
-                className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-successGreen text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#2DB34C] disabled:opacity-50 transition-colors"
-              >
-                {busy === 'accepted'
-                  ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  : <FaCheck className="w-3.5 h-3.5" />}
-                Accept
-              </button>
+          {isResolved && (
+            <div className="mt-6 p-3.5 bg-[#FAFAFB] border border-[#EFEEF4] rounded-xl text-center text-xs font-semibold text-[#9098A3]">
+              Decision recorded · {localApp.status === 'accepted' ? 'Accepted' : 'Not selected'}
             </div>
-            {localApp.status === 'applied' && (
-              <button
-                onClick={() => updateStatus('under_review')}
-                disabled={!!busy}
-                className="w-full py-2 border border-grey4 text-grey2 rounded-lg font-satoshi font-semibold text-xs hover:bg-grey5 disabled:opacity-50 transition-colors"
-              >
-                Mark Under Review
-              </button>
-            )}
-            {localApp.status === 'under_review' && (
-              <button
-                onClick={() => updateStatus('shortlisted')}
-                disabled={!!busy}
-                className="w-full py-2 border border-mainPurple text-mainPurple rounded-lg font-satoshi font-semibold text-xs hover:bg-lightPurple disabled:opacity-50 transition-colors"
-              >
-                Shortlist
-              </button>
-            )}
-          </div>
-        ) : (
-          <div className="shrink-0 border-t border-grey4/60 px-6 py-4">
-            <div className="p-3 bg-grey6 rounded-lg text-center font-openSans text-xs text-grey3">
-              Decision recorded · {localApp.status === 'accepted' ? '✅ Accepted' : '❌ Rejected'}
-            </div>
-          </div>
-        )}
+          )}
+        </div>
       </aside>
 
       {emailModal && (
@@ -814,7 +870,7 @@ export default function ApplicantManagementPage({ params }: { params: Promise<{ 
   const [drawerApp, setDrawerApp] = useState<JobApplication | null>(null)
   const [bulkBusy, setBulkBusy] = useState(false)
   const [archiveModal, setArchiveModal] = useState(false)
-  const [viewMode, setViewMode] = useState<'table' | 'kanban'>('table')
+  const [viewMode, setViewMode] = useState<'table' | 'kanban'>('kanban')
 
   const fetchData = useCallback(async () => {
     try {
@@ -846,6 +902,9 @@ export default function ApplicantManagementPage({ params }: { params: Promise<{ 
   const unresolvedIds = applications
     .filter((a) => !['accepted', 'rejected'].includes(a.status))
     .map((a) => a.id)
+
+  const inReview = applications.filter((a) => a.status === 'under_review').length
+  const shortlisted = applications.filter((a) => a.status === 'shortlisted').length
 
   const applyStatusChange = (id: string, status: string) => {
     setApplications((prev) => prev.map((a) => a.id === id ? { ...a, status: status as JobApplication['status'] } : a))
@@ -907,11 +966,11 @@ export default function ApplicantManagementPage({ params }: { params: Promise<{ 
         body: JSON.stringify({ status: 'archived' }),
       })
       if (!res.ok) throw new Error()
-      toast.success('Job archived')
+      toast.success('Role archived')
       setArchiveModal(false)
       setJob((prev) => prev ? { ...prev, status: 'archived' } : prev)
     } catch {
-      toast.error('Failed to archive job')
+      toast.error('Failed to archive role')
     }
   }
 
@@ -922,8 +981,8 @@ export default function ApplicantManagementPage({ params }: { params: Promise<{ 
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="w-7 h-7 border-[3px] border-mainPurple border-t-transparent rounded-full animate-spin" />
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="w-7 h-7 border-[3px] border-[#5A2DD4] border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
@@ -931,41 +990,45 @@ export default function ApplicantManagementPage({ params }: { params: Promise<{ 
   return (
     <div className="max-w-full">
       <div className="mb-6">
-        <Link href="/dashboard/hiring" className="inline-flex items-center gap-1.5 text-xs font-semibold text-grey3 hover:text-grey1 font-satoshi transition-colors mb-4">
-          <FaArrowLeft className="w-3 h-3" /> Back to jobs
+        <Link href="/dashboard/hiring" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#9098A3] hover:text-[#15131C] transition-colors mb-4">
+          <FaArrowLeft className="w-3 h-3" /> Back to roles
         </Link>
-        <p className="font-satoshi text-[11px] font-semibold text-mainPurple uppercase tracking-[0.22em] mb-1">Hiring · Pipeline</p>
-        <div className="flex items-start justify-between gap-4">
+        <p className="text-[11px] font-bold text-[#5A2DD4] uppercase tracking-[0.16em] mb-1.5">Pipeline</p>
+        <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
-            <h1 className="font-satoshi font-bold text-2xl text-grey1">{job?.title ?? 'Applicants'}</h1>
-            {job?.location && <p className="font-openSans text-sm text-grey3 mt-1">{job.location}</p>}
+            <h1 className="font-satoshi font-black text-[22px] tracking-[-0.02em] text-[#15131C]">{job?.title ?? 'Applicants'}</h1>
+            <p className="text-[13px] font-medium text-[#9098A3] mt-0.5">
+              {applications.length} applicant{applications.length === 1 ? '' : 's'}
+              {inReview > 0 && ` · ${inReview} in review`}
+              {shortlisted > 0 && ` · ${shortlisted} shortlisted`}
+            </p>
           </div>
           <div className="flex items-center gap-2 shrink-0">
             {/* View toggle */}
-            <div className="flex bg-grey5 rounded-lg p-0.5 gap-0.5">
+            <div className="flex bg-[#F1F1F4] rounded-xl p-0.5 gap-0.5">
+              <button
+                onClick={() => setViewMode('kanban')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold text-xs transition-all ${
+                  viewMode === 'kanban' ? 'bg-white text-[#5A2DD4] shadow-sm' : 'text-[#9098A3] hover:text-[#15131C]'
+                }`}
+              >
+                <FaTableColumns className="w-3 h-3" /> Board
+              </button>
               <button
                 onClick={() => setViewMode('table')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md font-satoshi font-semibold text-xs transition-all ${
-                  viewMode === 'table' ? 'bg-white text-mainPurple shadow-sm' : 'text-grey3 hover:text-grey1'
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold text-xs transition-all ${
+                  viewMode === 'table' ? 'bg-white text-[#5A2DD4] shadow-sm' : 'text-[#9098A3] hover:text-[#15131C]'
                 }`}
               >
                 <FaTableList className="w-3 h-3" /> Table
-              </button>
-              <button
-                onClick={() => setViewMode('kanban')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md font-satoshi font-semibold text-xs transition-all ${
-                  viewMode === 'kanban' ? 'bg-white text-mainPurple shadow-sm' : 'text-grey3 hover:text-grey1'
-                }`}
-              >
-                <FaSquareFull className="w-3 h-3" /> Kanban
               </button>
             </div>
             {job && job.status !== 'archived' && (
               <button
                 onClick={() => archiveJob()}
-                className="px-4 py-2 border border-errorRed text-errorRed rounded-lg font-satoshi font-semibold text-xs hover:bg-errorRed/5 transition-colors"
+                className="px-4 py-2 border border-[#F0C9C4] text-[#B6463C] rounded-xl font-bold text-xs hover:bg-[#FBEAE8] transition-colors"
               >
-                Archive Job
+                Archive
               </button>
             )}
           </div>
@@ -982,40 +1045,43 @@ export default function ApplicantManagementPage({ params }: { params: Promise<{ 
       ) : (
         <>
           {/* Tabs */}
-          <div className="flex gap-1 overflow-x-auto pb-1 mb-4">
-            {APP_STATUSES.map((tab) => (
-              <button
-                key={tab}
-                onClick={() => { setActiveTab(tab); setSelectedIds(new Set()) }}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-lg font-satoshi font-semibold text-xs whitespace-nowrap transition-all ${
-                  activeTab === tab ? 'bg-mainPurple text-white' : 'text-grey2 hover:bg-grey5'
-                }`}
-              >
-                {tab === 'all' ? 'All' : STATUS_LABEL[tab]}
-                <span className={`px-1.5 py-0.5 rounded-full text-[10px] ${activeTab === tab ? 'bg-white/20 text-white' : 'bg-grey5 text-grey3'}`}>
-                  {tabCounts[tab]}
-                </span>
-              </button>
-            ))}
+          <div className="flex gap-1.5 overflow-x-auto pb-1 mb-4">
+            {APP_STATUSES.map((tab) => {
+              const on = activeTab === tab
+              return (
+                <button
+                  key={tab}
+                  onClick={() => { setActiveTab(tab); setSelectedIds(new Set()) }}
+                  className={`flex items-center gap-1.5 px-4 py-2 rounded-[10px] font-bold text-xs whitespace-nowrap transition-all ${
+                    on ? 'bg-brand-gradient text-white' : 'text-[#6B6478] hover:bg-[#FAFAFB] border border-[#E8E8EF]'
+                  }`}
+                >
+                  {tab === 'all' ? 'All' : STATUS_LABEL[tab]}
+                  <span className={`px-1.5 rounded-md text-[11px] font-bold ${on ? 'bg-white/20 text-white' : 'bg-[#F3F3F7] text-[#9098A3]'}`}>
+                    {tabCounts[tab]}
+                  </span>
+                </button>
+              )
+            })}
           </div>
 
           {/* Bulk action bar */}
           {selectedIds.size > 0 && (
-            <div className="mb-4 flex items-center gap-3 px-4 py-3 bg-mainPurple/5 border border-mainPurple/20 rounded-lg flex-wrap">
-              <span className="font-satoshi font-semibold text-xs text-mainPurple">{selectedIds.size} selected</span>
+            <div className="mb-4 flex items-center gap-3 px-4 py-3 bg-[#F4F0FE] border border-[#E6DCFB] rounded-xl flex-wrap">
+              <span className="text-xs font-bold text-[#5A2DD4]">{selectedIds.size} selected</span>
               <div className="flex items-center gap-2 ml-auto flex-wrap">
                 {[
-                  { status: 'under_review', label: 'Under Review', cls: 'text-warningYellow bg-warningYellow/10 hover:bg-warningYellow/20' },
-                  { status: 'shortlisted', label: 'Shortlist', cls: 'text-mainPurple bg-lightPurple hover:bg-mainPurple/15' },
-                  { status: 'rejected', label: 'Reject All', cls: 'text-errorRed bg-errorRed/10 hover:bg-errorRed/20' },
-                  { status: 'accepted', label: 'Accept All', cls: 'text-successGreen bg-successGreen/10 hover:bg-successGreen/20' },
+                  { status: 'under_review', label: 'Under Review', cls: 'text-[#1E5BBF] bg-[#E8EFFB] hover:brightness-95' },
+                  { status: 'shortlisted', label: 'Shortlist', cls: 'text-[#C2410C] bg-[#FDF0E7] hover:brightness-95' },
+                  { status: 'rejected', label: 'Reject all', cls: 'text-[#B6463C] bg-[#FBEAE8] hover:brightness-95' },
+                  { status: 'accepted', label: 'Accept all', cls: 'text-[#16895E] bg-[#E7F6EF] hover:brightness-95' },
                 ].map((a) => (
                   <button key={a.status} onClick={() => bulkUpdate(a.status)} disabled={bulkBusy}
-                    className={`px-3 py-1.5 rounded-lg font-satoshi font-semibold text-xs disabled:opacity-50 transition-colors ${a.cls}`}>
+                    className={`px-3 py-1.5 rounded-lg font-bold text-xs disabled:opacity-50 transition-all ${a.cls}`}>
                     {a.label}
                   </button>
                 ))}
-                <button onClick={() => setSelectedIds(new Set())} className="px-3 py-1.5 text-grey3 text-xs font-openSans hover:text-grey1 transition-colors">
+                <button onClick={() => setSelectedIds(new Set())} className="px-3 py-1.5 text-[#9098A3] text-xs font-medium hover:text-[#15131C] transition-colors">
                   Clear
                 </button>
               </div>
@@ -1023,26 +1089,26 @@ export default function ApplicantManagementPage({ params }: { params: Promise<{ 
           )}
 
           {/* Applicants table */}
-          <div className="bg-white rounded-2xl border border-grey4/60 overflow-hidden">
+          <div className="bg-white rounded-[18px] border border-[#E8E8EF] overflow-hidden">
             {filteredApps.length === 0 ? (
               <div className="py-20 text-center">
-                <p className="font-satoshi font-semibold text-grey3">No applicants in this category</p>
+                <p className="font-satoshi font-extrabold text-[#9098A3]">No applicants in this category</p>
               </div>
             ) : (
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-grey4/60 bg-grey6/50">
+                  <tr className="bg-[#FAFAFB]">
                     <th className="py-3 px-4 w-10">
                       <input
                         type="checkbox"
                         checked={filteredApps.length > 0 && filteredApps.every((a) => selectedIds.has(a.id))}
                         onChange={toggleSelectAll}
-                        className="w-4 h-4 rounded accent-mainPurple cursor-pointer"
+                        className="w-4 h-4 rounded accent-[#5A2DD4] cursor-pointer"
                       />
                     </th>
-                    <th className="text-left py-3 px-4 text-xs font-semibold text-grey3 font-satoshi uppercase tracking-wide">Applicant</th>
-                    <th className="text-left py-3 px-4 text-xs font-semibold text-grey3 font-satoshi uppercase tracking-wide hidden sm:table-cell">Status</th>
-                    <th className="text-left py-3 px-4 text-xs font-semibold text-grey3 font-satoshi uppercase tracking-wide hidden md:table-cell">Applied</th>
+                    <th className="text-left py-3 px-4 text-[11px] font-bold text-[#9098A3] uppercase tracking-wide">Applicant</th>
+                    <th className="text-left py-3 px-4 text-[11px] font-bold text-[#9098A3] uppercase tracking-wide hidden sm:table-cell">Status</th>
+                    <th className="text-left py-3 px-4 text-[11px] font-bold text-[#9098A3] uppercase tracking-wide hidden md:table-cell">Applied</th>
                     <th className="py-3 px-4 w-20" />
                   </tr>
                 </thead>
@@ -1053,7 +1119,7 @@ export default function ApplicantManagementPage({ params }: { params: Promise<{ 
                     return (
                       <tr
                         key={app.id}
-                        className="border-b border-grey4/60 last:border-0 hover:bg-grey6/30 transition-colors cursor-pointer"
+                        className="border-t border-[#F4F3F7] hover:bg-[#FAFAFB] transition-colors cursor-pointer"
                         onClick={() => setDrawerApp(app)}
                       >
                         <td className="py-3 px-4" onClick={(e) => e.stopPropagation()}>
@@ -1061,31 +1127,25 @@ export default function ApplicantManagementPage({ params }: { params: Promise<{ 
                             type="checkbox"
                             checked={selectedIds.has(app.id)}
                             onChange={() => toggleSelect(app.id)}
-                            className="w-4 h-4 rounded accent-mainPurple cursor-pointer"
+                            className="w-4 h-4 rounded accent-[#5A2DD4] cursor-pointer"
                           />
                         </td>
                         <td className="py-3 px-4">
                           <div className="flex items-center gap-3">
-                            <div className="w-9 h-9 rounded-full overflow-hidden bg-grey5 flex items-center justify-center shrink-0">
-                              {profile?.profile_image_url ? (
-                                <Image src={profile.profile_image_url} alt={profile.name ?? ''} width={36} height={36} className="object-cover w-full h-full" />
-                              ) : (
-                                <FaUser className="w-4 h-4 text-grey3" />
-                              )}
-                            </div>
-                            <div>
-                              <p className="font-satoshi font-semibold text-sm text-grey1">{profile?.name ?? '—'}</p>
-                              {profile?.title && <p className="font-openSans text-xs text-grey3">{profile.title}</p>}
+                            <Avatar profile={profile} size={36} />
+                            <div className="min-w-0">
+                              <p className="font-bold text-sm text-[#15131C] truncate">{profile?.name ?? '—'}</p>
+                              {profile?.title && <p className="text-xs font-medium text-[#9098A3] truncate">{profile.title}</p>}
                             </div>
                           </div>
                         </td>
                         <td className="py-3 px-4 hidden sm:table-cell">
-                          <span className={`text-xs font-semibold font-satoshi px-2.5 py-1 rounded-full ${STATUS_COLORS[app.status]}`}>
+                          <span className={`text-[11px] font-bold px-2.5 py-1 rounded-lg ${STATUS_COLORS[app.status]}`}>
                             {STATUS_LABEL[app.status]}
                           </span>
                         </td>
                         <td className="py-3 px-4 hidden md:table-cell">
-                          <span className="font-openSans text-xs text-grey3">
+                          <span className="text-xs font-medium text-[#9098A3]">
                             {new Date(app.applied_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
                           </span>
                         </td>
@@ -1094,7 +1154,7 @@ export default function ApplicantManagementPage({ params }: { params: Promise<{ 
                             <div className="flex items-center gap-1 justify-end">
                               <button
                                 title="Reject"
-                                className="w-7 h-7 flex items-center justify-center rounded-lg text-errorRed/50 hover:text-errorRed hover:bg-errorRed/10 transition-colors"
+                                className="w-7 h-7 flex items-center justify-center rounded-lg text-[#C99] hover:text-[#B6463C] hover:bg-[#FBEAE8] transition-colors"
                                 onClick={async () => {
                                   const ok = await quickUpdateStatus(app.id, 'rejected')
                                   if (ok) applyStatusChange(app.id, 'rejected')
@@ -1105,7 +1165,7 @@ export default function ApplicantManagementPage({ params }: { params: Promise<{ 
                               </button>
                               <button
                                 title="Accept"
-                                className="w-7 h-7 flex items-center justify-center rounded-lg text-successGreen/50 hover:text-successGreen hover:bg-successGreen/10 transition-colors"
+                                className="w-7 h-7 flex items-center justify-center rounded-lg text-[#8FC9AF] hover:text-[#16895E] hover:bg-[#E7F6EF] transition-colors"
                                 onClick={async () => {
                                   const ok = await quickUpdateStatus(app.id, 'accepted')
                                   if (ok) applyStatusChange(app.id, 'accepted')
@@ -1138,26 +1198,26 @@ export default function ApplicantManagementPage({ params }: { params: Promise<{ 
 
       {/* Archive confirmation modal */}
       {archiveModal && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl animate-scaleIn">
-            <h2 className="font-satoshi font-bold text-xl text-grey1 mb-2">Archive this job?</h2>
-            <p className="font-openSans text-sm text-grey2 mb-1">
-              You have <strong>{unresolvedIds.length}</strong> unresolved applicant{unresolvedIds.length !== 1 ? 's' : ''}.
+        <div className="fixed inset-0 bg-[#0F1115]/45 backdrop-blur-[2px] z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-[0_24px_60px_-15px_rgba(15,17,21,0.4)] animate-scaleIn">
+            <h2 className="font-satoshi font-black text-xl text-[#15131C] mb-2">Archive this role?</h2>
+            <p className="text-sm font-medium text-[#4B4658] mb-1">
+              You have <strong className="text-[#15131C]">{unresolvedIds.length}</strong> unresolved applicant{unresolvedIds.length !== 1 ? 's' : ''}.
             </p>
-            <p className="font-openSans text-sm text-grey2 mb-6">
+            <p className="text-sm font-medium text-[#4B4658] mb-6">
               Please send them a decision before archiving, or bulk reject all remaining.
             </p>
             <div className="flex flex-col gap-2">
               <button
                 onClick={handleBulkRejectThenArchive}
                 disabled={bulkBusy}
-                className="w-full py-3 bg-errorRed text-white rounded-lg font-satoshi font-semibold text-sm hover:opacity-90 disabled:opacity-50 transition-opacity"
+                className="w-full py-3 bg-[#B6463C] text-white rounded-xl font-bold text-sm hover:opacity-90 disabled:opacity-50 transition-opacity"
               >
                 {bulkBusy ? 'Processing…' : `Reject ${unresolvedIds.length} remaining & archive`}
               </button>
               <button
                 onClick={() => setArchiveModal(false)}
-                className="w-full py-3 border border-grey4 text-grey1 rounded-lg font-satoshi font-semibold text-sm hover:bg-grey5 transition-colors"
+                className="w-full py-3 border border-[#E2E1EA] bg-white text-[#374151] rounded-xl font-bold text-sm hover:border-[#B9B9C6] transition-colors"
               >
                 Go back
               </button>

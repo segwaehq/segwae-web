@@ -10,6 +10,8 @@ import {
   FaArrowRight,
   FaEllipsisVertical,
   FaLocationDot,
+  FaBriefcase,
+  FaPenToSquare,
 } from "react-icons/fa6";
 import type { Job } from "@/lib/types";
 
@@ -20,10 +22,10 @@ const STATUS_LABELS: Record<string, string> = {
   archived: "Archived",
 };
 const STATUS_COLORS: Record<string, string> = {
-  draft: "text-grey3 bg-grey5",
-  active: "text-successGreen bg-successGreen/10",
-  paused: "text-warningYellow bg-warningYellow/10",
-  archived: "text-errorRed bg-errorRed/10",
+  draft: "text-[#9098A3] bg-[#F3F3F7]",
+  active: "text-[#16895E] bg-[#E7F6EF]",
+  paused: "text-[#C2410C] bg-[#FDF0E7]",
+  archived: "text-[#6B6478] bg-[#EFEEF4]",
 };
 const MODE_LABELS: Record<string, string> = {
   internal: "Internal",
@@ -74,7 +76,7 @@ function JobRow({
         body: JSON.stringify({ status }),
       });
       if (!res.ok) throw new Error((await res.json()).error);
-      toast.success(`Job ${status === "active" ? "published" : status}`);
+      toast.success(`Role ${status === "active" ? "published" : status}`);
       onStatusChange();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed to update");
@@ -93,23 +95,23 @@ function JobRow({
     actions.push({ label: "Archive", next: "archived" });
 
   return (
-    <tr className="border-b border-grey4/60 hover:bg-grey6/50 transition-colors">
+    <tr className="border-t border-[#F4F3F7] hover:bg-[#FAFAFB] transition-colors">
       <td className="py-4 px-5">
-        <div className="flex flex-col gap-1">
-          <span className="font-satoshi font-semibold text-sm text-grey1">
+        <div className="flex flex-col gap-1.5">
+          <span className="font-satoshi font-bold text-[14px] text-[#15131C]">
             {job.title}
           </span>
           <div className="flex items-center gap-2 flex-wrap">
             <span
-              className={`text-[10px] font-semibold font-satoshi px-2 py-0.5 rounded-full ${MODE_LABELS[job.posting_mode] === "External" ? "text-blue bg-blue/10" : "text-mainPurple bg-lightPurple"}`}
+              className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${MODE_LABELS[job.posting_mode] === "External" ? "text-[#1E5BBF] bg-[#E8EFFB]" : "text-[#5A2DD4] bg-[#F1ECFD]"}`}
             >
               {MODE_LABELS[job.posting_mode]}
             </span>
-            <span className="text-[10px] text-grey3 font-openSans">
+            <span className="text-[11px] font-medium text-[#9098A3]">
               {JOB_TYPE_LABELS[job.job_type]}
             </span>
             {job.location && (
-              <span className="text-[10px] text-grey3 font-openSans flex items-center gap-0.5">
+              <span className="text-[11px] font-medium text-[#9098A3] flex items-center gap-0.5">
                 <FaLocationDot className="w-2.5 h-2.5" />
                 {job.location}
               </span>
@@ -119,22 +121,22 @@ function JobRow({
       </td>
       <td className="py-4 px-5">
         <span
-          className={`text-xs font-semibold font-satoshi px-2.5 py-1 rounded-full ${STATUS_COLORS[job.status]}`}
+          className={`text-[11px] font-bold px-2.5 py-1 rounded-lg ${STATUS_COLORS[job.status]}`}
         >
           {STATUS_LABELS[job.status]}
         </span>
       </td>
-      <td className="py-4 px-5 text-sm font-openSans text-grey2 hidden md:table-cell">
+      <td className="py-4 px-5 text-[13px] font-medium text-[#4B4658] hidden md:table-cell">
         {job.posting_mode === "internal" ? (
           <span className="flex items-center gap-1.5">
-            <FaUsers className="w-3.5 h-3.5 text-grey3" />
+            <FaUsers className="w-3.5 h-3.5 text-[#9098A3]" />
             {job.application_count ?? 0}
           </span>
         ) : (
-          <span className="text-grey4">—</span>
+          <span className="text-[#B6B0C0]">—</span>
         )}
       </td>
-      <td className="py-4 px-5 text-xs font-openSans text-grey3 hidden lg:table-cell">
+      <td className="py-4 px-5 text-[12px] font-medium text-[#9098A3] hidden lg:table-cell">
         {relTime}
       </td>
       <td className="py-4 px-5">
@@ -142,9 +144,9 @@ function JobRow({
           {job.posting_mode === "internal" && (
             <Link
               href={`/dashboard/hiring/jobs/${job.id}`}
-              className="flex items-center gap-1.5 text-xs font-semibold font-satoshi text-mainPurple hover:opacity-70 transition-opacity whitespace-nowrap"
+              className="flex items-center gap-1.5 text-[12.5px] font-bold text-[#5A2DD4] hover:opacity-70 transition-opacity whitespace-nowrap"
             >
-              Applicants <FaArrowRight className="w-3 h-3" />
+              Pipeline <FaArrowRight className="w-3 h-3" />
             </Link>
           )}
           <div className="relative">
@@ -160,7 +162,7 @@ function JobRow({
                 setMenuOpen(!menuOpen);
               }}
               disabled={busy}
-              className="w-7 h-7 flex items-center justify-center rounded-lg text-grey3 hover:text-grey1 hover:bg-grey5 transition-colors disabled:opacity-40"
+              className="w-8 h-8 flex items-center justify-center rounded-lg text-[#9098A3] hover:text-[#15131C] hover:bg-[#F3F3F7] transition-colors disabled:opacity-40"
             >
               <FaEllipsisVertical className="w-3.5 h-3.5" />
             </button>
@@ -171,14 +173,14 @@ function JobRow({
                   onClick={() => setMenuOpen(false)}
                 />
                 <div
-                  className="fixed z-20 bg-white border border-grey4/60 rounded-xl shadow-lg py-1 min-w-[130px]"
+                  className="fixed z-20 bg-white border border-[#ECECF1] rounded-xl shadow-[0_12px_30px_-8px_rgba(31,18,72,0.22)] py-1 min-w-[140px]"
                   style={{ top: menuPos.top, right: menuPos.right }}
                 >
                   {actions.map((a) => (
                     <button
                       key={a.next}
                       onClick={() => updateStatus(a.next)}
-                      className={`w-full text-left px-4 py-2 text-sm font-openSans hover:bg-grey6 transition-colors ${a.next === "archived" ? "text-errorRed" : "text-grey1"}`}
+                      className={`w-full text-left px-4 py-2 text-[13.5px] font-medium hover:bg-[#FAFAFB] transition-colors ${a.next === "archived" ? "text-[#B6463C]" : "text-[#15131C]"}`}
                     >
                       {a.label}
                     </button>
@@ -190,6 +192,30 @@ function JobRow({
         </div>
       </td>
     </tr>
+  );
+}
+
+function StatTile({
+  icon,
+  tint,
+  value,
+  label,
+}: {
+  icon: React.ReactNode;
+  tint: string;
+  value: number;
+  label: string;
+}) {
+  return (
+    <div className="bg-white border border-[#E8E8EF] rounded-[18px] p-5 flex flex-col justify-between min-h-[118px]">
+      <div className={`w-9 h-9 rounded-[10px] flex items-center justify-center [&>svg]:w-[17px] [&>svg]:h-[17px] ${tint}`}>
+        {icon}
+      </div>
+      <div>
+        <div className="text-[28px] font-black tracking-[-0.03em] text-[#15131C] leading-none">{value}</div>
+        <div className="text-[12.5px] font-medium text-[#9098A3] mt-1">{label}</div>
+      </div>
+    </div>
   );
 }
 
@@ -226,8 +252,8 @@ export default function HiringDashboardPage() {
 
   if (loading || hasCompany === null) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="w-7 h-7 border-[3px] border-mainPurple border-t-transparent rounded-full animate-spin" />
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="w-7 h-7 border-[3px] border-[#5A2DD4] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -238,87 +264,84 @@ export default function HiringDashboardPage() {
     (s, j) => s + (j.application_count ?? 0),
     0,
   );
-  const unresolved = 0;
 
   return (
     <div className="max-w-full">
-      <div className="mb-8">
-        <p className="font-satoshi text-[11px] font-semibold text-mainPurple uppercase tracking-[0.22em] mb-1">
-          Hiring
-        </p>
-        <div className="flex items-start justify-between gap-4">
-          <h1 className="font-satoshi font-bold text-2xl text-grey1">
-            Your Jobs
+      {/* Header */}
+      <div className="flex items-start justify-between flex-wrap gap-4 mb-6">
+        <div>
+          <p className="text-[11px] font-bold text-[#5A2DD4] uppercase tracking-[0.16em] mb-1.5">
+            For employers
+          </p>
+          <h1 className="font-satoshi font-black text-[22px] tracking-[-0.02em] text-[#15131C]">
+            Your roles
           </h1>
-          <Link
-            href="/dashboard/hiring/post"
-            className="flex items-center gap-2 px-5 py-2.5 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] transition-colors whitespace-nowrap shrink-0"
-          >
-            <FaPlus className="w-3 h-3" /> Post a Job
-          </Link>
+          <p className="text-[13px] font-medium text-[#9098A3] mt-0.5">
+            {activeCount} open · {totalApplicants} total applicant{totalApplicants === 1 ? "" : "s"}
+          </p>
         </div>
+        <Link
+          href="/dashboard/hiring/post"
+          className="inline-flex items-center gap-2 px-[18px] py-2.5 bg-brand-gradient text-white rounded-xl font-bold text-sm shadow-[0_6px_16px_rgba(74,55,216,0.26)] hover:-translate-y-px transition-transform whitespace-nowrap shrink-0"
+        >
+          <FaPlus className="w-3 h-3" /> Post a role
+        </Link>
       </div>
 
-      {/* Stats row */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-        {[
-          { label: "Active", value: activeCount, color: "text-successGreen" },
-          { label: "Drafts", value: draftCount, color: "text-grey3" },
-          {
-            label: "Total applicants",
-            value: totalApplicants,
-            color: "text-mainPurple",
-          },
-          {
-            label: "Unresolved",
-            value: unresolved,
-            color: "text-warningYellow",
-          },
-        ].map((s) => (
-          <div
-            key={s.label}
-            className="bg-white rounded-2xl border border-grey4/60 p-5"
-          >
-            <p className={`font-satoshi font-bold text-3xl ${s.color}`}>
-              {s.value}
-            </p>
-            <p className="font-openSans text-xs text-grey3 mt-1">{s.label}</p>
-          </div>
-        ))}
+      {/* Stats */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
+        <StatTile
+          icon={<FaBriefcase />}
+          tint="bg-[#E7F6EF] text-[#16895E]"
+          value={activeCount}
+          label="Active roles"
+        />
+        <StatTile
+          icon={<FaPenToSquare />}
+          tint="bg-[#F3F3F7] text-[#6B6478]"
+          value={draftCount}
+          label="Drafts"
+        />
+        <StatTile
+          icon={<FaUsers />}
+          tint="bg-[#F1ECFD] text-[#5A2DD4]"
+          value={totalApplicants}
+          label="Total applicants"
+        />
       </div>
 
-      {/* Jobs table */}
-      <div className="bg-white rounded-2xl border border-grey4/60 overflow-hidden">
+      {/* Roles table */}
+      <div className="bg-white rounded-[18px] border border-[#E8E8EF] overflow-hidden">
         {jobs.length === 0 ? (
-          <div className="py-20 flex flex-col items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-lightPurple flex items-center justify-center">
-              <FaPlus className="w-5 h-5 text-mainPurple" />
+          <div className="py-20 flex flex-col items-center gap-4 text-center px-6">
+            <div className="w-14 h-14 rounded-2xl bg-[#F1ECFD] flex items-center justify-center text-[#5A2DD4]">
+              <FaBriefcase className="w-5 h-5" />
             </div>
-            <p className="font-satoshi font-semibold text-grey1">No jobs yet</p>
-            <p className="font-openSans text-sm text-grey3">
-              Post your first job listing to start receiving applications
+            <p className="font-satoshi font-extrabold text-[#15131C]">No roles yet</p>
+            <p className="text-sm font-medium text-[#9098A3] max-w-xs">
+              Post your first role to start receiving applications from candidates.
             </p>
             <Link
               href="/dashboard/hiring/post"
-              className="mt-2 px-6 py-2.5 bg-mainPurple text-white rounded-lg font-satoshi font-semibold text-sm hover:bg-[#4338CA] transition-colors"
+              className="mt-1 px-6 py-2.5 bg-brand-gradient text-white rounded-xl font-bold text-sm shadow-[0_10px_24px_-6px_rgba(74,55,216,0.45)] hover:-translate-y-px transition-transform"
             >
-              Post a Job
+              Post a role
             </Link>
           </div>
         ) : (
           <table className="w-full">
             <thead>
-              <tr className="border-b border-grey4/60 bg-grey6/50">
-                <th className="text-left py-3 px-5 text-xs font-semibold text-grey3 font-satoshi uppercase tracking-wide">
+              <tr className="bg-[#FAFAFB]">
+                <th className="text-left py-3 px-5 text-[11px] font-bold text-[#9098A3] uppercase tracking-wide">
                   Role
                 </th>
-                <th className="text-left py-3 px-5 text-xs font-semibold text-grey3 font-satoshi uppercase tracking-wide">
+                <th className="text-left py-3 px-5 text-[11px] font-bold text-[#9098A3] uppercase tracking-wide">
                   Status
                 </th>
-                <th className="text-left py-3 px-5 text-xs font-semibold text-grey3 font-satoshi uppercase tracking-wide hidden md:table-cell">
+                <th className="text-left py-3 px-5 text-[11px] font-bold text-[#9098A3] uppercase tracking-wide hidden md:table-cell">
                   Applicants
                 </th>
-                <th className="text-left py-3 px-5 text-xs font-semibold text-grey3 font-satoshi uppercase tracking-wide hidden lg:table-cell">
+                <th className="text-left py-3 px-5 text-[11px] font-bold text-[#9098A3] uppercase tracking-wide hidden lg:table-cell">
                   Posted
                 </th>
                 <th className="py-3 px-5" />

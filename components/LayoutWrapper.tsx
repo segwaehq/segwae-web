@@ -19,6 +19,9 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
   // Hide header and footer on the jobs portal
   const isJobsPortalPage = pathname?.startsWith('/jobs-portal')
 
+  // Hide header and footer on the Content Studio (blog CMS)
+  const isStudioPage = pathname?.startsWith('/studio')
+
   // Hide header and footer on auth pages (full-screen layouts)
   const isAuthPage = pathname?.startsWith('/login') || pathname?.startsWith('/signup')
 
@@ -34,7 +37,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
   // Alternative: Hide header and footer on admin dashboard pages only (uncomment to use)
   // const isAdminPage = pathname?.startsWith('/admin') && !pathname?.startsWith('/admin/login')
 
-  if (isProfilePage || isAdminPage || isDashboardPage || isAuthPage || isOnboardingPage || isContactPage || isJobDetailPage || isJobsPortalPage) {
+  if (isProfilePage || isAdminPage || isDashboardPage || isAuthPage || isOnboardingPage || isContactPage || isJobDetailPage || isJobsPortalPage || isStudioPage) {
     return <>{children}</>
   }
 
