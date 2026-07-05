@@ -90,23 +90,23 @@ function PasswordContent() {
     }
   }
 
-  const inputClass = "w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 transition-colors disabled:bg-grey6"
+  const inputClass = "w-full px-4 py-3 border border-grey4 dark:border-line rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 dark:text-content placeholder:text-grey3 dark:placeholder:text-content-subtle bg-white dark:bg-surface-sunken transition-colors disabled:bg-grey6 dark:disabled:bg-white/[0.03]"
 
   return (
     <AuthLayout step={2} totalSteps={3}>
       <div className="mb-7">
-        <h1 className="font-satoshi font-bold text-2xl text-grey1 mb-2">
+        <h1 className="font-satoshi font-bold text-2xl text-grey1 dark:text-content mb-2">
           Set your password
         </h1>
-        <p className="font-openSans text-grey3 text-sm">
+        <p className="font-openSans text-grey3 dark:text-content-muted text-sm">
           Creating account for{' '}
-          <span className="font-semibold text-grey1">{email}</span>
+          <span className="font-semibold text-grey1 dark:text-content">{email}</span>
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-grey2 mb-1.5 font-satoshi">
+          <label htmlFor="password" className="block text-sm font-medium text-grey2 dark:text-content-muted mb-1.5 font-satoshi">
             Password
           </label>
           <div className="relative">
@@ -122,7 +122,7 @@ function PasswordContent() {
               disabled={loading}
             />
             <button type="button" onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-grey3 hover:text-grey1 transition-colors cursor-pointer">
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-grey3 dark:text-content-subtle hover:text-grey1 dark:hover:text-content transition-colors cursor-pointer">
               {showPassword ? <FaEyeSlash className="w-4 h-4" /> : <FaEye className="w-4 h-4" />}
             </button>
           </div>
@@ -132,7 +132,7 @@ function PasswordContent() {
               <div className="flex gap-1 mb-1">
                 {[1, 2, 3].map((i) => (
                   <div key={i} className={`h-0.5 flex-1 rounded-full transition-all duration-300 ${
-                    strength.score >= i * 2 ? strength.color : 'bg-grey4'
+                    strength.score >= i * 2 ? strength.color : 'bg-grey4 dark:bg-line'
                   }`} />
                 ))}
               </div>
@@ -149,9 +149,9 @@ function PasswordContent() {
                 <div key={r.label} className="flex items-center gap-2">
                   {r.met
                     ? <FaCheck className="w-3 h-3 text-successGreen shrink-0" />
-                    : <FaXmark className="w-3 h-3 text-grey4 shrink-0" />
+                    : <FaXmark className="w-3 h-3 text-grey4 dark:text-line shrink-0" />
                   }
-                  <span className={`text-xs font-openSans ${r.met ? 'text-grey2' : 'text-grey3'}`}>
+                  <span className={`text-xs font-openSans ${r.met ? 'text-grey2 dark:text-content-muted' : 'text-grey3 dark:text-content-subtle'}`}>
                     {r.label}
                   </span>
                 </div>
@@ -161,7 +161,7 @@ function PasswordContent() {
         </div>
 
         <div>
-          <label htmlFor="confirmPassword" className="block text-sm font-medium text-grey2 mb-1.5 font-satoshi">
+          <label htmlFor="confirmPassword" className="block text-sm font-medium text-grey2 dark:text-content-muted mb-1.5 font-satoshi">
             Confirm Password
           </label>
           <div className="relative">
@@ -184,7 +184,7 @@ function PasswordContent() {
               </div>
             )}
             <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-grey3 hover:text-grey1 transition-colors cursor-pointer">
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-grey3 dark:text-content-subtle hover:text-grey1 dark:hover:text-content transition-colors cursor-pointer">
               {showConfirmPassword ? <FaEyeSlash className="w-4 h-4" /> : <FaEye className="w-4 h-4" />}
             </button>
           </div>
@@ -195,7 +195,7 @@ function PasswordContent() {
 
         <div className="flex gap-3 pt-2">
           <button type="button" onClick={() => router.back()} disabled={loading}
-            className="flex-1 py-3 border border-grey4 text-grey2 rounded-lg font-satoshi font-semibold text-sm hover:border-grey3 hover:text-grey1 transition-colors disabled:opacity-50 cursor-pointer">
+            className="flex-1 py-3 border border-grey4 dark:border-line text-grey2 dark:text-content-muted rounded-lg font-satoshi font-semibold text-sm hover:border-grey3 dark:hover:border-content-subtle hover:text-grey1 dark:hover:text-content transition-colors disabled:opacity-50 cursor-pointer">
             Back
           </button>
           <button type="submit" disabled={loading || !passwordValid || !passwordsMatch}
@@ -205,9 +205,9 @@ function PasswordContent() {
         </div>
       </form>
 
-      <p className="font-openSans text-grey3 text-sm text-center mt-6">
+      <p className="font-openSans text-grey3 dark:text-content-muted text-sm text-center mt-6">
         Already have an account?{' '}
-        <Link href="/login" className="text-mainPurple font-semibold hover:underline">Sign in</Link>
+        <Link href="/login" className="text-mainPurple dark:text-[#b9a4f7] font-semibold hover:underline">Sign in</Link>
       </p>
     </AuthLayout>
   )

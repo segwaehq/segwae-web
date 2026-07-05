@@ -26,11 +26,11 @@ type AppRow = {
 };
 
 const STATUS: Record<string, { label: string; color: string; bg: string }> = {
-  applied: { label: "Applied", color: "text-[#5A2DD4]", bg: "bg-[#F1ECFD]" },
-  under_review: { label: "Under review", color: "text-[#1E5BBF]", bg: "bg-[#E8EFFB]" },
-  shortlisted: { label: "Shortlisted", color: "text-[#C2410C]", bg: "bg-[#FDF0E7]" },
-  accepted: { label: "Accepted", color: "text-[#16895E]", bg: "bg-[#E7F6EF]" },
-  rejected: { label: "Not selected", color: "text-[#9098A3]", bg: "bg-[#F3F3F7]" },
+  applied: { label: "Applied", color: "text-[#5A2DD4] dark:text-[#b9a4f7]", bg: "bg-[#F1ECFD] dark:bg-[#221b36]" },
+  under_review: { label: "Under review", color: "text-[#1E5BBF] dark:text-[#7fb0f5]", bg: "bg-[#E8EFFB] dark:bg-[#13203a]" },
+  shortlisted: { label: "Shortlisted", color: "text-[#C2410C] dark:text-[#f2a56b]", bg: "bg-[#FDF0E7] dark:bg-[#2a1a10]" },
+  accepted: { label: "Accepted", color: "text-[#16895E] dark:text-[#4ade9e]", bg: "bg-[#E7F6EF] dark:bg-[#12271e]" },
+  rejected: { label: "Not selected", color: "text-[#9098A3] dark:text-content-subtle", bg: "bg-[#F3F3F7] dark:bg-white/[0.06]" },
 };
 
 const TAB_ORDER = ["applied", "under_review", "shortlisted", "accepted", "rejected"];
@@ -137,10 +137,10 @@ export default function DashboardHomePage() {
       {/* Welcome */}
       <div className="flex items-center justify-between flex-wrap gap-4 mb-6">
         <div>
-          <h1 className="font-satoshi font-black text-[22px] tracking-[-0.02em] text-[#15131C]">
+          <h1 className="font-satoshi font-black text-[22px] tracking-[-0.02em] text-[#15131C] dark:text-content">
             Welcome back, {firstName}
           </h1>
-          <p className="text-[13px] font-medium text-[#9098A3] mt-0.5">{subtitle}</p>
+          <p className="text-[13px] font-medium text-[#9098A3] dark:text-content-subtle mt-0.5">{subtitle}</p>
         </div>
         <Link
           href="/jobs"
@@ -176,17 +176,17 @@ export default function DashboardHomePage() {
           </div>
         </div>
 
-        <StatTile icon={<FaFileLines />} tint="bg-[#F1ECFD] text-[#5A2DD4]" value={total} label="Applications" />
-        <StatTile icon={<FaHourglassHalf />} tint="bg-[#FDF0E7] text-[#C2410C]" value={inReview} label="Under review" />
-        <StatTile icon={<FaCalendarCheck />} tint="bg-[#E7F6EF] text-[#16895E]" value={interviews} label="Interviews" />
+        <StatTile icon={<FaFileLines />} tint="bg-[#F1ECFD] dark:bg-[#221b36] text-[#5A2DD4] dark:text-[#b9a4f7]" value={total} label="Applications" />
+        <StatTile icon={<FaHourglassHalf />} tint="bg-[#FDF0E7] dark:bg-[#2a1a10] text-[#C2410C] dark:text-[#f2a56b]" value={inReview} label="Under review" />
+        <StatTile icon={<FaCalendarCheck />} tint="bg-[#E7F6EF] dark:bg-[#12271e] text-[#16895E] dark:text-[#4ade9e]" value={interviews} label="Interviews" />
       </div>
 
       {/* Applications + side */}
       <div className="grid gap-5 lg:grid-cols-[1fr_320px] items-start">
         {/* tracker */}
-        <div className="bg-white border border-[#E8E8EF] rounded-[18px] p-6">
+        <div className="bg-white dark:bg-surface-raised border border-[#E8E8EF] dark:border-line rounded-[18px] p-6">
           <div className="flex items-center justify-between flex-wrap gap-3 mb-4">
-            <h2 className="font-satoshi text-[17px] font-extrabold tracking-[-0.01em] text-[#15131C]">
+            <h2 className="font-satoshi text-[17px] font-extrabold tracking-[-0.01em] text-[#15131C] dark:text-content">
               Your applications
             </h2>
             {tabs.length > 1 && (
@@ -201,13 +201,13 @@ export default function DashboardHomePage() {
                       className={`inline-flex items-center gap-1.5 px-3 py-[7px] rounded-[9px] text-[13px] font-bold transition-colors ${
                         on
                           ? "bg-brand-gradient text-white"
-                          : "bg-white border border-[#E8E8EF] text-[#6B6478] font-semibold hover:border-[#C9BCF2]"
+                          : "bg-white dark:bg-white/[0.04] border border-[#E8E8EF] dark:border-line text-[#6B6478] dark:text-content-muted font-semibold hover:border-[#C9BCF2] dark:hover:border-[#4a3d78]"
                       }`}
                     >
                       {key === "all" ? "All" : STATUS[key]?.label ?? key}
                       <span
                         className={`text-[11px] font-bold px-1.5 rounded-md ${
-                          on ? "bg-white/20 text-white" : "bg-[#F3F3F7] text-[#9098A3]"
+                          on ? "bg-white/20 text-white" : "bg-[#F3F3F7] dark:bg-white/[0.06] text-[#9098A3] dark:text-content-subtle"
                         }`}
                       >
                         {count}
@@ -221,10 +221,10 @@ export default function DashboardHomePage() {
 
           {visibleApps.length === 0 ? (
             <div className="py-12 flex flex-col items-center text-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-[#F1ECFD] flex items-center justify-center text-[#5A2DD4]">
+              <div className="w-12 h-12 rounded-2xl bg-[#F1ECFD] dark:bg-[#221b36] flex items-center justify-center text-[#5A2DD4] dark:text-[#b9a4f7]">
                 <FaFileLines className="w-5 h-5" />
               </div>
-              <p className="text-sm font-bold text-[#15131C]">
+              <p className="text-sm font-bold text-[#15131C] dark:text-content">
                 {total === 0 ? "No applications yet" : "Nothing with this status yet"}
               </p>
               {total === 0 && (
@@ -242,25 +242,25 @@ export default function DashboardHomePage() {
                 const company = app.jobs?.companies;
                 const s = STATUS[app.status] ?? STATUS.applied;
                 return (
-                  <div key={app.id} className="flex items-center gap-3.5 py-[15px] border-t border-[#F4F3F7]">
-                    <div className="w-[46px] h-[46px] rounded-xl overflow-hidden bg-[#F1F0F6] flex items-center justify-center text-[13px] font-extrabold text-[#5A2DD4] shrink-0">
+                  <div key={app.id} className="flex items-center gap-3.5 py-[15px] border-t border-[#F4F3F7] dark:border-white/[0.06]">
+                    <div className="w-[46px] h-[46px] rounded-xl overflow-hidden bg-[#F1F0F6] dark:bg-[#241d38] flex items-center justify-center text-[13px] font-extrabold text-[#5A2DD4] dark:text-[#b9a4f7] shrink-0">
                       {company?.logo_url ? (
                         <Image src={company.logo_url} alt="" width={46} height={46} className="object-cover w-full h-full" />
                       ) : company?.name ? (
                         initialsOf(company.name)
                       ) : (
-                        <FaBuilding className="w-4 h-4 text-[#9098A3]" />
+                        <FaBuilding className="w-4 h-4 text-[#9098A3] dark:text-content-subtle" />
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-[14.5px] font-bold text-[#15131C] leading-snug truncate">
+                      <div className="text-[14.5px] font-bold text-[#15131C] dark:text-content leading-snug truncate">
                         {app.jobs?.title ?? "—"}
                       </div>
-                      <div className="text-[12.5px] font-medium text-[#9098A3] mt-0.5 truncate">
+                      <div className="text-[12.5px] font-medium text-[#9098A3] dark:text-content-subtle mt-0.5 truncate">
                         {company?.name ?? "—"}
                       </div>
                     </div>
-                    <div className="text-xs font-medium text-[#B6B0C0] shrink-0 hidden sm:block">
+                    <div className="text-xs font-medium text-[#B6B0C0] dark:text-content-subtle shrink-0 hidden sm:block">
                       {timeAgo(app.applied_at)}
                     </div>
                     <span className={`text-[11px] font-bold px-2.5 py-[5px] rounded-lg shrink-0 ${s.color} ${s.bg}`}>
@@ -276,16 +276,16 @@ export default function DashboardHomePage() {
         {/* right column */}
         <div className="flex flex-col gap-5">
           {/* finish your profile */}
-          <div className="bg-white border border-[#E8E8EF] rounded-[18px] p-5">
-            <h3 className="text-sm font-extrabold text-[#15131C]">Finish your profile</h3>
-            <p className="text-xs font-medium text-[#9098A3] mt-0.5 mb-3.5">
+          <div className="bg-white dark:bg-surface-raised border border-[#E8E8EF] dark:border-line rounded-[18px] p-5">
+            <h3 className="text-sm font-extrabold text-[#15131C] dark:text-content">Finish your profile</h3>
+            <p className="text-xs font-medium text-[#9098A3] dark:text-content-subtle mt-0.5 mb-3.5">
               {doneCount}/{checklist.length} complete · {strength}% strength
             </p>
             <div className="flex flex-col gap-1">
               {checklist.map((c) =>
                 c.done ? (
-                  <div key={c.label} className="flex items-center gap-2.5 px-1 py-1.5 text-[13px] font-medium text-[#9098A3]">
-                    <span className="w-[18px] h-[18px] rounded-full bg-[#E7F6EF] text-[#16895E] flex items-center justify-center shrink-0">
+                  <div key={c.label} className="flex items-center gap-2.5 px-1 py-1.5 text-[13px] font-medium text-[#9098A3] dark:text-content-subtle">
+                    <span className="w-[18px] h-[18px] rounded-full bg-[#E7F6EF] dark:bg-[#12271e] text-[#16895E] dark:text-[#4ade9e] flex items-center justify-center shrink-0">
                       <FaCheck className="w-2.5 h-2.5" />
                     </span>
                     <span className="line-through">{c.label}</span>
@@ -294,11 +294,11 @@ export default function DashboardHomePage() {
                   <Link
                     key={c.label}
                     href={c.href}
-                    className="flex items-center gap-2.5 px-1 py-1.5 -mx-1 rounded-lg text-[13px] font-bold text-[#15131C] hover:bg-[#FAFAFB] transition-colors"
+                    className="flex items-center gap-2.5 px-1 py-1.5 -mx-1 rounded-lg text-[13px] font-bold text-[#15131C] dark:text-content hover:bg-[#FAFAFB] dark:hover:bg-white/[0.04] transition-colors"
                   >
-                    <span className="w-[18px] h-[18px] rounded-full border-[1.5px] border-[#D8D5E2] shrink-0" />
+                    <span className="w-[18px] h-[18px] rounded-full border-[1.5px] border-[#D8D5E2] dark:border-[#3a3448] shrink-0" />
                     <span className="flex-1">{c.label}</span>
-                    <FaChevronRight className="w-3 h-3 text-[#A8A2B4]" />
+                    <FaChevronRight className="w-3 h-3 text-[#A8A2B4] dark:text-content-subtle" />
                   </Link>
                 )
               )}
@@ -306,8 +306,8 @@ export default function DashboardHomePage() {
           </div>
 
           {/* shortcuts */}
-          <div className="bg-white border border-[#E8E8EF] rounded-[18px] p-5">
-            <h3 className="text-sm font-extrabold text-[#15131C] mb-2.5">Shortcuts</h3>
+          <div className="bg-white dark:bg-surface-raised border border-[#E8E8EF] dark:border-line rounded-[18px] p-5">
+            <h3 className="text-sm font-extrabold text-[#15131C] dark:text-content mb-2.5">Shortcuts</h3>
             <div className="flex flex-col">
               {SHORTCUTS.map((sc) => {
                 const Icon = sc.icon;
@@ -315,13 +315,13 @@ export default function DashboardHomePage() {
                   <Link
                     key={sc.href}
                     href={sc.href}
-                    className="flex items-center gap-3 py-2.5 px-1 -mx-1 rounded-lg hover:bg-[#FAFAFB] transition-colors"
+                    className="flex items-center gap-3 py-2.5 px-1 -mx-1 rounded-lg hover:bg-[#FAFAFB] dark:hover:bg-white/[0.04] transition-colors"
                   >
-                    <span className="w-9 h-9 rounded-[10px] bg-[#F1F0F6] flex items-center justify-center text-[#5A2DD4] shrink-0">
+                    <span className="w-9 h-9 rounded-[10px] bg-[#F1F0F6] dark:bg-[#241d38] flex items-center justify-center text-[#5A2DD4] dark:text-[#b9a4f7] shrink-0">
                       <Icon className="w-4 h-4" />
                     </span>
-                    <span className="flex-1 text-[13.5px] font-bold text-[#15131C]">{sc.label}</span>
-                    <FaArrowRight className="w-3.5 h-3.5 text-[#A8A2B4]" />
+                    <span className="flex-1 text-[13.5px] font-bold text-[#15131C] dark:text-content">{sc.label}</span>
+                    <FaArrowRight className="w-3.5 h-3.5 text-[#A8A2B4] dark:text-content-subtle" />
                   </Link>
                 );
               })}
@@ -345,13 +345,13 @@ function StatTile({
   label: string;
 }) {
   return (
-    <div className="bg-white border border-[#E8E8EF] rounded-[18px] p-5 flex flex-col justify-between min-h-[120px]">
+    <div className="bg-white dark:bg-surface-raised border border-[#E8E8EF] dark:border-line rounded-[18px] p-5 flex flex-col justify-between min-h-[120px]">
       <div className={`w-9 h-9 rounded-[10px] flex items-center justify-center [&>svg]:w-[18px] [&>svg]:h-[18px] ${tint}`}>
         {icon}
       </div>
       <div>
-        <div className="text-[28px] font-black tracking-[-0.03em] text-[#15131C] leading-none">{value}</div>
-        <div className="text-[12.5px] font-medium text-[#9098A3] mt-1">{label}</div>
+        <div className="text-[28px] font-black tracking-[-0.03em] text-[#15131C] dark:text-content leading-none">{value}</div>
+        <div className="text-[12.5px] font-medium text-[#9098A3] dark:text-content-subtle mt-1">{label}</div>
       </div>
     </div>
   );

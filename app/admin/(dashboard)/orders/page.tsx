@@ -80,14 +80,14 @@ export default async function OrdersPage() {
       <h1 className="font-satoshi font-black text-4xl mb-8">Orders</h1>
 
       {!orders || orders.length === 0 ? (
-        <div className="bg-white rounded-2xl p-12 text-center shadow-lg">
-          <p className="font-spaceGrotesk text-xl text-grey2">No orders yet</p>
+        <div className="bg-white dark:bg-surface-raised rounded-2xl p-12 text-center shadow-lg">
+          <p className="font-spaceGrotesk text-xl text-grey2 dark:text-content-muted">No orders yet</p>
         </div>
       ) : (
         <div className="space-y-4">
           {orders.map((order: OrderListItem) => (
             <Link key={order.id} href={`/admin/orders/${order.id}`}>
-              <div className="bg-white rounded-2xl p-6 mb-4 shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
+              <div className="bg-white dark:bg-surface-raised rounded-2xl p-6 mb-4 shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2 flex-wrap">
@@ -102,7 +102,7 @@ export default async function OrdersPage() {
                         {formatStatus(order.status)}
                       </span>
                     </div>
-                    <div className="space-y-1 text-sm text-grey2 font-openSans">
+                    <div className="space-y-1 text-sm text-grey2 dark:text-content-muted font-openSans">
                       <p>
                         Customer: {order.users?.name || order.guest_name || "N/A"} (
                         {order.users?.email || order.guest_email || "guest"})
@@ -118,7 +118,7 @@ export default async function OrdersPage() {
                     </div>
                   </div>
                   <svg
-                    className="w-6 h-6 text-grey3"
+                    className="w-6 h-6 text-grey3 dark:text-content-subtle"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -133,11 +133,11 @@ export default async function OrdersPage() {
                 </div>
 
                 {order.delivery_address && (
-                  <div className="bg-grey6 rounded-xl p-4">
+                  <div className="bg-grey6 dark:bg-white/[0.03] rounded-xl p-4">
                     <p className="font-spaceGrotesk font-semibold text-sm mb-2">
                       Delivery Address:
                     </p>
-                    <p className="font-openSans text-sm text-grey1">
+                    <p className="font-openSans text-sm text-grey1 dark:text-content">
                       {order.delivery_address.state} State,{" "}
                       {order.delivery_address.city}
                     </p>

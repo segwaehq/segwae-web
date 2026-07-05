@@ -138,7 +138,7 @@ export default function CompleteProfilePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#F4F3F8]">
+      <div className="min-h-screen flex items-center justify-center bg-[#F4F3F8] dark:bg-surface">
         <div className="w-7 h-7 border-[3px] border-[#5A2DD4] border-t-transparent rounded-full animate-spin" />
       </div>
     )
@@ -147,21 +147,18 @@ export default function CompleteProfilePage() {
   /* ── Success ──────────────────────────────────────────────────────────── */
   if (done) {
     return (
-      <div
-        className="min-h-screen flex flex-col items-center justify-center px-6 py-12 text-center"
-        style={{ background: 'radial-gradient(circle at 50% 0%, #EBE3FB 0%, #F4F3F8 55%, #F4F3F8 100%)' }}
-      >
+      <div className="min-h-screen flex flex-col items-center justify-center px-6 py-12 text-center bg-[radial-gradient(circle_at_50%_0%,#EBE3FB_0%,#F4F3F8_55%,#F4F3F8_100%)] dark:bg-[radial-gradient(circle_at_50%_0%,#1e1830_0%,#0e0c15_55%,#0e0c15_100%)]">
         <div className="w-[88px] h-[88px] rounded-full bg-brand-gradient flex items-center justify-center shadow-[0_18px_40px_-10px_rgba(74,55,216,0.5)] animate-scaleIn">
           <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
             <path d="M20 6L9 17l-5-5" />
           </svg>
         </div>
-        <h1 className="font-satoshi font-black text-[32px] tracking-[-0.03em] text-[#15131C] mt-7 mb-2">
+        <h1 className="font-satoshi font-black text-[32px] tracking-[-0.03em] text-[#15131C] dark:text-content mt-7 mb-2">
           You&apos;re all set, {firstName}!
         </h1>
-        <p className="text-base font-medium text-grey3 max-w-[380px] leading-relaxed">
+        <p className="text-base font-medium text-grey3 dark:text-content-muted max-w-[380px] leading-relaxed">
           Your profile is live at{' '}
-          <span className="font-extrabold text-[#5A2DD4]">segwae.com/{handle}</span>. Time to get discovered.
+          <span className="font-extrabold text-[#5A2DD4] dark:text-[#b9a4f7]">segwae.com/{handle}</span>. Time to get discovered.
         </p>
         <div className="flex flex-wrap gap-3 justify-center mt-8">
           <Link
@@ -175,7 +172,7 @@ export default function CompleteProfilePage() {
           </Link>
           <Link
             href="/dashboard/profile"
-            className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-white border border-[#E2E1EA] text-[15px] font-bold text-[#15131C] hover:border-[#B9B9C6] transition-colors"
+            className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-white dark:bg-surface-raised border border-[#E2E1EA] dark:border-line text-[15px] font-bold text-[#15131C] dark:text-content hover:border-[#B9B9C6] dark:hover:border-content-subtle transition-colors"
           >
             Go to dashboard
           </Link>
@@ -186,16 +183,17 @@ export default function CompleteProfilePage() {
 
   /* ── Builder ──────────────────────────────────────────────────────────── */
   return (
-    <div className="min-h-screen lg:grid lg:grid-cols-[1fr_480px] bg-white">
+    <div className="min-h-screen lg:grid lg:grid-cols-[1fr_480px] bg-white dark:bg-surface">
 
       {/* LEFT: steps */}
       <div className="flex flex-col px-6 py-8 sm:px-10 lg:px-12 min-w-0">
         {/* header */}
         <div className="flex items-center justify-between">
           <Link href="/" className="inline-flex items-center" aria-label="Segwae home">
-            <Image src="/wordmark.png" alt="Segwae" width={3834} height={992} className="h-7 w-auto" />
+            <Image src="/wordmark.png" alt="Segwae" width={3834} height={992} className="h-7 w-auto dark:hidden" />
+            <Image src="/wordmark_white.png" alt="Segwae" width={3834} height={992} className="h-7 w-auto hidden dark:block" />
           </Link>
-          <span className="text-[13px] font-semibold text-[#9098A3]">
+          <span className="text-[13px] font-semibold text-[#9098A3] dark:text-content-subtle">
             Step {currentStep} of {STEPS.length}
           </span>
         </div>
@@ -206,7 +204,7 @@ export default function CompleteProfilePage() {
             <div
               key={s.id}
               className={`flex-1 h-[5px] rounded-full transition-colors duration-300 ${
-                s.id <= currentStep ? 'bg-brand-gradient' : 'bg-[#E2DFEC]'
+                s.id <= currentStep ? 'bg-brand-gradient' : 'bg-[#E2DFEC] dark:bg-line'
               }`}
             />
           ))}
@@ -276,11 +274,8 @@ export default function CompleteProfilePage() {
       </div>
 
       {/* RIGHT: live preview */}
-      <div
-        className="hidden lg:flex flex-col items-center justify-center p-10 border-l border-[#E4E2EC]"
-        style={{ background: 'radial-gradient(circle at 50% 0%, #EBE3FB 0%, #E7E5EE 60%, #E7E5EE 100%)' }}
-      >
-        <p className="text-xs font-bold tracking-[0.08em] uppercase text-[#A29CB0] mb-[18px]">Live preview</p>
+      <div className="hidden lg:flex flex-col items-center justify-center p-10 border-l border-[#E4E2EC] dark:border-line bg-[radial-gradient(circle_at_50%_0%,#EBE3FB_0%,#E7E5EE_60%,#E7E5EE_100%)] dark:bg-[radial-gradient(circle_at_50%_0%,#1e1830_0%,#12101b_60%,#12101b_100%)]">
+        <p className="text-xs font-bold tracking-[0.08em] uppercase text-[#A29CB0] dark:text-content-subtle mb-[18px]">Live preview</p>
 
         <div className="w-[300px] bg-[#0D0D11] rounded-[42px] p-2.5 shadow-[0_40px_80px_-30px_rgba(38,22,82,0.5)]">
           <div className="bg-white rounded-[33px] overflow-hidden">

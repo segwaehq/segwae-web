@@ -70,8 +70,8 @@ const ORDER_STATUSES = [
   { value: 'confirmed', label: 'Confirmed', color: 'bg-blue/10 text-blue' },
   { value: 'pending_payment', label: 'Pending Payment', color: 'bg-warningYellow/10 text-warningYellow' },
   { value: 'paid', label: 'Paid', color: 'bg-successGreen/10 text-successGreen' },
-  { value: 'processing', label: 'Processing', color: 'bg-mainPurple/10 text-mainPurple' },
-  { value: 'shipped', label: 'Shipped', color: 'bg-mainPurple/10 text-mainPurple' },
+  { value: 'processing', label: 'Processing', color: 'bg-mainPurple/10 text-mainPurple dark:text-[#b9a4f7]' },
+  { value: 'shipped', label: 'Shipped', color: 'bg-mainPurple/10 text-mainPurple dark:text-[#b9a4f7]' },
   { value: 'delivered', label: 'Delivered', color: 'bg-successGreen/10 text-successGreen' },
   { value: 'cancelled', label: 'Cancelled', color: 'bg-errorRed/10 text-errorRed' },
 ]
@@ -238,7 +238,7 @@ export default function OrderEditForm({ order }: Props) {
       )}
 
       {/* Customer Information (Read-only) */}
-      <div className="bg-white rounded-2xl p-6 shadow-lg">
+      <div className="bg-white dark:bg-surface-raised rounded-2xl p-6 shadow-lg">
         <div className="flex items-center gap-3 mb-4">
           <h2 className="font-spaceGrotesk font-bold text-xl">Customer Information</h2>
           {isGuest && (
@@ -249,27 +249,27 @@ export default function OrderEditForm({ order }: Props) {
         </div>
         <div className="grid md:grid-cols-2 gap-4 font-openSans text-sm">
           <div>
-            <p className="text-grey3 mb-1">Name</p>
+            <p className="text-grey3 dark:text-content-subtle mb-1">Name</p>
             <p className="font-semibold">{customerName}</p>
           </div>
           <div>
-            <p className="text-grey3 mb-1">Email</p>
+            <p className="text-grey3 dark:text-content-subtle mb-1">Email</p>
             <p className="font-semibold">{customerEmail}</p>
           </div>
           {customerPhone && (
             <div>
-              <p className="text-grey3 mb-1">Phone</p>
+              <p className="text-grey3 dark:text-content-subtle mb-1">Phone</p>
               <p className="font-semibold">{customerPhone}</p>
             </div>
           )}
           {profileLink && (
             <div>
-              <p className="text-grey3 mb-1">Profile</p>
+              <p className="text-grey3 dark:text-content-subtle mb-1">Profile</p>
               <a
                 href={profileLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-semibold text-mainPurple hover:underline"
+                className="font-semibold text-mainPurple dark:text-[#b9a4f7] hover:underline"
               >
                 {profileLink}
               </a>
@@ -279,7 +279,7 @@ export default function OrderEditForm({ order }: Props) {
       </div>
 
       {/* Order Status */}
-      <div className="bg-white rounded-2xl p-6 shadow-lg">
+      <div className="bg-white dark:bg-surface-raised rounded-2xl p-6 shadow-lg">
         <h2 className="font-spaceGrotesk font-bold text-xl mb-4">Order Status</h2>
         <div className="space-y-4">
           <div>
@@ -289,7 +289,7 @@ export default function OrderEditForm({ order }: Props) {
             <select
               value={status}
               onChange={(e) => setStatus(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-grey4 font-spaceGrotesk focus:outline-none focus:ring-2 focus:ring-mainPurple"
+              className="w-full px-4 py-3 rounded-xl border border-grey4 dark:border-line dark:bg-surface-sunken dark:text-content dark:placeholder:text-content-subtle font-spaceGrotesk focus:outline-none focus:ring-2 focus:ring-mainPurple"
             >
               {ORDER_STATUSES.map((s) => (
                 <option key={s.value} value={s.value}>
@@ -308,7 +308,7 @@ export default function OrderEditForm({ order }: Props) {
               onChange={(e) => setStatusNote(e.target.value)}
               placeholder="Add a note about this status change (e.g., 'Customer confirmed via WhatsApp')"
               rows={3}
-              className="w-full px-4 py-3 rounded-xl border border-grey4 font-openSans focus:outline-none focus:ring-2 focus:ring-mainPurple"
+              className="w-full px-4 py-3 rounded-xl border border-grey4 dark:border-line dark:bg-surface-sunken dark:text-content dark:placeholder:text-content-subtle font-openSans focus:outline-none focus:ring-2 focus:ring-mainPurple"
             />
           </div>
 
@@ -324,7 +324,7 @@ export default function OrderEditForm({ order }: Props) {
 
       {/* Status History */}
       {order.status_history && order.status_history.length > 0 && (
-        <div className="bg-white rounded-2xl p-6 shadow-lg">
+        <div className="bg-white dark:bg-surface-raised rounded-2xl p-6 shadow-lg">
           <h2 className="font-spaceGrotesk font-bold text-xl mb-4">Status History</h2>
           <div className="space-y-3">
             {order.status_history.map((entry: StatusHistoryEntry, index: number) => {
@@ -335,11 +335,11 @@ export default function OrderEditForm({ order }: Props) {
                     <span className={`px-3 py-1 rounded-full text-xs font-semibold ${statusInfo?.color}`}>
                       {statusInfo?.label || entry.status}
                     </span>
-                    <span className="text-xs text-grey3">{formatDate(entry.timestamp)}</span>
+                    <span className="text-xs text-grey3 dark:text-content-subtle">{formatDate(entry.timestamp)}</span>
                   </div>
-                  {entry.note && <p className="text-sm text-grey2 font-openSans">{entry.note}</p>}
+                  {entry.note && <p className="text-sm text-grey2 dark:text-content-muted font-openSans">{entry.note}</p>}
                   {entry.changedByName && (
-                    <p className="text-xs text-grey3 mt-1">by {entry.changedByName}</p>
+                    <p className="text-xs text-grey3 dark:text-content-subtle mt-1">by {entry.changedByName}</p>
                   )}
                 </div>
               )
@@ -349,17 +349,17 @@ export default function OrderEditForm({ order }: Props) {
       )}
 
       {/* Order Items */}
-      <div className="bg-white rounded-2xl p-6 shadow-lg">
+      <div className="bg-white dark:bg-surface-raised rounded-2xl p-6 shadow-lg">
         <h2 className="font-spaceGrotesk font-bold text-xl mb-4">Order Items</h2>
         <div className="space-y-4">
           {order.order_items.map((item) => {
             const isEditing = editingItemId === item.id
             return (
-              <div key={item.id} className="border border-grey4 rounded-xl p-4">
+              <div key={item.id} className="border border-grey4 dark:border-line dark:bg-surface-sunken dark:text-content dark:placeholder:text-content-subtle rounded-xl p-4">
                 <div className="flex justify-between items-start mb-3">
                   <div>
                     <p className="font-spaceGrotesk font-semibold">{item.card_type}</p>
-                    <p className="text-sm text-grey2">
+                    <p className="text-sm text-grey2 dark:text-content-muted">
                       {item.card_design?.nameOnCard} • {item.card_design?.professionOnCard}
                     </p>
                   </div>
@@ -370,7 +370,7 @@ export default function OrderEditForm({ order }: Props) {
                         setItemQuantity(item.quantity)
                         setItemUnitPrice(item.unit_price)
                       }}
-                      className="text-mainPurple text-sm font-spaceGrotesk font-semibold hover:underline"
+                      className="text-mainPurple dark:text-[#b9a4f7] text-sm font-spaceGrotesk font-semibold hover:underline"
                     >
                       Edit
                     </button>
@@ -381,28 +381,28 @@ export default function OrderEditForm({ order }: Props) {
                   <div className="space-y-3">
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="block text-xs text-grey3 mb-1">Quantity</label>
+                        <label className="block text-xs text-grey3 dark:text-content-subtle mb-1">Quantity</label>
                         <input
                           type="number"
                           value={itemQuantity}
                           onChange={(e) => setItemQuantity(parseInt(e.target.value))}
                           min="1"
-                          className="w-full px-3 py-2 rounded-lg border border-grey4 focus:outline-none focus:ring-2 focus:ring-mainPurple"
+                          className="w-full px-3 py-2 rounded-lg border border-grey4 dark:border-line dark:bg-surface-sunken dark:text-content dark:placeholder:text-content-subtle focus:outline-none focus:ring-2 focus:ring-mainPurple"
                         />
                       </div>
                       <div>
-                        <label className="block text-xs text-grey3 mb-1">Unit Price (₦)</label>
+                        <label className="block text-xs text-grey3 dark:text-content-subtle mb-1">Unit Price (₦)</label>
                         <input
                           type="number"
                           value={itemUnitPrice / 100}
                           onChange={(e) => setItemUnitPrice(parseFloat(e.target.value) * 100)}
                           min="0"
                           step="0.01"
-                          className="w-full px-3 py-2 rounded-lg border border-grey4 focus:outline-none focus:ring-2 focus:ring-mainPurple"
+                          className="w-full px-3 py-2 rounded-lg border border-grey4 dark:border-line dark:bg-surface-sunken dark:text-content dark:placeholder:text-content-subtle focus:outline-none focus:ring-2 focus:ring-mainPurple"
                         />
                       </div>
                     </div>
-                    <div className="text-sm text-grey2">
+                    <div className="text-sm text-grey2 dark:text-content-muted">
                       New Total: {formatPrice(itemQuantity * itemUnitPrice)}
                     </div>
                     <div className="flex gap-2">
@@ -415,30 +415,30 @@ export default function OrderEditForm({ order }: Props) {
                       </button>
                       <button
                         onClick={() => setEditingItemId(null)}
-                        className="px-4 py-2 rounded-lg text-sm font-semibold text-grey2 hover:bg-grey6"
+                        className="px-4 py-2 rounded-lg text-sm font-semibold text-grey2 dark:text-content-muted hover:bg-grey6 dark:hover:bg-white/[0.06]"
                       >
                         Cancel
                       </button>
                     </div>
                   </div>
                 ) : (
-                  <div className="text-sm text-grey2 space-y-1">
+                  <div className="text-sm text-grey2 dark:text-content-muted space-y-1">
                     <p>Quantity: {item.quantity}</p>
                     <p>Unit Price: {formatPrice(item.unit_price)}</p>
-                    <p className="font-semibold text-grey1">Total: {formatPrice(item.total_price)}</p>
+                    <p className="font-semibold text-grey1 dark:text-content">Total: {formatPrice(item.total_price)}</p>
                   </div>
                 )}
               </div>
             )
           })}
 
-          <div className="border-t border-grey4 pt-4 space-y-2 text-sm">
+          <div className="border-t border-grey4 dark:border-line pt-4 space-y-2 text-sm">
             <div className="flex justify-between">
-              <span className="text-grey2">Subtotal:</span>
+              <span className="text-grey2 dark:text-content-muted">Subtotal:</span>
               <span className="font-semibold">{formatPrice(order.subtotal)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-grey2">Shipping:</span>
+              <span className="text-grey2 dark:text-content-muted">Shipping:</span>
               <span className="font-semibold">{formatPrice(order.shipping_cost)}</span>
             </div>
             <div className="flex justify-between text-lg font-bold">
@@ -450,7 +450,7 @@ export default function OrderEditForm({ order }: Props) {
       </div>
 
       {/* Delivery Address */}
-      <div className="bg-white rounded-2xl p-6 shadow-lg">
+      <div className="bg-white dark:bg-surface-raised rounded-2xl p-6 shadow-lg">
         <h2 className="font-spaceGrotesk font-bold text-xl mb-4">Delivery Address</h2>
         <div className="space-y-4">
           <div className="grid md:grid-cols-2 gap-4">
@@ -460,7 +460,7 @@ export default function OrderEditForm({ order }: Props) {
                 type="text"
                 value={deliveryAddress.state || ''}
                 onChange={(e) => setDeliveryAddress({ ...deliveryAddress, state: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border border-grey4 focus:outline-none focus:ring-2 focus:ring-mainPurple"
+                className="w-full px-4 py-3 rounded-xl border border-grey4 dark:border-line dark:bg-surface-sunken dark:text-content dark:placeholder:text-content-subtle focus:outline-none focus:ring-2 focus:ring-mainPurple"
               />
             </div>
             <div>
@@ -469,7 +469,7 @@ export default function OrderEditForm({ order }: Props) {
                 type="text"
                 value={deliveryAddress.city || ''}
                 onChange={(e) => setDeliveryAddress({ ...deliveryAddress, city: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border border-grey4 focus:outline-none focus:ring-2 focus:ring-mainPurple"
+                className="w-full px-4 py-3 rounded-xl border border-grey4 dark:border-line dark:bg-surface-sunken dark:text-content dark:placeholder:text-content-subtle focus:outline-none focus:ring-2 focus:ring-mainPurple"
               />
             </div>
           </div>
@@ -479,7 +479,7 @@ export default function OrderEditForm({ order }: Props) {
               type="text"
               value={deliveryAddress.address || ''}
               onChange={(e) => setDeliveryAddress({ ...deliveryAddress, address: e.target.value })}
-              className="w-full px-4 py-3 rounded-xl border border-grey4 focus:outline-none focus:ring-2 focus:ring-mainPurple"
+              className="w-full px-4 py-3 rounded-xl border border-grey4 dark:border-line dark:bg-surface-sunken dark:text-content dark:placeholder:text-content-subtle focus:outline-none focus:ring-2 focus:ring-mainPurple"
             />
           </div>
           <button
@@ -493,7 +493,7 @@ export default function OrderEditForm({ order }: Props) {
       </div>
 
       {/* Admin Notes */}
-      <div className="bg-white rounded-2xl p-6 shadow-lg">
+      <div className="bg-white dark:bg-surface-raised rounded-2xl p-6 shadow-lg">
         <h2 className="font-spaceGrotesk font-bold text-xl mb-4">Admin Notes</h2>
         <div className="space-y-4">
           <textarea
@@ -501,7 +501,7 @@ export default function OrderEditForm({ order }: Props) {
             onChange={(e) => setAdminNotes(e.target.value)}
             placeholder="Add internal notes for tracking..."
             rows={5}
-            className="w-full px-4 py-3 rounded-xl border border-grey4 font-openSans focus:outline-none focus:ring-2 focus:ring-mainPurple"
+            className="w-full px-4 py-3 rounded-xl border border-grey4 dark:border-line dark:bg-surface-sunken dark:text-content dark:placeholder:text-content-subtle font-openSans focus:outline-none focus:ring-2 focus:ring-mainPurple"
           />
           <button
             onClick={handleNotesUpdate}
@@ -514,9 +514,9 @@ export default function OrderEditForm({ order }: Props) {
       </div>
 
       {/* Order Metadata */}
-      <div className="bg-grey6 rounded-2xl p-6">
+      <div className="bg-grey6 dark:bg-white/[0.03] rounded-2xl p-6">
         <h3 className="font-spaceGrotesk font-bold mb-3">Order Details</h3>
-        <div className="space-y-2 text-sm font-openSans text-grey2">
+        <div className="space-y-2 text-sm font-openSans text-grey2 dark:text-content-muted">
           <p><strong>Created:</strong> {formatDate(order.created_at)}</p>
           <p><strong>Last Updated:</strong> {formatDate(order.updated_at)}</p>
           <p><strong>Order ID:</strong> {order.id}</p>

@@ -8,7 +8,7 @@ export default async function JobsPortalLayout({ children }: { children: React.R
   const user = await checkJobManagerAuth()
 
   return (
-    <div className="min-h-screen bg-grey6 flex flex-col">
+    <div className="min-h-screen bg-grey6 dark:bg-surface flex flex-col">
       <PortalHeader userName={user.name} />
       <main className="flex-1 max-w-5xl w-full mx-auto px-5 py-8">
         {children}

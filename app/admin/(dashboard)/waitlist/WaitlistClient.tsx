@@ -76,22 +76,22 @@ export default function WaitlistClient({ initialSubscribers }: Props) {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <div className="bg-white rounded-2xl p-6 shadow-lg">
-          <h3 className="font-spaceGrotesk font-semibold text-sm text-grey2 mb-2">
+        <div className="bg-white dark:bg-surface-raised rounded-2xl p-6 shadow-lg">
+          <h3 className="font-spaceGrotesk font-semibold text-sm text-grey2 dark:text-content-muted mb-2">
             Total Subscribers
           </h3>
           <p className="font-satoshi font-black text-4xl text-mainPurple">
             {subscribers.length}
           </p>
         </div>
-        <div className="bg-white rounded-2xl p-6 shadow-lg">
-          <h3 className="font-spaceGrotesk font-semibold text-sm text-grey2 mb-2">
+        <div className="bg-white dark:bg-surface-raised rounded-2xl p-6 shadow-lg">
+          <h3 className="font-spaceGrotesk font-semibold text-sm text-grey2 dark:text-content-muted mb-2">
             States Covered
           </h3>
           <p className="font-satoshi font-black text-4xl text-blue">{uniqueStates.length}</p>
         </div>
-        <div className="bg-white rounded-2xl p-6 shadow-lg">
-          <h3 className="font-spaceGrotesk font-semibold text-sm text-grey2 mb-2">Top State</h3>
+        <div className="bg-white dark:bg-surface-raised rounded-2xl p-6 shadow-lg">
+          <h3 className="font-spaceGrotesk font-semibold text-sm text-grey2 dark:text-content-muted mb-2">Top State</h3>
           <p className="font-satoshi font-black text-2xl text-successGreen">
             {Object.entries(stateStats).sort((a, b) => b[1] - a[1])[0]?.[0] || 'N/A'}
           </p>
@@ -99,7 +99,7 @@ export default function WaitlistClient({ initialSubscribers }: Props) {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-2xl p-6 shadow-lg mb-6">
+      <div className="bg-white dark:bg-surface-raised rounded-2xl p-6 shadow-lg mb-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block font-spaceGrotesk font-semibold mb-2">Search</label>
@@ -108,7 +108,7 @@ export default function WaitlistClient({ initialSubscribers }: Props) {
               placeholder="Search by email..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg border border-grey4 focus:border-mainPurple focus:ring-2 focus:ring-mainPurple/20 outline-none transition-all font-openSans"
+              className="w-full px-4 py-3 rounded-lg border border-grey4 dark:border-line dark:bg-surface-sunken focus:border-mainPurple dark:focus:border-[#6a4fb0] focus:ring-2 focus:ring-mainPurple/20 outline-none transition-all font-openSans dark:text-content dark:placeholder:text-content-subtle"
             />
           </div>
           <div>
@@ -116,7 +116,7 @@ export default function WaitlistClient({ initialSubscribers }: Props) {
             <select
               value={stateFilter}
               onChange={(e) => setStateFilter(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg border border-grey4 focus:border-mainPurple focus:ring-2 focus:ring-mainPurple/20 outline-none transition-all font-openSans"
+              className="w-full px-4 py-3 rounded-lg border border-grey4 dark:border-line dark:bg-surface-sunken focus:border-mainPurple dark:focus:border-[#6a4fb0] focus:ring-2 focus:ring-mainPurple/20 outline-none transition-all font-openSans dark:text-content dark:placeholder:text-content-subtle"
             >
               <option value="all">All States</option>
               {uniqueStates.map((state) => (
@@ -127,21 +127,21 @@ export default function WaitlistClient({ initialSubscribers }: Props) {
             </select>
           </div>
         </div>
-        <div className="mt-4 text-sm text-grey2 font-openSans">
+        <div className="mt-4 text-sm text-grey2 dark:text-content-muted font-openSans">
           Showing {filteredSubscribers.length} of {subscribers.length} subscribers
         </div>
       </div>
 
       {/* Subscribers List */}
       {filteredSubscribers.length === 0 ? (
-        <div className="bg-white rounded-2xl p-12 text-center shadow-lg">
-          <p className="font-spaceGrotesk text-xl text-grey2">No subscribers found</p>
+        <div className="bg-white dark:bg-surface-raised rounded-2xl p-12 text-center shadow-lg">
+          <p className="font-spaceGrotesk text-xl text-grey2 dark:text-content-muted">No subscribers found</p>
         </div>
       ) : (
-        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+        <div className="bg-white dark:bg-surface-raised rounded-2xl shadow-lg overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-grey6 border-b border-grey4">
+              <thead className="bg-grey6 dark:bg-white/[0.03] border-b border-grey4 dark:border-line">
                 <tr>
                   <th className="px-6 py-4 text-left font-spaceGrotesk font-semibold">Email</th>
                   <th className="px-6 py-4 text-left font-spaceGrotesk font-semibold">State</th>
@@ -154,11 +154,11 @@ export default function WaitlistClient({ initialSubscribers }: Props) {
                 {filteredSubscribers.map((subscriber, index) => (
                   <tr
                     key={subscriber.id}
-                    className={index % 2 === 0 ? 'bg-white' : 'bg-grey6/50'}
+                    className={index % 2 === 0 ? 'bg-white dark:bg-surface-raised' : 'bg-grey6/50 dark:bg-white/[0.02]'}
                   >
                     <td className="px-6 py-4 font-openSans">{subscriber.email}</td>
                     <td className="px-6 py-4 font-openSans">{subscriber.state}</td>
-                    <td className="px-6 py-4 font-openSans text-grey2">
+                    <td className="px-6 py-4 font-openSans text-grey2 dark:text-content-muted">
                       {new Date(subscriber.created_at).toLocaleDateString()}
                     </td>
                   </tr>

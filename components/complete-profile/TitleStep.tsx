@@ -39,16 +39,16 @@ export default function TitleStep({ value, onUpdate, onNext, onBack }: TitleStep
   return (
     <form onSubmit={handleSubmit} className="space-y-7">
       <div>
-        <h2 className="font-satoshi font-black text-[27px] tracking-[-0.03em] leading-[1.12] text-[#15131C] mb-1.5">
+        <h2 className="font-satoshi font-black text-[27px] tracking-[-0.03em] leading-[1.12] text-[#15131C] dark:text-content mb-1.5">
           What&apos;s your job title?
         </h2>
-        <p className="text-[15px] font-medium text-[#8B8499] leading-relaxed">
+        <p className="text-[15px] font-medium text-[#8B8499] dark:text-content-muted leading-relaxed">
           Let people know what you do professionally.
         </p>
       </div>
 
       <div>
-        <label htmlFor="title" className="block text-[13px] font-bold text-[#15131C] mb-1.5">
+        <label htmlFor="title" className="block text-[13px] font-bold text-[#15131C] dark:text-content mb-1.5">
           Job Title / Position
         </label>
         <input
@@ -57,7 +57,7 @@ export default function TitleStep({ value, onUpdate, onNext, onBack }: TitleStep
           value={title}
           onChange={(e) => { setTitle(e.target.value); onUpdate(e.target.value) }}
           placeholder="e.g. Software Engineer, Product Designer"
-          className="w-full px-[15px] py-[13px] border border-[#E2E1EA] rounded-xl bg-white text-[14.5px] font-medium text-[#15131C] placeholder:text-[#B6B0C0] outline-none focus:border-[#A98BE8] transition-colors"
+          className="w-full px-[15px] py-[13px] border border-[#E2E1EA] dark:border-line rounded-xl bg-white dark:bg-surface-sunken text-[14.5px] font-medium text-[#15131C] dark:text-content placeholder:text-[#B6B0C0] dark:placeholder:text-content-subtle outline-none focus:border-[#A98BE8] dark:focus:border-[#6a4fb0] transition-colors"
           disabled={saving}
         />
         {error && <p className="mt-2 text-xs font-medium text-errorRed">{error}</p>}
@@ -65,7 +65,7 @@ export default function TitleStep({ value, onUpdate, onNext, onBack }: TitleStep
 
       <div className="flex gap-3">
         <button type="button" onClick={onBack} disabled={saving}
-          className="flex-1 py-3.5 rounded-xl border border-[#E2E1EA] bg-white text-[14px] font-bold text-[#374151] hover:border-[#B9B9C6] transition-colors disabled:opacity-50">
+          className="flex-1 py-3.5 rounded-xl border border-[#E2E1EA] dark:border-line bg-white dark:bg-surface-raised text-[14px] font-bold text-[#374151] dark:text-content-muted hover:border-[#B9B9C6] dark:hover:border-content-subtle transition-colors disabled:opacity-50">
           Back
         </button>
         <button type="submit" disabled={saving}

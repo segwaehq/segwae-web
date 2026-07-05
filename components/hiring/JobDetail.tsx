@@ -22,10 +22,14 @@ import {
   FaInstagram,
   FaXTwitter,
   FaLinkedin,
+  FaWandMagicSparkles,
+  FaUserTie,
 } from "react-icons/fa6";
 import { createClient } from "@/lib/supabase/client";
 import type { Job, Resume } from "@/lib/types";
 import { formatSalary } from "@/lib/currencies";
+import { JobMatchScore } from "./JobMatchScore";
+import { JobMatchTeaser } from "./JobMatchTeaser";
 
 const JOB_TYPE_LABELS: Record<string, string> = {
   full_time: "Full-time",
@@ -39,9 +43,9 @@ const WORK_MODE_LABELS: Record<string, string> = {
   hybrid: "Hybrid",
 };
 const WORK_MODE_COLORS: Record<string, string> = {
-  remote: "text-[#16895E] bg-[#E7F6EF]",
-  onsite: "text-[#1E5BBF] bg-[#E8EFFB]",
-  hybrid: "text-[#5A2DD4] bg-[#F1ECFD]",
+  remote: "text-[#16895E] bg-[#E7F6EF] dark:text-[#4ade9e] dark:bg-[#12271e]",
+  onsite: "text-[#1E5BBF] bg-[#E8EFFB] dark:text-[#7fb0f5] dark:bg-[#13203a]",
+  hybrid: "text-[#5A2DD4] bg-[#F1ECFD] dark:text-[#b9a4f7] dark:bg-[#221b36]",
 };
 
 type ModalStep = "loading" | "no_resumes" | "form" | "success";
@@ -65,21 +69,21 @@ function initialsOf(name?: string | null): string | null {
 
 function FollowModal({ onComplete }: { onComplete: () => void }) {
   return (
-    <div className="fixed inset-0 bg-[#0F1115]/45 backdrop-blur-[2px] z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
-      <div className="bg-white w-full sm:max-w-lg rounded-t-3xl sm:rounded-[20px] shadow-2xl flex flex-col animate-scaleIn">
-        <div className="flex items-center px-6 py-4 border-b border-[#F0EFF4] shrink-0">
-          <p className="font-satoshi font-bold text-sm text-[#15131C]">
+    <div className="fixed inset-0 bg-[#0F1115]/45 dark:bg-black/65 backdrop-blur-[2px] z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+      <div className="bg-white dark:bg-surface-raised w-full sm:max-w-lg rounded-t-3xl sm:rounded-[20px] shadow-2xl flex flex-col animate-scaleIn">
+        <div className="flex items-center px-6 py-4 border-b border-[#F0EFF4] dark:border-line shrink-0">
+          <p className="font-satoshi font-bold text-sm text-[#15131C] dark:text-content">
             Follow Segwae
           </p>
         </div>
         <div className="p-6 flex flex-col">
-          <div className="w-14 h-14 rounded-2xl bg-[#F1ECFD] flex items-center justify-center mx-auto mb-4">
+          <div className="w-14 h-14 rounded-2xl bg-[#F1ECFD] dark:bg-[#221b36] flex items-center justify-center mx-auto mb-4">
             <span className="text-2xl">👋</span>
           </div>
-          <p className="font-satoshi font-bold text-lg text-[#15131C] text-center mb-1">
+          <p className="font-satoshi font-bold text-lg text-[#15131C] dark:text-content text-center mb-1">
             You&apos;re on a roll!
           </p>
-          <p className="font-openSans text-sm text-grey3 text-center mb-6">
+          <p className="font-openSans text-sm text-grey3 dark:text-content-muted text-center mb-6">
             Stay updated with the latest jobs and opportunities. Follow us on
             socials — it only takes a second.
           </p>
@@ -88,13 +92,13 @@ function FollowModal({ onComplete }: { onComplete: () => void }) {
               href="https://www.instagram.com/segwaehq"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 px-4 py-3 rounded-xl border border-[#EFEEF4] hover:border-pink-400 hover:bg-pink-50 transition-colors group"
+              className="flex items-center gap-3 px-4 py-3 rounded-xl border border-[#EFEEF4] dark:border-line hover:border-pink-400 hover:bg-pink-50 dark:hover:bg-pink-500/10 transition-colors group"
             >
               <FaInstagram className="w-5 h-5 text-pink-500 shrink-0" />
-              <span className="font-satoshi font-bold text-sm text-[#15131C] group-hover:text-pink-600">
+              <span className="font-satoshi font-bold text-sm text-[#15131C] dark:text-content group-hover:text-pink-600">
                 Instagram
               </span>
-              <span className="ml-auto font-openSans text-xs text-[#9098A3]">
+              <span className="ml-auto font-openSans text-xs text-[#9098A3] dark:text-content-subtle">
                 @segwaehq
               </span>
             </a>
@@ -102,13 +106,13 @@ function FollowModal({ onComplete }: { onComplete: () => void }) {
               href="https://x.com/segwaehq"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 px-4 py-3 rounded-xl border border-[#EFEEF4] hover:border-[#15131C] hover:bg-[#FAFAFB] transition-colors group"
+              className="flex items-center gap-3 px-4 py-3 rounded-xl border border-[#EFEEF4] dark:border-line hover:border-[#15131C] dark:hover:border-content hover:bg-[#FAFAFB] dark:hover:bg-white/[0.04] transition-colors group"
             >
-              <FaXTwitter className="w-5 h-5 text-[#15131C] shrink-0" />
-              <span className="font-satoshi font-bold text-sm text-[#15131C]">
+              <FaXTwitter className="w-5 h-5 text-[#15131C] dark:text-content shrink-0" />
+              <span className="font-satoshi font-bold text-sm text-[#15131C] dark:text-content">
                 X (Twitter)
               </span>
-              <span className="ml-auto font-openSans text-xs text-[#9098A3]">
+              <span className="ml-auto font-openSans text-xs text-[#9098A3] dark:text-content-subtle">
                 @segwaehq
               </span>
             </a>
@@ -116,13 +120,13 @@ function FollowModal({ onComplete }: { onComplete: () => void }) {
               href="https://www.linkedin.com/company/segwaehq"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 px-4 py-3 rounded-xl border border-[#EFEEF4] hover:border-blue-500 hover:bg-blue-50 transition-colors group"
+              className="flex items-center gap-3 px-4 py-3 rounded-xl border border-[#EFEEF4] dark:border-line hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-500/10 transition-colors group"
             >
               <FaLinkedin className="w-5 h-5 text-[#1E5BBF] shrink-0" />
-              <span className="font-satoshi font-bold text-sm text-[#15131C] group-hover:text-[#1E5BBF]">
+              <span className="font-satoshi font-bold text-sm text-[#15131C] dark:text-content group-hover:text-[#1E5BBF]">
                 LinkedIn
               </span>
-              <span className="ml-auto font-openSans text-xs text-[#9098A3]">
+              <span className="ml-auto font-openSans text-xs text-[#9098A3] dark:text-content-subtle">
                 segwaehq
               </span>
             </a>
@@ -135,7 +139,7 @@ function FollowModal({ onComplete }: { onComplete: () => void }) {
           </button>
           <button
             onClick={onComplete}
-            className="w-full py-2.5 mt-2 text-[#9098A3] font-openSans text-sm hover:text-[#15131C] transition-colors"
+            className="w-full py-2.5 mt-2 text-[#9098A3] dark:text-content-subtle font-openSans text-sm hover:text-[#15131C] dark:hover:text-content transition-colors"
           >
             Skip for now
           </button>
@@ -223,19 +227,19 @@ function ApplyPanel({
     <div className="fixed inset-0 z-100">
       <div
         onClick={onClose}
-        className="absolute inset-0 bg-[#0F1115]/45 backdrop-blur-[2px] animate-fadeIn"
+        className="absolute inset-0 bg-[#0F1115]/45 dark:bg-black/65 backdrop-blur-[2px] animate-fadeIn"
       />
-      <div className="absolute top-0 right-0 bottom-0 w-[440px] max-w-[92vw] bg-white shadow-[-20px_0_60px_-20px_rgba(15,17,21,0.4)] animate-slideInRight flex flex-col">
+      <div className="absolute top-0 right-0 bottom-0 w-[440px] max-w-[92vw] bg-white dark:bg-surface-raised shadow-[-20px_0_60px_-20px_rgba(15,17,21,0.4)] animate-slideInRight flex flex-col">
         {/* Success replaces the whole panel */}
         {step === "success" ? (
           <div className="flex flex-col items-center justify-center h-full p-10 text-center">
             <div className="w-[72px] h-[72px] rounded-full bg-brand-gradient flex items-center justify-center shadow-[0_14px_30px_-8px_rgba(74,55,216,0.5)] animate-scaleIn">
               <FaCheck className="w-8 h-8 text-white" />
             </div>
-            <p className="font-satoshi font-black text-[21px] tracking-[-0.02em] text-[#15131C] mt-[22px]">
+            <p className="font-satoshi font-black text-[21px] tracking-[-0.02em] text-[#15131C] dark:text-content mt-[22px]">
               Application sent!
             </p>
-            <p className="font-openSans text-sm leading-relaxed text-grey3 mt-2.5 max-w-[280px]">
+            <p className="font-openSans text-sm leading-relaxed text-grey3 dark:text-content-muted mt-2.5 max-w-[280px]">
               Your profile and resume are on their way to {companyName}. Track
               your progress in Applications.
             </p>
@@ -248,7 +252,7 @@ function ApplyPanel({
               </Link>
               <button
                 onClick={onClose}
-                className="w-full py-3 border border-[#E2E1EA] rounded-xl bg-white font-satoshi font-bold text-sm text-[#15131C] hover:border-[#B9B9C6] transition-colors"
+                className="w-full py-3 border border-[#E2E1EA] dark:border-line rounded-xl bg-white dark:bg-surface-raised font-satoshi font-bold text-sm text-[#15131C] dark:text-content hover:border-[#B9B9C6] dark:hover:border-content-subtle transition-colors"
               >
                 Back to listing
               </button>
@@ -257,22 +261,22 @@ function ApplyPanel({
         ) : (
           <>
             {/* Header */}
-            <div className="flex items-start justify-between gap-3 px-6 py-[18px] border-b border-[#F0EFF4] shrink-0">
+            <div className="flex items-start justify-between gap-3 px-6 py-[18px] border-b border-[#F0EFF4] dark:border-line shrink-0">
               <div className="min-w-0">
-                <div className="font-satoshi text-[11px] font-bold tracking-widest uppercase text-[#5A2DD4] mb-1">
+                <div className="font-satoshi text-[11px] font-bold tracking-widest uppercase text-[#5A2DD4] dark:text-[#b9a4f7] mb-1">
                   Apply
                 </div>
-                <div className="font-satoshi font-bold text-lg text-[#15131C] tracking-[-0.01em] truncate">
+                <div className="font-satoshi font-bold text-lg text-[#15131C] dark:text-content tracking-[-0.01em] truncate">
                   {job.title}
                 </div>
-                <div className="font-openSans text-[13px] text-[#9098A3] mt-0.5 truncate">
+                <div className="font-openSans text-[13px] text-[#9098A3] dark:text-content-subtle mt-0.5 truncate">
                   {companyName}
                   {job.location ? ` · ${job.location}` : ""}
                 </div>
               </div>
               <button
                 onClick={onClose}
-                className="w-[34px] h-[34px] rounded-[9px] bg-[#F4F3F7] flex items-center justify-center text-[#6B6478] hover:bg-[#ECEAF2] transition-colors shrink-0"
+                className="w-[34px] h-[34px] rounded-[9px] bg-[#F4F3F7] dark:bg-white/[0.06] flex items-center justify-center text-[#6B6478] dark:text-content-muted hover:bg-[#ECEAF2] dark:hover:bg-white/[0.1] transition-colors shrink-0"
               >
                 <FaXmark className="w-4 h-4" />
               </button>
@@ -288,13 +292,13 @@ function ApplyPanel({
             {/* No resumes */}
             {step === "no_resumes" && (
               <div className="flex-1 p-8 text-center">
-                <div className="w-16 h-16 rounded-2xl bg-[#FEF4E6] flex items-center justify-center mx-auto mb-5">
-                  <FaTriangleExclamation className="w-7 h-7 text-[#E0921F]" />
+                <div className="w-16 h-16 rounded-2xl bg-[#FEF4E6] dark:bg-[#2a2410] flex items-center justify-center mx-auto mb-5">
+                  <FaTriangleExclamation className="w-7 h-7 text-[#E0921F] dark:text-[#e0a94f]" />
                 </div>
-                <p className="font-satoshi font-bold text-xl text-[#15131C] mb-2">
+                <p className="font-satoshi font-bold text-xl text-[#15131C] dark:text-content mb-2">
                   Add a resume first
                 </p>
-                <p className="font-openSans text-sm text-grey3 mb-8 leading-relaxed">
+                <p className="font-openSans text-sm text-grey3 dark:text-content-muted mb-8 leading-relaxed">
                   You need at least one resume on your profile before you can
                   apply. Upload one in your dashboard settings — it only takes a
                   minute.
@@ -309,7 +313,7 @@ function ApplyPanel({
                   </Link>
                   <button
                     onClick={onClose}
-                    className="w-full py-3 border border-[#E2E1EA] text-[#15131C] rounded-xl font-satoshi font-bold text-sm hover:bg-[#FAFAFB] transition-colors"
+                    className="w-full py-3 border border-[#E2E1EA] dark:border-line text-[#15131C] dark:text-content rounded-xl font-satoshi font-bold text-sm hover:bg-[#FAFAFB] dark:hover:bg-white/[0.04] transition-colors"
                   >
                     Cancel
                   </button>
@@ -322,9 +326,9 @@ function ApplyPanel({
               <div className="flex-1 overflow-y-auto p-6">
                 {/* Profile preview */}
                 {profile && (
-                  <div className="flex items-center gap-3 p-[15px] rounded-[14px] bg-[#FAFAFB] border border-[#EFEEF4]">
+                  <div className="flex items-center gap-3 p-[15px] rounded-[14px] bg-[#FAFAFB] dark:bg-white/[0.03] border border-[#EFEEF4] dark:border-line">
                     <div className="w-[46px] h-[46px] rounded-full p-[2.5px] bg-brand-gradient shrink-0">
-                      <div className="w-full h-full rounded-full border-2 border-[#FAFAFB] bg-[#F1F0F6] overflow-hidden flex items-center justify-center">
+                      <div className="w-full h-full rounded-full border-2 border-[#FAFAFB] dark:border-surface-raised bg-[#F1F0F6] dark:bg-[#241d38] overflow-hidden flex items-center justify-center">
                         {profile.profile_image_url ? (
                           <Image
                             src={profile.profile_image_url}
@@ -334,23 +338,23 @@ function ApplyPanel({
                             className="object-cover w-full h-full"
                           />
                         ) : initialsOf(profile.name) ? (
-                          <span className="font-satoshi font-black text-[15px] text-[#5A2DD4]">
+                          <span className="font-satoshi font-black text-[15px] text-[#5A2DD4] dark:text-[#b9a4f7]">
                             {initialsOf(profile.name)}
                           </span>
                         ) : (
-                          <FaUser className="w-5 h-5 text-[#9098A3]" />
+                          <FaUser className="w-5 h-5 text-[#9098A3] dark:text-content-subtle" />
                         )}
                       </div>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-satoshi font-bold text-[14.5px] text-[#15131C] truncate">
+                      <p className="font-satoshi font-bold text-[14.5px] text-[#15131C] dark:text-content truncate">
                         {profile.name}
                       </p>
-                      <p className="font-openSans text-[12.5px] text-[#9098A3]">
+                      <p className="font-openSans text-[12.5px] text-[#9098A3] dark:text-content-subtle">
                         Your Segwae profile will be shared
                       </p>
                     </div>
-                    <FaCheck className="w-[18px] h-[18px] text-[#16895E] shrink-0" />
+                    <FaCheck className="w-[18px] h-[18px] text-[#16895E] dark:text-[#4ade9e] shrink-0" />
                   </div>
                 )}
 
@@ -359,20 +363,20 @@ function ApplyPanel({
                     href={profile.portfolio_or_website_link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 mt-3 text-xs font-satoshi font-bold text-[#5A2DD4] hover:opacity-70 transition-opacity"
+                    className="inline-flex items-center gap-1.5 mt-3 text-xs font-satoshi font-bold text-[#5A2DD4] dark:text-[#b9a4f7] hover:opacity-70 transition-opacity"
                   >
                     <FaGlobe className="w-3 h-3" /> Portfolio
                   </a>
                 )}
 
                 {/* Resume picker */}
-                <div className="font-satoshi text-[13px] font-bold text-[#15131C] mt-[22px] mb-[9px]">
+                <div className="font-satoshi text-[13px] font-bold text-[#15131C] dark:text-content mt-[22px] mb-[9px]">
                   Resume / CV
                 </div>
                 {resumes.length === 1 ? (
-                  <div className="flex items-center gap-3 p-3 rounded-[13px] border-[1.5px] border-[#5A2DD4] bg-[#F1ECFD]">
-                    <FaFileLines className="w-4 h-4 text-[#5A2DD4] shrink-0" />
-                    <span className="font-satoshi font-bold text-sm text-[#5A2DD4]">
+                  <div className="flex items-center gap-3 p-3 rounded-[13px] border-[1.5px] border-[#5A2DD4] bg-[#F1ECFD] dark:bg-[#221b36]">
+                    <FaFileLines className="w-4 h-4 text-[#5A2DD4] dark:text-[#b9a4f7] shrink-0" />
+                    <span className="font-satoshi font-bold text-sm text-[#5A2DD4] dark:text-[#b9a4f7]">
                       {resumes[0].label}
                     </span>
                   </div>
@@ -384,20 +388,20 @@ function ApplyPanel({
                         onClick={() => setSelectedResumeId(r.id)}
                         className={`w-full flex items-center gap-3 p-3 rounded-[13px] border-[1.5px] text-left transition-all ${
                           selectedResumeId === r.id
-                            ? "border-[#5A2DD4] bg-[#F1ECFD]"
-                            : "border-[#E2E1EA] hover:border-[#A98BE8]"
+                            ? "border-[#5A2DD4] bg-[#F1ECFD] dark:bg-[#221b36]"
+                            : "border-[#E2E1EA] dark:border-line hover:border-[#A98BE8] dark:hover:border-[#6a4fb0]"
                         }`}
                       >
                         <FaFileLines
-                          className={`w-4 h-4 shrink-0 ${selectedResumeId === r.id ? "text-[#5A2DD4]" : "text-[#9098A3]"}`}
+                          className={`w-4 h-4 shrink-0 ${selectedResumeId === r.id ? "text-[#5A2DD4] dark:text-[#b9a4f7]" : "text-[#9098A3] dark:text-content-subtle"}`}
                         />
                         <span
-                          className={`font-satoshi font-bold text-sm ${selectedResumeId === r.id ? "text-[#5A2DD4]" : "text-[#15131C]"}`}
+                          className={`font-satoshi font-bold text-sm ${selectedResumeId === r.id ? "text-[#5A2DD4] dark:text-[#b9a4f7]" : "text-[#15131C] dark:text-content"}`}
                         >
                           {r.label}
                         </span>
                         {r.is_default && (
-                          <span className="ml-auto text-[10px] font-bold text-[#9098A3] font-satoshi">
+                          <span className="ml-auto text-[10px] font-bold text-[#9098A3] dark:text-content-subtle font-satoshi">
                             Default
                           </span>
                         )}
@@ -407,18 +411,18 @@ function ApplyPanel({
                 )}
 
                 {/* Cover note */}
-                <div className="font-satoshi text-[13px] font-bold text-[#15131C] mt-[22px] mb-[9px]">
+                <div className="font-satoshi text-[13px] font-bold text-[#15131C] dark:text-content mt-[22px] mb-[9px]">
                   Note to the team{" "}
-                  <span className="font-medium text-[#9098A3]">· optional</span>
+                  <span className="font-medium text-[#9098A3] dark:text-content-subtle">· optional</span>
                 </div>
                 <textarea
                   value={coverNote}
                   onChange={(e) => setCoverNote(e.target.value.slice(0, 300))}
                   rows={4}
                   placeholder="A sentence on why you're a great fit…"
-                  className="w-full px-3.5 py-[13px] border border-[#E2E1EA] rounded-[13px] focus:outline-none focus:border-[#A98BE8] font-openSans text-sm leading-relaxed text-[#15131C] placeholder:text-[#9098A3] bg-white transition-colors resize-y min-h-24"
+                  className="w-full px-3.5 py-[13px] border border-[#E2E1EA] dark:border-line rounded-[13px] focus:outline-none focus:border-[#A98BE8] dark:focus:border-[#6a4fb0] font-openSans text-sm leading-relaxed text-[#15131C] dark:text-content placeholder:text-[#9098A3] dark:placeholder:text-content-subtle bg-white dark:bg-surface-sunken transition-colors resize-y min-h-24"
                 />
-                <p className="mt-1 text-xs text-[#9098A3] font-openSans tabular-nums text-right">
+                <p className="mt-1 text-xs text-[#9098A3] dark:text-content-subtle font-openSans tabular-nums text-right">
                   {coverNote.length}/300
                 </p>
               </div>
@@ -426,7 +430,7 @@ function ApplyPanel({
 
             {/* Submit footer */}
             {step === "form" && (
-              <div className="px-6 py-[18px] border-t border-[#F0EFF4] shrink-0">
+              <div className="px-6 py-[18px] border-t border-[#F0EFF4] dark:border-line shrink-0">
                 <button
                   onClick={submitApplication}
                   disabled={submitting}
@@ -437,7 +441,7 @@ function ApplyPanel({
                   )}
                   {submitting ? "Submitting…" : "Submit application"}
                 </button>
-                <div className="text-center text-xs font-openSans text-[#9098A3] mt-[11px]">
+                <div className="text-center text-xs font-openSans text-[#9098A3] dark:text-content-subtle mt-[11px]">
                   {companyName} will see your Segwae profile &amp; resume
                 </div>
               </div>
@@ -567,7 +571,7 @@ export function JobDetail({ job }: { job: Job }) {
 
     if (existingApp) {
       return (
-        <div className="w-full flex items-center justify-center gap-2 py-[15px] bg-[#E7F6EF] text-[#16895E] rounded-[13px] font-satoshi font-bold text-[15px] cursor-default">
+        <div className="w-full flex items-center justify-center gap-2 py-[15px] bg-[#E7F6EF] dark:bg-[#12271e] text-[#16895E] dark:text-[#4ade9e] rounded-[13px] font-satoshi font-bold text-[15px] cursor-default">
           <FaCheck className="w-3.5 h-3.5" /> Applied
         </div>
       );
@@ -575,7 +579,7 @@ export function JobDetail({ job }: { job: Job }) {
 
     if (job.status !== "active") {
       return (
-        <div className="w-full flex items-center justify-center py-[15px] bg-[#F3F3F7] text-[#9098A3] rounded-[13px] font-satoshi font-bold text-[15px] cursor-default">
+        <div className="w-full flex items-center justify-center py-[15px] bg-[#F3F3F7] dark:bg-white/[0.06] text-[#9098A3] dark:text-content-subtle rounded-[13px] font-satoshi font-bold text-[15px] cursor-default">
           Applications closed
         </div>
       );
@@ -586,7 +590,7 @@ export function JobDetail({ job }: { job: Job }) {
       new Date(job.application_deadline) < new Date()
     ) {
       return (
-        <div className="w-full flex items-center justify-center py-[15px] bg-[#F3F3F7] text-[#9098A3] rounded-[13px] font-satoshi font-bold text-[15px] cursor-default">
+        <div className="w-full flex items-center justify-center py-[15px] bg-[#F3F3F7] dark:bg-white/[0.06] text-[#9098A3] dark:text-content-subtle rounded-[13px] font-satoshi font-bold text-[15px] cursor-default">
           Application deadline has passed
         </div>
       );
@@ -603,8 +607,30 @@ export function JobDetail({ job }: { job: Job }) {
     );
   };
 
+  const tailorCta =
+    job.status === "active" ? (
+      <Link
+        href={`/dashboard/ai-tools?job=${job.id}`}
+        className="w-full flex items-center justify-center gap-2 py-[13px] mt-2.5 rounded-[13px] border-[1.5px] border-[#E2E1EA] dark:border-line bg-white dark:bg-surface-raised font-satoshi font-bold text-[14px] text-[#5A2DD4] dark:text-[#b9a4f7] hover:border-[#A98BE8] dark:hover:border-[#6a4fb0] hover:bg-[#FAF9FE] dark:hover:bg-white/[0.04] transition-colors"
+      >
+        <FaWandMagicSparkles className="w-3.5 h-3.5" />
+        Tailor my resume for this job
+      </Link>
+    ) : null;
+
+  const interviewCta =
+    job.status === "active" ? (
+      <Link
+        href={`/dashboard/interview-prep?job=${job.id}`}
+        className="w-full flex items-center justify-center gap-2 py-[13px] mt-2 rounded-[13px] border-[1.5px] border-[#E2E1EA] dark:border-line bg-white dark:bg-surface-raised font-satoshi font-bold text-[14px] text-[#5A2DD4] dark:text-[#b9a4f7] hover:border-[#A98BE8] dark:hover:border-[#6a4fb0] hover:bg-[#FAF9FE] dark:hover:bg-white/[0.04] transition-colors"
+      >
+        <FaUserTie className="w-3.5 h-3.5" />
+        Prep me for the interview
+      </Link>
+    ) : null;
+
   return (
-    <div className="min-h-screen bg-[#FAFAFB]">
+    <div className="min-h-screen bg-[#FAFAFB] dark:bg-surface">
       {/* Dark top bar (shared header is hidden on this route) */}
       <div className="bg-[#0F1115] px-6 py-4">
         <div className="max-w-[1100px] mx-auto">
@@ -622,20 +648,20 @@ export function JobDetail({ job }: { job: Job }) {
         <div className="flex items-center gap-[9px] mb-5 flex-wrap">
           <Link
             href="/jobs"
-            className="font-satoshi text-[13px] font-semibold text-[#9098A3] hover:text-[#5A2DD4] transition-colors"
+            className="font-satoshi text-[13px] font-semibold text-[#9098A3] dark:text-content-subtle hover:text-[#5A2DD4] dark:hover:text-[#b9a4f7] transition-colors"
           >
             Jobs
           </Link>
-          <span className="text-[#C2C6CF] text-xs">›</span>
-          <span className="font-satoshi text-[13px] font-bold text-[#5A2DD4] truncate max-w-[60vw]">
+          <span className="text-[#C2C6CF] dark:text-content-subtle text-xs">›</span>
+          <span className="font-satoshi text-[13px] font-bold text-[#5A2DD4] dark:text-[#b9a4f7] truncate max-w-[60vw]">
             {job.title}
           </span>
         </div>
 
         {/* Hero card */}
-        <div className="bg-white border border-[#E8E8EF] rounded-[18px] p-7 mb-5">
+        <div className="bg-white dark:bg-surface-raised border border-[#E8E8EF] dark:border-line rounded-[18px] p-7 mb-5">
           <div className="flex items-start gap-[18px]">
-            <div className="w-16 h-16 rounded-2xl overflow-hidden bg-[#F1F0F6] flex items-center justify-center shrink-0">
+            <div className="w-16 h-16 rounded-2xl overflow-hidden bg-[#F1F0F6] dark:bg-[#241d38] flex items-center justify-center shrink-0">
               {company?.logo_url ? (
                 <Image
                   src={company.logo_url}
@@ -645,28 +671,28 @@ export function JobDetail({ job }: { job: Job }) {
                   className="object-cover w-full h-full"
                 />
               ) : companyInitials ? (
-                <span className="font-satoshi font-black text-lg text-[#5A2DD4]">
+                <span className="font-satoshi font-black text-lg text-[#5A2DD4] dark:text-[#b9a4f7]">
                   {companyInitials}
                 </span>
               ) : (
-                <FaBuilding className="w-6 h-6 text-[#5A2DD4]" />
+                <FaBuilding className="w-6 h-6 text-[#5A2DD4] dark:text-[#b9a4f7]" />
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <h1 className="font-satoshi font-black text-[clamp(1.6rem,2.6vw,2.1rem)] tracking-[-0.025em] leading-[1.1] text-[#15131C]">
+              <h1 className="font-satoshi font-black text-[clamp(1.6rem,2.6vw,2.1rem)] tracking-[-0.025em] leading-[1.1] text-[#15131C] dark:text-content">
                 {job.title}
               </h1>
               <div className="flex items-center gap-2.5 mt-[7px] flex-wrap">
                 {companyName && (
-                  <span className="font-satoshi text-[15px] font-bold text-[#374151]">
+                  <span className="font-satoshi text-[15px] font-bold text-[#374151] dark:text-content-muted">
                     {companyName}
                   </span>
                 )}
                 {companyName && job.location && (
-                  <span className="w-1 h-1 rounded-full bg-[#C2C6CF]" />
+                  <span className="w-1 h-1 rounded-full bg-[#C2C6CF] dark:bg-content-subtle" />
                 )}
                 {job.location && (
-                  <span className="font-satoshi text-sm font-medium text-[#9098A3] inline-flex items-center gap-1.5">
+                  <span className="font-satoshi text-sm font-medium text-[#9098A3] dark:text-content-subtle inline-flex items-center gap-1.5">
                     <FaLocationDot className="w-[13px] h-[13px]" />
                     {job.location}
                   </span>
@@ -681,16 +707,16 @@ export function JobDetail({ job }: { job: Job }) {
             >
               {WORK_MODE_LABELS[job.work_mode]}
             </span>
-            <span className="text-[11px] font-bold font-satoshi px-[11px] py-[5px] rounded-[7px] text-grey3 bg-[#F3F3F7]">
+            <span className="text-[11px] font-bold font-satoshi px-[11px] py-[5px] rounded-[7px] text-grey3 dark:text-content-muted bg-[#F3F3F7] dark:bg-white/[0.06]">
               {JOB_TYPE_LABELS[job.job_type]}
             </span>
             {job.posting_mode === "external" ? (
-              <span className="inline-flex items-center gap-1.5 text-[11px] font-bold font-satoshi px-[11px] py-[5px] rounded-[7px] text-[#16895E] bg-[#E7F6EF]">
+              <span className="inline-flex items-center gap-1.5 text-[11px] font-bold font-satoshi px-[11px] py-[5px] rounded-[7px] text-[#16895E] bg-[#E7F6EF] dark:text-[#4ade9e] dark:bg-[#12271e]">
                 <FaCircleCheck className="w-3 h-3" />
                 Verified
               </span>
             ) : (
-              <span className="inline-flex items-center gap-1.5 text-[11px] font-bold font-satoshi px-[11px] py-[5px] rounded-[7px] text-[#5A2DD4] bg-[#F1ECFD]">
+              <span className="inline-flex items-center gap-1.5 text-[11px] font-bold font-satoshi px-[11px] py-[5px] rounded-[7px] text-[#5A2DD4] bg-[#F1ECFD] dark:text-[#b9a4f7] dark:bg-[#221b36]">
                 <FaBolt className="w-3 h-3" />
                 Direct
               </span>
@@ -698,27 +724,30 @@ export function JobDetail({ job }: { job: Job }) {
           </div>
         </div>
 
+        {authUser && <JobMatchScore job={job} />}
+        {authUser === null && <JobMatchTeaser jobId={job.id} />}
+
         {/* Two column */}
         <div className="lg:grid lg:grid-cols-[1fr_340px] lg:gap-5 lg:items-start">
           {/* Main */}
           <div className="flex flex-col gap-5">
             {/* About the role */}
-            <div className="bg-white border border-[#E8E8EF] rounded-[18px] p-7">
-              <h2 className="font-satoshi font-bold text-lg text-[#15131C] tracking-[-0.01em] mb-3">
+            <div className="bg-white dark:bg-surface-raised border border-[#E8E8EF] dark:border-line rounded-[18px] p-7">
+              <h2 className="font-satoshi font-bold text-lg text-[#15131C] dark:text-content tracking-[-0.01em] mb-3">
                 About the role
               </h2>
-              <div className="font-openSans text-[15px] leading-[1.7] font-medium text-[#4B4658] whitespace-pre-wrap">
+              <div className="font-openSans text-[15px] leading-[1.7] font-medium text-[#4B4658] dark:text-content-muted whitespace-pre-wrap">
                 {job.description}
               </div>
             </div>
 
             {/* Requirements */}
             {job.requirements && (
-              <div className="bg-white border border-[#E8E8EF] rounded-[18px] p-7">
-                <h2 className="font-satoshi font-bold text-lg text-[#15131C] tracking-[-0.01em] mb-3">
+              <div className="bg-white dark:bg-surface-raised border border-[#E8E8EF] dark:border-line rounded-[18px] p-7">
+                <h2 className="font-satoshi font-bold text-lg text-[#15131C] dark:text-content tracking-[-0.01em] mb-3">
                   What we&apos;re looking for
                 </h2>
-                <div className="font-openSans text-[15px] leading-[1.7] font-medium text-[#4B4658] whitespace-pre-wrap">
+                <div className="font-openSans text-[15px] leading-[1.7] font-medium text-[#4B4658] dark:text-content-muted whitespace-pre-wrap">
                   {job.requirements}
                 </div>
               </div>
@@ -730,7 +759,7 @@ export function JobDetail({ job }: { job: Job }) {
                 {job.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="text-xs font-satoshi font-semibold text-[#4B4658] bg-[#F6F5FA] border border-[#ECECF1] px-3 py-1.5 rounded-lg"
+                    className="text-xs font-satoshi font-semibold text-[#4B4658] dark:text-content-muted bg-[#F6F5FA] dark:bg-white/[0.06] border border-[#ECECF1] dark:border-line px-3 py-1.5 rounded-lg"
                   >
                     {tag}
                   </span>
@@ -740,12 +769,12 @@ export function JobDetail({ job }: { job: Job }) {
 
             {/* Company info */}
             {(company || job.company_name) && (
-              <div className="bg-white border border-[#E8E8EF] rounded-[18px] p-7">
-                <h2 className="font-satoshi font-bold text-lg text-[#15131C] tracking-[-0.01em] mb-4">
+              <div className="bg-white dark:bg-surface-raised border border-[#E8E8EF] dark:border-line rounded-[18px] p-7">
+                <h2 className="font-satoshi font-bold text-lg text-[#15131C] dark:text-content tracking-[-0.01em] mb-4">
                   About {companyName}
                 </h2>
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl overflow-hidden bg-[#F1F0F6] flex items-center justify-center shrink-0">
+                  <div className="w-12 h-12 rounded-xl overflow-hidden bg-[#F1F0F6] dark:bg-[#241d38] flex items-center justify-center shrink-0">
                     {company?.logo_url ? (
                       <Image
                         src={company.logo_url}
@@ -755,38 +784,38 @@ export function JobDetail({ job }: { job: Job }) {
                         className="object-cover w-full h-full"
                       />
                     ) : companyInitials ? (
-                      <span className="font-satoshi font-black text-sm text-[#5A2DD4]">
+                      <span className="font-satoshi font-black text-sm text-[#5A2DD4] dark:text-[#b9a4f7]">
                         {companyInitials}
                       </span>
                     ) : (
-                      <FaBuilding className="w-5 h-5 text-[#5A2DD4]" />
+                      <FaBuilding className="w-5 h-5 text-[#5A2DD4] dark:text-[#b9a4f7]" />
                     )}
                   </div>
                   <div className="min-w-0">
-                    <p className="font-satoshi font-bold text-sm text-[#15131C]">
+                    <p className="font-satoshi font-bold text-sm text-[#15131C] dark:text-content">
                       {companyName}
                     </p>
                     {company && (
                       <>
                         <div className="flex items-center gap-3 mt-1 flex-wrap">
                           {company.industry && (
-                            <span className="font-openSans text-xs text-[#9098A3]">
+                            <span className="font-openSans text-xs text-[#9098A3] dark:text-content-subtle">
                               {company.industry}
                             </span>
                           )}
                           {company.size && (
-                            <span className="font-openSans text-xs text-[#9098A3]">
+                            <span className="font-openSans text-xs text-[#9098A3] dark:text-content-subtle">
                               {company.size} employees
                             </span>
                           )}
                           {company.location && (
-                            <span className="font-openSans text-xs text-[#9098A3]">
+                            <span className="font-openSans text-xs text-[#9098A3] dark:text-content-subtle">
                               {company.location}
                             </span>
                           )}
                         </div>
                         {company.description && (
-                          <p className="font-openSans text-sm leading-relaxed text-[#4B4658] mt-3">
+                          <p className="font-openSans text-sm leading-relaxed text-[#4B4658] dark:text-content-muted mt-3">
                             {company.description}
                           </p>
                         )}
@@ -795,7 +824,7 @@ export function JobDetail({ job }: { job: Job }) {
                             href={company.website}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 mt-3 text-xs font-satoshi font-bold text-[#5A2DD4] hover:opacity-70 transition-opacity"
+                            className="inline-flex items-center gap-1.5 mt-3 text-xs font-satoshi font-bold text-[#5A2DD4] dark:text-[#b9a4f7] hover:opacity-70 transition-opacity"
                           >
                             <FaGlobe className="w-3 h-3" /> {company.website}
                           </a>
@@ -808,78 +837,84 @@ export function JobDetail({ job }: { job: Job }) {
             )}
 
             {/* Mobile CTA */}
-            <div className="lg:hidden">{renderCTA()}</div>
+            <div className="lg:hidden">
+              {renderCTA()}
+              {authUser && tailorCta}
+              {authUser && interviewCta}
+            </div>
           </div>
 
           {/* Sidebar (desktop) */}
           <div className="hidden lg:block">
             <div className="sticky top-6 flex flex-col gap-4">
               {/* Apply / salary card */}
-              <div className="bg-white border border-[#E8E8EF] rounded-[18px] p-[22px] shadow-[0_14px_34px_-22px_rgba(31,18,72,0.3)]">
+              <div className="bg-white dark:bg-surface-raised border border-[#E8E8EF] dark:border-line rounded-[18px] p-[22px] shadow-[0_14px_34px_-22px_rgba(31,18,72,0.3)]">
                 {salary ? (
                   <>
-                    <div className="font-satoshi text-[13px] font-semibold text-[#9098A3] mb-1">
+                    <div className="font-satoshi text-[13px] font-semibold text-[#9098A3] dark:text-content-subtle mb-1">
                       Salary range
                     </div>
-                    <div className="font-satoshi font-black text-2xl tracking-[-0.02em] text-[#15131C]">
+                    <div className="font-satoshi font-black text-2xl tracking-[-0.02em] text-[#15131C] dark:text-content">
                       {salary}
                     </div>
-                    <div className="font-openSans text-[13px] font-medium text-[#9098A3] mt-0.5">
+                    <div className="font-openSans text-[13px] font-medium text-[#9098A3] dark:text-content-subtle mt-0.5">
                       per year
                     </div>
                   </>
                 ) : (
                   <>
-                    <div className="font-satoshi text-[13px] font-semibold text-[#9098A3] mb-1">
+                    <div className="font-satoshi text-[13px] font-semibold text-[#9098A3] dark:text-content-subtle mb-1">
                       Apply for this role
                     </div>
-                    <div className="font-satoshi font-black text-lg tracking-[-0.01em] text-[#15131C] leading-snug">
+                    <div className="font-satoshi font-black text-lg tracking-[-0.01em] text-[#15131C] dark:text-content leading-snug">
                       {job.title}
                     </div>
                   </>
                 )}
 
-                <div className="flex flex-col gap-px my-5 bg-[#F1F1F5] rounded-xl overflow-hidden">
-                  <div className="flex items-center justify-between px-3.5 py-3 bg-white">
-                    <span className="font-satoshi text-[13px] font-medium text-[#9098A3]">
+                <div className="flex flex-col gap-px my-5 bg-[#F1F1F5] dark:bg-white/[0.06] rounded-xl overflow-hidden">
+                  <div className="flex items-center justify-between px-3.5 py-3 bg-white dark:bg-surface-raised">
+                    <span className="font-satoshi text-[13px] font-medium text-[#9098A3] dark:text-content-subtle">
                       Location
                     </span>
-                    <span className="font-satoshi text-[13px] font-bold text-[#15131C] truncate ml-3 text-right">
+                    <span className="font-satoshi text-[13px] font-bold text-[#15131C] dark:text-content truncate ml-3 text-right">
                       {job.location || WORK_MODE_LABELS[job.work_mode]}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between px-3.5 py-3 bg-white">
-                    <span className="font-satoshi text-[13px] font-medium text-[#9098A3]">
+                  <div className="flex items-center justify-between px-3.5 py-3 bg-white dark:bg-surface-raised">
+                    <span className="font-satoshi text-[13px] font-medium text-[#9098A3] dark:text-content-subtle">
                       Type
                     </span>
-                    <span className="font-satoshi text-[13px] font-bold text-[#15131C]">
+                    <span className="font-satoshi text-[13px] font-bold text-[#15131C] dark:text-content">
                       {JOB_TYPE_LABELS[job.job_type]}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between px-3.5 py-3 bg-white">
-                    <span className="font-satoshi text-[13px] font-medium text-[#9098A3]">
+                  <div className="flex items-center justify-between px-3.5 py-3 bg-white dark:bg-surface-raised">
+                    <span className="font-satoshi text-[13px] font-medium text-[#9098A3] dark:text-content-subtle">
                       Experience
                     </span>
-                    <span className="font-satoshi text-[13px] font-bold text-[#15131C]">
+                    <span className="font-satoshi text-[13px] font-bold text-[#15131C] dark:text-content">
                       {job.experience_years_min > 0
                         ? `${job.experience_years_min}+ years`
                         : "Open to all"}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between px-3.5 py-3 bg-white">
-                    <span className="font-satoshi text-[13px] font-medium text-[#9098A3]">
+                  <div className="flex items-center justify-between px-3.5 py-3 bg-white dark:bg-surface-raised">
+                    <span className="font-satoshi text-[13px] font-medium text-[#9098A3] dark:text-content-subtle">
                       Posted
                     </span>
-                    <span className="font-satoshi text-[13px] font-bold text-[#15131C]">
+                    <span className="font-satoshi text-[13px] font-bold text-[#15131C] dark:text-content">
                       {postedLabel}
                     </span>
                   </div>
                 </div>
 
                 {renderCTA()}
+                {authUser && tailorCta}
+                {authUser && interviewCta}
 
                 {job.posting_mode === "internal" && (
-                  <div className="flex items-center justify-center gap-[7px] mt-3.5 font-satoshi text-[12.5px] font-medium text-[#9098A3]">
+                  <div className="flex items-center justify-center gap-[7px] mt-3.5 font-satoshi text-[12.5px] font-medium text-[#9098A3] dark:text-content-subtle">
                     <FaUsers className="w-3.5 h-3.5" />
                     {applicantCount > 0
                       ? `${applicantCount} ${applicantCount === 1 ? "person has" : "people have"} applied`
@@ -888,7 +923,7 @@ export function JobDetail({ job }: { job: Job }) {
                 )}
 
                 {job.application_deadline && (
-                  <div className="flex items-center justify-center gap-[7px] mt-2.5 font-openSans text-[12px] text-[#9098A3]">
+                  <div className="flex items-center justify-center gap-[7px] mt-2.5 font-openSans text-[12px] text-[#9098A3] dark:text-content-subtle">
                     <FaClock className="w-3 h-3" />
                     Closes{" "}
                     {new Date(job.application_deadline).toLocaleDateString(

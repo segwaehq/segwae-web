@@ -80,15 +80,15 @@ export default function SignupPage() {
     router.push('/signup/password')
   }
 
-  const inputClass = "w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 transition-colors disabled:bg-grey6 disabled:cursor-not-allowed"
+  const inputClass = "w-full px-4 py-3 border border-grey4 dark:border-line rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 dark:text-content placeholder:text-grey3 dark:placeholder:text-content-subtle bg-white dark:bg-surface-sunken transition-colors disabled:bg-grey6 dark:disabled:bg-white/[0.03] disabled:cursor-not-allowed"
 
   return (
     <AuthLayout step={1} totalSteps={3}>
       <div className="mb-7">
-        <h1 className="font-satoshi font-bold text-2xl text-grey1 mb-2">
+        <h1 className="font-satoshi font-bold text-2xl text-grey1 dark:text-content mb-2">
           Create your account
         </h1>
-        <p className="font-openSans text-grey3 text-sm">
+        <p className="font-openSans text-grey3 dark:text-content-muted text-sm">
           Tell us a bit about yourself to get started
         </p>
       </div>
@@ -101,7 +101,7 @@ export default function SignupPage() {
           className={`flex-1 flex items-center gap-2.5 px-4 py-3 rounded-lg border transition-all cursor-pointer ${
             role === 'seeker'
               ? 'border-mainPurple bg-mainPurple/5 text-mainPurple'
-              : 'border-grey4 text-grey3 hover:border-grey3'
+              : 'border-grey4 dark:border-line text-grey3 dark:text-content-subtle hover:border-grey3 dark:hover:border-content-subtle'
           }`}
         >
           <FaMagnifyingGlass className="w-4 h-4 shrink-0" />
@@ -116,7 +116,7 @@ export default function SignupPage() {
           className={`flex-1 flex items-center gap-2.5 px-4 py-3 rounded-lg border transition-all cursor-pointer ${
             role === 'employer'
               ? 'border-mainPurple bg-mainPurple/5 text-mainPurple'
-              : 'border-grey4 text-grey3 hover:border-grey3'
+              : 'border-grey4 dark:border-line text-grey3 dark:text-content-subtle hover:border-grey3 dark:hover:border-content-subtle'
           }`}
         >
           <FaBriefcase className="w-4 h-4 shrink-0" />
@@ -129,7 +129,7 @@ export default function SignupPage() {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-grey2 mb-1.5 font-satoshi">
+          <label htmlFor="name" className="block text-sm font-medium text-grey2 dark:text-content-muted mb-1.5 font-satoshi">
             Full Name <span className="text-errorRed">*</span>
           </label>
           <input
@@ -145,7 +145,7 @@ export default function SignupPage() {
         </div>
 
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-grey2 mb-1.5 font-satoshi">
+          <label htmlFor="email" className="block text-sm font-medium text-grey2 dark:text-content-muted mb-1.5 font-satoshi">
             Email Address <span className="text-errorRed">*</span>
           </label>
           <input
@@ -161,7 +161,7 @@ export default function SignupPage() {
         </div>
 
         <div>
-          <label htmlFor="username" className="block text-sm font-medium text-grey2 mb-1.5 font-satoshi">
+          <label htmlFor="username" className="block text-sm font-medium text-grey2 dark:text-content-muted mb-1.5 font-satoshi">
             Username <span className="text-errorRed">*</span>
           </label>
           <div className="relative">
@@ -182,14 +182,14 @@ export default function SignupPage() {
               disabled={loading}
             />
             <div className="absolute right-4 top-1/2 -translate-y-1/2">
-              {usernameStatus === 'checking' && <FaSpinner className="w-4 h-4 text-grey3 animate-spin" />}
+              {usernameStatus === 'checking' && <FaSpinner className="w-4 h-4 text-grey3 dark:text-content-subtle animate-spin" />}
               {usernameStatus === 'available' && <FaCheck className="w-4 h-4 text-successGreen" />}
               {usernameStatus === 'taken' && <FaXmark className="w-4 h-4 text-errorRed" />}
             </div>
           </div>
           <p className={`mt-1 text-xs font-openSans ${
             usernameStatus === 'taken' ? 'text-errorRed' :
-            usernameStatus === 'available' ? 'text-successGreen' : 'text-grey3'
+            usernameStatus === 'available' ? 'text-successGreen' : 'text-grey3 dark:text-content-subtle'
           }`}>
             {usernameStatus === 'taken' && 'Username already taken'}
             {usernameStatus === 'available' && 'Username is available'}
@@ -198,8 +198,8 @@ export default function SignupPage() {
         </div>
 
         <div>
-          <label htmlFor="phone" className="block text-sm font-medium text-grey2 mb-1.5 font-satoshi">
-            Phone Number <span className="text-grey3 font-normal">(optional)</span>
+          <label htmlFor="phone" className="block text-sm font-medium text-grey2 dark:text-content-muted mb-1.5 font-satoshi">
+            Phone Number <span className="text-grey3 dark:text-content-subtle font-normal">(optional)</span>
           </label>
           <input
             type="tel"
@@ -214,8 +214,8 @@ export default function SignupPage() {
 
         {role === 'seeker' && (
           <div>
-            <label htmlFor="title" className="block text-sm font-medium text-grey2 mb-1.5 font-satoshi">
-              Professional Title <span className="text-grey3 font-normal">(optional)</span>
+            <label htmlFor="title" className="block text-sm font-medium text-grey2 dark:text-content-muted mb-1.5 font-satoshi">
+              Professional Title <span className="text-grey3 dark:text-content-subtle font-normal">(optional)</span>
             </label>
             <input
               type="text"
@@ -238,9 +238,9 @@ export default function SignupPage() {
         </button>
       </form>
 
-      <p className="font-openSans text-grey3 text-sm text-center mt-6">
+      <p className="font-openSans text-grey3 dark:text-content-muted text-sm text-center mt-6">
         Already have an account?{' '}
-        <Link href="/login" className="text-mainPurple font-semibold hover:underline">
+        <Link href="/login" className="text-mainPurple dark:text-[#b9a4f7] font-semibold hover:underline">
           Sign in
         </Link>
       </p>

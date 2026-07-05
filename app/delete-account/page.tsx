@@ -9,20 +9,20 @@ export default function DeleteAccount() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-16">
       <h1 className="font-satoshi font-black text-5xl mb-8">Account Deletion</h1>
-      <p className="font-openSans text-grey2 mb-12">
+      <p className="font-openSans text-grey2 dark:text-content-muted mb-12">
         Request deletion of your Segwae - Smart NFC Business Cards account
       </p>
 
       <div className="prose prose-lg max-w-none font-openSans">
         <section className="mb-12">
           <h2 className="font-spaceGrotesk font-bold text-3xl mb-4">How to Delete Your Account</h2>
-          <p className="text-grey2 leading-relaxed mb-6">
+          <p className="text-grey2 dark:text-content-muted leading-relaxed mb-6">
             We respect your right to delete your Segwae account and associated data. You have two options to request account deletion:
           </p>
 
-          <div className="bg-lightPurple border-l-4 border-mainPurple p-6 rounded-r-lg mb-6">
-            <h3 className="font-spaceGrotesk font-bold text-2xl mb-4 text-mainPurple">Option A: In-App Deletion (Recommended)</h3>
-            <ol className="list-decimal pl-6 text-grey2 space-y-2">
+          <div className="bg-lightPurple dark:bg-[#241d38] border-l-4 border-mainPurple dark:border-[#6a4fb0] p-6 rounded-r-lg mb-6">
+            <h3 className="font-spaceGrotesk font-bold text-2xl mb-4 text-mainPurple dark:text-[#b9a4f7]">Option A: In-App Deletion (Recommended)</h3>
+            <ol className="list-decimal pl-6 text-grey2 dark:text-content-muted space-y-2">
               <li>Open the <strong>Segwae app</strong> on your device</li>
               <li>Navigate to <strong>Settings</strong> from the main menu</li>
               <li>Go to <strong>Account Settings</strong></li>
@@ -32,17 +32,17 @@ export default function DeleteAccount() {
             </ol>
           </div>
 
-          <div className="bg-grey5 border-l-4 border-grey3 p-6 rounded-r-lg">
-            <h3 className="font-spaceGrotesk font-bold text-2xl mb-4 text-grey1">Option B: Email Request</h3>
-            <p className="text-grey2 mb-4">Send an email to: <a href="mailto:hello@segwae.com" className="text-mainPurple hover:underline font-semibold">hello@segwae.com</a></p>
-            <p className="text-grey2 mb-3">Include the following information in your email:</p>
-            <ul className="list-disc pl-6 text-grey2 space-y-2">
+          <div className="bg-grey5 dark:bg-surface-raised border-l-4 border-grey3 dark:border-line p-6 rounded-r-lg">
+            <h3 className="font-spaceGrotesk font-bold text-2xl mb-4 text-grey1 dark:text-content">Option B: Email Request</h3>
+            <p className="text-grey2 dark:text-content-muted mb-4">Send an email to: <a href="mailto:hello@segwae.com" className="text-mainPurple dark:text-[#b9a4f7] hover:underline font-semibold">hello@segwae.com</a></p>
+            <p className="text-grey2 dark:text-content-muted mb-3">Include the following information in your email:</p>
+            <ul className="list-disc pl-6 text-grey2 dark:text-content-muted space-y-2">
               <li><strong>Subject:</strong> &quot;Account Deletion Request&quot;</li>
               <li><strong>Your registered email address</strong> (the one you used to sign up)</li>
               <li><strong>Your Segwae username</strong> (if applicable)</li>
               <li><strong>Reason for deletion</strong> (optional, but helps us improve)</li>
             </ul>
-            <p className="text-grey2 mt-4">
+            <p className="text-grey2 dark:text-content-muted mt-4">
               We will process your request within <strong>7 business days</strong> and send you a confirmation email when completed.
             </p>
           </div>
@@ -52,7 +52,7 @@ export default function DeleteAccount() {
           <h2 className="font-spaceGrotesk font-bold text-3xl mb-4">What Data Gets Deleted</h2>
 
           <h3 className="font-spaceGrotesk font-semibold text-2xl mt-6 mb-3 text-successGreen">Data Deleted Immediately:</h3>
-          <ul className="list-disc pl-6 text-grey2 space-y-2">
+          <ul className="list-disc pl-6 text-grey2 dark:text-content-muted space-y-2">
             <li><strong>Profile information:</strong> Name, title, bio, and all personal details</li>
             <li><strong>Contact information:</strong> Phone number, email address</li>
             <li><strong>Media files:</strong> Profile photos, cover images, and video introductions</li>
@@ -64,7 +64,7 @@ export default function DeleteAccount() {
           </ul>
 
           <h3 className="font-spaceGrotesk font-semibold text-2xl mt-6 mb-3 text-warningYellow">Data That May Be Retained:</h3>
-          <ul className="list-disc pl-6 text-grey2 space-y-2">
+          <ul className="list-disc pl-6 text-grey2 dark:text-content-muted space-y-2">
             <li><strong>Order history:</strong> Physical NFC card orders (retained for 7 years for legal and accounting requirements)</li>
             <li><strong>Payment records:</strong> Transaction history (retained per financial regulations)</li>
             <li><strong>Legal compliance data:</strong> Limited data required for fraud prevention and legal obligations (anonymized where possible)</li>
@@ -73,18 +73,18 @@ export default function DeleteAccount() {
 
         <section className="mb-12">
           <h2 className="font-spaceGrotesk font-bold text-3xl mb-4">Data Retention Timeline</h2>
-          <div className="bg-grey6 p-6 rounded-lg">
-            <ul className="list-none text-grey2 space-y-3">
+          <div className="bg-grey6 dark:bg-surface-raised p-6 rounded-lg">
+            <ul className="list-none text-grey2 dark:text-content-muted space-y-3">
               <li className="flex items-start">
-                <span className="font-spaceGrotesk font-bold text-mainPurple mr-3 mt-1">•</span>
+                <span className="font-spaceGrotesk font-bold text-mainPurple dark:text-[#b9a4f7] mr-3 mt-1">•</span>
                 <span><strong>Profile & personal data:</strong> Deleted within 48 hours</span>
               </li>
               <li className="flex items-start">
-                <span className="font-spaceGrotesk font-bold text-mainPurple mr-3 mt-1">•</span>
+                <span className="font-spaceGrotesk font-bold text-mainPurple dark:text-[#b9a4f7] mr-3 mt-1">•</span>
                 <span><strong>Backup systems:</strong> Completely cleared within 30 days</span>
               </li>
               <li className="flex items-start">
-                <span className="font-spaceGrotesk font-bold text-mainPurple mr-3 mt-1">•</span>
+                <span className="font-spaceGrotesk font-bold text-mainPurple dark:text-[#b9a4f7] mr-3 mt-1">•</span>
                 <span><strong>Order/payment records:</strong> Retained per legal requirements (up to 7 years)</span>
               </li>
             </ul>
@@ -94,8 +94,8 @@ export default function DeleteAccount() {
         <section className="mb-12">
           <h2 className="font-spaceGrotesk font-bold text-3xl mb-4">Important: Impact on Physical NFC Cards</h2>
           <div className="bg-errorRed/10 border border-errorRed/30 p-6 rounded-lg">
-            <p className="text-grey1 font-semibold mb-3">⚠️ Please read carefully before deleting your account:</p>
-            <ul className="list-disc pl-6 text-grey2 space-y-2">
+            <p className="text-grey1 dark:text-content font-semibold mb-3">⚠️ Please read carefully before deleting your account:</p>
+            <ul className="list-disc pl-6 text-grey2 dark:text-content-muted space-y-2">
               <li>
                 <strong>Your profile link will stop working:</strong> When you delete your account, your Segwae profile username (segwae.com/yourname) will be permanently removed and deactivated.
               </li>
@@ -117,8 +117,8 @@ export default function DeleteAccount() {
 
         <section className="mb-12">
           <h2 className="font-spaceGrotesk font-bold text-3xl mb-4">Confirmation & Finalization</h2>
-          <p className="text-grey2 mb-3">After processing your deletion request:</p>
-          <ul className="list-disc pl-6 text-grey2 space-y-2">
+          <p className="text-grey2 dark:text-content-muted mb-3">After processing your deletion request:</p>
+          <ul className="list-disc pl-6 text-grey2 dark:text-content-muted space-y-2">
             <li>You will receive a <strong>confirmation email</strong> at your registered email address when your account has been successfully deleted</li>
             <li>This email will include details about what data was deleted and what (if any) was retained for legal compliance</li>
             <li><strong className="text-errorRed">This action cannot be undone</strong> — you will need to create a new account to use Segwae again</li>
@@ -128,43 +128,43 @@ export default function DeleteAccount() {
 
         <section className="mb-12">
           <h2 className="font-spaceGrotesk font-bold text-3xl mb-4">Alternative: Temporarily Deactivate Account</h2>
-          <p className="text-grey2 mb-3">
+          <p className="text-grey2 dark:text-content-muted mb-3">
             If you&apos;re not ready for permanent deletion, consider temporarily deactivating your account instead:
           </p>
-          <ul className="list-disc pl-6 text-grey2 space-y-2">
+          <ul className="list-disc pl-6 text-grey2 dark:text-content-muted space-y-2">
             <li>Your profile will be hidden from public view</li>
             <li>Your data will be preserved</li>
             <li>You can reactivate anytime by logging back in</li>
             <li>Your physical NFC cards will continue to work when you reactivate</li>
           </ul>
-          <p className="text-grey2 mt-4">
-            To deactivate (instead of delete), contact us at <a href="mailto:hello@segwae.com" className="text-mainPurple hover:underline">hello@segwae.com</a> with the subject &quot;Deactivate Account&quot;.
+          <p className="text-grey2 dark:text-content-muted mt-4">
+            To deactivate (instead of delete), contact us at <a href="mailto:hello@segwae.com" className="text-mainPurple dark:text-[#b9a4f7] hover:underline">hello@segwae.com</a> with the subject &quot;Deactivate Account&quot;.
           </p>
         </section>
 
         <section className="mb-12">
           <h2 className="font-spaceGrotesk font-bold text-3xl mb-4">Questions or Issues?</h2>
-          <p className="text-grey2 mb-3">
+          <p className="text-grey2 dark:text-content-muted mb-3">
             If you have any questions about account deletion or need assistance with the process, please contact us:
           </p>
-          <ul className="list-none text-grey2 space-y-2">
-            <li><strong>Email:</strong> <a href="mailto:hello@segwae.com" className="text-mainPurple hover:underline">hello@segwae.com</a></li>
-            <li><strong>Website:</strong> <a href="/contact" className="text-mainPurple hover:underline">segwae.com/contact</a></li>
+          <ul className="list-none text-grey2 dark:text-content-muted space-y-2">
+            <li><strong>Email:</strong> <a href="mailto:hello@segwae.com" className="text-mainPurple dark:text-[#b9a4f7] hover:underline">hello@segwae.com</a></li>
+            <li><strong>Website:</strong> <a href="/contact" className="text-mainPurple dark:text-[#b9a4f7] hover:underline">segwae.com/contact</a></li>
           </ul>
-          <p className="text-grey2 mt-4">
+          <p className="text-grey2 dark:text-content-muted mt-4">
             Our support team is available to help you understand the implications of account deletion and answer any questions before you proceed.
           </p>
         </section>
 
         <section className="mb-12">
           <h2 className="font-spaceGrotesk font-bold text-3xl mb-4">Related Information</h2>
-          <p className="text-grey2 mb-3">For more information about how we handle your data:</p>
-          <ul className="list-none text-grey2 space-y-2">
+          <p className="text-grey2 dark:text-content-muted mb-3">For more information about how we handle your data:</p>
+          <ul className="list-none text-grey2 dark:text-content-muted space-y-2">
             <li>
-              • <a href="/privacy-policy" className="text-mainPurple hover:underline">Privacy Policy</a> — Learn how we collect and use your data
+              • <a href="/privacy-policy" className="text-mainPurple dark:text-[#b9a4f7] hover:underline">Privacy Policy</a> — Learn how we collect and use your data
             </li>
             <li>
-              • <a href="/terms" className="text-mainPurple hover:underline">Terms of Service</a> — Review our terms and conditions
+              • <a href="/terms" className="text-mainPurple dark:text-[#b9a4f7] hover:underline">Terms of Service</a> — Review our terms and conditions
             </li>
           </ul>
         </section>

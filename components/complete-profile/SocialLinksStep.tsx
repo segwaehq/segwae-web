@@ -77,15 +77,15 @@ export default function SocialLinksStep({ value, onUpdate, onNext, onBack }: Soc
     }
   }
 
-  const inputClass = "w-full px-[15px] py-[13px] border border-[#E2E1EA] rounded-xl bg-white text-[14.5px] font-medium text-[#15131C] placeholder:text-[#B6B0C0] outline-none focus:border-[#A98BE8] transition-colors"
+  const inputClass = "w-full px-[15px] py-[13px] border border-[#E2E1EA] dark:border-line rounded-xl bg-white dark:bg-surface-sunken text-[14.5px] font-medium text-[#15131C] dark:text-content placeholder:text-[#B6B0C0] dark:placeholder:text-content-subtle outline-none focus:border-[#A98BE8] dark:focus:border-[#6a4fb0] transition-colors"
 
   return (
     <div className="space-y-7">
       <div>
-        <h2 className="font-satoshi font-black text-[27px] tracking-[-0.03em] leading-[1.12] text-[#15131C] mb-1.5">
+        <h2 className="font-satoshi font-black text-[27px] tracking-[-0.03em] leading-[1.12] text-[#15131C] dark:text-content mb-1.5">
           Add your social links
         </h2>
-        <p className="text-[15px] font-medium text-[#8B8499] leading-relaxed">
+        <p className="text-[15px] font-medium text-[#8B8499] dark:text-content-muted leading-relaxed">
           Help people connect with you online. This step is optional.
         </p>
       </div>
@@ -96,7 +96,7 @@ export default function SocialLinksStep({ value, onUpdate, onNext, onBack }: Soc
           {links.map((link) => {
             const platform = platforms.find(p => p.platform_identifier === link.platform)
             return (
-              <div key={link.id} className="flex items-center gap-3 p-3 border border-[#E8E8EF] rounded-xl bg-white">
+              <div key={link.id} className="flex items-center gap-3 p-3 border border-[#E8E8EF] dark:border-line rounded-xl bg-white dark:bg-surface-raised">
                 <div
                   className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-xs font-bold shrink-0"
                   style={{ backgroundColor: platform?.color_hex || '#5A2DD4' }}
@@ -104,13 +104,13 @@ export default function SocialLinksStep({ value, onUpdate, onNext, onBack }: Soc
                   {(platform?.platform_name || link.platform).charAt(0).toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs font-bold text-[#15131C]">
+                  <p className="text-xs font-bold text-[#15131C] dark:text-content">
                     {platform?.platform_name || link.platform}
                   </p>
-                  <p className="text-xs font-medium text-[#9098A3] truncate">{link.url}</p>
+                  <p className="text-xs font-medium text-[#9098A3] dark:text-content-subtle truncate">{link.url}</p>
                 </div>
                 <button onClick={() => handleDelete(link.id)} disabled={deleting === link.id}
-                  className="p-1.5 text-[#9098A3] hover:text-errorRed transition-colors shrink-0">
+                  className="p-1.5 text-[#9098A3] dark:text-content-subtle hover:text-errorRed transition-colors shrink-0">
                   {deleting === link.id
                     ? <div className="w-3.5 h-3.5 border-2 border-[#9098A3] border-t-transparent rounded-full animate-spin" />
                     : <FaTrash className="w-3.5 h-3.5" />
@@ -119,13 +119,13 @@ export default function SocialLinksStep({ value, onUpdate, onNext, onBack }: Soc
               </div>
             )
           })}
-          <p className="text-xs font-medium text-[#9098A3]">{links.length} link{links.length !== 1 ? 's' : ''} added</p>
+          <p className="text-xs font-medium text-[#9098A3] dark:text-content-subtle">{links.length} link{links.length !== 1 ? 's' : ''} added</p>
         </div>
       )}
 
       {/* Add new */}
-      <div className="border border-[#E8E8EF] rounded-2xl p-4 space-y-3 bg-[#FAFAFB]">
-        <p className="text-xs font-bold text-[#15131C]">Add a link</p>
+      <div className="border border-[#E8E8EF] dark:border-line rounded-2xl p-4 space-y-3 bg-[#FAFAFB] dark:bg-white/[0.03]">
+        <p className="text-xs font-bold text-[#15131C] dark:text-content">Add a link</p>
         <select value={newPlatform} onChange={(e) => setNewPlatform(e.target.value)} className={inputClass}>
           <option value="">Select platform</option>
           {platforms.map(p => (
@@ -141,7 +141,7 @@ export default function SocialLinksStep({ value, onUpdate, onNext, onBack }: Soc
         />
         {error && <p className="text-xs font-medium text-errorRed">{error}</p>}
         <button onClick={handleAdd} disabled={saving}
-          className="w-full py-2.5 border border-[#DDCEFA] text-[#5A2DD4] rounded-xl text-sm font-bold hover:bg-[#F4F0FE] disabled:opacity-50 transition-colors flex items-center justify-center gap-2">
+          className="w-full py-2.5 border border-[#DDCEFA] dark:border-[#4a3d78] text-[#5A2DD4] dark:text-[#b9a4f7] rounded-xl text-sm font-bold hover:bg-[#F4F0FE] dark:hover:bg-[#241d38] disabled:opacity-50 transition-colors flex items-center justify-center gap-2">
           {saving
             ? <div className="w-4 h-4 border-2 border-[#5A2DD4] border-t-transparent rounded-full animate-spin" />
             : <><FaPlus className="w-3.5 h-3.5" /> Add Link</>
@@ -151,7 +151,7 @@ export default function SocialLinksStep({ value, onUpdate, onNext, onBack }: Soc
 
       <div className="flex gap-3">
         <button type="button" onClick={onBack}
-          className="flex-1 py-3.5 rounded-xl border border-[#E2E1EA] bg-white text-[14px] font-bold text-[#374151] hover:border-[#B9B9C6] transition-colors">
+          className="flex-1 py-3.5 rounded-xl border border-[#E2E1EA] dark:border-line bg-white dark:bg-surface-raised text-[14px] font-bold text-[#374151] dark:text-content-muted hover:border-[#B9B9C6] dark:hover:border-content-subtle transition-colors">
           Back
         </button>
         <button type="button" onClick={onNext}

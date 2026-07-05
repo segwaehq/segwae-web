@@ -14,9 +14,9 @@ import type { BlogPost } from '@/lib/types'
 import { BLOG_CATEGORIES, slugify } from '@/lib/blog/constants'
 import { BlogEditor } from '@/components/studio/BlogEditor'
 
-const labelCls = 'font-satoshi block text-[13px] font-semibold text-grey1 mb-1.5'
+const labelCls = 'font-satoshi block text-[13px] font-semibold text-grey1 dark:text-content mb-1.5'
 const inputCls =
-  'font-openSans w-full rounded-xl border border-grey4 px-3.5 py-2.5 text-sm text-grey1 outline-none transition-all placeholder:text-grey3 focus:border-mainPurple focus:ring-2 focus:ring-mainPurple/20'
+  'font-openSans w-full rounded-xl border border-grey4 dark:border-line dark:bg-surface-sunken px-3.5 py-2.5 text-sm text-grey1 dark:text-content outline-none transition-all placeholder:text-grey3 dark:placeholder:text-content-subtle focus:border-mainPurple dark:focus:border-[#6a4fb0] focus:ring-2 focus:ring-mainPurple/20'
 
 export function BlogForm({
   mode,
@@ -115,7 +115,7 @@ export function BlogForm({
       <div className="mb-6 flex items-center justify-between gap-4">
         <Link
           href="/studio"
-          className="font-satoshi inline-flex items-center gap-1.5 text-sm font-semibold text-grey3 transition-colors hover:text-grey1"
+          className="font-satoshi inline-flex items-center gap-1.5 text-sm font-semibold text-grey3 dark:text-content-subtle transition-colors hover:text-grey1 dark:hover:text-content"
         >
           <FaArrowLeft className="h-3 w-3" /> All posts
         </Link>
@@ -125,7 +125,7 @@ export function BlogForm({
               href={`/blog/${post.slug}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-satoshi inline-flex items-center gap-1.5 rounded-xl border border-grey4 px-4 py-2.5 text-sm font-semibold text-grey2 transition-colors hover:bg-grey5"
+              className="font-satoshi inline-flex items-center gap-1.5 rounded-xl border border-grey4 dark:border-line px-4 py-2.5 text-sm font-semibold text-grey2 dark:text-content-muted transition-colors hover:bg-grey5 dark:hover:bg-white/[0.06]"
             >
               View <FaArrowUpRightFromSquare className="h-3 w-3" />
             </a>
@@ -157,7 +157,7 @@ export function BlogForm({
           <div>
             <label className={labelCls}>Slug</label>
             <div className="flex items-center gap-2">
-              <span className="font-openSans text-sm text-grey3">/blog/</span>
+              <span className="font-openSans text-sm text-grey3 dark:text-content-subtle">/blog/</span>
               <input
                 value={slug}
                 onChange={(e) => {
@@ -173,7 +173,7 @@ export function BlogForm({
 
           <div>
             <label className={labelCls}>
-              Excerpt <span className="font-normal text-grey3">· shown on cards & search</span>
+              Excerpt <span className="font-normal text-grey3 dark:text-content-subtle">· shown on cards & search</span>
             </label>
             <textarea
               value={excerpt}
@@ -193,7 +193,7 @@ export function BlogForm({
         {/* Sidebar */}
         <div className="flex flex-col gap-4">
           {/* Publish */}
-          <div className="rounded-2xl border border-grey4/70 bg-white p-5">
+          <div className="rounded-2xl border border-grey4/70 dark:border-line bg-white dark:bg-surface-raised p-5">
             <label className={labelCls}>Status</label>
             <select
               value={status}
@@ -204,7 +204,7 @@ export function BlogForm({
               <option value="published">Published — live on the site</option>
             </select>
             {mode === 'edit' && post?.published_at && (
-              <p className="font-openSans mt-2 text-xs text-grey3">
+              <p className="font-openSans mt-2 text-xs text-grey3 dark:text-content-subtle">
                 First published {new Date(post.published_at).toLocaleDateString('en-GB', {
                   day: 'numeric',
                   month: 'short',
@@ -215,22 +215,22 @@ export function BlogForm({
           </div>
 
           {/* Cover image */}
-          <div className="rounded-2xl border border-grey4/70 bg-white p-5">
+          <div className="rounded-2xl border border-grey4/70 dark:border-line bg-white dark:bg-surface-raised p-5">
             <label className={labelCls}>Cover image</label>
             {coverImageUrl ? (
-              <div className="overflow-hidden rounded-xl border border-grey4">
+              <div className="overflow-hidden rounded-xl border border-grey4 dark:border-line">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={coverImageUrl} alt="Cover" className="aspect-[16/9] w-full object-cover" />
                 <button
                   onClick={() => setCoverImageUrl('')}
-                  className="font-satoshi w-full border-t border-grey4 bg-grey6 py-2 text-xs font-semibold text-grey2 hover:bg-grey5"
+                  className="font-satoshi w-full border-t border-grey4 dark:border-line bg-grey6 dark:bg-white/[0.03] py-2 text-xs font-semibold text-grey2 dark:text-content-muted hover:bg-grey5 dark:hover:bg-white/[0.06]"
                 >
                   Remove
                 </button>
               </div>
             ) : (
               <label
-                className={`flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-grey4 py-7 text-grey3 transition-colors hover:border-mainPurple hover:text-mainPurple ${
+                className={`flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-grey4 dark:border-line py-7 text-grey3 dark:text-content-subtle transition-colors hover:border-mainPurple dark:hover:border-[#6a4fb0] hover:text-mainPurple dark:hover:text-[#b9a4f7] ${
                   uploadingCover ? 'pointer-events-none opacity-60' : ''
                 }`}
               >
@@ -257,7 +257,7 @@ export function BlogForm({
           </div>
 
           {/* Meta */}
-          <div className="flex flex-col gap-4 rounded-2xl border border-grey4/70 bg-white p-5">
+          <div className="flex flex-col gap-4 rounded-2xl border border-grey4/70 dark:border-line bg-white dark:bg-surface-raised p-5">
             <div>
               <label className={labelCls}>Category</label>
               <select
@@ -275,7 +275,7 @@ export function BlogForm({
             </div>
             <div>
               <label className={labelCls}>
-                Tags <span className="font-normal text-grey3">· comma separated</span>
+                Tags <span className="font-normal text-grey3 dark:text-content-subtle">· comma separated</span>
               </label>
               <input
                 value={tagsInput}
@@ -295,8 +295,8 @@ export function BlogForm({
           </div>
 
           {/* SEO */}
-          <div className="flex flex-col gap-4 rounded-2xl border border-grey4/70 bg-white p-5">
-            <p className="font-satoshi text-[13px] font-bold text-grey1">SEO overrides</p>
+          <div className="flex flex-col gap-4 rounded-2xl border border-grey4/70 dark:border-line bg-white dark:bg-surface-raised p-5">
+            <p className="font-satoshi text-[13px] font-bold text-grey1 dark:text-content">SEO overrides</p>
             <div>
               <label className={labelCls}>Meta title</label>
               <input

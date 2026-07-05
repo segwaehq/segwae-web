@@ -35,9 +35,9 @@ const MODE_META: Record<WorkMode, { label: string; color: string; bg: string }> 
 }
 
 const INPUT_CLASS =
-  'w-full px-[15px] py-[13px] border border-[#E2E1EA] rounded-xl bg-white text-[14.5px] font-medium text-[#15131C] placeholder:text-[#B6B0C0] outline-none focus:border-[#A98BE8] transition-colors'
-const LABEL_CLASS = 'block text-[13px] font-bold text-[#15131C] mb-[7px]'
-const EYEBROW_CLASS = 'text-[11px] font-bold tracking-[0.12em] uppercase text-[#5A2DD4] mb-3.5'
+  'w-full px-[15px] py-[13px] border border-[#E2E1EA] dark:border-line rounded-xl bg-white dark:bg-surface-sunken text-[14.5px] font-medium text-[#15131C] dark:text-content placeholder:text-[#B6B0C0] dark:placeholder:text-content-subtle outline-none focus:border-[#A98BE8] dark:focus:border-[#6a4fb0] transition-colors'
+const LABEL_CLASS = 'block text-[13px] font-bold text-[#15131C] dark:text-content mb-[7px]'
+const EYEBROW_CLASS = 'text-[11px] font-bold tracking-[0.12em] uppercase text-[#5A2DD4] dark:text-[#b9a4f7] mb-3.5'
 
 function initialsOf(name: string): string {
   const parts = (name || '').trim().split(/\s+/).filter(Boolean)
@@ -48,7 +48,7 @@ function initialsOf(name: string): string {
 function chipClass(active: boolean): string {
   return active
     ? 'px-[13px] py-[7px] rounded-[9px] border border-transparent cursor-pointer text-[12.5px] font-bold bg-brand-gradient text-white transition-colors'
-    : 'px-[13px] py-[7px] rounded-[9px] border border-[#E2E1EA] cursor-pointer text-[12.5px] font-semibold bg-white text-[#6B7280] hover:border-[#C9BCF2] transition-colors'
+    : 'px-[13px] py-[7px] rounded-[9px] border border-[#E2E1EA] dark:border-line cursor-pointer text-[12.5px] font-semibold bg-white dark:bg-surface-sunken text-[#6B7280] dark:text-content-muted hover:border-[#C9BCF2] dark:hover:border-[#4a3d78] transition-colors'
 }
 
 function Toggle({ on, onClick }: { on: boolean; onClick: () => void }) {
@@ -57,7 +57,7 @@ function Toggle({ on, onClick }: { on: boolean; onClick: () => void }) {
       type="button"
       onClick={onClick}
       className={`w-[38px] h-[22px] rounded-full p-0.5 flex shrink-0 transition-all ${
-        on ? 'bg-brand-gradient justify-end' : 'bg-[#D8D5E2] justify-start'
+        on ? 'bg-brand-gradient justify-end' : 'bg-[#D8D5E2] dark:bg-[#3a3448] justify-start'
       }`}
     >
       <span className="w-[18px] h-[18px] rounded-full bg-white shadow-[0_1px_2px_rgba(0,0,0,0.2)]" />
@@ -66,7 +66,7 @@ function Toggle({ on, onClick }: { on: boolean; onClick: () => void }) {
 }
 
 function Divider() {
-  return <div className="h-px bg-[#E7E5EE]" />
+  return <div className="h-px bg-[#E7E5EE] dark:bg-line" />
 }
 
 export default function PostJobPage() {
@@ -186,11 +186,11 @@ export default function PostJobPage() {
         <div className="w-[88px] h-[88px] rounded-full bg-brand-gradient flex items-center justify-center shadow-[0_18px_40px_-10px_rgba(74,55,216,0.5)] animate-scaleIn">
           <FaCheck className="w-10 h-10 text-white" />
         </div>
-        <h1 className="font-satoshi font-black text-[30px] tracking-[-0.03em] text-[#15131C] mt-6 mb-2">
+        <h1 className="font-satoshi font-black text-[30px] tracking-[-0.03em] text-[#15131C] dark:text-content mt-6 mb-2">
           Your role is live!
         </h1>
-        <p className="text-[15.5px] font-medium text-[#6B7280] max-w-[400px] leading-relaxed">
-          <span className="font-extrabold text-[#15131C]">{form.title || 'Your role'}</span> is now visible to
+        <p className="text-[15.5px] font-medium text-[#6B7280] dark:text-content-muted max-w-[400px] leading-relaxed">
+          <span className="font-extrabold text-[#15131C] dark:text-content">{form.title || 'Your role'}</span> is now visible to
           candidates on Segwae. Applications will appear in your pipeline.
         </p>
         <div className="flex flex-wrap gap-3 justify-center mt-7">
@@ -203,7 +203,7 @@ export default function PostJobPage() {
           {createdId && (
             <Link
               href={`/jobs/${createdId}`}
-              className="inline-flex items-center px-7 py-3.5 rounded-xl bg-white border border-[#E2E1EA] text-[#15131C] text-[15px] font-bold hover:border-[#B9B9C6] transition-colors"
+              className="inline-flex items-center px-7 py-3.5 rounded-xl bg-white dark:bg-surface-raised border border-[#E2E1EA] dark:border-line text-[#15131C] dark:text-content text-[15px] font-bold hover:border-[#B9B9C6] dark:hover:border-content-subtle transition-colors"
             >
               View the posting
             </Link>
@@ -218,7 +218,7 @@ export default function PostJobPage() {
               salary_min: '', salary_max: '', location: '', external_url: '',
             }))
           }}
-          className="mt-6 text-[13px] font-semibold text-[#9098A3] hover:text-[#15131C] transition-colors"
+          className="mt-6 text-[13px] font-semibold text-[#9098A3] dark:text-content-subtle hover:text-[#15131C] dark:hover:text-content transition-colors"
         >
           Post another role
         </button>
@@ -245,13 +245,13 @@ export default function PostJobPage() {
       <div className="mb-6">
         <Link
           href="/dashboard/hiring"
-          className="inline-flex items-center gap-1.5 text-xs font-bold text-[#9098A3] hover:text-[#15131C] transition-colors mb-4"
+          className="inline-flex items-center gap-1.5 text-xs font-bold text-[#9098A3] dark:text-content-subtle hover:text-[#15131C] dark:hover:text-content transition-colors mb-4"
         >
           <FaArrowLeft className="w-3 h-3" /> Back to roles
         </Link>
-        <p className="text-[11px] font-bold text-[#5A2DD4] uppercase tracking-[0.16em] mb-1.5">For employers</p>
-        <h1 className="font-satoshi font-black text-[22px] tracking-[-0.02em] text-[#15131C]">Post a role</h1>
-        <p className="text-[13px] font-medium text-[#9098A3] mt-0.5">{company.name || 'Your company'}</p>
+        <p className="text-[11px] font-bold text-[#5A2DD4] dark:text-[#b9a4f7] uppercase tracking-[0.16em] mb-1.5">For employers</p>
+        <h1 className="font-satoshi font-black text-[22px] tracking-[-0.02em] text-[#15131C] dark:text-content">Post a role</h1>
+        <p className="text-[13px] font-medium text-[#9098A3] dark:text-content-subtle mt-0.5">{company.name || 'Your company'}</p>
       </div>
 
       <div className="grid lg:grid-cols-[1fr_minmax(340px,400px)] gap-8 items-start">
@@ -269,11 +269,11 @@ export default function PostJobPage() {
                     type="button"
                     onClick={() => setPostingMode(m)}
                     className={`p-4 rounded-xl border-2 text-left transition-all ${
-                      active ? 'border-[#C9BCF2] bg-[#F4F0FE]' : 'border-[#E8E8EF] bg-white hover:border-[#D6CEEC]'
+                      active ? 'border-[#C9BCF2] dark:border-[#4a3d78] bg-[#F4F0FE] dark:bg-[#241d38]' : 'border-[#E8E8EF] dark:border-line bg-white dark:bg-surface-raised hover:border-[#D6CEEC] dark:hover:border-[#4a3d78]'
                     }`}
                   >
-                    <p className={`text-sm font-bold capitalize ${active ? 'text-[#5A2DD4]' : 'text-[#15131C]'}`}>{m}</p>
-                    <p className="text-[12px] font-medium text-[#9098A3] mt-1 leading-relaxed">
+                    <p className={`text-sm font-bold capitalize ${active ? 'text-[#5A2DD4] dark:text-[#b9a4f7]' : 'text-[#15131C] dark:text-content'}`}>{m}</p>
+                    <p className="text-[12px] font-medium text-[#9098A3] dark:text-content-subtle mt-1 leading-relaxed">
                       {m === 'internal'
                         ? 'Candidates apply on Segwae. Pipeline managed here.'
                         : 'Candidates redirect to your site. No pipeline.'}
@@ -285,7 +285,7 @@ export default function PostJobPage() {
             {postingMode === 'external' && (
               <div className="mt-4">
                 <label className={LABEL_CLASS}>
-                  Application URL <span className="text-[#B6463C]">*</span>
+                  Application URL <span className="text-[#B6463C] dark:text-[#f2857b]">*</span>
                 </label>
                 <input
                   type="url"
@@ -305,7 +305,7 @@ export default function PostJobPage() {
             <div className={EYEBROW_CLASS}>Role basics</div>
             <div className="flex flex-col gap-4">
               <div>
-                <label className={LABEL_CLASS}>Role title <span className="text-[#B6463C]">*</span></label>
+                <label className={LABEL_CLASS}>Role title <span className="text-[#B6463C] dark:text-[#f2857b]">*</span></label>
                 <input
                   value={form.title}
                   onChange={(e) => set('title', e.target.value)}
@@ -366,11 +366,11 @@ export default function PostJobPage() {
           {/* Compensation */}
           <div>
             <div className="flex items-center justify-between mb-3.5">
-              <div className="text-[11px] font-bold tracking-[0.12em] uppercase text-[#5A2DD4]">Compensation</div>
+              <div className="text-[11px] font-bold tracking-[0.12em] uppercase text-[#5A2DD4] dark:text-[#b9a4f7]">Compensation</div>
               <button
                 type="button"
                 onClick={() => set('salary_visible', !form.salary_visible)}
-                className="inline-flex items-center gap-2 text-[12.5px] font-semibold text-[#6B6478]"
+                className="inline-flex items-center gap-2 text-[12.5px] font-semibold text-[#6B6478] dark:text-content-muted"
               >
                 <Toggle on={form.salary_visible} onClick={() => set('salary_visible', !form.salary_visible)} />
                 Show salary publicly
@@ -417,7 +417,7 @@ export default function PostJobPage() {
           {/* Description */}
           <div>
             <div className={EYEBROW_CLASS}>Description</div>
-            <label className={LABEL_CLASS}>About the role <span className="text-[#B6463C]">*</span></label>
+            <label className={LABEL_CLASS}>About the role <span className="text-[#B6463C] dark:text-[#f2857b]">*</span></label>
             <textarea
               value={form.description}
               onChange={(e) => set('description', e.target.value)}
@@ -432,7 +432,7 @@ export default function PostJobPage() {
             <div className="flex flex-col gap-[9px]">
               {form.requirements.map((r, i) => (
                 <div key={i} className="flex items-center gap-[9px]">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#C9BCF2] shrink-0 mx-[7px]" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#C9BCF2] dark:bg-[#4a3d78] shrink-0 mx-[7px]" />
                   <input
                     value={r}
                     onChange={(e) => setReq(i, e.target.value)}
@@ -442,7 +442,7 @@ export default function PostJobPage() {
                   <button
                     type="button"
                     onClick={() => removeReq(i)}
-                    className="w-8 h-8 rounded-[9px] border border-[#EDECF2] bg-white flex items-center justify-center text-[#B6B0C0] hover:text-[#B6463C] hover:border-[#F0C9C4] shrink-0 transition-colors"
+                    className="w-8 h-8 rounded-[9px] border border-[#EDECF2] dark:border-line bg-white dark:bg-surface-sunken flex items-center justify-center text-[#B6B0C0] dark:text-content-subtle hover:text-[#B6463C] dark:hover:text-[#f2857b] hover:border-[#F0C9C4] dark:hover:border-[#5a2a26] shrink-0 transition-colors"
                   >
                     <FaXmark className="w-3.5 h-3.5" />
                   </button>
@@ -452,7 +452,7 @@ export default function PostJobPage() {
             <button
               type="button"
               onClick={addReq}
-              className="inline-flex items-center gap-1.5 mt-2.5 px-3.5 py-2.5 rounded-xl border border-dashed border-[#D8D5E2] bg-transparent text-[13px] font-bold text-[#5A2DD4] hover:border-[#C9BCF2] transition-colors"
+              className="inline-flex items-center gap-1.5 mt-2.5 px-3.5 py-2.5 rounded-xl border border-dashed border-[#D8D5E2] dark:border-[#3a3448] bg-transparent text-[13px] font-bold text-[#5A2DD4] dark:text-[#b9a4f7] hover:border-[#C9BCF2] dark:hover:border-[#4a3d78] transition-colors"
             >
               <FaPlus className="w-3 h-3" /> Add requirement
             </button>
@@ -474,7 +474,7 @@ export default function PostJobPage() {
               <button
                 type="button"
                 onClick={() => addTag(tagInput)}
-                className="px-5 rounded-xl bg-[#15131C] text-white text-sm font-bold hover:bg-[#2A2733] transition-colors"
+                className="px-5 rounded-xl bg-[#15131C] dark:bg-white text-white dark:text-[#15131C] text-sm font-bold hover:bg-[#2A2733] dark:hover:bg-white/90 transition-colors"
               >
                 Add
               </button>
@@ -486,7 +486,7 @@ export default function PostJobPage() {
                     key={t}
                     type="button"
                     onClick={() => removeTag(t)}
-                    className="inline-flex items-center gap-[7px] px-[13px] py-2 rounded-[9px] border border-[#DDCEFA] bg-[#F4F0FE] text-[#5A2DD4] text-[13px] font-bold hover:border-[#C9BCF2] transition-colors"
+                    className="inline-flex items-center gap-[7px] px-[13px] py-2 rounded-[9px] border border-[#DDCEFA] dark:border-[#4a3d78] bg-[#F4F0FE] dark:bg-[#241d38] text-[#5A2DD4] dark:text-[#b9a4f7] text-[13px] font-bold hover:border-[#C9BCF2] dark:hover:border-[#5a4a8a] transition-colors"
                   >
                     {t} <FaXmark className="w-3 h-3" />
                   </button>
@@ -499,7 +499,7 @@ export default function PostJobPage() {
 
           {/* Deadline */}
           <div>
-            <label className={LABEL_CLASS}>Application deadline <span className="text-[#9098A3] font-medium">(optional)</span></label>
+            <label className={LABEL_CLASS}>Application deadline <span className="text-[#9098A3] dark:text-content-subtle font-medium">(optional)</span></label>
             <input
               type="datetime-local"
               value={form.application_deadline}
@@ -522,7 +522,7 @@ export default function PostJobPage() {
               type="button"
               onClick={() => submitJob('draft')}
               disabled={saving || !form.title.trim()}
-              className="px-6 py-3.5 rounded-xl bg-white border border-[#E2E1EA] text-[#374151] text-[15px] font-bold hover:border-[#B9B9C6] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              className="px-6 py-3.5 rounded-xl bg-white dark:bg-surface-raised border border-[#E2E1EA] dark:border-line text-[#374151] dark:text-content-muted text-[15px] font-bold hover:border-[#B9B9C6] dark:hover:border-content-subtle disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
               {saving ? 'Saving…' : 'Save draft'}
             </button>
@@ -531,14 +531,14 @@ export default function PostJobPage() {
 
         {/* ── RIGHT: live preview ── */}
         <div className="hidden lg:block lg:sticky lg:top-6">
-          <div className="text-[11px] font-bold tracking-[0.08em] uppercase text-[#A29CB0] mb-4 text-center">
+          <div className="text-[11px] font-bold tracking-[0.08em] uppercase text-[#A29CB0] dark:text-content-subtle mb-4 text-center">
             Live preview
           </div>
 
-          <div className="text-[11px] font-semibold text-[#9A93A8] mb-2">As a card on the jobs page</div>
-          <div className="bg-white border border-[#E8E8EF] rounded-2xl p-[22px] shadow-[0_14px_34px_-22px_rgba(31,18,72,0.3)]">
+          <div className="text-[11px] font-semibold text-[#9A93A8] dark:text-content-subtle mb-2">As a card on the jobs page</div>
+          <div className="bg-white dark:bg-surface-raised border border-[#E8E8EF] dark:border-line rounded-2xl p-[22px] shadow-[0_14px_34px_-22px_rgba(31,18,72,0.3)]">
             <div className="flex items-start gap-3.5">
-              <div className="w-12 h-12 rounded-[13px] bg-[#F1F0F6] flex items-center justify-center text-sm font-extrabold text-[#5A2DD4] shrink-0 overflow-hidden">
+              <div className="w-12 h-12 rounded-[13px] bg-[#F1F0F6] dark:bg-[#241d38] flex items-center justify-center text-sm font-extrabold text-[#5A2DD4] dark:text-[#b9a4f7] shrink-0 overflow-hidden">
                 {company.logo ? (
                   <Image src={company.logo} alt="" width={48} height={48} className="object-cover w-full h-full" />
                 ) : (
@@ -546,48 +546,48 @@ export default function PostJobPage() {
                 )}
               </div>
               <div className="flex-1 min-w-0">
-                <div className="text-[15.5px] font-bold text-[#15131C] leading-snug">{form.title || 'Untitled role'}</div>
-                <div className="text-[13px] font-medium text-[#9098A3] mt-0.5">{company.name || 'Your company'}</div>
+                <div className="text-[15.5px] font-bold text-[#15131C] dark:text-content leading-snug">{form.title || 'Untitled role'}</div>
+                <div className="text-[13px] font-medium text-[#9098A3] dark:text-content-subtle mt-0.5">{company.name || 'Your company'}</div>
               </div>
             </div>
             <div className="flex items-center gap-2 flex-wrap mt-4">
               <span className="text-[10px] font-bold px-[9px] py-[3px] rounded-md" style={{ color: mode.color, background: mode.bg }}>
                 {mode.label}
               </span>
-              <span className="text-[10px] font-bold text-[#6B7280] bg-[#F3F3F7] px-[9px] py-[3px] rounded-md">{typeLabel}</span>
-              <span className="text-[12px] font-medium text-[#9098A3] inline-flex items-center gap-1">
+              <span className="text-[10px] font-bold text-[#6B7280] dark:text-content-muted bg-[#F3F3F7] dark:bg-white/[0.06] px-[9px] py-[3px] rounded-md">{typeLabel}</span>
+              <span className="text-[12px] font-medium text-[#9098A3] dark:text-content-subtle inline-flex items-center gap-1">
                 <FaLocationDot className="w-2.5 h-2.5" /> {form.location || 'Location'}
               </span>
             </div>
             {form.tags.length > 0 && (
               <div className="flex gap-[7px] flex-wrap mt-3">
                 {form.tags.slice(0, 4).map((t) => (
-                  <span key={t} className="text-[11px] font-medium text-[#6B7280] bg-[#F6F5FA] px-[9px] py-1 rounded-md">{t}</span>
+                  <span key={t} className="text-[11px] font-medium text-[#6B7280] dark:text-content-muted bg-[#F6F5FA] dark:bg-white/[0.06] px-[9px] py-1 rounded-md">{t}</span>
                 ))}
               </div>
             )}
-            <div className="flex items-center justify-between mt-4 pt-[15px] border-t border-[#F1F1F5]">
-              <span className="text-[13px] font-extrabold text-[#15131C]">{salaryText}</span>
-              <span className="text-[12px] font-medium text-[#9098A3]">Just now</span>
+            <div className="flex items-center justify-between mt-4 pt-[15px] border-t border-[#F1F1F5] dark:border-white/[0.06]">
+              <span className="text-[13px] font-extrabold text-[#15131C] dark:text-content">{salaryText}</span>
+              <span className="text-[12px] font-medium text-[#9098A3] dark:text-content-subtle">Just now</span>
             </div>
           </div>
 
-          <div className="text-[11px] font-semibold text-[#9A93A8] mt-[22px] mb-2">Role description</div>
-          <div className="bg-white border border-[#E8E8EF] rounded-2xl p-5">
-            <div className="text-sm font-extrabold text-[#15131C] mb-2">About the role</div>
-            <p className="text-[13px] leading-relaxed font-medium text-[#4B4658] m-0 min-h-[18px] whitespace-pre-wrap">
+          <div className="text-[11px] font-semibold text-[#9A93A8] dark:text-content-subtle mt-[22px] mb-2">Role description</div>
+          <div className="bg-white dark:bg-surface-raised border border-[#E8E8EF] dark:border-line rounded-2xl p-5">
+            <div className="text-sm font-extrabold text-[#15131C] dark:text-content mb-2">About the role</div>
+            <p className="text-[13px] leading-relaxed font-medium text-[#4B4658] dark:text-content-muted m-0 min-h-[18px] whitespace-pre-wrap">
               {form.description || 'Your role description will appear here as you write it.'}
             </p>
             {liveReqs.length > 0 && (
               <>
-                <div className="text-[13px] font-extrabold text-[#15131C] mt-4 mb-2.5">What you&apos;re looking for</div>
+                <div className="text-[13px] font-extrabold text-[#15131C] dark:text-content mt-4 mb-2.5">What you&apos;re looking for</div>
                 <div className="flex flex-col gap-2">
                   {liveReqs.slice(0, 6).map((r, i) => (
                     <div key={i} className="flex gap-[9px] items-start">
-                      <span className="w-[17px] h-[17px] rounded-[5px] bg-[#F4F0FE] flex items-center justify-center text-[#5A2DD4] shrink-0 mt-0.5">
+                      <span className="w-[17px] h-[17px] rounded-[5px] bg-[#F4F0FE] dark:bg-[#241d38] flex items-center justify-center text-[#5A2DD4] dark:text-[#b9a4f7] shrink-0 mt-0.5">
                         <FaCheck className="w-2.5 h-2.5" />
                       </span>
-                      <span className="text-[12.5px] leading-snug font-medium text-[#4B4658]">{r}</span>
+                      <span className="text-[12.5px] leading-snug font-medium text-[#4B4658] dark:text-content-muted">{r}</span>
                     </div>
                   ))}
                 </div>
@@ -596,7 +596,7 @@ export default function PostJobPage() {
           </div>
 
           {form.salary_visible && (
-            <p className="text-[11px] font-medium text-[#B6B0C0] mt-3 text-center">
+            <p className="text-[11px] font-medium text-[#B6B0C0] dark:text-content-subtle mt-3 text-center">
               Salary shown publicly · {getCurrencySymbol(form.salary_currency)} {form.salary_currency}
             </p>
           )}

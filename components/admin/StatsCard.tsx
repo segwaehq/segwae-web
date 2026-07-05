@@ -17,7 +17,7 @@ export default function StatsCard({ title, value, icon, color, href }: StatsCard
   const Content = (
     <>
       <div className="flex items-center justify-between mb-4">
-        <h3 className="font-spaceGrotesk font-semibold text-sm text-grey2">{title}</h3>
+        <h3 className="font-spaceGrotesk font-semibold text-sm text-grey2 dark:text-content-muted">{title}</h3>
         <div className={`w-12 h-12 rounded-full flex items-center justify-center ${colorClasses[color as keyof typeof colorClasses]}`}>
           {icon}
         </div>
@@ -28,11 +28,11 @@ export default function StatsCard({ title, value, icon, color, href }: StatsCard
 
   if (href) {
     return (
-      <a href={href} className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow block">
+      <a href={href} className="bg-white dark:bg-surface-raised rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow block">
         {Content}
       </a>
     )
   }
 
-  return <div className="bg-white rounded-2xl p-6 shadow-lg">{Content}</div>
+  return <div className="bg-white dark:bg-surface-raised rounded-2xl p-6 shadow-lg">{Content}</div>
 }

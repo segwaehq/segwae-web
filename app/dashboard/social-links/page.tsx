@@ -14,7 +14,7 @@ interface SocialLink {
 }
 
 const inputClass =
-  'w-full px-4 py-3 border border-[#E2E1EA] rounded-xl focus:outline-none focus:border-[#A98BE8] text-sm font-medium text-[#15131C] placeholder:text-[#9098A3] bg-white transition-colors'
+  'w-full px-4 py-3 border border-[#E2E1EA] dark:border-line rounded-xl focus:outline-none focus:border-[#A98BE8] dark:focus:border-[#6a4fb0] text-sm font-medium text-[#15131C] dark:text-content placeholder:text-[#9098A3] dark:placeholder:text-content-subtle bg-white dark:bg-surface-sunken transition-colors'
 
 export default function SocialLinksPage() {
   const [socialLinks, setSocialLinks] = useState<SocialLink[]>([])
@@ -146,11 +146,11 @@ export default function SocialLinksPage() {
   return (
     <div className="max-w-full">
       <div className="mb-8">
-        <p className="font-satoshi text-[12px] font-bold text-[#5A2DD4] uppercase tracking-[0.14em] mb-1.5">
+        <p className="font-satoshi text-[12px] font-bold text-[#5A2DD4] dark:text-[#b9a4f7] uppercase tracking-[0.14em] mb-1.5">
           Dashboard
         </p>
         <div className="flex items-center justify-between">
-          <h1 className="font-satoshi font-black tracking-[-0.02em] text-[26px] text-[#15131C]">Social links</h1>
+          <h1 className="font-satoshi font-black tracking-[-0.02em] text-[26px] text-[#15131C] dark:text-content">Social links</h1>
           <button
             onClick={openAddModal}
             className="flex items-center gap-2 px-4 py-2.5 bg-brand-gradient text-white rounded-xl font-satoshi font-bold text-sm shadow-[0_10px_24px_-6px_rgba(74,55,216,0.45)] hover:-translate-y-0.5 transition-transform cursor-pointer"
@@ -161,16 +161,16 @@ export default function SocialLinksPage() {
         </div>
       </div>
 
-      <div className="bg-white rounded-[18px] border border-[#E8E8EF] p-8">
+      <div className="bg-white dark:bg-surface-raised rounded-[18px] border border-[#E8E8EF] dark:border-line p-8">
         {socialLinks.length === 0 ? (
           <div className="text-center py-12">
-            <div className="w-14 h-14 rounded-2xl bg-[#F1F0F6] flex items-center justify-center mx-auto mb-4">
-              <FaIcons.FaLink className="w-6 h-6 text-[#9098A3]" />
+            <div className="w-14 h-14 rounded-2xl bg-[#F1F0F6] dark:bg-[#241d38] flex items-center justify-center mx-auto mb-4">
+              <FaIcons.FaLink className="w-6 h-6 text-[#9098A3] dark:text-content-subtle" />
             </div>
-            <h3 className="font-satoshi font-bold text-lg text-[#15131C] mb-1">
+            <h3 className="font-satoshi font-bold text-lg text-[#15131C] dark:text-content mb-1">
               No links yet
             </h3>
-            <p className="text-sm text-[#9098A3] mb-6">
+            <p className="text-sm text-[#9098A3] dark:text-content-subtle mb-6">
               Add your social profiles to let people find you online.
             </p>
             <button
@@ -188,7 +188,7 @@ export default function SocialLinksPage() {
               return (
                 <div
                   key={link.id}
-                  className="flex items-center gap-4 p-4 border border-[#E8E8EF] rounded-[14px] hover:border-[#C9BCF2] transition-colors group"
+                  className="flex items-center gap-4 p-4 border border-[#E8E8EF] dark:border-line rounded-[14px] hover:border-[#C9BCF2] dark:hover:border-[#4a3d78] transition-colors group"
                 >
                   <div
                     className="w-10 h-10 rounded-[11px] flex items-center justify-center shrink-0"
@@ -197,22 +197,22 @@ export default function SocialLinksPage() {
                     <Icon className="w-5 h-5" style={{ color: config.color }} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-satoshi font-bold text-[#15131C] text-sm">
+                    <p className="font-satoshi font-bold text-[#15131C] dark:text-content text-sm">
                       {config.name}
                     </p>
-                    <p className="text-xs text-[#9098A3] truncate mt-0.5">{link.url}</p>
+                    <p className="text-xs text-[#9098A3] dark:text-content-subtle truncate mt-0.5">{link.url}</p>
                   </div>
                   <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button
                       onClick={() => openEditModal(link)}
-                      className="p-2 text-[#9098A3] hover:text-[#15131C] hover:bg-[#F4F3F8] rounded-lg transition-colors cursor-pointer"
+                      className="p-2 text-[#9098A3] dark:text-content-subtle hover:text-[#15131C] dark:hover:text-content hover:bg-[#F4F3F8] dark:hover:bg-white/[0.06] rounded-lg transition-colors cursor-pointer"
                       title="Edit"
                     >
                       <FaPencil className="w-3.5 h-3.5" />
                     </button>
                     <button
                       onClick={() => handleDelete(link.id)}
-                      className="p-2 text-[#9098A3] hover:text-[#B6463C] hover:bg-[#FBEAE8] rounded-lg transition-colors cursor-pointer"
+                      className="p-2 text-[#9098A3] dark:text-content-subtle hover:text-[#B6463C] dark:hover:text-[#f2857b] hover:bg-[#FBEAE8] dark:hover:bg-[#2a1512] rounded-lg transition-colors cursor-pointer"
                       title="Delete"
                     >
                       <FaTrash className="w-3.5 h-3.5" />
@@ -227,15 +227,15 @@ export default function SocialLinksPage() {
 
       {/* Add/Edit Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-[#0F1115]/45 backdrop-blur-[2px] z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-[18px] shadow-2xl p-8 w-full max-w-sm animate-scaleIn">
+        <div className="fixed inset-0 bg-[#0F1115]/45 dark:bg-black/65 backdrop-blur-[2px] z-50 flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-surface-raised rounded-[18px] shadow-2xl p-8 w-full max-w-sm animate-scaleIn">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="font-satoshi font-black text-xl text-[#15131C]">
+              <h2 className="font-satoshi font-black text-xl text-[#15131C] dark:text-content">
                 {editingLink ? 'Edit link' : 'Add link'}
               </h2>
               <button
                 onClick={closeModal}
-                className="p-1.5 text-[#9098A3] hover:text-[#15131C] hover:bg-[#F4F3F8] rounded-lg transition-colors cursor-pointer"
+                className="p-1.5 text-[#9098A3] dark:text-content-subtle hover:text-[#15131C] dark:hover:text-content hover:bg-[#F4F3F8] dark:hover:bg-white/[0.06] rounded-lg transition-colors cursor-pointer"
               >
                 <FaXmark className="w-5 h-5" />
               </button>
@@ -243,7 +243,7 @@ export default function SocialLinksPage() {
 
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
-                <label htmlFor="platform" className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">
+                <label htmlFor="platform" className="block text-xs font-bold text-[#15131C] dark:text-content mb-1.5 font-satoshi">
                   Platform
                 </label>
                 <select
@@ -263,7 +263,7 @@ export default function SocialLinksPage() {
               </div>
 
               <div>
-                <label htmlFor="url" className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">
+                <label htmlFor="url" className="block text-xs font-bold text-[#15131C] dark:text-content mb-1.5 font-satoshi">
                   URL
                 </label>
                 <input
@@ -281,7 +281,7 @@ export default function SocialLinksPage() {
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="flex-1 py-3 border border-[#E2E1EA] text-[#6B6478] rounded-xl font-satoshi font-bold text-sm hover:border-[#B9B9C6] transition-colors cursor-pointer"
+                  className="flex-1 py-3 border border-[#E2E1EA] dark:border-line text-[#6B6478] dark:text-content-muted rounded-xl font-satoshi font-bold text-sm hover:border-[#B9B9C6] dark:hover:border-content-subtle transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>

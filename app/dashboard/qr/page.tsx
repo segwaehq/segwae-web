@@ -163,16 +163,16 @@ export default function QRCodePage() {
     return (
       <div className="max-w-full">
         <div className="mb-8">
-          <p className="font-satoshi text-[12px] font-bold text-[#5A2DD4] uppercase tracking-[0.14em] mb-1.5">
+          <p className="font-satoshi text-[12px] font-bold text-[#5A2DD4] dark:text-[#b9a4f7] uppercase tracking-[0.14em] mb-1.5">
             Dashboard
           </p>
-          <h1 className="font-satoshi font-black tracking-[-0.02em] text-[26px] text-[#15131C]">QR code</h1>
+          <h1 className="font-satoshi font-black tracking-[-0.02em] text-[26px] text-[#15131C] dark:text-content">QR code</h1>
         </div>
-        <div className="bg-white rounded-[18px] border border-[#E8E8EF] p-12 text-center">
-          <p className="text-[#9098A3] mb-4">
+        <div className="bg-white dark:bg-surface-raised rounded-[18px] border border-[#E8E8EF] dark:border-line p-12 text-center">
+          <p className="text-[#9098A3] dark:text-content-subtle mb-4">
             You need a username to generate a QR code.
           </p>
-          <a href="/dashboard/profile" className="font-satoshi text-sm font-bold text-[#5A2DD4] hover:opacity-70 transition-opacity">
+          <a href="/dashboard/profile" className="font-satoshi text-sm font-bold text-[#5A2DD4] dark:text-[#b9a4f7] hover:opacity-70 transition-opacity">
             Complete your profile →
           </a>
         </div>
@@ -185,17 +185,17 @@ export default function QRCodePage() {
   return (
     <div className="max-w-full">
       <div className="mb-8">
-        <p className="font-satoshi text-[12px] font-bold text-[#5A2DD4] uppercase tracking-[0.14em] mb-1.5">
+        <p className="font-satoshi text-[12px] font-bold text-[#5A2DD4] dark:text-[#b9a4f7] uppercase tracking-[0.14em] mb-1.5">
           Dashboard
         </p>
-        <h1 className="font-satoshi font-black tracking-[-0.02em] text-[26px] text-[#15131C]">QR code</h1>
+        <h1 className="font-satoshi font-black tracking-[-0.02em] text-[26px] text-[#15131C] dark:text-content">QR code</h1>
       </div>
 
-      <div className="bg-white rounded-[18px] border border-[#E8E8EF] p-8">
+      <div className="bg-white dark:bg-surface-raised rounded-[18px] border border-[#E8E8EF] dark:border-line p-8">
         <div className="flex flex-col lg:flex-row gap-10 items-start">
           {/* QR canvas */}
           <div className="flex flex-col items-center gap-4 shrink-0">
-            <div className="p-5 rounded-2xl border border-[#E8E8EF] bg-white shadow-sm">
+            <div className="p-5 rounded-2xl border border-[#E8E8EF] dark:border-line bg-white shadow-sm">
               <canvas
                 ref={canvasRef}
                 style={{ width: "220px", height: "220px" }}
@@ -214,21 +214,21 @@ export default function QRCodePage() {
           {/* Info */}
           <div className="flex-1 space-y-6">
             <div>
-              <p className="font-satoshi text-xs font-bold text-[#6B6478] uppercase tracking-[0.12em] mb-2">
+              <p className="font-satoshi text-xs font-bold text-[#6B6478] dark:text-content-muted uppercase tracking-[0.12em] mb-2">
                 Profile URL
               </p>
-              <div className="flex items-center gap-2 p-3.5 bg-[#F7F7F9] rounded-xl border border-[#E8E8EF]">
+              <div className="flex items-center gap-2 p-3.5 bg-[#F7F7F9] dark:bg-surface-sunken rounded-xl border border-[#E8E8EF] dark:border-line">
                 <a
                   href={profileUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 text-sm font-medium text-[#5A2DD4] hover:underline truncate"
+                  className="flex-1 text-sm font-medium text-[#5A2DD4] dark:text-[#b9a4f7] hover:underline truncate"
                 >
                   {profileUrl}
                 </a>
                 <button
                   onClick={handleCopyUrl}
-                  className="p-1.5 text-[#9098A3] hover:text-[#15131C] transition-colors shrink-0 cursor-pointer"
+                  className="p-1.5 text-[#9098A3] dark:text-content-subtle hover:text-[#15131C] dark:hover:text-content transition-colors shrink-0 cursor-pointer"
                   title="Copy"
                 >
                   <FaCopy className="w-4 h-4" />
@@ -237,7 +237,7 @@ export default function QRCodePage() {
                   href={profileUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-1.5 text-[#9098A3] hover:text-[#15131C] transition-colors shrink-0"
+                  className="p-1.5 text-[#9098A3] dark:text-content-subtle hover:text-[#15131C] dark:hover:text-content transition-colors shrink-0"
                   title="Open"
                 >
                   <FaArrowUpRightFromSquare className="w-4 h-4" />
@@ -254,7 +254,7 @@ export default function QRCodePage() {
               </ul>
             </div>
 
-            <p className="text-xs text-[#9098A3]">
+            <p className="text-xs text-[#9098A3] dark:text-content-subtle">
               Your QR code always points to your latest profile — no need to reprint when you update.
             </p>
           </div>

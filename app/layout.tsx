@@ -3,7 +3,8 @@ import "./globals.css";
 import localFont from 'next/font/local'
 import Script from "next/script";
 import LayoutWrapper from "@/components/LayoutWrapper";
-import { Toaster } from 'sonner';
+import ThemeProvider from "@/components/ThemeProvider";
+import ThemedToaster from "@/components/ThemedToaster";
 
 
 const satoshi = localFont({
@@ -94,7 +95,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${satoshi.variable}`}>
+    <html lang="en" className={`${satoshi.variable}`} suppressHydrationWarning>
       <head>
         {/* Google Consent Mode v2 — must run before any gtag calls */}
         <Script id="google-consent-mode" strategy="beforeInteractive">
@@ -160,21 +161,13 @@ export default function RootLayout({
         // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         className="font-openSans antialiased"
       >
-        <Toaster
-          position="top-right"
-          toastOptions={{
-            duration: 4000,
-            style: {
-              background: 'white',
-              color: '#1a1a1a',
-              border: '1px solid #e5e5e5',
-            },
-          }}
-        />
-        {/* <Header />
-        <main className="min-h-screen pt-16">{children}</main>
-        <Footer /> */}
-        <LayoutWrapper>{children}</LayoutWrapper>
+        <ThemeProvider>
+          <ThemedToaster />
+          {/* <Header />
+          <main className="min-h-screen pt-16">{children}</main>
+          <Footer /> */}
+          <LayoutWrapper>{children}</LayoutWrapper>
+        </ThemeProvider>
       </body>
     </html>
   );

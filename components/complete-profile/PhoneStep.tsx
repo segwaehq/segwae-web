@@ -38,16 +38,16 @@ export default function PhoneStep({ value, onUpdate, onNext }: PhoneStepProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-7">
       <div>
-        <h2 className="font-satoshi font-black text-[27px] tracking-[-0.03em] leading-[1.12] text-[#15131C] mb-1.5">
+        <h2 className="font-satoshi font-black text-[27px] tracking-[-0.03em] leading-[1.12] text-[#15131C] dark:text-content mb-1.5">
           Add your phone number
         </h2>
-        <p className="text-[15px] font-medium text-[#8B8499] leading-relaxed">
+        <p className="text-[15px] font-medium text-[#8B8499] dark:text-content-muted leading-relaxed">
           Helps people reach you directly from your profile. You can control visibility in settings.
         </p>
       </div>
 
       <div>
-        <label htmlFor="phone" className="block text-[13px] font-bold text-[#15131C] mb-1.5">
+        <label htmlFor="phone" className="block text-[13px] font-bold text-[#15131C] dark:text-content mb-1.5">
           Phone Number
         </label>
         <input
@@ -56,7 +56,7 @@ export default function PhoneStep({ value, onUpdate, onNext }: PhoneStepProps) {
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           placeholder="+234 800 000 0000"
-          className="w-full px-[15px] py-[13px] border border-[#E2E1EA] rounded-xl bg-white text-[14.5px] font-medium text-[#15131C] placeholder:text-[#B6B0C0] outline-none focus:border-[#A98BE8] transition-colors"
+          className="w-full px-[15px] py-[13px] border border-[#E2E1EA] dark:border-line rounded-xl bg-white dark:bg-surface-sunken text-[14.5px] font-medium text-[#15131C] dark:text-content placeholder:text-[#B6B0C0] dark:placeholder:text-content-subtle outline-none focus:border-[#A98BE8] dark:focus:border-[#6a4fb0] transition-colors"
           disabled={saving}
         />
         {error && <p className="mt-2 text-xs font-medium text-errorRed">{error}</p>}

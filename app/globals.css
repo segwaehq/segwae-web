@@ -1,14 +1,73 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&display=swap');
 @import "tailwindcss";
 
+/* Class-based dark mode: `dark:` utilities apply when a `.dark` ancestor exists.
+   next-themes toggles the `.dark` class on <html> (system default + manual override). */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
+  color-scheme: light;
+
   --background: #ffffff;
   --foreground: #111827;
+
+  /* ── Semantic theme tokens — LIGHT ──
+     These are the palette-agnostic surfaces/content roles that flip in dark mode.
+     Prefer these (bg-surface, text-content, border-line…) on any surface being
+     dark-mode-enabled, so a single token edit re-themes every page that uses it. */
+  --surface: #ffffff;          /* page background */
+  --surface-raised: #ffffff;   /* cards, panels, popovers */
+  --surface-sunken: #f9fafb;   /* insets, inputs, subtle section fills */
+  --content: #111827;          /* primary text */
+  --content-muted: #6b7280;    /* secondary text */
+  --content-subtle: #9098a3;   /* tertiary text, captions, placeholders */
+  --line: #e5e7eb;             /* borders, dividers */
+  --brand: #4f46e5;            /* violet brand accent */
+  --brand-strong: #5a2dd4;     /* deeper violet used across marketing UI */
+  --brand-soft: #f4f0fe;       /* tinted violet chip/background */
+  --accent: #d97706;           /* amber secondary accent */
+  --dot: #d6d6e0;              /* hero dot-grid (set via inline style) */
+}
+
+/* ── Semantic theme tokens — DARK (violet-tinted, not flat slate) ──
+   Surfaces carry a subtle cool-violet undertone so dark mode still reads as
+   "Segwae"; text is a soft off-white (not pure #fff) for comfortable long reads;
+   the brand violet lightens for AA contrast, amber warms up to pop on the dark. */
+.dark {
+  color-scheme: dark;
+
+  --background: #0e0c15;
+  --foreground: #edebf2;
+
+  --surface: #0e0c15;
+  --surface-raised: #17141f;
+  --surface-sunken: #131019;
+  --content: #edebf2;
+  --content-muted: #a8a2b8;
+  --content-subtle: #7a7488;
+  --line: #272233;
+  --brand: #8b7cf0;
+  --brand-strong: #a78bfa;
+  --brand-soft: #1e1830;
+  --accent: #f59e0b;
+  --dot: #2a2440;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
+  /* Semantic theme tokens → utilities (bg-surface, text-content, border-line…). */
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-content: var(--content);
+  --color-content-muted: var(--content-muted);
+  --color-content-subtle: var(--content-subtle);
+  --color-line: var(--line);
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-soft: var(--brand-soft);
 
   --font-satoshi: "Satoshi", sans-serif;
   --font-spaceGrotesk: "Satoshi", sans-serif;
@@ -52,7 +111,8 @@ html {
 }
 
 body {
-  @apply bg-white text-grey1;
+  background-color: var(--surface);
+  color: var(--content);
 }
 
 @keyframes fadeIn {
@@ -203,6 +263,28 @@ body {
   height: 0;
   pointer-events: none;
 }
+
+/* ── Blog article typography — DARK overrides (mirrors the light hex above). ── */
+.dark .prose-blog { color: #b0aabf; }
+.dark .prose-blog h2,
+.dark .prose-blog h3 { color: #f0eef5; }
+.dark .prose-blog p { color: #b0aabf; }
+.dark .prose-blog strong { color: #f0eef5; }
+.dark .prose-blog a { color: #a78bfa; }
+.dark .prose-blog ul,
+.dark .prose-blog ol { color: #b0aabf; }
+.dark .prose-blog li::marker { color: #7c5af6; }
+.dark .prose-blog blockquote {
+  border-left-color: #4a3d78;
+  background: #1a1626;
+  color: #b0aabf;
+}
+.dark .prose-blog code {
+  background: #201b2e;
+  color: #c4b3f5;
+}
+.dark .prose-blog pre { background: #0a0810; }
+.dark .prose-blog hr { border-top-color: #272233; }
 
 @keyframes brandPulse {
   0%, 100% { opacity: 1; transform: scale(1); }

@@ -75,24 +75,24 @@ export default function UsersClient({ initialUsers }: Props) {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <div className="bg-white rounded-2xl p-6 shadow-lg">
-          <h3 className="font-spaceGrotesk font-semibold text-sm text-grey2 mb-2">Total Users</h3>
+        <div className="bg-white dark:bg-surface-raised rounded-2xl p-6 shadow-lg">
+          <h3 className="font-spaceGrotesk font-semibold text-sm text-grey2 dark:text-content-muted mb-2">Total Users</h3>
           <p className="font-satoshi font-black text-4xl text-mainPurple">{users.length}</p>
         </div>
-        <div className="bg-white rounded-2xl p-6 shadow-lg">
-          <h3 className="font-spaceGrotesk font-semibold text-sm text-grey2 mb-2">
+        <div className="bg-white dark:bg-surface-raised rounded-2xl p-6 shadow-lg">
+          <h3 className="font-spaceGrotesk font-semibold text-sm text-grey2 dark:text-content-muted mb-2">
             Premium Users
           </h3>
           <p className="font-satoshi font-black text-4xl text-blue">{premiumCount}</p>
         </div>
-        <div className="bg-white rounded-2xl p-6 shadow-lg">
-          <h3 className="font-spaceGrotesk font-semibold text-sm text-grey2 mb-2">Free Users</h3>
+        <div className="bg-white dark:bg-surface-raised rounded-2xl p-6 shadow-lg">
+          <h3 className="font-spaceGrotesk font-semibold text-sm text-grey2 dark:text-content-muted mb-2">Free Users</h3>
           <p className="font-satoshi font-black text-4xl text-successGreen">{freeCount}</p>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-2xl p-6 shadow-lg mb-6">
+      <div className="bg-white dark:bg-surface-raised rounded-2xl p-6 shadow-lg mb-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block font-spaceGrotesk font-semibold mb-2">Search</label>
@@ -101,7 +101,7 @@ export default function UsersClient({ initialUsers }: Props) {
               placeholder="Search by name, email, or username..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg border border-grey4 focus:border-mainPurple focus:ring-2 focus:ring-mainPurple/20 outline-none transition-all font-openSans"
+              className="w-full px-4 py-3 rounded-lg border border-grey4 dark:border-line dark:bg-surface-sunken focus:border-mainPurple dark:focus:border-[#6a4fb0] focus:ring-2 focus:ring-mainPurple/20 outline-none transition-all font-openSans dark:text-content dark:placeholder:text-content-subtle"
             />
           </div>
           <div>
@@ -111,7 +111,7 @@ export default function UsersClient({ initialUsers }: Props) {
             <select
               value={tierFilter}
               onChange={(e) => setTierFilter(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg border border-grey4 focus:border-mainPurple focus:ring-2 focus:ring-mainPurple/20 outline-none transition-all font-openSans"
+              className="w-full px-4 py-3 rounded-lg border border-grey4 dark:border-line dark:bg-surface-sunken focus:border-mainPurple dark:focus:border-[#6a4fb0] focus:ring-2 focus:ring-mainPurple/20 outline-none transition-all font-openSans dark:text-content dark:placeholder:text-content-subtle"
             >
               <option value="all">All Tiers</option>
               <option value="free">Free</option>
@@ -119,21 +119,21 @@ export default function UsersClient({ initialUsers }: Props) {
             </select>
           </div>
         </div>
-        <div className="mt-4 text-sm text-grey2 font-openSans">
+        <div className="mt-4 text-sm text-grey2 dark:text-content-muted font-openSans">
           Showing {filteredUsers.length} of {users.length} users
         </div>
       </div>
 
       {/* Users List */}
       {filteredUsers.length === 0 ? (
-        <div className="bg-white rounded-2xl p-12 text-center shadow-lg">
-          <p className="font-spaceGrotesk text-xl text-grey2">No users found</p>
+        <div className="bg-white dark:bg-surface-raised rounded-2xl p-12 text-center shadow-lg">
+          <p className="font-spaceGrotesk text-xl text-grey2 dark:text-content-muted">No users found</p>
         </div>
       ) : (
-        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+        <div className="bg-white dark:bg-surface-raised rounded-2xl shadow-lg overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-grey6 border-b border-grey4">
+              <thead className="bg-grey6 dark:bg-white/[0.03] border-b border-grey4 dark:border-line">
                 <tr>
                   <th className="px-6 py-4 text-left font-spaceGrotesk font-semibold">Name</th>
                   <th className="px-6 py-4 text-left font-spaceGrotesk font-semibold">Email</th>
@@ -147,7 +147,7 @@ export default function UsersClient({ initialUsers }: Props) {
               </thead>
               <tbody>
                 {filteredUsers.map((user, index) => (
-                  <tr key={user.id} className={index % 2 === 0 ? 'bg-white' : 'bg-grey6/50'}>
+                  <tr key={user.id} className={index % 2 === 0 ? 'bg-white dark:bg-surface-raised' : 'bg-grey6/50 dark:bg-white/[0.02]'}>
                     <td className="px-6 py-4 font-openSans">{user.name || 'N/A'}</td>
                     <td className="px-6 py-4 font-openSans">{user.email}</td>
                     <td className="px-6 py-4 font-openSans">
@@ -158,16 +158,16 @@ export default function UsersClient({ initialUsers }: Props) {
                         className={`px-3 py-1 rounded-full text-xs font-spaceGrotesk font-semibold ${
                           user.subscription_tier === 'premium'
                             ? 'bg-mainPurple/10 text-mainPurple'
-                            : 'bg-grey3/10 text-grey3'
+                            : 'bg-grey3/10 dark:bg-white/[0.06] text-grey3 dark:text-content-subtle'
                         }`}
                       >
                         {user.subscription_tier?.toUpperCase() || 'FREE'}
                       </span>
                     </td>
-                    {/* <td className="px-6 py-4 font-openSans text-grey2">
+                    {/* <td className="px-6 py-4 font-openSans text-grey2 dark:text-content-muted">
                       {user.connection_count || 0}
                     </td> */}
-                    <td className="px-6 py-4 font-openSans text-grey2">
+                    <td className="px-6 py-4 font-openSans text-grey2 dark:text-content-muted">
                       {new Date(user.created_at).toLocaleDateString()}
                     </td>
                   </tr>

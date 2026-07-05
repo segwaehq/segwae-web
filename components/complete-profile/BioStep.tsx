@@ -42,16 +42,16 @@ export default function BioStep({ value, onUpdate, onNext, onBack }: BioStepProp
   return (
     <form onSubmit={handleSubmit} className="space-y-7">
       <div>
-        <h2 className="font-satoshi font-black text-[27px] tracking-[-0.03em] leading-[1.12] text-[#15131C] mb-1.5">
+        <h2 className="font-satoshi font-black text-[27px] tracking-[-0.03em] leading-[1.12] text-[#15131C] dark:text-content mb-1.5">
           Tell us about yourself
         </h2>
-        <p className="text-[15px] font-medium text-[#8B8499] leading-relaxed">
+        <p className="text-[15px] font-medium text-[#8B8499] dark:text-content-muted leading-relaxed">
           Write a short bio that describes who you are and what you do.
         </p>
       </div>
 
       <div>
-        <label htmlFor="bio" className="block text-[13px] font-bold text-[#15131C] mb-1.5">
+        <label htmlFor="bio" className="block text-[13px] font-bold text-[#15131C] dark:text-content mb-1.5">
           Bio
         </label>
         <textarea
@@ -60,18 +60,18 @@ export default function BioStep({ value, onUpdate, onNext, onBack }: BioStepProp
           onChange={(e) => { setBio(e.target.value); onUpdate(e.target.value) }}
           placeholder="I'm a passionate professional who loves…"
           rows={5}
-          className="w-full px-[15px] py-[13px] border border-[#E2E1EA] rounded-xl bg-white text-[14.5px] font-medium text-[#15131C] placeholder:text-[#B6B0C0] outline-none focus:border-[#A98BE8] transition-colors resize-none leading-relaxed"
+          className="w-full px-[15px] py-[13px] border border-[#E2E1EA] dark:border-line rounded-xl bg-white dark:bg-surface-sunken text-[14.5px] font-medium text-[#15131C] dark:text-content placeholder:text-[#B6B0C0] dark:placeholder:text-content-subtle outline-none focus:border-[#A98BE8] dark:focus:border-[#6a4fb0] transition-colors resize-none leading-relaxed"
           disabled={saving}
         />
         <div className="flex justify-between items-center mt-2">
           {error ? (
             <p className="text-xs font-medium text-errorRed">{error}</p>
           ) : (
-            <p className={`text-xs font-medium ${isSuggested ? 'text-successGreen' : 'text-[#9098A3]'}`}>
+            <p className={`text-xs font-medium ${isSuggested ? 'text-successGreen' : 'text-[#9098A3] dark:text-content-subtle'}`}>
               {isSuggested ? 'Looks great!' : bio.length > 0 ? `${remaining} more characters suggested` : 'Optional'}
             </p>
           )}
-          <span className={`text-xs font-medium tabular-nums ${isSuggested ? 'text-successGreen' : 'text-[#9098A3]'}`}>
+          <span className={`text-xs font-medium tabular-nums ${isSuggested ? 'text-successGreen' : 'text-[#9098A3] dark:text-content-subtle'}`}>
             {bio.length} / {SUGGESTED_MIN}
           </span>
         </div>
@@ -79,7 +79,7 @@ export default function BioStep({ value, onUpdate, onNext, onBack }: BioStepProp
 
       <div className="flex gap-3">
         <button type="button" onClick={onBack} disabled={saving}
-          className="flex-1 py-3.5 rounded-xl border border-[#E2E1EA] bg-white text-[14px] font-bold text-[#374151] hover:border-[#B9B9C6] transition-colors disabled:opacity-50">
+          className="flex-1 py-3.5 rounded-xl border border-[#E2E1EA] dark:border-line bg-white dark:bg-surface-raised text-[14px] font-bold text-[#374151] dark:text-content-muted hover:border-[#B9B9C6] dark:hover:border-content-subtle transition-colors disabled:opacity-50">
           Back
         </button>
         <button type="submit" disabled={saving}

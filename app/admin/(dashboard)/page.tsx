@@ -82,19 +82,19 @@ export default async function AdminDashboard() {
 
       {/* Additional Stats */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
-        <div className="bg-white rounded-2xl p-6 shadow-lg">
+        <div className="bg-white dark:bg-surface-raised rounded-2xl p-6 shadow-lg">
           <h3 className="font-spaceGrotesk font-semibold mb-4">Quick Stats</h3>
           <div className="space-y-3">
             <div className="flex justify-between">
-              <span className="text-grey2 font-openSans">Total Messages:</span>
+              <span className="text-grey2 dark:text-content-muted font-openSans">Total Messages:</span>
               <span className="font-spaceGrotesk font-semibold">{totalMessages || 0}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-grey2 font-openSans">Bug Reports:</span>
+              <span className="text-grey2 dark:text-content-muted font-openSans">Bug Reports:</span>
               <span className="font-spaceGrotesk font-semibold">{totalBugReports || 0}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-grey2 font-openSans">Pending Orders:</span>
+              <span className="text-grey2 dark:text-content-muted font-openSans">Pending Orders:</span>
               <span className="font-spaceGrotesk font-semibold">
                 {totalOrders || 0}
               </span>
@@ -102,19 +102,19 @@ export default async function AdminDashboard() {
           </div>
         </div>
 
-        <div className="lg:col-span-2 bg-white rounded-2xl p-6 shadow-lg">
+        <div className="lg:col-span-2 bg-white dark:bg-surface-raised rounded-2xl p-6 shadow-lg">
           <h3 className="font-spaceGrotesk font-semibold mb-4">Recent Contact Messages</h3>
           {!recentMessages || recentMessages.length === 0 ? (
-            <p className="text-grey3 font-openSans">No messages yet</p>
+            <p className="text-grey3 dark:text-content-subtle font-openSans">No messages yet</p>
           ) : (
             <div className="space-y-3">
               {recentMessages.map((msg: ContactMessage) => (
-                <div key={msg.id} className="flex justify-between items-start border-b border-grey4 pb-3 last:border-0">
+                <div key={msg.id} className="flex justify-between items-start border-b border-grey4 dark:border-line pb-3 last:border-0">
                   <div className="flex-1">
                     <p className="font-spaceGrotesk font-semibold">{msg.name}</p>
-                    <p className="text-sm text-grey2 font-openSans truncate">{msg.subject}</p>
+                    <p className="text-sm text-grey2 dark:text-content-muted font-openSans truncate">{msg.subject}</p>
                   </div>
-                  <span className="text-xs text-grey3 font-openSans">
+                  <span className="text-xs text-grey3 dark:text-content-subtle font-openSans">
                     {new Date(msg.created_at).toLocaleDateString()}
                   </span>
                 </div>

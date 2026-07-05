@@ -22,7 +22,7 @@ export default async function StorePage() {
   const products = await getProducts()
 
   return (
-    <div className="min-h-screen bg-[#F7F7F9]">
+    <div className="min-h-screen bg-[#F7F7F9] dark:bg-surface">
 
       {/* ── Hero ────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden bg-[#0F1115] px-6 pt-28 pb-20 md:pt-32 md:pb-28">
@@ -108,23 +108,23 @@ export default async function StorePage() {
       <section id="collection" className="px-6 py-20 md:py-24 scroll-mt-24">
         <div className="max-w-6xl mx-auto">
           <div className="max-w-xl mb-12">
-            <p className="font-satoshi text-[12px] font-bold tracking-[0.14em] uppercase text-[#5A2DD4] mb-3">
+            <p className="font-satoshi text-[12px] font-bold tracking-[0.14em] uppercase text-[#5A2DD4] dark:text-[#b9a4f7] mb-3">
               The collection
             </p>
-            <h2 className="font-satoshi font-black text-[#15131C] tracking-[-0.03em] leading-[1.1] text-[clamp(1.9rem,3.5vw,2.4rem)]">
+            <h2 className="font-satoshi font-black text-[#15131C] dark:text-content tracking-[-0.03em] leading-[1.1] text-[clamp(1.9rem,3.5vw,2.4rem)]">
               Pick your card.
             </h2>
-            <p className="text-[#6B6478] text-base leading-relaxed font-medium mt-3">
+            <p className="text-[#6B6478] dark:text-content-muted text-base leading-relaxed font-medium mt-3">
               Every card links straight to your Segwae profile. Choose a style and order it right here — we&apos;ll reach out to confirm the details and delivery.
             </p>
           </div>
 
           {products.length === 0 ? (
-            <div className="bg-white border border-[#E8E8EF] rounded-[20px] text-center py-20 px-6">
-              <p className="font-satoshi font-bold text-[#15131C] text-lg mb-1">
+            <div className="bg-white dark:bg-surface-raised border border-[#E8E8EF] dark:border-line rounded-[20px] text-center py-20 px-6">
+              <p className="font-satoshi font-bold text-[#15131C] dark:text-content text-lg mb-1">
                 Nothing in the store just yet
               </p>
-              <p className="text-[#9098A3] text-sm font-medium">
+              <p className="text-[#9098A3] dark:text-content-subtle text-sm font-medium">
                 New cards are on the way — check back soon.
               </p>
             </div>

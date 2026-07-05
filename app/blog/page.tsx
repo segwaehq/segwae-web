@@ -43,7 +43,7 @@ function Pagination({
         href={buildPageUrl(category, currentPage - 1)}
         aria-disabled={currentPage === 1}
         className={`font-satoshi rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
-          currentPage === 1 ? 'pointer-events-none text-grey4' : 'text-grey2 hover:bg-grey5'
+          currentPage === 1 ? 'pointer-events-none text-grey4 dark:text-line' : 'text-grey2 dark:text-content-muted hover:bg-grey5 dark:hover:bg-surface-sunken'
         }`}
       >
         ← Prev
@@ -53,7 +53,7 @@ function Pagination({
           key={p}
           href={buildPageUrl(category, p)}
           className={`font-satoshi flex h-9 w-9 items-center justify-center rounded-lg text-sm font-semibold transition-colors ${
-            p === currentPage ? 'bg-brand-gradient text-white' : 'text-grey2 hover:bg-grey5'
+            p === currentPage ? 'bg-brand-gradient text-white' : 'text-grey2 dark:text-content-muted hover:bg-grey5 dark:hover:bg-surface-sunken'
           }`}
         >
           {p}
@@ -63,7 +63,7 @@ function Pagination({
         href={buildPageUrl(category, currentPage + 1)}
         aria-disabled={currentPage === totalPages}
         className={`font-satoshi rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
-          currentPage === totalPages ? 'pointer-events-none text-grey4' : 'text-grey2 hover:bg-grey5'
+          currentPage === totalPages ? 'pointer-events-none text-grey4 dark:text-line' : 'text-grey2 dark:text-content-muted hover:bg-grey5 dark:hover:bg-surface-sunken'
         }`}
       >
         Next →
@@ -85,7 +85,7 @@ export default async function BlogPage({
   const totalPages = Math.ceil(total / BLOG_PAGE_SIZE)
 
   return (
-    <div className="min-h-screen bg-[#FAFAFB]">
+    <div className="min-h-screen bg-[#FAFAFB] dark:bg-surface">
       {/* ─── Hero ───────────────────────────────────────────────────────── */}
       <div className="relative overflow-hidden bg-[#0F1115]">
         <div
@@ -153,14 +153,14 @@ export default async function BlogPage({
       {/* ─── Posts ──────────────────────────────────────────────────────── */}
       <div className="mx-auto max-w-[1100px] px-6 py-9">
         {posts.length === 0 ? (
-          <div className="flex flex-col items-center gap-3.5 rounded-[18px] border border-[#E8E8EF] bg-white py-20">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#F4F0FE]">
-              <FaPenNib className="h-5 w-5 text-[#5A2DD4]" />
+          <div className="flex flex-col items-center gap-3.5 rounded-[18px] border border-[#E8E8EF] dark:border-line bg-white dark:bg-surface-raised py-20">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#F4F0FE] dark:bg-[#241d38]">
+              <FaPenNib className="h-5 w-5 text-[#5A2DD4] dark:text-[#b9a4f7]" />
             </div>
-            <p className="font-satoshi text-lg font-extrabold text-[#15131C]">
+            <p className="font-satoshi text-lg font-extrabold text-[#15131C] dark:text-content">
               {category ? `Nothing in ${category} yet` : 'No articles yet'}
             </p>
-            <p className="font-openSans max-w-[320px] text-center text-sm font-medium text-[#9098A3]">
+            <p className="font-openSans max-w-[320px] text-center text-sm font-medium text-[#9098A3] dark:text-content-subtle">
               {category
                 ? 'Try another category — new pieces are published regularly.'
                 : 'New guides are on the way. Check back soon.'}

@@ -27,9 +27,9 @@ const JOB_TYPE_LABELS: Record<string, string> = {
   full_time: 'Full-time', part_time: 'Part-time', contract: 'Contract', internship: 'Internship',
 }
 const WORK_MODE_STYLES: Record<string, string> = {
-  remote: 'text-[#16895E] bg-[#E7F6EF]',
-  onsite: 'text-[#1E5BBF] bg-[#E8EFFB]',
-  hybrid: 'text-[#5A2DD4] bg-[#F1ECFD]',
+  remote: 'text-[#16895E] bg-[#E7F6EF] dark:text-[#4ade9e] dark:bg-[#12271e]',
+  onsite: 'text-[#1E5BBF] bg-[#E8EFFB] dark:text-[#7fb0f5] dark:bg-[#13203a]',
+  hybrid: 'text-[#5A2DD4] bg-[#F1ECFD] dark:text-[#b9a4f7] dark:bg-[#221b36]',
 }
 const WORK_MODE_LABELS: Record<string, string> = { remote: 'Remote', onsite: 'On-site', hybrid: 'Hybrid' }
 
@@ -46,48 +46,48 @@ function timeAgo(dateStr: string) {
 function JobCard({ job }: { job: Job }) {
   const company = job.companies
   const salary = job.salary_visible ? formatSalary(job.salary_min, job.salary_max, job.salary_currency) : null
-  const modeStyle = WORK_MODE_STYLES[job.work_mode] ?? 'text-grey2 bg-grey5'
+  const modeStyle = WORK_MODE_STYLES[job.work_mode] ?? 'text-grey2 bg-grey5 dark:text-content-muted dark:bg-surface-sunken'
   const modeLabel = WORK_MODE_LABELS[job.work_mode] ?? job.work_mode
 
   return (
     <Link href={`/jobs/${job.id}`} className="block group">
-      <div className="bg-white rounded-2xl border border-[#E8E8EF] p-[22px] hover:border-[#C9BCF2] hover:shadow-[0_16px_34px_-18px_rgba(74,55,216,0.45)] hover:-translate-y-[3px] transition-all duration-200">
+      <div className="bg-white dark:bg-surface-raised rounded-2xl border border-[#E8E8EF] dark:border-line p-[22px] hover:border-[#C9BCF2] dark:hover:border-[#4a3d78] hover:shadow-[0_16px_34px_-18px_rgba(74,55,216,0.45)] dark:hover:shadow-[0_16px_34px_-18px_rgba(124,90,246,0.5)] hover:-translate-y-[3px] transition-all duration-200">
         <div className="flex items-start gap-3.5">
-          <div className="w-12 h-12 rounded-[13px] overflow-hidden bg-[#F1F0F6] flex items-center justify-center shrink-0">
+          <div className="w-12 h-12 rounded-[13px] overflow-hidden bg-[#F1F0F6] dark:bg-[#241d38] flex items-center justify-center shrink-0">
             {company?.logo_url ? (
               <Image src={company.logo_url} alt={company.name} width={48} height={48} className="object-cover w-full h-full" />
             ) : (
-              <FaBuilding className="w-5 h-5 text-[#5A2DD4]" />
+              <FaBuilding className="w-5 h-5 text-[#5A2DD4] dark:text-[#b9a4f7]" />
             )}
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-3">
-              <p className="font-satoshi font-bold text-[15.5px] text-[#15131C] group-hover:text-[#5A2DD4] transition-colors leading-snug">
+              <p className="font-satoshi font-bold text-[15.5px] text-[#15131C] dark:text-content group-hover:text-[#5A2DD4] dark:group-hover:text-[#b9a4f7] transition-colors leading-snug">
                 {job.title}
               </p>
               {job.posting_mode === 'external' ? (
-                <span className="flex items-center gap-1 text-[10px] font-satoshi font-bold px-2 py-0.5 rounded-md text-[#16895E] bg-[#E7F6EF] shrink-0">
+                <span className="flex items-center gap-1 text-[10px] font-satoshi font-bold px-2 py-0.5 rounded-md text-[#16895E] bg-[#E7F6EF] dark:text-[#4ade9e] dark:bg-[#12271e] shrink-0">
                   <FaCircleCheck className="w-2.5 h-2.5" />
                   Verified
                 </span>
               ) : (
-                <span className="flex items-center gap-1 text-[10px] font-satoshi font-bold px-2 py-0.5 rounded-md text-[#5A2DD4] bg-[#F1ECFD] shrink-0">
+                <span className="flex items-center gap-1 text-[10px] font-satoshi font-bold px-2 py-0.5 rounded-md text-[#5A2DD4] bg-[#F1ECFD] dark:text-[#b9a4f7] dark:bg-[#221b36] shrink-0">
                   <FaBolt className="w-2.5 h-2.5" />
                   Direct
                 </span>
               )}
             </div>
-            <p className="font-openSans text-[13px] font-medium text-[#9098A3] mt-0.5">{company?.name ?? job.company_name ?? '—'}</p>
+            <p className="font-openSans text-[13px] font-medium text-[#9098A3] dark:text-content-subtle mt-0.5">{company?.name ?? job.company_name ?? '—'}</p>
           </div>
         </div>
 
         <div className="flex items-center gap-2 mt-4 flex-wrap">
           <span className={`text-[10px] font-satoshi font-bold px-2.5 py-[3px] rounded-md ${modeStyle}`}>{modeLabel}</span>
-          <span className="text-[10px] font-satoshi font-bold px-2.5 py-[3px] rounded-md text-grey3 bg-[#F3F3F7]">
+          <span className="text-[10px] font-satoshi font-bold px-2.5 py-[3px] rounded-md text-grey3 dark:text-content-muted bg-[#F3F3F7] dark:bg-white/[0.06]">
             {JOB_TYPE_LABELS[job.job_type]}
           </span>
           {job.location && (
-            <span className="flex items-center gap-1 text-xs font-openSans font-medium text-[#9098A3]">
+            <span className="flex items-center gap-1 text-xs font-openSans font-medium text-[#9098A3] dark:text-content-subtle">
               <FaLocationDot className="w-3 h-3" /> {job.location}
             </span>
           )}
@@ -96,16 +96,16 @@ function JobCard({ job }: { job: Job }) {
         {job.tags && job.tags.length > 0 && (
           <div className="flex gap-1.5 mt-3 flex-wrap">
             {job.tags.slice(0, 4).map((tag) => (
-              <span key={tag} className="text-[11px] font-openSans font-medium text-grey3 bg-[#F6F5FA] px-2.5 py-1 rounded-md">{tag}</span>
+              <span key={tag} className="text-[11px] font-openSans font-medium text-grey3 dark:text-content-muted bg-[#F6F5FA] dark:bg-white/[0.06] px-2.5 py-1 rounded-md">{tag}</span>
             ))}
           </div>
         )}
 
-        <div className="flex items-center justify-between mt-4 pt-[15px] border-t border-[#F1F1F5]">
+        <div className="flex items-center justify-between mt-4 pt-[15px] border-t border-[#F1F1F5] dark:border-white/[0.06]">
           <div className="flex items-center gap-3">
-            {salary && <span className="font-satoshi font-extrabold text-[13px] text-[#15131C]">{salary}</span>}
+            {salary && <span className="font-satoshi font-extrabold text-[13px] text-[#15131C] dark:text-content">{salary}</span>}
             {job.application_deadline && (
-              <span className="flex items-center gap-1 text-xs font-openSans text-[#9098A3]">
+              <span className="flex items-center gap-1 text-xs font-openSans text-[#9098A3] dark:text-content-subtle">
                 <FaClock className="w-3 h-3" />
                 {new Date(job.application_deadline).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
               </span>
@@ -113,11 +113,11 @@ function JobCard({ job }: { job: Job }) {
           </div>
           <div className="flex items-center gap-3">
             {job.posting_mode === 'internal' && (
-              <span className="flex items-center gap-1 text-xs font-openSans text-[#9098A3]">
+              <span className="flex items-center gap-1 text-xs font-openSans text-[#9098A3] dark:text-content-subtle">
                 <FaUsers className="w-3 h-3" /> {job.application_count ?? 0} applied
               </span>
             )}
-            <span className="text-xs font-openSans text-[#9098A3]">{timeAgo(job.created_at)}</span>
+            <span className="text-xs font-openSans text-[#9098A3] dark:text-content-subtle">{timeAgo(job.created_at)}</span>
           </div>
         </div>
       </div>
@@ -168,8 +168,8 @@ function PaginationControls({
         aria-disabled={currentPage === 1}
         className={`px-3 py-2 rounded-lg font-satoshi font-semibold text-sm transition-colors ${
           currentPage === 1
-            ? 'pointer-events-none text-grey4'
-            : 'text-grey2 hover:bg-grey5'
+            ? 'pointer-events-none text-grey4 dark:text-line'
+            : 'text-grey2 dark:text-content-muted hover:bg-grey5 dark:hover:bg-surface-sunken'
         }`}
       >
         ← Prev
@@ -177,7 +177,7 @@ function PaginationControls({
 
       {pages.map((p, i) =>
         p === 'ellipsis' ? (
-          <span key={`e${i}`} className="px-2 text-grey3 font-openSans text-sm select-none">…</span>
+          <span key={`e${i}`} className="px-2 text-grey3 dark:text-content-muted font-openSans text-sm select-none">…</span>
         ) : (
           <Link
             key={p}
@@ -185,7 +185,7 @@ function PaginationControls({
             className={`w-9 h-9 rounded-lg flex items-center justify-center font-satoshi font-semibold text-sm transition-colors ${
               p === currentPage
                 ? 'bg-brand-gradient text-white'
-                : 'text-grey2 hover:bg-grey5'
+                : 'text-grey2 dark:text-content-muted hover:bg-grey5 dark:hover:bg-surface-sunken'
             }`}
           >
             {p}
@@ -198,8 +198,8 @@ function PaginationControls({
         aria-disabled={currentPage === totalPages}
         className={`px-3 py-2 rounded-lg font-satoshi font-semibold text-sm transition-colors ${
           currentPage === totalPages
-            ? 'pointer-events-none text-grey4'
-            : 'text-grey2 hover:bg-grey5'
+            ? 'pointer-events-none text-grey4 dark:text-line'
+            : 'text-grey2 dark:text-content-muted hover:bg-grey5 dark:hover:bg-surface-sunken'
         }`}
       >
         Next →
@@ -222,7 +222,7 @@ export default async function JobsPage({
   const hasFilters = !!(search || job_type || work_mode)
 
   return (
-    <div className="min-h-screen bg-[#FAFAFB]">
+    <div className="min-h-screen bg-[#FAFAFB] dark:bg-surface">
       {/* ─── Header ─────────────────────────────────────────────────────── */}
       <div className="relative bg-[#0F1115] overflow-hidden">
         <div
@@ -262,38 +262,38 @@ export default async function JobsPage({
       {/* ─── Results ─────────────────────────────────────────────────────── */}
       <div className="max-w-[1100px] mx-auto px-6 py-7">
         {/* ─── How we verify ───────────────────────────────────────────── */}
-        <div className="bg-white rounded-2xl border border-[#E8E8EF] p-5 sm:px-[22px] sm:py-5 mb-6">
+        <div className="bg-white dark:bg-surface-raised rounded-2xl border border-[#E8E8EF] dark:border-line p-5 sm:px-[22px] sm:py-5 mb-6">
           <div className="flex flex-col lg:flex-row lg:items-center gap-5 lg:gap-7">
             <div className="flex items-center gap-3.5 lg:shrink-0">
-              <div className="w-11 h-11 rounded-xl bg-[#E7F6EF] flex items-center justify-center shrink-0">
-                <FaShieldHalved className="w-[19px] h-[19px] text-[#16895E]" />
+              <div className="w-11 h-11 rounded-xl bg-[#E7F6EF] dark:bg-[#12271e] flex items-center justify-center shrink-0">
+                <FaShieldHalved className="w-[19px] h-[19px] text-[#16895E] dark:text-[#4ade9e]" />
               </div>
               <div>
-                <p className="font-satoshi font-extrabold text-[15.5px] text-[#15131C] leading-tight tracking-[-0.01em]">
+                <p className="font-satoshi font-extrabold text-[15.5px] text-[#15131C] dark:text-content leading-tight tracking-[-0.01em]">
                   No ghost jobs.
                 </p>
-                <p className="font-openSans text-[12.5px] font-medium text-[#9098A3] leading-snug mt-0.5">
+                <p className="font-openSans text-[12.5px] font-medium text-[#9098A3] dark:text-content-subtle leading-snug mt-0.5">
                   Every listing shows exactly where it came from.
                 </p>
               </div>
             </div>
 
-            <div className="hidden lg:block w-px h-12 bg-[#ECECF1] shrink-0" />
+            <div className="hidden lg:block w-px h-12 bg-[#ECECF1] dark:bg-line shrink-0" />
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 flex-1">
               <div className="flex items-start gap-2.5">
-                <span className="flex items-center gap-1 text-[10px] font-satoshi font-bold px-2 py-0.5 rounded-md text-[#16895E] bg-[#E7F6EF] shrink-0 mt-[1px]">
+                <span className="flex items-center gap-1 text-[10px] font-satoshi font-bold px-2 py-0.5 rounded-md text-[#16895E] bg-[#E7F6EF] dark:text-[#4ade9e] dark:bg-[#12271e] shrink-0 mt-[1px]">
                   <FaCircleCheck className="w-2.5 h-2.5" /> Verified
                 </span>
-                <p className="font-openSans text-[12px] font-medium text-[#9098A3] leading-snug">
+                <p className="font-openSans text-[12px] font-medium text-[#9098A3] dark:text-content-subtle leading-snug">
                   Hand-sourced by us, then checked it&apos;s real and still open.
                 </p>
               </div>
               <div className="flex items-start gap-2.5">
-                <span className="flex items-center gap-1 text-[10px] font-satoshi font-bold px-2 py-0.5 rounded-md text-[#5A2DD4] bg-[#F1ECFD] shrink-0 mt-[1px]">
+                <span className="flex items-center gap-1 text-[10px] font-satoshi font-bold px-2 py-0.5 rounded-md text-[#5A2DD4] bg-[#F1ECFD] dark:text-[#b9a4f7] dark:bg-[#221b36] shrink-0 mt-[1px]">
                   <FaBolt className="w-2.5 h-2.5" /> Direct
                 </span>
-                <p className="font-openSans text-[12px] font-medium text-[#9098A3] leading-snug">
+                <p className="font-openSans text-[12px] font-medium text-[#9098A3] dark:text-content-subtle leading-snug">
                   Posted straight by the employer — apply right here on Segwae.
                 </p>
               </div>
@@ -302,26 +302,26 @@ export default async function JobsPage({
         </div>
 
         <div className="flex items-center justify-between mb-5">
-          <p className="font-satoshi text-sm font-semibold text-grey3">
+          <p className="font-satoshi text-sm font-semibold text-grey3 dark:text-content-muted">
             {total} {total === 1 ? 'role' : 'roles'} found
             {totalPages > 1 && (
-              <span className="ml-1 text-grey4">· page {currentPage} of {totalPages}</span>
+              <span className="ml-1 text-grey4 dark:text-content-subtle">· page {currentPage} of {totalPages}</span>
             )}
           </p>
           {hasFilters && (
-            <Link href="/jobs" className="font-satoshi font-bold text-[13px] text-[#5A2DD4] hover:opacity-70 transition-opacity">
+            <Link href="/jobs" className="font-satoshi font-bold text-[13px] text-[#5A2DD4] dark:text-[#b9a4f7] hover:opacity-70 transition-opacity">
               Clear all filters
             </Link>
           )}
         </div>
 
         {jobs.length === 0 ? (
-          <div className="py-20 flex flex-col items-center gap-3.5 bg-white rounded-[18px] border border-[#E8E8EF]">
-            <div className="w-14 h-14 rounded-2xl bg-[#F4F0FE] flex items-center justify-center">
-              <FaMagnifyingGlass className="w-5 h-5 text-[#5A2DD4]" />
+          <div className="py-20 flex flex-col items-center gap-3.5 bg-white dark:bg-surface-raised rounded-[18px] border border-[#E8E8EF] dark:border-line">
+            <div className="w-14 h-14 rounded-2xl bg-[#F4F0FE] dark:bg-[#241d38] flex items-center justify-center">
+              <FaMagnifyingGlass className="w-5 h-5 text-[#5A2DD4] dark:text-[#b9a4f7]" />
             </div>
-            <p className="font-satoshi font-extrabold text-lg text-[#15131C]">No roles found</p>
-            <p className="font-openSans text-sm font-medium text-[#9098A3] text-center max-w-[300px]">
+            <p className="font-satoshi font-extrabold text-lg text-[#15131C] dark:text-content">No roles found</p>
+            <p className="font-openSans text-sm font-medium text-[#9098A3] dark:text-content-subtle text-center max-w-[300px]">
               {hasFilters
                 ? 'Try adjusting your filters or search terms to see more opportunities.'
                 : 'No positions are currently listed. Check back soon.'}

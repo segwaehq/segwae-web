@@ -47,10 +47,10 @@ function ProductCard({
   const [isHovered, setIsHovered] = useState(false)
 
   return (
-    <div className="bg-white rounded-[20px] border border-[#E8E8EF] overflow-hidden group hover:-translate-y-1 hover:shadow-[0_24px_60px_-24px_rgba(31,18,72,0.28)] transition-all duration-300">
+    <div className="bg-white dark:bg-surface-raised rounded-[20px] border border-[#E8E8EF] dark:border-line overflow-hidden group hover:-translate-y-1 hover:shadow-[0_24px_60px_-24px_rgba(31,18,72,0.28)] transition-all duration-300">
       {/* Image */}
       <div
-        className="relative aspect-3/2 bg-[#F1F0F6] cursor-pointer overflow-hidden"
+        className="relative aspect-3/2 bg-[#F1F0F6] dark:bg-[#241d38] cursor-pointer overflow-hidden"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -77,19 +77,19 @@ function ProductCard({
 
       {/* Info */}
       <div className="p-6">
-        <h3 className="font-satoshi font-bold text-[#15131C] mb-1">
+        <h3 className="font-satoshi font-bold text-[#15131C] dark:text-content mb-1">
           {product.name}
         </h3>
         {product.description && (
-          <p className="text-[#6B6478] text-sm leading-relaxed font-medium mb-4">
+          <p className="text-[#6B6478] dark:text-content-muted text-sm leading-relaxed font-medium mb-4">
             {product.description}
           </p>
         )}
         <div className="flex items-center justify-between mb-4">
-          <span className="font-satoshi font-black text-2xl text-[#15131C] tracking-[-0.02em]">
+          <span className="font-satoshi font-black text-2xl text-[#15131C] dark:text-content tracking-[-0.02em]">
             {formatNaira(product.price)}
           </span>
-          <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#9098A3]">
+          <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#9098A3] dark:text-content-subtle">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="w-3.5 h-3.5">
               <path d="M5 9a9 9 0 0114 0M8 12a5 5 0 018 0M11 15a1.5 1.5 0 012 0" />
             </svg>
@@ -177,18 +177,18 @@ function OrderModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0F1115]/60 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0F1115]/60 dark:bg-black/70 backdrop-blur-sm"
       onClick={status === 'submitting' ? undefined : onClose}
     >
       <div
-        className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto bg-white rounded-[24px] shadow-[0_40px_90px_-30px_rgba(0,0,0,0.6)]"
+        className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto bg-white dark:bg-surface-raised rounded-[24px] shadow-[0_40px_90px_-30px_rgba(0,0,0,0.6)]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close */}
         <button
           onClick={onClose}
           aria-label="Close"
-          className="absolute top-4 right-4 z-10 w-9 h-9 inline-flex items-center justify-center rounded-full bg-[#F1F0F6] text-[#6B6478] hover:bg-[#E8E8EF] transition-colors"
+          className="absolute top-4 right-4 z-10 w-9 h-9 inline-flex items-center justify-center rounded-full bg-[#F1F0F6] dark:bg-[#241d38] text-[#6B6478] dark:text-content-muted hover:bg-[#E8E8EF] dark:hover:bg-white/[0.1] transition-colors"
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" className="w-4 h-4">
             <path d="M6 6l12 12M18 6L6 18" />
@@ -202,23 +202,23 @@ function OrderModal({
                 <path d="M20 6L9 17l-5-5" />
               </svg>
             </div>
-            <h3 className="font-satoshi font-black text-[#15131C] text-2xl tracking-[-0.02em] mb-2">
+            <h3 className="font-satoshi font-black text-[#15131C] dark:text-content text-2xl tracking-[-0.02em] mb-2">
               Order received
             </h3>
-            <p className="text-[#6B6478] font-medium leading-relaxed mb-4">
+            <p className="text-[#6B6478] dark:text-content-muted font-medium leading-relaxed mb-4">
               Thanks, {form.fullName.split(' ')[0] || 'there'}. We&apos;ll reach
               out by phone or WhatsApp to confirm your card details, delivery,
               and payment.
             </p>
             {orderNumber && (
-              <p className="text-sm font-semibold text-[#15131C] mb-6">
+              <p className="text-sm font-semibold text-[#15131C] dark:text-content mb-6">
                 Your reference:{' '}
-                <span className="font-satoshi text-[#5A2DD4]">{orderNumber}</span>
+                <span className="font-satoshi text-[#5A2DD4] dark:text-[#b9a4f7]">{orderNumber}</span>
               </p>
             )}
             <button
               onClick={onClose}
-              className="inline-flex items-center justify-center px-7 py-3 bg-[#15131C] text-white rounded-xl font-satoshi font-bold text-sm hover:-translate-y-0.5 transition-transform"
+              className="inline-flex items-center justify-center px-7 py-3 bg-[#15131C] dark:bg-white text-white dark:text-[#15131C] rounded-xl font-satoshi font-bold text-sm hover:-translate-y-0.5 transition-transform"
             >
               Done
             </button>
@@ -227,7 +227,7 @@ function OrderModal({
           <form onSubmit={handleSubmit} className="p-6 sm:p-8">
             {/* Product summary */}
             <div className="flex items-center gap-4 mb-6 pr-8">
-              <div className="relative w-16 h-11 shrink-0 rounded-lg overflow-hidden bg-[#F1F0F6]">
+              <div className="relative w-16 h-11 shrink-0 rounded-lg overflow-hidden bg-[#F1F0F6] dark:bg-[#241d38]">
                 <Image
                   src={product.front_image_url}
                   alt={product.name}
@@ -236,18 +236,18 @@ function OrderModal({
                 />
               </div>
               <div>
-                <p className="font-satoshi text-[11px] font-bold tracking-[0.12em] uppercase text-[#9098A3]">
+                <p className="font-satoshi text-[11px] font-bold tracking-[0.12em] uppercase text-[#9098A3] dark:text-content-subtle">
                   Ordering
                 </p>
-                <h3 className="font-satoshi font-bold text-[#15131C] leading-tight">
+                <h3 className="font-satoshi font-bold text-[#15131C] dark:text-content leading-tight">
                   {product.name}
                 </h3>
               </div>
             </div>
 
             {error && (
-              <div className="mb-5 rounded-xl bg-red-50 border border-red-100 px-4 py-3">
-                <p className="text-sm font-medium text-red-600">{error}</p>
+              <div className="mb-5 rounded-xl bg-red-50 dark:bg-red-500/10 border border-red-100 dark:border-red-500/20 px-4 py-3">
+                <p className="text-sm font-medium text-red-600 dark:text-red-400">{error}</p>
               </div>
             )}
 
@@ -377,12 +377,12 @@ function OrderModal({
             </div>
 
             {/* Total */}
-            <div className="flex items-center justify-between mt-6 pt-5 border-t border-[#E8E8EF]">
+            <div className="flex items-center justify-between mt-6 pt-5 border-t border-[#E8E8EF] dark:border-line">
               <div>
-                <span className="font-satoshi font-black text-2xl text-[#15131C] tracking-[-0.02em]">
+                <span className="font-satoshi font-black text-2xl text-[#15131C] dark:text-content tracking-[-0.02em]">
                   {formatNaira(lineTotal)}
                 </span>
-                <span className="text-[12px] font-medium text-[#9098A3] ml-2">
+                <span className="text-[12px] font-medium text-[#9098A3] dark:text-content-subtle ml-2">
                   + delivery
                 </span>
               </div>
@@ -394,7 +394,7 @@ function OrderModal({
                 {status === 'submitting' ? 'Placing…' : 'Place order'}
               </button>
             </div>
-            <p className="text-[12px] text-[#9098A3] font-medium mt-3 leading-relaxed">
+            <p className="text-[12px] text-[#9098A3] dark:text-content-subtle font-medium mt-3 leading-relaxed">
               No payment now — we&apos;ll confirm the details and delivery with
               you first.
             </p>
@@ -406,7 +406,7 @@ function OrderModal({
 }
 
 const inputClass =
-  'w-full px-4 py-3 rounded-xl border border-[#E8E8EF] bg-[#FAFAFC] text-[#15131C] font-medium text-sm focus:outline-none focus:border-[#7C3AED] focus:ring-2 focus:ring-[#7C3AED]/15 transition-colors placeholder:text-[#B5B2BE]'
+  'w-full px-4 py-3 rounded-xl border border-[#E8E8EF] dark:border-line bg-[#FAFAFC] dark:bg-surface-sunken text-[#15131C] dark:text-content font-medium text-sm focus:outline-none focus:border-[#7C3AED] dark:focus:border-[#6a4fb0] focus:ring-2 focus:ring-[#7C3AED]/15 transition-colors placeholder:text-[#B5B2BE] dark:placeholder:text-content-subtle'
 
 function Field({
   label,
@@ -420,11 +420,11 @@ function Field({
   return (
     <label className="block">
       <span className="flex items-center justify-between mb-1.5">
-        <span className="font-satoshi text-[13px] font-bold text-[#15131C]">
+        <span className="font-satoshi text-[13px] font-bold text-[#15131C] dark:text-content">
           {label}
         </span>
         {hint && (
-          <span className="text-[11px] font-medium text-[#9098A3]">{hint}</span>
+          <span className="text-[11px] font-medium text-[#9098A3] dark:text-content-subtle">{hint}</span>
         )}
       </span>
       {children}

@@ -214,7 +214,7 @@ export default function SocialPlatformsPage() {
     return (
       <div className="p-6">
         <div className="flex items-center justify-center h-64">
-          <div className="text-grey3">Loading platforms...</div>
+          <div className="text-grey3 dark:text-content-subtle">Loading platforms...</div>
         </div>
       </div>
     )
@@ -226,7 +226,7 @@ export default function SocialPlatformsPage() {
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="font-satoshi font-bold text-3xl mb-2">Social Platforms</h1>
-          <p className="text-grey3 font-openSans">Manage social media platforms for user profiles</p>
+          <p className="text-grey3 dark:text-content-subtle font-openSans">Manage social media platforms for user profiles</p>
         </div>
         <button
           onClick={() => setShowModal(true)}
@@ -249,24 +249,24 @@ export default function SocialPlatformsPage() {
       )}
 
       {/* Platforms Table */}
-      <div className="bg-white rounded-lg border border-grey4 overflow-hidden">
+      <div className="bg-white dark:bg-surface-raised rounded-lg border border-grey4 dark:border-line overflow-hidden">
         <table className="w-full">
-          <thead className="bg-grey6 border-b border-grey4">
+          <thead className="bg-grey6 dark:bg-white/[0.03] border-b border-grey4 dark:border-line">
             <tr>
-              <th className="text-left p-4 font-spaceGrotesk text-sm font-medium text-grey2">Icon</th>
-              <th className="text-left p-4 font-spaceGrotesk text-sm font-medium text-grey2">Name</th>
-              <th className="text-left p-4 font-spaceGrotesk text-sm font-medium text-grey2">Identifier</th>
-              <th className="text-left p-4 font-spaceGrotesk text-sm font-medium text-grey2">Color</th>
-              <th className="text-left p-4 font-spaceGrotesk text-sm font-medium text-grey2">Order</th>
-              <th className="text-left p-4 font-spaceGrotesk text-sm font-medium text-grey2">Status</th>
-              <th className="text-left p-4 font-spaceGrotesk text-sm font-medium text-grey2">Actions</th>
+              <th className="text-left p-4 font-spaceGrotesk text-sm font-medium text-grey2 dark:text-content-muted">Icon</th>
+              <th className="text-left p-4 font-spaceGrotesk text-sm font-medium text-grey2 dark:text-content-muted">Name</th>
+              <th className="text-left p-4 font-spaceGrotesk text-sm font-medium text-grey2 dark:text-content-muted">Identifier</th>
+              <th className="text-left p-4 font-spaceGrotesk text-sm font-medium text-grey2 dark:text-content-muted">Color</th>
+              <th className="text-left p-4 font-spaceGrotesk text-sm font-medium text-grey2 dark:text-content-muted">Order</th>
+              <th className="text-left p-4 font-spaceGrotesk text-sm font-medium text-grey2 dark:text-content-muted">Status</th>
+              <th className="text-left p-4 font-spaceGrotesk text-sm font-medium text-grey2 dark:text-content-muted">Actions</th>
             </tr>
           </thead>
           <tbody>
             {platforms.map((platform) => {
               const IconComponent = getIconComponent(platform.icon_identifier)
               return (
-                <tr key={platform.id} className="border-b border-grey5 hover:bg-grey6">
+                <tr key={platform.id} className="border-b border-grey5 dark:border-line hover:bg-grey6 dark:hover:bg-white/[0.03]">
                   <td className="p-4">
                     <IconComponent
                       className="w-5 h-5"
@@ -274,17 +274,17 @@ export default function SocialPlatformsPage() {
                     />
                   </td>
                   <td className="p-4 font-openSans">{platform.platform_name}</td>
-                  <td className="p-4 font-mono text-sm text-grey3">{platform.platform_identifier}</td>
+                  <td className="p-4 font-mono text-sm text-grey3 dark:text-content-subtle">{platform.platform_identifier}</td>
                   <td className="p-4">
                     <div className="flex items-center gap-2">
                       <div
-                        className="w-6 h-6 rounded border border-grey4"
+                        className="w-6 h-6 rounded border border-grey4 dark:border-line"
                         style={{ backgroundColor: platform.color_hex }}
                       />
-                      <span className="font-mono text-sm text-grey3">{platform.color_hex}</span>
+                      <span className="font-mono text-sm text-grey3 dark:text-content-subtle">{platform.color_hex}</span>
                     </div>
                   </td>
-                  <td className="p-4 font-openSans text-grey3">{platform.display_order}</td>
+                  <td className="p-4 font-openSans text-grey3 dark:text-content-subtle">{platform.display_order}</td>
                   <td className="p-4">
                     <span
                       className={`inline-block px-3 py-1 rounded-full text-xs font-spaceGrotesk ${
@@ -300,21 +300,21 @@ export default function SocialPlatformsPage() {
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => toggleEnabled(platform)}
-                        className="p-2 text-grey3 cursor-pointer hover:text-mainPurple transition-colors"
+                        className="p-2 text-grey3 dark:text-content-subtle cursor-pointer hover:text-mainPurple dark:hover:text-[#b9a4f7] transition-colors"
                         title={platform.is_enabled ? 'Disable' : 'Enable'}
                       >
                         {platform.is_enabled ? <FiEyeOff /> : <FiEye />}
                       </button>
                       <button
                         onClick={() => openEditModal(platform)}
-                        className="p-2 text-grey3 cursor-pointer hover:text-blue transition-colors"
+                        className="p-2 text-grey3 dark:text-content-subtle cursor-pointer hover:text-blue transition-colors"
                         title="Edit"
                       >
                         <FiEdit2 />
                       </button>
                       <button
                         onClick={() => handleDelete(platform.id)}
-                        className="p-2 text-grey3 cursor-pointer hover:text-errorRed transition-colors"
+                        className="p-2 text-grey3 dark:text-content-subtle cursor-pointer hover:text-errorRed transition-colors"
                         title="Delete"
                       >
                         <FiTrash2 />
@@ -328,7 +328,7 @@ export default function SocialPlatformsPage() {
         </table>
 
         {platforms.length === 0 && (
-          <div className="p-8 text-center text-grey3">
+          <div className="p-8 text-center text-grey3 dark:text-content-subtle">
             No platforms found. Add your first platform to get started.
           </div>
         )}
@@ -336,9 +336,9 @@ export default function SocialPlatformsPage() {
 
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b border-grey4">
+        <div className="fixed inset-0 bg-black/50 dark:bg-black/60 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-surface-raised rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b border-grey4 dark:border-line">
               <h2 className="font-satoshi font-bold text-2xl">
                 {editingPlatform ? 'Edit Platform' : 'Add New Platform'}
               </h2>
@@ -354,7 +354,7 @@ export default function SocialPlatformsPage() {
                   type="text"
                   value={formData.platform_name}
                   onChange={(e) => setFormData({ ...formData, platform_name: e.target.value })}
-                  className="w-full border border-grey4 rounded-lg px-4 py-2 font-openSans"
+                  className="w-full border border-grey4 dark:border-line dark:bg-surface-sunken dark:text-content rounded-lg px-4 py-2 font-openSans"
                   placeholder="e.g., LinkedIn, GitHub, Global"
                   required
                 />
@@ -363,7 +363,7 @@ export default function SocialPlatformsPage() {
               {/* Platform Identifier */}
               <div>
                 <label className="block font-spaceGrotesk text-sm font-medium mb-2">
-                  Platform Identifier * <span className="text-grey3 font-normal">(lowercase, no spaces)</span>
+                  Platform Identifier * <span className="text-grey3 dark:text-content-subtle font-normal">(lowercase, no spaces)</span>
                 </label>
                 <input
                   type="text"
@@ -374,7 +374,7 @@ export default function SocialPlatformsPage() {
                       platform_identifier: e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, ''),
                     })
                   }
-                  className="w-full border border-grey4 rounded-lg px-4 py-2 font-mono"
+                  className="w-full border border-grey4 dark:border-line dark:bg-surface-sunken dark:text-content rounded-lg px-4 py-2 font-mono"
                   placeholder="e.g., linkedin, github, global"
                   required
                 />
@@ -396,13 +396,13 @@ export default function SocialPlatformsPage() {
                         onClick={() => setFormData({ ...formData, icon_identifier: icon.id })}
                         className={`flex flex-col items-center gap-1 p-3 border-2 rounded-lg transition-all cursor-pointer ${
                           isSelected
-                            ? 'border-mainPurple bg-lightPurple'
-                            : 'border-grey4 hover:border-grey3'
+                            ? 'border-mainPurple bg-lightPurple dark:bg-[#241d38]'
+                            : 'border-grey4 dark:border-line hover:border-grey3 dark:hover:border-content-subtle'
                         }`}
                         title={icon.name}
                       >
                         <IconComponent className="w-5 h-5" />
-                        <span className="text-xs font-openSans text-grey3 truncate w-full text-center">
+                        <span className="text-xs font-openSans text-grey3 dark:text-content-subtle truncate w-full text-center">
                           {icon.name}
                         </span>
                       </button>
@@ -421,7 +421,7 @@ export default function SocialPlatformsPage() {
                     type="color"
                     value={formData.color_hex}
                     onChange={(e) => setFormData({ ...formData, color_hex: e.target.value.toUpperCase() })}
-                    className="w-20 h-10 border border-grey4 rounded cursor-pointer"
+                    className="w-20 h-10 border border-grey4 dark:border-line rounded cursor-pointer"
                   />
                   <input
                     type="text"
@@ -431,7 +431,7 @@ export default function SocialPlatformsPage() {
                       if (!value.startsWith('#')) value = '#' + value
                       setFormData({ ...formData, color_hex: value })
                     }}
-                    className="flex-1 border border-grey4 rounded-lg px-4 py-2 font-mono"
+                    className="flex-1 border border-grey4 dark:border-line dark:bg-surface-sunken dark:text-content rounded-lg px-4 py-2 font-mono"
                     placeholder="#000000"
                     pattern="^#[0-9A-Fa-f]{6}$"
                     required
@@ -448,7 +448,7 @@ export default function SocialPlatformsPage() {
                   type="number"
                   value={formData.display_order}
                   onChange={(e) => setFormData({ ...formData, display_order: parseInt(e.target.value) })}
-                  className="w-full border border-grey4 rounded-lg px-4 py-2 font-openSans"
+                  className="w-full border border-grey4 dark:border-line dark:bg-surface-sunken dark:text-content rounded-lg px-4 py-2 font-openSans"
                   min="1"
                 />
               </div>
@@ -456,16 +456,16 @@ export default function SocialPlatformsPage() {
               {/* URL Pattern */}
               <div>
                 <label className="block font-spaceGrotesk text-sm font-medium mb-2">
-                  URL Pattern <span className="text-grey3 font-normal">(optional)</span>
+                  URL Pattern <span className="text-grey3 dark:text-content-subtle font-normal">(optional)</span>
                 </label>
                 <input
                   type="text"
                   value={formData.url_pattern}
                   onChange={(e) => setFormData({ ...formData, url_pattern: e.target.value })}
-                  className="w-full border border-grey4 rounded-lg px-4 py-2 font-mono text-sm"
+                  className="w-full border border-grey4 dark:border-line dark:bg-surface-sunken dark:text-content rounded-lg px-4 py-2 font-mono text-sm"
                   placeholder="e.g., https://linkedin.com/in/{username}"
                 />
-                <p className="text-xs text-grey3 mt-1 font-openSans">
+                <p className="text-xs text-grey3 dark:text-content-subtle mt-1 font-openSans">
                   Use {'"{username}"'} as a placeholder. Leave empty for custom URLs.
                 </p>
               </div>
@@ -496,7 +496,7 @@ export default function SocialPlatformsPage() {
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="flex-1 px-4 py-2 border border-grey4 rounded-lg font-spaceGrotesk hover:bg-grey6 transition-colors cursor-pointer"
+                  className="flex-1 px-4 py-2 border border-grey4 dark:border-line rounded-lg font-spaceGrotesk hover:bg-grey6 dark:hover:bg-white/[0.06] transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>

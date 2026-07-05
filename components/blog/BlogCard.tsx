@@ -16,9 +16,9 @@ function formatDate(dateStr: string | null) {
 export function BlogCard({ post }: { post: BlogPost }) {
   return (
     <Link href={`/blog/${post.slug}`} className="group block h-full">
-      <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-[#E8E8EF] bg-white transition-all duration-200 hover:-translate-y-[3px] hover:border-[#C9BCF2] hover:shadow-[0_16px_34px_-18px_rgba(74,55,216,0.45)]">
+      <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-[#E8E8EF] dark:border-line bg-white dark:bg-surface-raised transition-all duration-200 hover:-translate-y-[3px] hover:border-[#C9BCF2] dark:hover:border-[#4a3d78] hover:shadow-[0_16px_34px_-18px_rgba(74,55,216,0.45)] dark:hover:shadow-[0_16px_34px_-18px_rgba(124,90,246,0.5)]">
         {/* Cover */}
-        <div className="relative aspect-[16/9] overflow-hidden bg-[#F1F0F6]">
+        <div className="relative aspect-[16/9] overflow-hidden bg-[#F1F0F6] dark:bg-[#241d38]">
           {post.cover_image_url ? (
             <Image
               src={post.cover_image_url}
@@ -45,25 +45,25 @@ export function BlogCard({ post }: { post: BlogPost }) {
 
         {/* Body */}
         <div className="flex flex-1 flex-col p-[22px]">
-          <h3 className="font-satoshi text-[16.5px] font-bold leading-snug tracking-[-0.01em] text-[#15131C] transition-colors group-hover:text-[#5A2DD4]">
+          <h3 className="font-satoshi text-[16.5px] font-bold leading-snug tracking-[-0.01em] text-[#15131C] dark:text-content transition-colors group-hover:text-[#5A2DD4] dark:group-hover:text-[#b9a4f7]">
             {post.title}
           </h3>
           {post.excerpt && (
-            <p className="font-openSans mt-2 line-clamp-2 text-[13.5px] font-medium leading-relaxed text-[#9098A3]">
+            <p className="font-openSans mt-2 line-clamp-2 text-[13.5px] font-medium leading-relaxed text-[#9098A3] dark:text-content-subtle">
               {post.excerpt}
             </p>
           )}
 
           <div className="mt-auto flex items-center justify-between pt-4">
-            <div className="font-openSans flex items-center gap-2.5 text-xs font-medium text-[#9098A3]">
+            <div className="font-openSans flex items-center gap-2.5 text-xs font-medium text-[#9098A3] dark:text-content-subtle">
               <span>{formatDate(post.published_at)}</span>
-              <span className="h-1 w-1 rounded-full bg-[#C2C6CF]" />
+              <span className="h-1 w-1 rounded-full bg-[#C2C6CF] dark:bg-content-subtle" />
               <span className="inline-flex items-center gap-1">
                 <FaClock className="h-3 w-3" />
                 {post.reading_minutes} min
               </span>
             </div>
-            <FaArrowRight className="h-3.5 w-3.5 text-[#5A2DD4] opacity-0 transition-opacity group-hover:opacity-100" />
+            <FaArrowRight className="h-3.5 w-3.5 text-[#5A2DD4] dark:text-[#b9a4f7] opacity-0 transition-opacity group-hover:opacity-100" />
           </div>
         </div>
       </article>

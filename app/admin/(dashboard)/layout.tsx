@@ -14,7 +14,7 @@ export default async function AdminLayout({
   const user = await checkAdminAuth()
 
   return (
-    <div className="min-h-screen bg-grey6">
+    <div className="min-h-screen bg-grey6 dark:bg-surface">
       <AdminSidebar />
       <div className="lg:ml-64">
         <AdminHeader user={user} />

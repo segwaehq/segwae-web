@@ -180,15 +180,9 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
   };
 
   return (
-    <div
-      className="min-h-screen flex flex-col items-center px-5 pt-10 pb-14"
-      style={{
-        background:
-          "radial-gradient(circle at 50% -10%, #EBE3FB 0%, #F4F3F8 46%, #F4F3F8 100%)",
-      }}
-    >
+    <div className="min-h-screen flex flex-col items-center px-5 pt-10 pb-14 bg-[radial-gradient(circle_at_50%_-10%,#EBE3FB_0%,#F4F3F8_46%,#F4F3F8_100%)] dark:bg-[radial-gradient(circle_at_50%_-10%,#1e1830_0%,#0e0c15_46%,#0e0c15_100%)]">
       {/* Public profile label */}
-      <div className="flex items-center gap-[7px] mb-5 font-satoshi text-[13px] font-semibold text-[#9A93A8]">
+      <div className="flex items-center gap-[7px] mb-5 font-satoshi text-[13px] font-semibold text-[#9A93A8] dark:text-content-subtle">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <circle cx="12" cy="12" r="9" />
           <path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18" />
@@ -197,7 +191,7 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
       </div>
 
       {/* Card */}
-      <div className="w-full max-w-[400px] bg-white rounded-[40px] overflow-hidden shadow-[0_40px_90px_-30px_rgba(38,22,82,0.45),0_0_0_1px_rgba(0,0,0,0.04)]">
+      <div className="w-full max-w-[400px] bg-white dark:bg-surface-raised rounded-[40px] overflow-hidden shadow-[0_40px_90px_-30px_rgba(38,22,82,0.45),0_0_0_1px_rgba(0,0,0,0.04)] dark:shadow-[0_40px_90px_-30px_rgba(0,0,0,0.7),0_0_0_1px_rgba(255,255,255,0.05)]">
         {/* Cover */}
         <div className="relative h-[152px] overflow-hidden">
           {profile.cover_image_url ? (
@@ -276,7 +270,7 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
 
             <button
               onClick={handleShare}
-              className="w-[42px] h-[42px] mb-1.5 rounded-full border border-[#EBEAF0] bg-white flex items-center justify-center text-[#6B6478] hover:bg-[#F4F0FE] hover:text-[#5A2DD4] transition-colors cursor-pointer"
+              className="w-[42px] h-[42px] mb-1.5 rounded-full border border-[#EBEAF0] dark:border-line bg-white dark:bg-surface-sunken flex items-center justify-center text-[#6B6478] dark:text-content-muted hover:bg-[#F4F0FE] dark:hover:bg-[#241d38] hover:text-[#5A2DD4] dark:hover:text-[#b9a4f7] transition-colors cursor-pointer"
               aria-label="Share profile"
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -289,22 +283,22 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
           </div>
 
           {/* Name + title */}
-          <h1 className="font-satoshi font-black text-[23px] tracking-[-0.025em] text-[#15131C]">
+          <h1 className="font-satoshi font-black text-[23px] tracking-[-0.025em] text-[#15131C] dark:text-content">
             {profile.name}
           </h1>
           {profile.title && (
-            <p className="font-satoshi text-[14.5px] font-medium text-[#8B8499] mt-[3px]">
+            <p className="font-satoshi text-[14.5px] font-medium text-[#8B8499] dark:text-content-muted mt-[3px]">
               {profile.title}
             </p>
           )}
 
           {/* Incomplete badge */}
           {!profile.is_profile_complete && (
-            <div className="inline-flex items-center gap-1.5 mt-3 px-3 py-1.5 rounded-full bg-[#FEF4E6] border border-[#F6D9A8]">
-              <svg className="w-4 h-4 text-[#E0921F]" fill="currentColor" viewBox="0 0 20 20">
+            <div className="inline-flex items-center gap-1.5 mt-3 px-3 py-1.5 rounded-full bg-[#FEF4E6] dark:bg-[#2a2410] border border-[#F6D9A8] dark:border-[#4a3d1a]">
+              <svg className="w-4 h-4 text-[#E0921F] dark:text-[#e0a94f]" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
               </svg>
-              <span className="font-satoshi text-xs font-bold text-[#B97509]">
+              <span className="font-satoshi text-xs font-bold text-[#B97509] dark:text-[#e0c98a]">
                 Profile incomplete
               </span>
             </div>
@@ -312,49 +306,49 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
 
           {/* Bio */}
           {profile.bio ? (
-            <p className="font-satoshi text-[14.5px] leading-[1.6] font-medium text-[#4B4658] mt-4">
+            <p className="font-satoshi text-[14.5px] leading-[1.6] font-medium text-[#4B4658] dark:text-content-muted mt-4">
               {profile.bio}
             </p>
           ) : (
-            <p className="font-satoshi text-[14.5px] italic font-medium text-[#B6B0C0] mt-4">
+            <p className="font-satoshi text-[14.5px] italic font-medium text-[#B6B0C0] dark:text-content-subtle mt-4">
               No bio yet.
             </p>
           )}
 
-          <div className="h-px bg-[#F0EFF4] my-[22px]" />
+          <div className="h-px bg-[#F0EFF4] dark:bg-line my-[22px]" />
 
           {/* Contact cards */}
           <div className="grid grid-cols-2 gap-2.5">
             {showEmail && profile.email && (
               <a
                 href={`mailto:${profile.email}`}
-                className="flex items-center gap-[11px] p-[14px] rounded-[15px] bg-[#F6F5FA] hover:bg-[#F0ECFB] transition-colors"
+                className="flex items-center gap-[11px] p-[14px] rounded-[15px] bg-[#F6F5FA] dark:bg-white/[0.04] hover:bg-[#F0ECFB] dark:hover:bg-white/[0.07] transition-colors"
               >
-                <span className="w-[34px] h-[34px] rounded-[10px] bg-white flex items-center justify-center text-[#5A2DD4] shrink-0 shadow-[0_1px_3px_rgba(31,18,72,0.07)]">
+                <span className="w-[34px] h-[34px] rounded-[10px] bg-white dark:bg-[#241d38] flex items-center justify-center text-[#5A2DD4] dark:text-[#b9a4f7] shrink-0 shadow-[0_1px_3px_rgba(31,18,72,0.07)]">
                   <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
                     <rect x="3" y="5" width="18" height="14" rx="2.5" />
                     <path d="M3.5 7l8.5 6 8.5-6" />
                   </svg>
                 </span>
                 <span className="min-w-0">
-                  <span className="block font-satoshi text-[13.5px] font-bold text-[#15131C]">Email</span>
-                  <span className="block font-satoshi text-[11.5px] font-medium text-[#9A93A8] truncate">{profile.email}</span>
+                  <span className="block font-satoshi text-[13.5px] font-bold text-[#15131C] dark:text-content">Email</span>
+                  <span className="block font-satoshi text-[11.5px] font-medium text-[#9A93A8] dark:text-content-subtle truncate">{profile.email}</span>
                 </span>
               </a>
             )}
             {showPhone && profile.phone && (
               <a
                 href={`tel:${profile.phone}`}
-                className="flex items-center gap-[11px] p-[14px] rounded-[15px] bg-[#F6F5FA] hover:bg-[#F0ECFB] transition-colors"
+                className="flex items-center gap-[11px] p-[14px] rounded-[15px] bg-[#F6F5FA] dark:bg-white/[0.04] hover:bg-[#F0ECFB] dark:hover:bg-white/[0.07] transition-colors"
               >
-                <span className="w-[34px] h-[34px] rounded-[10px] bg-white flex items-center justify-center text-[#5A2DD4] shrink-0 shadow-[0_1px_3px_rgba(31,18,72,0.07)]">
+                <span className="w-[34px] h-[34px] rounded-[10px] bg-white dark:bg-[#241d38] flex items-center justify-center text-[#5A2DD4] dark:text-[#b9a4f7] shrink-0 shadow-[0_1px_3px_rgba(31,18,72,0.07)]">
                   <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L16 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z" />
                   </svg>
                 </span>
                 <span className="min-w-0">
-                  <span className="block font-satoshi text-[13.5px] font-bold text-[#15131C]">Call</span>
-                  <span className="block font-satoshi text-[11.5px] font-medium text-[#9A93A8] truncate">{profile.phone}</span>
+                  <span className="block font-satoshi text-[13.5px] font-bold text-[#15131C] dark:text-content">Call</span>
+                  <span className="block font-satoshi text-[11.5px] font-medium text-[#9A93A8] dark:text-content-subtle truncate">{profile.phone}</span>
                 </span>
               </a>
             )}
@@ -363,17 +357,17 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
                 href={normalizeUrl(profile.portfolio_or_website_link)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-[11px] p-[14px] rounded-[15px] bg-[#F6F5FA] hover:bg-[#F0ECFB] transition-colors"
+                className="flex items-center gap-[11px] p-[14px] rounded-[15px] bg-[#F6F5FA] dark:bg-white/[0.04] hover:bg-[#F0ECFB] dark:hover:bg-white/[0.07] transition-colors"
               >
-                <span className="w-[34px] h-[34px] rounded-[10px] bg-white flex items-center justify-center text-[#5A2DD4] shrink-0 shadow-[0_1px_3px_rgba(31,18,72,0.07)]">
+                <span className="w-[34px] h-[34px] rounded-[10px] bg-white dark:bg-[#241d38] flex items-center justify-center text-[#5A2DD4] dark:text-[#b9a4f7] shrink-0 shadow-[0_1px_3px_rgba(31,18,72,0.07)]">
                   <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9">
                     <circle cx="12" cy="12" r="9" />
                     <path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18" />
                   </svg>
                 </span>
                 <span className="min-w-0">
-                  <span className="block font-satoshi text-[13.5px] font-bold text-[#15131C]">Website</span>
-                  <span className="block font-satoshi text-[11.5px] font-medium text-[#9A93A8] truncate">{prettyDomain(profile.portfolio_or_website_link)}</span>
+                  <span className="block font-satoshi text-[13.5px] font-bold text-[#15131C] dark:text-content">Website</span>
+                  <span className="block font-satoshi text-[11.5px] font-medium text-[#9A93A8] dark:text-content-subtle truncate">{prettyDomain(profile.portfolio_or_website_link)}</span>
                 </span>
               </a>
             )}
@@ -382,17 +376,17 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
                 href={profile.resume_file_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-[11px] p-[14px] rounded-[15px] bg-[#F6F5FA] hover:bg-[#F0ECFB] transition-colors"
+                className="flex items-center gap-[11px] p-[14px] rounded-[15px] bg-[#F6F5FA] dark:bg-white/[0.04] hover:bg-[#F0ECFB] dark:hover:bg-white/[0.07] transition-colors"
               >
-                <span className="w-[34px] h-[34px] rounded-[10px] bg-white flex items-center justify-center text-[#5A2DD4] shrink-0 shadow-[0_1px_3px_rgba(31,18,72,0.07)]">
+                <span className="w-[34px] h-[34px] rounded-[10px] bg-white dark:bg-[#241d38] flex items-center justify-center text-[#5A2DD4] dark:text-[#b9a4f7] shrink-0 shadow-[0_1px_3px_rgba(31,18,72,0.07)]">
                   <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z" />
                     <path d="M14 3v5h5" />
                   </svg>
                 </span>
                 <span className="min-w-0">
-                  <span className="block font-satoshi text-[13.5px] font-bold text-[#15131C]">Résumé</span>
-                  <span className="block font-satoshi text-[11.5px] font-medium text-[#9A93A8] truncate">View PDF</span>
+                  <span className="block font-satoshi text-[13.5px] font-bold text-[#15131C] dark:text-content">Résumé</span>
+                  <span className="block font-satoshi text-[11.5px] font-medium text-[#9A93A8] dark:text-content-subtle truncate">View PDF</span>
                 </span>
               </a>
             )}
@@ -414,27 +408,27 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
           {/* Socials */}
           {enabledSocials.length > 0 && (
             <>
-              <div className="font-satoshi text-[13px] font-extrabold tracking-[0.02em] text-[#15131C] mt-[30px] mb-1">
+              <div className="font-satoshi text-[13px] font-extrabold tracking-[0.02em] text-[#15131C] dark:text-content mt-[30px] mb-1">
                 Socials
               </div>
-              <div className="h-px bg-[#F0EFF4] mb-1.5" />
+              <div className="h-px bg-[#F0EFF4] dark:bg-line mb-1.5" />
               {enabledSocials.map((link) => {
                 const platform = getPlatformConfig(link.platform);
                 return (
                   <div
                     key={link.id}
-                    className="flex items-center gap-[13px] py-[13px] border-b border-[#F4F3F7] last:border-b-0"
+                    className="flex items-center gap-[13px] py-[13px] border-b border-[#F4F3F7] dark:border-white/[0.06] last:border-b-0"
                   >
-                    <div className="w-[42px] h-[42px] rounded-[13px] bg-[#F6F5FA] flex items-center justify-center text-[#374151] shrink-0">
+                    <div className="w-[42px] h-[42px] rounded-[13px] bg-[#F6F5FA] dark:bg-white/[0.06] flex items-center justify-center text-[#374151] dark:text-content-muted shrink-0">
                       {platform.icon}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="font-satoshi text-[14.5px] font-bold text-[#15131C]">{platform.name}</div>
-                      <div className="font-satoshi text-[12.5px] font-medium text-[#9A93A8] truncate">{prettyDomain(link.url)}</div>
+                      <div className="font-satoshi text-[14.5px] font-bold text-[#15131C] dark:text-content">{platform.name}</div>
+                      <div className="font-satoshi text-[12.5px] font-medium text-[#9A93A8] dark:text-content-subtle truncate">{prettyDomain(link.url)}</div>
                     </div>
                     <button
                       onClick={() => copyText(link.url, "Link copied")}
-                      className="w-9 h-9 rounded-[10px] flex items-center justify-center text-[#A8A2B4] hover:bg-[#F4F0FE] hover:text-[#5A2DD4] transition-colors cursor-pointer"
+                      className="w-9 h-9 rounded-[10px] flex items-center justify-center text-[#A8A2B4] dark:text-content-subtle hover:bg-[#F4F0FE] dark:hover:bg-[#241d38] hover:text-[#5A2DD4] dark:hover:text-[#b9a4f7] transition-colors cursor-pointer"
                       aria-label="Copy link"
                     >
                       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
@@ -446,7 +440,7 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
                       href={normalizeUrl(link.url)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-9 h-9 rounded-[10px] flex items-center justify-center text-[#A8A2B4] hover:bg-[#F4F0FE] hover:text-[#5A2DD4] transition-colors"
+                      className="w-9 h-9 rounded-[10px] flex items-center justify-center text-[#A8A2B4] dark:text-content-subtle hover:bg-[#F4F0FE] dark:hover:bg-[#241d38] hover:text-[#5A2DD4] dark:hover:text-[#b9a4f7] transition-colors"
                       aria-label="Open link"
                     >
                       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
@@ -460,7 +454,7 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
           )}
 
           {/* Footer mark */}
-          <div className="flex items-center justify-center gap-1.5 mt-[30px] font-satoshi text-xs font-semibold text-[#B6B0C0]">
+          <div className="flex items-center justify-center gap-1.5 mt-[30px] font-satoshi text-xs font-semibold text-[#B6B0C0] dark:text-content-subtle">
             Powered by{" "}
             <span className="font-black tracking-[-0.03em] text-brand-gradient">segwae</span>
           </div>
@@ -494,7 +488,7 @@ export default function ProfileClient({ profile }: { profile: UserProfile }) {
 
       {/* Toast */}
       {toast && (
-        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-[#15131C] text-white font-satoshi text-[13.5px] font-semibold px-5 py-3 rounded-xl shadow-[0_12px_30px_-8px_rgba(0,0,0,0.4)] flex items-center gap-[9px] z-100 animate-fadeIn">
+        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-[#15131C] dark:bg-[#2a2536] text-white font-satoshi text-[13.5px] font-semibold px-5 py-3 rounded-xl shadow-[0_12px_30px_-8px_rgba(0,0,0,0.4)] flex items-center gap-[9px] z-100 animate-fadeIn">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
             <path d="M20 6L9 17l-5-5" />
           </svg>

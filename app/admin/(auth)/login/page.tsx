@@ -36,11 +36,11 @@ function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-grey6 px-4">
-      <div className="max-w-md w-full bg-white rounded-3xl p-8 shadow-xl">
+    <div className="min-h-screen flex items-center justify-center bg-grey6 dark:bg-surface px-4">
+      <div className="max-w-md w-full bg-white dark:bg-surface-raised rounded-3xl p-8 shadow-xl">
         <div className="text-center mb-8">
           <h1 className="font-satoshi font-black text-4xl mb-2">Admin Login</h1>
-          <p className="font-openSans text-grey2">Access the admin dashboard</p>
+          <p className="font-openSans text-grey2 dark:text-content-muted">Access the admin dashboard</p>
         </div>
 
         {searchParams.get('error') === 'unauthorized' && (
@@ -62,7 +62,7 @@ function LoginForm() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-3 rounded-xl border border-grey4 focus:border-mainPurple focus:ring-2 focus:ring-mainPurple/20 outline-none transition-all font-openSans"
+              className="w-full px-4 py-3 rounded-xl border border-grey4 dark:border-line dark:bg-surface-sunken focus:border-mainPurple dark:focus:border-[#6a4fb0] focus:ring-2 focus:ring-mainPurple/20 outline-none transition-all font-openSans dark:text-content dark:placeholder:text-content-subtle"
               placeholder="admin@segwae.com"
             />
           </div>
@@ -77,7 +77,7 @@ function LoginForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-3 rounded-xl border border-grey4 focus:border-mainPurple focus:ring-2 focus:ring-mainPurple/20 outline-none transition-all font-openSans"
+              className="w-full px-4 py-3 rounded-xl border border-grey4 dark:border-line dark:bg-surface-sunken focus:border-mainPurple dark:focus:border-[#6a4fb0] focus:ring-2 focus:ring-mainPurple/20 outline-none transition-all font-openSans dark:text-content dark:placeholder:text-content-subtle"
               placeholder="••••••••"
             />
           </div>
@@ -98,7 +98,7 @@ function LoginForm() {
         </form>
 
         <div className="mt-6 text-center">
-          <Link href="/" className="text-mainPurple hover:underline font-spaceGrotesk text-sm">
+          <Link href="/" className="text-mainPurple dark:text-[#b9a4f7] hover:underline font-spaceGrotesk text-sm">
             ← Back to Website
           </Link>
         </div>
@@ -110,8 +110,8 @@ function LoginForm() {
 export default function AdminLogin() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-grey6">
-        <div className="text-grey2">Loading...</div>
+      <div className="min-h-screen flex items-center justify-center bg-grey6 dark:bg-surface">
+        <div className="text-grey2 dark:text-content-muted">Loading...</div>
       </div>
     }>
       <LoginForm />

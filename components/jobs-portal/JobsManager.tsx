@@ -38,9 +38,9 @@ const STATUSES = [
     label: "Active",
     color: "text-successGreen bg-successGreen/10",
   },
-  { value: "draft", label: "Draft", color: "text-grey3 bg-grey5" },
+  { value: "draft", label: "Draft", color: "text-grey3 dark:text-content-subtle bg-grey5 dark:bg-white/[0.06]" },
   { value: "paused", label: "Paused", color: "text-amber-600 bg-amber-50" },
-  { value: "archived", label: "Archived", color: "text-grey3 bg-grey5" },
+  { value: "archived", label: "Archived", color: "text-grey3 dark:text-content-subtle bg-grey5 dark:bg-white/[0.06]" },
 ] as const;
 
 type StatusFilter = "all" | "expired" | Job["status"];
@@ -72,7 +72,7 @@ type FormState = ReturnType<typeof blankForm>;
 
 function statusStyle(status: Job["status"]) {
   return (
-    STATUSES.find((s) => s.value === status)?.color ?? "text-grey3 bg-grey5"
+    STATUSES.find((s) => s.value === status)?.color ?? "text-grey3 dark:text-content-subtle bg-grey5 dark:bg-white/[0.06]"
   );
 }
 
@@ -212,26 +212,26 @@ function JobDrawer({
   };
 
   const inputCls =
-    "w-full px-4 py-2.5 border border-grey4 rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 bg-white transition-colors";
+    "w-full px-4 py-2.5 border border-grey4 dark:border-line rounded-lg focus:outline-none focus:border-mainPurple dark:focus:border-[#6a4fb0] focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 dark:text-content placeholder:text-grey3 dark:placeholder:text-content-subtle bg-white dark:bg-surface-sunken transition-colors";
   const labelCls =
-    "block font-satoshi font-semibold text-xs text-grey3 uppercase tracking-wide mb-1.5";
+    "block font-satoshi font-semibold text-xs text-grey3 dark:text-content-subtle uppercase tracking-wide mb-1.5";
 
   return (
     <div className="fixed inset-0 z-50 flex">
-      <div className="flex-1 bg-black/40" onClick={onClose} />
-      <div className="w-full max-w-xl bg-white h-full flex flex-col shadow-2xl overflow-hidden">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-grey4/60 shrink-0">
+      <div className="flex-1 bg-black/40 dark:bg-black/60" onClick={onClose} />
+      <div className="w-full max-w-xl bg-white dark:bg-surface-raised h-full flex flex-col shadow-2xl overflow-hidden">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-grey4/60 dark:border-line shrink-0">
           <div>
-            <p className="font-satoshi font-bold text-lg text-grey1">
+            <p className="font-satoshi font-bold text-lg text-grey1 dark:text-content">
               {isEditing ? "Edit Job" : "Post External Job"}
             </p>
-            <p className="font-openSans text-xs text-grey3 mt-0.5">
+            <p className="font-openSans text-xs text-grey3 dark:text-content-subtle mt-0.5">
               Always posted as External — links out to the original listing
             </p>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 flex items-center justify-center rounded-lg text-grey3 hover:text-grey1 hover:bg-grey5 transition-colors"
+            className="w-8 h-8 flex items-center justify-center rounded-lg text-grey3 dark:text-content-subtle hover:text-grey1 dark:hover:text-content hover:bg-grey5 dark:hover:bg-white/[0.06] transition-colors"
           >
             <FaXmark className="w-4 h-4" />
           </button>
@@ -240,7 +240,7 @@ function JobDrawer({
         <form onSubmit={submit} className="flex-1 overflow-y-auto">
           <div className="px-6 py-5 space-y-5">
             <div className="space-y-4">
-              <p className="font-satoshi font-semibold text-xs text-mainPurple uppercase tracking-widest">
+              <p className="font-satoshi font-semibold text-xs text-mainPurple dark:text-[#b9a4f7] uppercase tracking-widest">
                 Basic Info
               </p>
               <div>
@@ -279,10 +279,10 @@ function JobDrawer({
               </div>
             </div>
 
-            <div className="border-t border-grey4/40" />
+            <div className="border-t border-grey4/40 dark:border-line" />
 
             <div className="space-y-4">
-              <p className="font-satoshi font-semibold text-xs text-mainPurple uppercase tracking-widest">
+              <p className="font-satoshi font-semibold text-xs text-mainPurple dark:text-[#b9a4f7] uppercase tracking-widest">
                 Job Details
               </p>
               <div className="grid grid-cols-2 gap-4">
@@ -342,10 +342,10 @@ function JobDrawer({
               </div>
             </div>
 
-            <div className="border-t border-grey4/40" />
+            <div className="border-t border-grey4/40 dark:border-line" />
 
             <div className="space-y-4">
-              <p className="font-satoshi font-semibold text-xs text-mainPurple uppercase tracking-widest">
+              <p className="font-satoshi font-semibold text-xs text-mainPurple dark:text-[#b9a4f7] uppercase tracking-widest">
                 Salary
               </p>
               <div>
@@ -390,23 +390,23 @@ function JobDrawer({
                   className={`w-5 h-5 rounded flex items-center justify-center border-2 transition-colors ${
                     form.salary_visible
                       ? "bg-mainPurple border-mainPurple"
-                      : "bg-white border-grey4"
+                      : "bg-white dark:bg-surface-sunken border-grey4 dark:border-line"
                   }`}
                 >
                   {form.salary_visible && (
                     <FaCheck className="w-2.5 h-2.5 text-white" />
                   )}
                 </div>
-                <span className="font-openSans text-sm text-grey1">
+                <span className="font-openSans text-sm text-grey1 dark:text-content">
                   Show salary on listing
                 </span>
               </label>
             </div>
 
-            <div className="border-t border-grey4/40" />
+            <div className="border-t border-grey4/40 dark:border-line" />
 
             <div className="space-y-4">
-              <p className="font-satoshi font-semibold text-xs text-mainPurple uppercase tracking-widest">
+              <p className="font-satoshi font-semibold text-xs text-mainPurple dark:text-[#b9a4f7] uppercase tracking-widest">
                 Content
               </p>
               <div>
@@ -431,10 +431,10 @@ function JobDrawer({
               </div>
             </div>
 
-            <div className="border-t border-grey4/40" />
+            <div className="border-t border-grey4/40 dark:border-line" />
 
             <div className="space-y-4">
-              <p className="font-satoshi font-semibold text-xs text-mainPurple uppercase tracking-widest">
+              <p className="font-satoshi font-semibold text-xs text-mainPurple dark:text-[#b9a4f7] uppercase tracking-widest">
                 Meta
               </p>
               <div>
@@ -489,7 +489,7 @@ function JobDrawer({
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 py-2.5 border border-grey4 text-grey1 rounded-lg font-satoshi font-semibold text-sm hover:bg-grey5 transition-colors"
+            className="flex-1 py-2.5 border border-grey4 text-grey1 rounded-lg font-satoshi font-semibold text-sm hover:bg-grey5 dark:hover:bg-white/[0.06] transition-colors"
           >
             Cancel
           </button>
@@ -539,22 +539,22 @@ function DeleteConfirm({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6">
-        <p className="font-satoshi font-bold text-lg text-grey1 mb-2">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 dark:bg-black/60">
+      <div className="bg-white dark:bg-surface-raised rounded-2xl shadow-2xl w-full max-w-sm p-6">
+        <p className="font-satoshi font-bold text-lg text-grey1 dark:text-content mb-2">
           Delete this job?
         </p>
-        <p className="font-openSans text-sm text-grey3 mb-1">
-          <span className="font-semibold text-grey1">{job.title}</span> at{" "}
+        <p className="font-openSans text-sm text-grey3 dark:text-content-subtle mb-1">
+          <span className="font-semibold text-grey1 dark:text-content">{job.title}</span> at{" "}
           {job.company_name}
         </p>
-        <p className="font-openSans text-sm text-grey3 mb-6">
+        <p className="font-openSans text-sm text-grey3 dark:text-content-subtle mb-6">
           This will remove the listing from the public job board immediately.
         </p>
         <div className="flex gap-3">
           <button
             onClick={onClose}
-            className="flex-1 py-2.5 border border-grey4 text-grey1 rounded-lg font-satoshi font-semibold text-sm hover:bg-grey5 transition-colors"
+            className="flex-1 py-2.5 border border-grey4 text-grey1 rounded-lg font-satoshi font-semibold text-sm hover:bg-grey5 dark:hover:bg-white/[0.06] transition-colors"
           >
             Cancel
           </button>
@@ -586,12 +586,12 @@ function JobRow({
   onDelete: (j: Job) => void;
 }) {
   return (
-    <div className="bg-white rounded-xl border border-grey4/50 p-4 hover:border-mainPurple/30 transition-all">
+    <div className="bg-white dark:bg-surface-raised rounded-xl border border-grey4/50 dark:border-line p-4 hover:border-mainPurple/30 transition-all">
       <div className="flex items-start gap-4">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap mb-0.5">
             {isExpired(job) ? (
-              <span className="text-[10px] font-satoshi font-semibold px-2 py-0.5 rounded-full text-red-600 bg-red-50">
+              <span className="text-[10px] font-satoshi font-semibold px-2 py-0.5 rounded-full text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10">
                 Expired
               </span>
             ) : (
@@ -605,24 +605,24 @@ function JobRow({
               External
             </span>
           </div>
-          <p className="font-satoshi font-bold text-sm text-grey1 mt-1 truncate">
+          <p className="font-satoshi font-bold text-sm text-grey1 dark:text-content mt-1 truncate">
             {job.title}
           </p>
-          <p className="font-openSans text-xs text-grey3 mt-0.5">
+          <p className="font-openSans text-xs text-grey3 dark:text-content-subtle mt-0.5">
             {job.company_name}
           </p>
           <div className="flex items-center gap-3 mt-2 flex-wrap">
-            <span className="text-[11px] font-openSans text-grey3">
+            <span className="text-[11px] font-openSans text-grey3 dark:text-content-subtle">
               {jobTypeLabel(job.job_type)}
             </span>
-            <FaCircle className="w-1 h-1 text-grey4" />
-            <span className="text-[11px] font-openSans text-grey3">
+            <FaCircle className="w-1 h-1 text-grey4 dark:text-content-subtle" />
+            <span className="text-[11px] font-openSans text-grey3 dark:text-content-subtle">
               {workModeLabel(job.work_mode)}
             </span>
             {job.location && (
               <>
-                <FaCircle className="w-1 h-1 text-grey4" />
-                <span className="flex items-center gap-1 text-[11px] font-openSans text-grey3">
+                <FaCircle className="w-1 h-1 text-grey4 dark:text-content-subtle" />
+                <span className="flex items-center gap-1 text-[11px] font-openSans text-grey3 dark:text-content-subtle">
                   <FaLocationDot className="w-2.5 h-2.5" /> {job.location}
                 </span>
               </>
@@ -630,7 +630,7 @@ function JobRow({
           </div>
         </div>
         <div className="flex flex-col items-end gap-2 shrink-0">
-          <p className="font-openSans text-[11px] text-grey3">
+          <p className="font-openSans text-[11px] text-grey3 dark:text-content-subtle">
             {timeAgo(job.created_at)}
           </p>
           <div className="flex items-center gap-1">
@@ -639,7 +639,7 @@ function JobRow({
                 href={job.external_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 flex items-center justify-center rounded-lg text-grey3 hover:text-mainPurple hover:bg-lightPurple transition-colors"
+                className="w-8 h-8 flex items-center justify-center rounded-lg text-grey3 dark:text-content-subtle hover:text-mainPurple dark:hover:text-[#b9a4f7] hover:bg-lightPurple dark:hover:bg-[#241d38] transition-colors"
                 title="View listing"
               >
                 <FaArrowUpRightFromSquare className="w-3.5 h-3.5" />
@@ -647,14 +647,14 @@ function JobRow({
             )}
             <button
               onClick={() => onEdit(job)}
-              className="w-8 h-8 flex items-center justify-center rounded-lg text-grey3 hover:text-mainPurple hover:bg-lightPurple transition-colors"
+              className="w-8 h-8 flex items-center justify-center rounded-lg text-grey3 dark:text-content-subtle hover:text-mainPurple dark:hover:text-[#b9a4f7] hover:bg-lightPurple dark:hover:bg-[#241d38] transition-colors"
               title="Edit"
             >
               <FaPen className="w-3.5 h-3.5" />
             </button>
             <button
               onClick={() => onDelete(job)}
-              className="w-8 h-8 flex items-center justify-center rounded-lg text-grey3 hover:text-red-500 hover:bg-red-50 transition-colors"
+              className="w-8 h-8 flex items-center justify-center rounded-lg text-grey3 dark:text-content-subtle hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
               title="Delete"
             >
               <FaTrash className="w-3.5 h-3.5" />
@@ -767,10 +767,10 @@ export default function JobsManager() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="font-satoshi font-black text-3xl text-grey1">
+          <h1 className="font-satoshi font-black text-3xl text-grey1 dark:text-content">
             External Jobs
           </h1>
-          <p className="font-openSans text-sm text-grey3 mt-1">
+          <p className="font-openSans text-sm text-grey3 dark:text-content-subtle mt-1">
             Manually curated listings sourced from LinkedIn and other job boards
           </p>
         </div>
@@ -784,36 +784,36 @@ export default function JobsManager() {
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-        <div className="bg-white rounded-xl border border-grey4/50 p-4">
-          <p className="font-openSans text-xs text-grey3 mb-1">Total Listed</p>
-          <p className="font-satoshi font-black text-3xl text-grey1">
+        <div className="bg-white dark:bg-surface-raised rounded-xl border border-grey4/50 dark:border-line p-4">
+          <p className="font-openSans text-xs text-grey3 dark:text-content-subtle mb-1">Total Listed</p>
+          <p className="font-satoshi font-black text-3xl text-grey1 dark:text-content">
             {counts.all}
           </p>
         </div>
-        <div className="bg-white rounded-xl border border-grey4/50 p-4">
-          <p className="font-openSans text-xs text-grey3 mb-1">Active</p>
+        <div className="bg-white dark:bg-surface-raised rounded-xl border border-grey4/50 dark:border-line p-4">
+          <p className="font-openSans text-xs text-grey3 dark:text-content-subtle mb-1">Active</p>
           <p className="font-satoshi font-black text-3xl text-successGreen">
             {counts.active}
           </p>
         </div>
-        <div className="bg-white rounded-xl border border-grey4/50 p-4">
-          <p className="font-openSans text-xs text-grey3 mb-1">Draft</p>
-          <p className="font-satoshi font-black text-3xl text-grey2">
+        <div className="bg-white dark:bg-surface-raised rounded-xl border border-grey4/50 dark:border-line p-4">
+          <p className="font-openSans text-xs text-grey3 dark:text-content-subtle mb-1">Draft</p>
+          <p className="font-satoshi font-black text-3xl text-grey2 dark:text-content-muted">
             {counts.draft}
           </p>
         </div>
-        <div className="bg-white rounded-xl border border-grey4/50 p-4">
-          <p className="font-openSans text-xs text-grey3 mb-1">
+        <div className="bg-white dark:bg-surface-raised rounded-xl border border-grey4/50 dark:border-line p-4">
+          <p className="font-openSans text-xs text-grey3 dark:text-content-subtle mb-1">
             Paused / Archived
           </p>
-          <p className="font-satoshi font-black text-3xl text-grey2">
+          <p className="font-satoshi font-black text-3xl text-grey2 dark:text-content-muted">
             {counts.paused + counts.archived}
           </p>
         </div>
       </div>
 
       <div className="flex items-center justify-between gap-4 mb-5">
-        <div className="flex gap-1 bg-white border border-grey4/50 rounded-xl p-1.5 overflow-x-auto shrink-0">
+        <div className="flex gap-1 bg-white dark:bg-surface-raised border border-grey4/50 dark:border-line rounded-xl p-1.5 overflow-x-auto shrink-0">
           {tabs.map((tab) => (
             <button
               key={tab.key}
@@ -821,7 +821,7 @@ export default function JobsManager() {
               className={`px-3 py-1.5 rounded-lg font-satoshi font-semibold text-xs transition-all whitespace-nowrap ${
                 filter === tab.key
                   ? "bg-mainPurple text-white"
-                  : "text-grey3 hover:text-grey1 hover:bg-grey5"
+                  : "text-grey3 dark:text-content-subtle hover:text-grey1 dark:hover:text-content hover:bg-grey5 dark:hover:bg-white/[0.06]"
               }`}
             >
               {tab.label}
@@ -829,13 +829,13 @@ export default function JobsManager() {
           ))}
         </div>
         <div className="relative w-56 shrink-0">
-          <FaMagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-grey3 pointer-events-none" />
+          <FaMagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-grey3 dark:text-content-subtle pointer-events-none" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search title or company…"
-            className="w-full pl-9 pr-3 py-2 border border-grey4 rounded-lg font-openSans text-sm text-grey1 placeholder:text-grey3 focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple bg-white transition-colors"
+            className="w-full pl-9 pr-3 py-2 border border-grey4 dark:border-line rounded-lg font-openSans text-sm text-grey1 dark:text-content placeholder:text-grey3 dark:placeholder:text-content-subtle focus:outline-none focus:border-mainPurple dark:focus:border-[#6a4fb0] focus:ring-1 focus:ring-mainPurple bg-white dark:bg-surface-sunken transition-colors"
           />
         </div>
       </div>
@@ -845,14 +845,14 @@ export default function JobsManager() {
           <div className="w-7 h-7 border-[3px] border-mainPurple border-t-transparent rounded-full animate-spin" />
         </div>
       ) : filtered.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-grey4/50 py-20 flex flex-col items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-lightPurple flex items-center justify-center">
-            <FaBriefcase className="w-6 h-6 text-mainPurple" />
+        <div className="bg-white dark:bg-surface-raised rounded-2xl border border-grey4/50 dark:border-line py-20 flex flex-col items-center gap-4">
+          <div className="w-14 h-14 rounded-2xl bg-lightPurple dark:bg-[#241d38] flex items-center justify-center">
+            <FaBriefcase className="w-6 h-6 text-mainPurple dark:text-[#b9a4f7]" />
           </div>
-          <p className="font-satoshi font-bold text-lg text-grey1">
+          <p className="font-satoshi font-bold text-lg text-grey1 dark:text-content">
             No jobs found
           </p>
-          <p className="font-openSans text-sm text-grey3 text-center max-w-xs">
+          <p className="font-openSans text-sm text-grey3 dark:text-content-subtle text-center max-w-xs">
             {q
               ? "No jobs match your search."
               : filter === "all"
@@ -864,7 +864,7 @@ export default function JobsManager() {
           {q ? (
             <button
               onClick={() => setSearch("")}
-              className="mt-1 px-5 py-2 border border-grey4 text-grey1 rounded-lg font-satoshi font-semibold text-sm hover:bg-grey5 transition-colors"
+              className="mt-1 px-5 py-2 border border-grey4 text-grey1 rounded-lg font-satoshi font-semibold text-sm hover:bg-grey5 dark:hover:bg-white/[0.06] transition-colors"
             >
               Clear search
             </button>
@@ -881,10 +881,10 @@ export default function JobsManager() {
       ) : (
         <>
           <div className="flex items-center justify-between mb-3">
-            <p className="font-openSans text-sm text-grey3">
+            <p className="font-openSans text-sm text-grey3 dark:text-content-subtle">
               {filtered.length} {filtered.length === 1 ? "job" : "jobs"}
               {totalPages > 1 && (
-                <span className="ml-1 text-grey4">· page {page} of {totalPages}</span>
+                <span className="ml-1 text-grey4 dark:text-content-subtle">· page {page} of {totalPages}</span>
               )}
             </p>
           </div>
@@ -903,7 +903,7 @@ export default function JobsManager() {
               <button
                 onClick={() => setPage((p) => p - 1)}
                 disabled={page === 1}
-                className="px-3 py-2 rounded-lg font-satoshi font-semibold text-sm transition-colors disabled:text-grey4 disabled:pointer-events-none text-grey2 hover:bg-grey5"
+                className="px-3 py-2 rounded-lg font-satoshi font-semibold text-sm transition-colors disabled:text-grey4 disabled:pointer-events-none text-grey2 dark:text-content-muted hover:bg-grey5 dark:hover:bg-white/[0.06]"
               >
                 ← Prev
               </button>
@@ -921,13 +921,13 @@ export default function JobsManager() {
                   ]
               ).map((p, i) =>
                 p === "ellipsis" ? (
-                  <span key={`e${i}`} className="px-2 text-grey3 font-openSans text-sm select-none">…</span>
+                  <span key={`e${i}`} className="px-2 text-grey3 dark:text-content-subtle font-openSans text-sm select-none">…</span>
                 ) : (
                   <button
                     key={p}
                     onClick={() => setPage(p)}
                     className={`w-9 h-9 rounded-lg font-satoshi font-semibold text-sm transition-colors ${
-                      p === page ? "bg-mainPurple text-white" : "text-grey2 hover:bg-grey5"
+                      p === page ? "bg-mainPurple text-white" : "text-grey2 dark:text-content-muted hover:bg-grey5 dark:hover:bg-white/[0.06]"
                     }`}
                   >
                     {p}
@@ -937,7 +937,7 @@ export default function JobsManager() {
               <button
                 onClick={() => setPage((p) => p + 1)}
                 disabled={page === totalPages}
-                className="px-3 py-2 rounded-lg font-satoshi font-semibold text-sm transition-colors disabled:text-grey4 disabled:pointer-events-none text-grey2 hover:bg-grey5"
+                className="px-3 py-2 rounded-lg font-satoshi font-semibold text-sm transition-colors disabled:text-grey4 disabled:pointer-events-none text-grey2 dark:text-content-muted hover:bg-grey5 dark:hover:bg-white/[0.06]"
               >
                 Next →
               </button>

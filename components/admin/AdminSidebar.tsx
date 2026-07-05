@@ -135,7 +135,7 @@ export default function AdminSidebar() {
       {/* Overlay for mobile */}
       {isMobileMenuOpen && (
         <div
-          className="lg:hidden fixed inset-0 bg-black/50 z-30"
+          className="lg:hidden fixed inset-0 bg-black/50 dark:bg-black/60 z-30"
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
@@ -143,11 +143,11 @@ export default function AdminSidebar() {
       {/* Sidebar */}
       <aside
         className={`
-          fixed top-0 left-0 h-full w-64 bg-white border-r border-grey4 z-40 transition-transform duration-300
+          fixed top-0 left-0 h-full w-64 bg-white dark:bg-surface-raised border-r border-grey4 dark:border-line z-40 transition-transform duration-300
           ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         `}
       >
-        <div className="p-6 border-b border-grey4">
+        <div className="p-6 border-b border-grey4 dark:border-line">
           <h1 className="font-satoshi font-black text-2xl">Segwae Admin</h1>
         </div>
 
@@ -165,7 +165,7 @@ export default function AdminSidebar() {
                       ${
                         isActive
                           ? 'bg-mainPurple text-white'
-                          : 'text-grey2 hover:bg-grey6'
+                          : 'text-grey2 dark:text-content-muted hover:bg-grey6 dark:hover:bg-white/[0.06]'
                       }
                     `}
                   >
@@ -178,10 +178,10 @@ export default function AdminSidebar() {
           </ul>
         </nav>
 
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t bg-grey6 border-grey4">
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t bg-grey6 dark:bg-white/[0.03] border-grey4 dark:border-line">
           <Link
             href="/"
-            className="flex items-center gap-3 px-4 py-3 rounded-lg font-spaceGrotesk text-grey2 hover:bg-grey6 transition-all"
+            className="flex items-center gap-3 px-4 py-3 rounded-lg font-spaceGrotesk text-grey2 dark:text-content-muted hover:bg-grey6 dark:hover:bg-white/[0.06] transition-all"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />

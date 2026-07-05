@@ -53,22 +53,22 @@ function LoginContent() {
     }
   }
 
-  const inputClass = "w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 transition-colors"
+  const inputClass = "w-full px-4 py-3 border border-grey4 dark:border-line rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 dark:text-content placeholder:text-grey3 dark:placeholder:text-content-subtle bg-white dark:bg-surface-sunken transition-colors"
 
   return (
     <AuthLayout justify='justify-center'>
       <div className="mb-8">
-        <h1 className="font-satoshi font-bold text-2xl text-grey1 mb-2">
+        <h1 className="font-satoshi font-bold text-2xl text-grey1 dark:text-content mb-2">
           Welcome back
         </h1>
-        <p className="font-openSans text-grey3 text-sm">
+        <p className="font-openSans text-grey3 dark:text-content-muted text-sm">
           Sign in to your Segwae account
         </p>
       </div>
 
       <form onSubmit={handleLogin} className="space-y-5">
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-grey2 mb-1.5 font-satoshi">
+          <label htmlFor="email" className="block text-sm font-medium text-grey2 dark:text-content-muted mb-1.5 font-satoshi">
             Email address
           </label>
           <input
@@ -84,7 +84,7 @@ function LoginContent() {
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-grey2 mb-1.5 font-satoshi">
+          <label htmlFor="password" className="block text-sm font-medium text-grey2 dark:text-content-muted mb-1.5 font-satoshi">
             Password
           </label>
           <div className="relative">
@@ -101,7 +101,7 @@ function LoginContent() {
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-grey3 hover:text-grey1 transition-colors cursor-pointer"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-grey3 dark:text-content-subtle hover:text-grey1 dark:hover:text-content transition-colors cursor-pointer"
             >
               {showPassword
                 ? <FaEyeSlash className="w-4 h-4" />
@@ -112,7 +112,7 @@ function LoginContent() {
         </div>
 
         <div className="flex justify-end -mt-2">
-          <Link href="/forgot-password" className="font-openSans text-sm text-mainPurple hover:underline">
+          <Link href="/forgot-password" className="font-openSans text-sm text-mainPurple dark:text-[#b9a4f7] hover:underline">
             Forgot password?
           </Link>
         </div>
@@ -126,9 +126,9 @@ function LoginContent() {
         </button>
       </form>
 
-      <p className="font-openSans text-grey3 text-sm text-center mt-6">
+      <p className="font-openSans text-grey3 dark:text-content-muted text-sm text-center mt-6">
         Don&apos;t have an account?{' '}
-        <Link href="/signup" className="text-mainPurple font-semibold hover:underline">
+        <Link href="/signup" className="text-mainPurple dark:text-[#b9a4f7] font-semibold hover:underline">
           Sign up free
         </Link>
       </p>

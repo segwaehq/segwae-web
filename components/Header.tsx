@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { FaBars, FaXmark } from "react-icons/fa6"
 import type { User } from "@supabase/supabase-js"
+import ThemeToggle from "@/components/ThemeToggle"
 
 const navLinks = [
   { href: "/jobs", label: "Jobs" },
@@ -50,9 +51,9 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 bg-white/80 backdrop-blur-xl backdrop-saturate-150 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 bg-surface/80 backdrop-blur-xl backdrop-saturate-150 ${
         scrolled
-          ? 'border-b border-[#ECECF1] shadow-[0_1px_4px_rgba(0,0,0,0.06)]'
+          ? 'border-b border-line shadow-[0_1px_4px_rgba(0,0,0,0.06)] dark:shadow-[0_1px_4px_rgba(0,0,0,0.4)]'
           : 'border-b border-transparent'
       }`}
     >
@@ -79,8 +80,8 @@ export default function Header() {
                 href={link.href}
                 className={`font-satoshi text-sm font-medium transition-colors ${
                   pathname === link.href
-                    ? 'text-grey1'
-                    : 'text-[#4B5563] hover:text-grey1'
+                    ? 'text-content'
+                    : 'text-content-muted hover:text-content'
                 }`}
               >
                 {link.label}
@@ -90,6 +91,7 @@ export default function Header() {
 
           {/* Desktop auth */}
           <div className="hidden md:flex items-center gap-3 shrink-0">
+            <ThemeToggle />
             {loading ? (
               <div className="w-32 h-9" />
             ) : user ? (
@@ -103,7 +105,7 @@ export default function Header() {
               <>
                 <Link
                   href="/login"
-                  className="text-grey2 font-satoshi font-semibold text-sm hover:text-grey1 transition-colors"
+                  className="text-content-muted font-satoshi font-semibold text-sm hover:text-content transition-colors"
                 >
                   Log in
                 </Link>
@@ -117,17 +119,20 @@ export default function Header() {
             )}
           </div>
 
-          {/* Mobile hamburger */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-grey2 hover:text-grey1 transition-colors z-50"
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen
-              ? <FaXmark className="w-5 h-5" />
-              : <FaBars className="w-5 h-5" />
-            }
-          </button>
+          {/* Mobile controls */}
+          <div className="md:hidden flex items-center gap-1.5 z-50">
+            <ThemeToggle />
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 text-content-muted hover:text-content transition-colors"
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen
+                ? <FaXmark className="w-5 h-5" />
+                : <FaBars className="w-5 h-5" />
+              }
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -138,19 +143,19 @@ export default function Header() {
             className="fixed inset-0 bg-black/40 z-40 md:hidden"
             onClick={() => setMobileMenuOpen(false)}
           />
-          <div className="fixed top-16 left-0 right-0 bg-white border-b border-grey4 shadow-lg z-40 md:hidden">
+          <div className="fixed top-16 left-0 right-0 bg-surface-raised border-b border-line shadow-lg z-40 md:hidden">
             <div className="px-4 py-5 space-y-0.5">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block py-2.5 px-2 font-satoshi text-sm font-medium text-grey2 hover:text-grey1 rounded-lg hover:bg-grey6 transition-colors"
+                  className="block py-2.5 px-2 font-satoshi text-sm font-medium text-content-muted hover:text-content rounded-lg hover:bg-surface-sunken transition-colors"
                 >
                   {link.label}
                 </Link>
               ))}
-              <div className="border-t border-grey4 pt-4 mt-3 space-y-2">
+              <div className="border-t border-line pt-4 mt-3 space-y-2">
                 {loading ? (
                   <div className="h-20" />
                 ) : user ? (
@@ -166,7 +171,7 @@ export default function Header() {
                     <Link
                       href="/login"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="block w-full text-center border border-grey4 text-grey2 px-6 py-2.5 rounded-lg font-satoshi font-semibold text-sm hover:border-grey3 transition-colors"
+                      className="block w-full text-center border border-line text-content-muted px-6 py-2.5 rounded-lg font-satoshi font-semibold text-sm hover:border-content-subtle transition-colors"
                     >
                       Log in
                     </Link>

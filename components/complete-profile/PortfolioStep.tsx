@@ -48,17 +48,17 @@ export default function PortfolioStep({ value, onUpdate, onComplete, onBack }: P
   return (
     <form onSubmit={handleSubmit} className="space-y-7">
       <div>
-        <h2 className="font-satoshi font-black text-[27px] tracking-[-0.03em] leading-[1.12] text-[#15131C] mb-1.5">
+        <h2 className="font-satoshi font-black text-[27px] tracking-[-0.03em] leading-[1.12] text-[#15131C] dark:text-content mb-1.5">
           Add your portfolio or website
         </h2>
-        <p className="text-[15px] font-medium text-[#8B8499] leading-relaxed">
+        <p className="text-[15px] font-medium text-[#8B8499] dark:text-content-muted leading-relaxed">
           Share a link to your portfolio, personal website, or any page that showcases your work. This is optional — you can skip it and add one later.
         </p>
       </div>
 
       <div>
-        <label htmlFor="portfolio" className="block text-[13px] font-bold text-[#15131C] mb-1.5">
-          Portfolio / Website URL <span className="text-[#9098A3] font-medium">(optional)</span>
+        <label htmlFor="portfolio" className="block text-[13px] font-bold text-[#15131C] dark:text-content mb-1.5">
+          Portfolio / Website URL <span className="text-[#9098A3] dark:text-content-subtle font-medium">(optional)</span>
         </label>
         <input
           type="url"
@@ -66,20 +66,20 @@ export default function PortfolioStep({ value, onUpdate, onComplete, onBack }: P
           value={url}
           onChange={(e) => { setUrl(e.target.value); onUpdate(e.target.value) }}
           placeholder="https://yourwebsite.com"
-          className="w-full px-[15px] py-[13px] border border-[#E2E1EA] rounded-xl bg-white text-[14.5px] font-medium text-[#15131C] placeholder:text-[#B6B0C0] outline-none focus:border-[#A98BE8] transition-colors"
+          className="w-full px-[15px] py-[13px] border border-[#E2E1EA] dark:border-line rounded-xl bg-white dark:bg-surface-sunken text-[14.5px] font-medium text-[#15131C] dark:text-content placeholder:text-[#B6B0C0] dark:placeholder:text-content-subtle outline-none focus:border-[#A98BE8] dark:focus:border-[#6a4fb0] transition-colors"
           disabled={saving}
         />
         {error && <p className="mt-2 text-xs font-medium text-errorRed">{error}</p>}
       </div>
 
       {/* Finish callout */}
-      <div className="flex items-center gap-3 p-4 rounded-2xl bg-[#F4F0FE] border border-[#E6DCFB]">
+      <div className="flex items-center gap-3 p-4 rounded-2xl bg-[#F4F0FE] dark:bg-[#241d38] border border-[#E6DCFB] dark:border-[#4a3d78]">
         <div className="w-9 h-9 rounded-xl bg-brand-gradient flex items-center justify-center shrink-0">
           <FaArrowRight className="w-3.5 h-3.5 text-white" />
         </div>
         <div>
-          <p className="text-sm font-bold text-[#15131C]">Almost done</p>
-          <p className="text-xs font-medium text-[#6B6478] mt-0.5 leading-relaxed">
+          <p className="text-sm font-bold text-[#15131C] dark:text-content">Almost done</p>
+          <p className="text-xs font-medium text-[#6B6478] dark:text-content-muted mt-0.5 leading-relaxed">
             After this step your profile goes live and becomes visible to everyone.
           </p>
         </div>
@@ -87,7 +87,7 @@ export default function PortfolioStep({ value, onUpdate, onComplete, onBack }: P
 
       <div className="flex gap-3">
         <button type="button" onClick={onBack} disabled={saving}
-          className="flex-1 py-3.5 rounded-xl border border-[#E2E1EA] bg-white text-[14px] font-bold text-[#374151] hover:border-[#B9B9C6] transition-colors disabled:opacity-50">
+          className="flex-1 py-3.5 rounded-xl border border-[#E2E1EA] dark:border-line bg-white dark:bg-surface-raised text-[14px] font-bold text-[#374151] dark:text-content-muted hover:border-[#B9B9C6] dark:hover:border-content-subtle transition-colors disabled:opacity-50">
           Back
         </button>
         <button type="submit" disabled={saving}

@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import ThemeToggle from "@/components/ThemeToggle";
 import {
   FaUser,
   FaLink,
@@ -21,6 +22,9 @@ import {
   FaFolderOpen,
   FaGaugeHigh,
   FaChevronRight,
+  FaWandMagicSparkles,
+  FaBolt,
+  FaUserTie,
 } from "react-icons/fa6";
 
 function initialsOf(name: string): string {
@@ -60,6 +64,9 @@ export default function DashboardLayout({
 
   const careersNavItems = [
     { href: "/jobs", label: "Browse Jobs", icon: FaMagnifyingGlass },
+    { href: "/dashboard/ai-tools", label: "Resume Tailor", icon: FaWandMagicSparkles },
+    { href: "/dashboard/interview-prep", label: "Interview Prep", icon: FaUserTie },
+    { href: "/dashboard/upgrade", label: "Upgrade", icon: FaBolt },
     { href: "/dashboard/applications", label: "My Applications", icon: FaFileLines },
     { href: "/dashboard/resumes", label: "Resume Manager", icon: FaFolderOpen },
     { href: "/dashboard/hiring", label: "Hiring Dashboard", icon: FaBriefcase },
@@ -73,8 +80,8 @@ export default function DashboardLayout({
   const navLinkClass = (active: boolean) =>
     `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-colors duration-150 ${
       active
-        ? "bg-[#F4F0FE] text-[#5A2DD4] font-bold"
-        : "text-[#6B6478] font-medium hover:bg-[#FAFAFB] hover:text-[#15131C]"
+        ? "bg-[#F4F0FE] dark:bg-[#241d38] text-[#5A2DD4] dark:text-[#b9a4f7] font-bold"
+        : "text-[#6B6478] dark:text-content-muted font-medium hover:bg-[#FAFAFB] dark:hover:bg-white/[0.04] hover:text-[#15131C] dark:hover:text-content"
     }`;
 
   const handleLogout = async () => {
@@ -91,11 +98,11 @@ export default function DashboardLayout({
   };
 
   return (
-    <div className="min-h-screen bg-[#F7F7F9] flex">
+    <div className="min-h-screen bg-[#F7F7F9] dark:bg-surface flex">
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-[#0F1115]/40 z-40 lg:hidden"
+          className="fixed inset-0 bg-[#0F1115]/40 dark:bg-black/60 z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -103,7 +110,7 @@ export default function DashboardLayout({
       {/* Sidebar */}
       <aside
         className={`
-          fixed top-0 left-0 h-full w-60 bg-white border-r border-[#ECECF1] z-50 flex flex-col
+          fixed top-0 left-0 h-full w-60 bg-white dark:bg-surface-raised border-r border-[#ECECF1] dark:border-line z-50 flex flex-col
           transform transition-transform duration-300 ease-in-out
           lg:translate-x-0
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
@@ -117,7 +124,8 @@ export default function DashboardLayout({
             className="inline-flex items-center"
             aria-label="Segwae home"
           >
-            <Image src="/wordmark.png" alt="Segwae" width={3834} height={992} className="h-7 w-auto" />
+            <Image src="/wordmark.png" alt="Segwae" width={3834} height={992} className="h-7 w-auto dark:hidden" />
+            <Image src="/wordmark_white.png" alt="Segwae" width={3834} height={992} className="h-7 w-auto hidden dark:block" />
           </Link>
         </div>
 
@@ -139,7 +147,7 @@ export default function DashboardLayout({
           })}
 
           <div className="pt-5 pb-1">
-            <p className="px-3 text-[10px] font-bold text-[#A8A2B4] uppercase tracking-widest">
+            <p className="px-3 text-[10px] font-bold text-[#A8A2B4] dark:text-content-subtle uppercase tracking-widest">
               Careers
             </p>
           </div>
@@ -162,14 +170,14 @@ export default function DashboardLayout({
 
         {/* User card + logout */}
         <div className="px-3 py-3">
-          <div className="h-px bg-[#F0EFF4] mb-2" />
+          <div className="h-px bg-[#F0EFF4] dark:bg-line mb-2" />
           <Link
             href="/dashboard/profile"
             onClick={() => setSidebarOpen(false)}
-            className="flex items-center gap-3 px-2.5 py-2 rounded-xl hover:bg-[#FAFAFB] transition-colors"
+            className="flex items-center gap-3 px-2.5 py-2 rounded-xl hover:bg-[#FAFAFB] dark:hover:bg-white/[0.04] transition-colors"
           >
             <div className="w-[38px] h-[38px] rounded-full p-[2px] bg-brand-gradient shrink-0">
-              <div className="relative w-full h-full rounded-full border-2 border-white overflow-hidden bg-brand-gradient flex items-center justify-center text-[13px] font-black text-white">
+              <div className="relative w-full h-full rounded-full border-2 border-white dark:border-surface-raised overflow-hidden bg-brand-gradient flex items-center justify-center text-[13px] font-black text-white">
                 {me.image ? (
                   <Image src={me.image} alt="" fill className="object-cover" />
                 ) : (
@@ -178,33 +186,40 @@ export default function DashboardLayout({
               </div>
             </div>
             <div className="flex-1 min-w-0">
-              <div className="text-[13.5px] font-bold text-[#15131C] truncate">{me.name || "Your profile"}</div>
-              <div className="text-[11.5px] font-medium text-[#9098A3]">View profile</div>
+              <div className="text-[13.5px] font-bold text-[#15131C] dark:text-content truncate">{me.name || "Your profile"}</div>
+              <div className="text-[11.5px] font-medium text-[#9098A3] dark:text-content-subtle">View profile</div>
             </div>
-            <FaChevronRight className="w-3.5 h-3.5 text-[#A8A2B4] shrink-0" />
+            <FaChevronRight className="w-3.5 h-3.5 text-[#A8A2B4] dark:text-content-subtle shrink-0" />
           </Link>
-          <button
-            onClick={handleLogout}
-            disabled={loggingOut}
-            className="w-full flex items-center gap-3 px-3 py-2.5 mt-1 rounded-xl text-sm font-medium text-[#9098A3] hover:text-[#15131C] hover:bg-[#FAFAFB] transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
-          >
-            <FaArrowRightFromBracket className="w-[18px] h-[18px] shrink-0" />
-            <span>{loggingOut ? "Logging out…" : "Log out"}</span>
-          </button>
+          <div className="flex items-center gap-2 mt-1">
+            <button
+              onClick={handleLogout}
+              disabled={loggingOut}
+              className="flex-1 flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-[#9098A3] dark:text-content-muted hover:text-[#15131C] dark:hover:text-content hover:bg-[#FAFAFB] dark:hover:bg-white/[0.04] transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+            >
+              <FaArrowRightFromBracket className="w-[18px] h-[18px] shrink-0" />
+              <span>{loggingOut ? "Logging out…" : "Log out"}</span>
+            </button>
+            <ThemeToggle />
+          </div>
         </div>
       </aside>
 
       {/* Mobile top bar */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 bg-white px-5 py-4 flex items-center justify-between z-30 border-b border-[#ECECF1]">
+      <div className="lg:hidden fixed top-0 left-0 right-0 bg-white dark:bg-surface-raised px-5 py-4 flex items-center justify-between z-30 border-b border-[#ECECF1] dark:border-line">
         <Link href="/" className="inline-flex items-center" aria-label="Segwae home">
-          <Image src="/wordmark.png" alt="Segwae" width={3834} height={992} className="h-7 w-auto" />
+          <Image src="/wordmark.png" alt="Segwae" width={3834} height={992} className="h-7 w-auto dark:hidden" />
+          <Image src="/wordmark_white.png" alt="Segwae" width={3834} height={992} className="h-7 w-auto hidden dark:block" />
         </Link>
-        <button
-          onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="p-1.5 text-[#6B6478] hover:text-[#15131C] transition-colors"
-        >
-          {sidebarOpen ? <FaXmark className="w-5 h-5" /> : <FaBars className="w-5 h-5" />}
-        </button>
+        <div className="flex items-center gap-1.5">
+          <ThemeToggle />
+          <button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="p-1.5 text-[#6B6478] dark:text-content-muted hover:text-[#15131C] dark:hover:text-content transition-colors"
+          >
+            {sidebarOpen ? <FaXmark className="w-5 h-5" /> : <FaBars className="w-5 h-5" />}
+          </button>
+        </div>
       </div>
 
       {/* Main content */}

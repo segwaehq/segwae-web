@@ -78,7 +78,7 @@ export default function ContactMessagesClient({ initialMessages }: Props) {
       new: 'bg-mainPurple/10 text-mainPurple',
       read: 'bg-blue/10 text-blue',
       replied: 'bg-successGreen/10 text-successGreen',
-      archived: 'bg-grey3/10 text-grey3',
+      archived: 'bg-grey3/10 dark:bg-white/[0.06] text-grey3 dark:text-content-subtle',
     }
     return styles[status as keyof typeof styles] || styles.new
   }
@@ -104,7 +104,7 @@ export default function ContactMessagesClient({ initialMessages }: Props) {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-2xl p-6 shadow-lg mb-6">
+      <div className="bg-white dark:bg-surface-raised rounded-2xl p-6 shadow-lg mb-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block font-spaceGrotesk font-semibold mb-2">Search</label>
@@ -113,7 +113,7 @@ export default function ContactMessagesClient({ initialMessages }: Props) {
               placeholder="Search by name, email, subject, or message..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg border border-grey4 focus:border-mainPurple focus:ring-2 focus:ring-mainPurple/20 outline-none transition-all font-openSans"
+              className="w-full px-4 py-3 rounded-lg border border-grey4 dark:border-line dark:bg-surface-sunken focus:border-mainPurple dark:focus:border-[#6a4fb0] focus:ring-2 focus:ring-mainPurple/20 outline-none transition-all font-openSans dark:text-content dark:placeholder:text-content-subtle"
             />
           </div>
           <div>
@@ -121,7 +121,7 @@ export default function ContactMessagesClient({ initialMessages }: Props) {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg border border-grey4 focus:border-mainPurple focus:ring-2 focus:ring-mainPurple/20 outline-none transition-all font-openSans"
+              className="w-full px-4 py-3 rounded-lg border border-grey4 dark:border-line dark:bg-surface-sunken focus:border-mainPurple dark:focus:border-[#6a4fb0] focus:ring-2 focus:ring-mainPurple/20 outline-none transition-all font-openSans dark:text-content dark:placeholder:text-content-subtle"
             >
               <option value="all">All Statuses</option>
               <option value="new">New</option>
@@ -131,20 +131,20 @@ export default function ContactMessagesClient({ initialMessages }: Props) {
             </select>
           </div>
         </div>
-        <div className="mt-4 text-sm text-grey2 font-openSans">
+        <div className="mt-4 text-sm text-grey2 dark:text-content-muted font-openSans">
           Showing {filteredMessages.length} of {messages.length} messages
         </div>
       </div>
 
       {/* Messages List */}
       {filteredMessages.length === 0 ? (
-        <div className="bg-white rounded-2xl p-12 text-center shadow-lg">
-          <p className="font-spaceGrotesk text-xl text-grey2">No messages found</p>
+        <div className="bg-white dark:bg-surface-raised rounded-2xl p-12 text-center shadow-lg">
+          <p className="font-spaceGrotesk text-xl text-grey2 dark:text-content-muted">No messages found</p>
         </div>
       ) : (
         <div className="space-y-4">
           {filteredMessages.map((message) => (
-            <div key={message.id} className="bg-white rounded-2xl p-6 shadow-lg">
+            <div key={message.id} className="bg-white dark:bg-surface-raised rounded-2xl p-6 shadow-lg">
               <div className="flex flex-col md:flex-row md:items-start justify-between mb-4 gap-4">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2 flex-wrap">
@@ -157,7 +157,7 @@ export default function ContactMessagesClient({ initialMessages }: Props) {
                       {message.status.toUpperCase()}
                     </span>
                   </div>
-                  <div className="flex flex-wrap items-center gap-2 md:gap-4 text-sm text-grey2 font-openSans">
+                  <div className="flex flex-wrap items-center gap-2 md:gap-4 text-sm text-grey2 dark:text-content-muted font-openSans">
                     <span>{message.email}</span>
                     <span className="hidden md:inline">•</span>
                     <span>{new Date(message.created_at).toLocaleString()}</span>
@@ -165,11 +165,11 @@ export default function ContactMessagesClient({ initialMessages }: Props) {
                 </div>
               </div>
 
-              <div className="bg-grey6 rounded-xl p-4 mb-4">
-                <p className="font-spaceGrotesk font-semibold text-sm text-grey2 mb-1">
+              <div className="bg-grey6 dark:bg-white/[0.03] rounded-xl p-4 mb-4">
+                <p className="font-spaceGrotesk font-semibold text-sm text-grey2 dark:text-content-muted mb-1">
                   Subject: {message.subject}
                 </p>
-                <p className="font-openSans text-grey1 whitespace-pre-wrap">{message.message}</p>
+                <p className="font-openSans text-grey1 dark:text-content whitespace-pre-wrap">{message.message}</p>
               </div>
 
               <div className="flex flex-wrap items-center gap-3">
@@ -182,7 +182,7 @@ export default function ContactMessagesClient({ initialMessages }: Props) {
                 <select
                   value={message.status}
                   onChange={(e) => updateStatus(message.id, e.target.value)}
-                  className="px-4 py-2 rounded-lg border border-grey4 font-spaceGrotesk focus:border-mainPurple outline-none transition-all"
+                  className="px-4 py-2 rounded-lg border border-grey4 dark:border-line dark:bg-surface-sunken dark:text-content font-spaceGrotesk focus:border-mainPurple dark:focus:border-[#6a4fb0] outline-none transition-all"
                 >
                   <option value="new">New</option>
                   <option value="read">Read</option>

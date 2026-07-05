@@ -16,7 +16,7 @@ export default async function ContactMessagesPage() {
   if (error) {
     console.error('Error fetching messages:', error)
     return (
-      <div className="bg-white rounded-2xl p-12 text-center">
+      <div className="bg-white dark:bg-surface-raised rounded-2xl p-12 text-center">
         <p className="font-spaceGrotesk text-xl text-errorRed">
           Failed to load contact messages
         </p>

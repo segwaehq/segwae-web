@@ -41,21 +41,21 @@ export default function ForgotPasswordPage() {
           <div className="w-12 h-12 bg-mainPurple/8 rounded-xl flex items-center justify-center mx-auto mb-5">
             <FaEnvelope className="w-5 h-5 text-mainPurple" />
           </div>
-          <h1 className="font-satoshi font-bold text-2xl text-grey1 mb-3">
+          <h1 className="font-satoshi font-bold text-2xl text-grey1 dark:text-content mb-3">
             Check your email
           </h1>
-          <p className="font-openSans text-grey3 text-sm leading-relaxed mb-2">
+          <p className="font-openSans text-grey3 dark:text-content-muted text-sm leading-relaxed mb-2">
             If an account exists for
           </p>
-          <p className="font-satoshi font-semibold text-grey1 text-sm mb-4">
+          <p className="font-satoshi font-semibold text-grey1 dark:text-content text-sm mb-4">
             {email}
           </p>
-          <p className="font-openSans text-grey3 text-sm leading-relaxed mb-8">
+          <p className="font-openSans text-grey3 dark:text-content-muted text-sm leading-relaxed mb-8">
             we&apos;ve sent a password reset link. Check your spam folder if you don&apos;t see it.
           </p>
           <Link
             href="/login"
-            className="font-openSans text-sm text-mainPurple font-semibold hover:underline"
+            className="font-openSans text-sm text-mainPurple dark:text-[#b9a4f7] font-semibold hover:underline"
           >
             ← Back to sign in
           </Link>
@@ -67,17 +67,17 @@ export default function ForgotPasswordPage() {
   return (
     <AuthLayout>
       <div className="mb-7">
-        <h1 className="font-satoshi font-bold text-2xl text-grey1 mb-2">
+        <h1 className="font-satoshi font-bold text-2xl text-grey1 dark:text-content mb-2">
           Forgot your password?
         </h1>
-        <p className="font-openSans text-grey3 text-sm">
+        <p className="font-openSans text-grey3 dark:text-content-muted text-sm">
           Enter your email and we&apos;ll send you a reset link.
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-grey2 mb-1.5 font-satoshi">
+          <label htmlFor="email" className="block text-sm font-medium text-grey2 dark:text-content-muted mb-1.5 font-satoshi">
             Email address
           </label>
           <input
@@ -86,7 +86,7 @@ export default function ForgotPasswordPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 transition-colors"
+            className="w-full px-4 py-3 border border-grey4 dark:border-line rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 dark:text-content placeholder:text-grey3 dark:placeholder:text-content-subtle bg-white dark:bg-surface-sunken transition-colors"
             placeholder="you@example.com"
             disabled={loading}
             autoFocus
@@ -107,9 +107,9 @@ export default function ForgotPasswordPage() {
         </button>
       </form>
 
-      <p className="font-openSans text-grey3 text-sm text-center mt-6">
+      <p className="font-openSans text-grey3 dark:text-content-muted text-sm text-center mt-6">
         Remember it?{' '}
-        <Link href="/login" className="text-mainPurple font-semibold hover:underline">
+        <Link href="/login" className="text-mainPurple dark:text-[#b9a4f7] font-semibold hover:underline">
           Sign in
         </Link>
       </p>

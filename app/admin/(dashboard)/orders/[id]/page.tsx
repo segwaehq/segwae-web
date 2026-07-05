@@ -48,7 +48,7 @@ export default async function OrderDetailPage({
       {/* Back Button */}
       <Link
         href="/admin/orders"
-        className="inline-flex items-center gap-2 text-grey2 hover:text-mainPurple font-spaceGrotesk font-semibold mb-6 transition-colors"
+        className="inline-flex items-center gap-2 text-grey2 dark:text-content-muted hover:text-mainPurple dark:hover:text-[#b9a4f7] font-spaceGrotesk font-semibold mb-6 transition-colors"
       >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -60,7 +60,7 @@ export default async function OrderDetailPage({
         <h1 className="font-satoshi font-black text-4xl mb-2">
           Order {orderWithUser.order_number}
         </h1>
-        <p className="font-spaceGrotesk text-grey2">
+        <p className="font-spaceGrotesk text-grey2 dark:text-content-muted">
           View and edit order details, update status, and track order history.
         </p>
       </div>

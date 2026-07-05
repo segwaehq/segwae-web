@@ -95,9 +95,9 @@ const FALLBACK_JOBS: PreviewJob[] = [
 ]
 
 const MODE_STYLES: Record<PreviewJob['mode'], string> = {
-  Remote: 'text-[#16895E] bg-[#E7F6EF]',
-  Hybrid: 'text-[#5A2DD4] bg-[#F1ECFD]',
-  'On-site': 'text-[#1E5BBF] bg-[#E8EFFB]',
+  Remote: 'text-[#16895E] bg-[#E7F6EF] dark:text-[#4ade9e] dark:bg-[#12271e]',
+  Hybrid: 'text-[#5A2DD4] bg-[#F1ECFD] dark:text-[#b9a4f7] dark:bg-[#221b36]',
+  'On-site': 'text-[#1E5BBF] bg-[#E8EFFB] dark:text-[#7fb0f5] dark:bg-[#13203a]',
 }
 
 const COMPANIES = ['Linear', 'Notion', 'Figma', 'Vercel', 'Ramp', 'Loom']
@@ -155,15 +155,15 @@ export default function HomeClient({ previewJobs }: { previewJobs: PreviewJob[] 
   }, [router])
 
   return (
-    <div className="overflow-x-hidden text-grey1">
+    <div className="overflow-x-hidden text-grey1 dark:text-content">
 
       {/* ═══ HERO ════════════════════════════════════════════════════════════ */}
-      <section className="relative bg-white overflow-hidden">
+      <section className="relative bg-white dark:bg-surface overflow-hidden">
         {/* Dot grid with bottom fade */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
-            backgroundImage: 'radial-gradient(circle, #D6D6E0 1px, transparent 1px)',
+            backgroundImage: 'radial-gradient(circle, var(--dot) 1px, transparent 1px)',
             backgroundSize: '30px 30px',
             opacity: 0.5,
             WebkitMaskImage:
@@ -180,24 +180,24 @@ export default function HomeClient({ previewJobs }: { previewJobs: PreviewJob[] 
 
               <motion.div
                 variants={fadeUp}
-                className="inline-flex items-center gap-2 px-[13px] py-1.5 rounded-full bg-[#F4F0FE] border border-[#E6DCFB] mb-6 whitespace-nowrap"
+                className="inline-flex items-center gap-2 px-[13px] py-1.5 rounded-full bg-[#F4F0FE] dark:bg-[#221b36] border border-[#E6DCFB] dark:border-[#332a4d] mb-6 whitespace-nowrap"
               >
                 <span className="w-[7px] h-[7px] rounded-full bg-brand-gradient" />
-                <span className="font-satoshi text-xs font-bold tracking-[0.04em] text-[#5A2DD4]">
+                <span className="font-satoshi text-xs font-bold tracking-[0.04em] text-[#5A2DD4] dark:text-[#b9a4f7]">
                   Careers marketplace
                 </span>
               </motion.div>
 
               <motion.h1
                 variants={fadeUp}
-                className="font-satoshi font-black tracking-[-0.035em] leading-[1.02] text-[#0F1115] text-[clamp(2.9rem,5vw,4.6rem)]"
+                className="font-satoshi font-black tracking-[-0.035em] leading-[1.02] text-[#0F1115] dark:text-content text-[clamp(2.9rem,5vw,4.6rem)]"
               >
                 Find work that<br />moves you forward.
               </motion.h1>
 
               <motion.p
                 variants={fadeUp}
-                className="font-openSans text-grey3 text-lg leading-relaxed font-medium max-w-[430px] mt-5"
+                className="font-openSans text-grey3 dark:text-content-muted text-lg leading-relaxed font-medium max-w-[430px] mt-5"
               >
                 Segwae connects ambitious professionals with standout roles — and gives you a profile recruiters actually remember. Build it once, get discovered, apply in a tap.
               </motion.p>
@@ -211,23 +211,23 @@ export default function HomeClient({ previewJobs }: { previewJobs: PreviewJob[] 
                 </Link>
                 <Link
                   href="/signup"
-                  className="inline-flex items-center gap-2 bg-white text-grey2 px-6 py-3.5 rounded-[11px] font-satoshi font-bold text-sm border border-[#E2E2EA] hover:border-[#B9B9C6] hover:text-grey1 transition-colors"
+                  className="inline-flex items-center gap-2 bg-white dark:bg-surface-raised text-grey2 dark:text-content px-6 py-3.5 rounded-[11px] font-satoshi font-bold text-sm border border-[#E2E2EA] dark:border-line hover:border-[#B9B9C6] dark:hover:border-content-subtle hover:text-grey1 transition-colors"
                 >
                   Create free profile
                 </Link>
               </motion.div>
 
-              <motion.div variants={fadeUp} className="flex gap-10 mt-9 pt-6 border-t border-[#ECECF1]">
+              <motion.div variants={fadeUp} className="flex gap-10 mt-9 pt-6 border-t border-[#ECECF1] dark:border-line">
                 {[
                   { num: '500+', label: 'Open roles' },
                   { num: '50+', label: 'Hiring companies' },
                   { num: '10k+', label: 'Professionals' },
                 ].map((s) => (
                   <div key={s.label}>
-                    <p className="font-satoshi font-black text-[28px] tracking-[-0.03em] text-[#0F1115] leading-none">
+                    <p className="font-satoshi font-black text-[28px] tracking-[-0.03em] text-[#0F1115] dark:text-content leading-none">
                       {s.num}
                     </p>
-                    <p className="font-openSans text-[13px] text-[#9098A3] mt-1.5">{s.label}</p>
+                    <p className="font-openSans text-[13px] text-[#9098A3] dark:text-content-subtle mt-1.5">{s.label}</p>
                   </div>
                 ))}
               </motion.div>
@@ -240,13 +240,13 @@ export default function HomeClient({ previewJobs }: { previewJobs: PreviewJob[] 
               transition={{ delay: 0.28, duration: 0.65, ease }}
               className="hidden lg:block"
             >
-              <div className="bg-white border border-[#E8E8EF] rounded-[18px] shadow-[0_24px_60px_-24px_rgba(31,18,72,0.28)] overflow-hidden">
-                <div className="px-5 py-[17px] border-b border-[#EFEFF4] flex items-center justify-between">
+              <div className="bg-white dark:bg-surface-raised border border-[#E8E8EF] dark:border-line rounded-[18px] shadow-[0_24px_60px_-24px_rgba(31,18,72,0.28)] dark:shadow-[0_24px_60px_-24px_rgba(0,0,0,0.7)] overflow-hidden">
+                <div className="px-5 py-[17px] border-b border-[#EFEFF4] dark:border-line flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
                     <span className="w-2 h-2 rounded-full bg-[#16A34A] animate-brand-pulse" />
-                    <span className="font-satoshi font-bold text-sm text-grey1">Live opportunities</span>
+                    <span className="font-satoshi font-bold text-sm text-grey1 dark:text-content">Live opportunities</span>
                   </div>
-                  <Link href="/jobs" className="font-satoshi text-xs font-semibold text-[#5A2DD4]">
+                  <Link href="/jobs" className="font-satoshi text-xs font-semibold text-[#5A2DD4] dark:text-[#b9a4f7]">
                     View all
                   </Link>
                 </div>
@@ -255,14 +255,14 @@ export default function HomeClient({ previewJobs }: { previewJobs: PreviewJob[] 
                     <Link
                       href={jobHref(job)}
                       key={job.id ?? job.title}
-                      className="flex items-center gap-3.5 px-5 py-[15px] border-b border-[#F1F1F5] hover:bg-[#FAFAFC] transition-colors"
+                      className="flex items-center gap-3.5 px-5 py-[15px] border-b border-[#F1F1F5] dark:border-white/[0.06] hover:bg-[#FAFAFC] dark:hover:bg-white/[0.04] transition-colors"
                     >
-                      <div className="w-[42px] h-[42px] rounded-[11px] bg-[#F1F0F6] flex items-center justify-center text-xs font-satoshi font-extrabold text-[#5A2DD4] shrink-0">
+                      <div className="w-[42px] h-[42px] rounded-[11px] bg-[#F1F0F6] dark:bg-[#241d38] flex items-center justify-center text-xs font-satoshi font-extrabold text-[#5A2DD4] dark:text-[#b9a4f7] shrink-0">
                         {job.initials}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-satoshi font-bold text-sm text-grey1 truncate">{job.title}</p>
-                        <p className="font-openSans text-[12.5px] font-medium text-[#9098A3] mt-0.5">
+                        <p className="font-satoshi font-bold text-sm text-grey1 dark:text-content truncate">{job.title}</p>
+                        <p className="font-openSans text-[12.5px] font-medium text-[#9098A3] dark:text-content-subtle mt-0.5">
                           {job.company} · {job.location}
                         </p>
                       </div>
@@ -271,13 +271,13 @@ export default function HomeClient({ previewJobs }: { previewJobs: PreviewJob[] 
                           {job.mode}
                         </span>
                         {job.salary && (
-                          <p className="font-satoshi text-[12.5px] font-bold text-grey2 mt-1.5">{job.salary}</p>
+                          <p className="font-satoshi text-[12.5px] font-bold text-grey2 dark:text-content-muted mt-1.5">{job.salary}</p>
                         )}
                       </div>
                     </Link>
                   ))}
                 </div>
-                <div className="px-5 py-[13px] bg-[#FAFAFC] border-t border-[#EFEFF4] text-center font-openSans text-xs font-medium text-[#9098A3]">
+                <div className="px-5 py-[13px] bg-[#FAFAFC] dark:bg-white/[0.03] border-t border-[#EFEFF4] dark:border-line text-center font-openSans text-xs font-medium text-[#9098A3] dark:text-content-subtle">
                   Updated daily · 500+ open positions
                 </div>
               </div>
@@ -288,17 +288,17 @@ export default function HomeClient({ previewJobs }: { previewJobs: PreviewJob[] 
               variants={fadeUp}
               initial="hidden"
               animate="visible"
-              className="lg:hidden bg-white border border-[#E8E8EF] rounded-[14px] p-4 shadow-sm"
+              className="lg:hidden bg-white dark:bg-surface-raised border border-[#E8E8EF] dark:border-line rounded-[14px] p-4 shadow-sm"
             >
               <Link href={jobHref(lead)} className="flex items-center gap-3 group">
-                <div className="w-10 h-10 rounded-[11px] bg-[#F1F0F6] flex items-center justify-center text-[11px] font-satoshi font-extrabold text-[#5A2DD4] shrink-0">
+                <div className="w-10 h-10 rounded-[11px] bg-[#F1F0F6] dark:bg-[#241d38] flex items-center justify-center text-[11px] font-satoshi font-extrabold text-[#5A2DD4] dark:text-[#b9a4f7] shrink-0">
                   {lead.initials}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-satoshi font-bold text-sm text-grey1 truncate">{lead.title}</p>
-                  <p className="font-openSans text-xs font-medium text-[#9098A3] mt-0.5">{lead.company} · {lead.mode}</p>
+                  <p className="font-satoshi font-bold text-sm text-grey1 dark:text-content truncate">{lead.title}</p>
+                  <p className="font-openSans text-xs font-medium text-[#9098A3] dark:text-content-subtle mt-0.5">{lead.company} · {lead.mode}</p>
                 </div>
-                <FaArrowRight className="w-3.5 h-3.5 text-[#C2C6CF] group-hover:text-[#5A2DD4] transition-colors" />
+                <FaArrowRight className="w-3.5 h-3.5 text-[#C2C6CF] dark:text-content-subtle group-hover:text-[#5A2DD4] dark:group-hover:text-[#b9a4f7] transition-colors" />
               </Link>
             </motion.div>
           </div>
@@ -320,20 +320,20 @@ export default function HomeClient({ previewJobs }: { previewJobs: PreviewJob[] 
       </section> */}
 
       {/* ═══ OPEN POSITIONS ══════════════════════════════════════════════════ */}
-      <section id="roles" className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-[#FAFAFB]">
+      <section id="roles" className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-[#FAFAFB] dark:bg-[#12101b]">
         <div className="max-w-6xl mx-auto">
 
           <InView className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
             <div>
-              <motion.p variants={fadeUp} className="font-satoshi text-xs font-bold text-[#5A2DD4] uppercase tracking-[0.16em] mb-2.5">
+              <motion.p variants={fadeUp} className="font-satoshi text-xs font-bold text-[#5A2DD4] dark:text-[#b9a4f7] uppercase tracking-[0.16em] mb-2.5">
                 Open positions
               </motion.p>
-              <motion.h2 variants={fadeUp} className="font-satoshi font-black tracking-[-0.03em] leading-[1.04] text-[#0F1115] text-[clamp(2.2rem,3.4vw,3.1rem)]">
+              <motion.h2 variants={fadeUp} className="font-satoshi font-black tracking-[-0.03em] leading-[1.04] text-[#0F1115] dark:text-content text-[clamp(2.2rem,3.4vw,3.1rem)]">
                 Find your next opportunity.
               </motion.h2>
             </div>
             <motion.div variants={fadeUp}>
-              <Link href="/jobs" className="inline-flex items-center gap-1.5 font-satoshi font-bold text-sm text-[#5A2DD4] group">
+              <Link href="/jobs" className="inline-flex items-center gap-1.5 font-satoshi font-bold text-sm text-[#5A2DD4] dark:text-[#b9a4f7] group">
                 Browse all roles <FaArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
               </Link>
             </motion.div>
@@ -348,7 +348,7 @@ export default function HomeClient({ previewJobs }: { previewJobs: PreviewJob[] 
                   className={`inline-block px-4 py-2 rounded-[9px] font-satoshi text-[13px] transition-colors ${
                     i === 0
                       ? 'bg-brand-gradient text-white font-bold'
-                      : 'bg-white border border-[#E8E8EF] text-grey3 font-semibold hover:border-[#B9B9C6] hover:text-grey2'
+                      : 'bg-white dark:bg-surface-raised border border-[#E8E8EF] dark:border-line text-grey3 dark:text-content-muted font-semibold hover:border-[#B9B9C6] dark:hover:border-content-subtle hover:text-grey2 dark:hover:text-content'
                   }`}
                 >
                   {cat}
@@ -362,14 +362,14 @@ export default function HomeClient({ previewJobs }: { previewJobs: PreviewJob[] 
             {jobs.map((job) => (
               <motion.div key={job.id ?? job.title} variants={fadeUp}>
                 <Link href={jobHref(job)} className="block group h-full">
-                  <div className="bg-white rounded-[15px] border border-[#E8E8EF] p-[22px] hover:border-[#C9BCF2] hover:shadow-[0_14px_30px_-16px_rgba(74,55,216,0.4)] hover:-translate-y-[3px] transition-all duration-200 h-full flex flex-col">
+                  <div className="bg-white dark:bg-surface-raised rounded-[15px] border border-[#E8E8EF] dark:border-line p-[22px] hover:border-[#C9BCF2] dark:hover:border-[#4a3d78] hover:shadow-[0_14px_30px_-16px_rgba(74,55,216,0.4)] dark:hover:shadow-[0_14px_30px_-16px_rgba(124,90,246,0.5)] hover:-translate-y-[3px] transition-all duration-200 h-full flex flex-col">
                     <div className="flex items-start gap-3 mb-[18px]">
-                      <div className="w-11 h-11 rounded-[12px] bg-[#F1F0F6] flex items-center justify-center text-[13px] font-satoshi font-extrabold text-[#5A2DD4] shrink-0">
+                      <div className="w-11 h-11 rounded-[12px] bg-[#F1F0F6] dark:bg-[#241d38] flex items-center justify-center text-[13px] font-satoshi font-extrabold text-[#5A2DD4] dark:text-[#b9a4f7] shrink-0">
                         {job.initials}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-satoshi font-bold text-[15px] text-grey1 leading-snug">{job.title}</p>
-                        <p className="font-openSans text-[13px] font-medium text-[#9098A3] mt-0.5">{job.company}</p>
+                        <p className="font-satoshi font-bold text-[15px] text-grey1 dark:text-content leading-snug">{job.title}</p>
+                        <p className="font-openSans text-[13px] font-medium text-[#9098A3] dark:text-content-subtle mt-0.5">{job.company}</p>
                       </div>
                     </div>
 
@@ -377,7 +377,7 @@ export default function HomeClient({ previewJobs }: { previewJobs: PreviewJob[] 
                       <span className={`text-[10px] font-satoshi font-bold px-2.5 py-[3px] rounded-md ${MODE_STYLES[job.mode]}`}>
                         {job.mode}
                       </span>
-                      <span className="flex items-center gap-1 font-openSans text-xs font-medium text-[#9098A3]">
+                      <span className="flex items-center gap-1 font-openSans text-xs font-medium text-[#9098A3] dark:text-content-subtle">
                         <FaLocationDot className="w-2.5 h-2.5" />{job.location}
                       </span>
                     </div>
@@ -385,18 +385,18 @@ export default function HomeClient({ previewJobs }: { previewJobs: PreviewJob[] 
                     {job.tags.length > 0 && (
                       <div className="flex gap-1.5 flex-wrap mb-4">
                         {job.tags.map((tag) => (
-                          <span key={tag} className="text-[11px] font-openSans font-medium text-grey3 bg-[#F3F3F7] px-2.5 py-1 rounded-md">
+                          <span key={tag} className="text-[11px] font-openSans font-medium text-grey3 dark:text-content-muted bg-[#F3F3F7] dark:bg-white/[0.06] px-2.5 py-1 rounded-md">
                             {tag}
                           </span>
                         ))}
                       </div>
                     )}
 
-                    <div className="flex items-center justify-between mt-auto pt-[15px] border-t border-[#F1F1F5]">
+                    <div className="flex items-center justify-between mt-auto pt-[15px] border-t border-[#F1F1F5] dark:border-white/[0.06]">
                       {job.salary
-                        ? <span className="font-satoshi font-extrabold text-[13px] text-grey1">{job.salary}</span>
+                        ? <span className="font-satoshi font-extrabold text-[13px] text-grey1 dark:text-content">{job.salary}</span>
                         : <span />}
-                      <span className="font-openSans text-xs font-medium text-[#9098A3]">{job.timeAgo}</span>
+                      <span className="font-openSans text-xs font-medium text-[#9098A3] dark:text-content-subtle">{job.timeAgo}</span>
                     </div>
                   </div>
                 </Link>
@@ -408,7 +408,7 @@ export default function HomeClient({ previewJobs }: { previewJobs: PreviewJob[] 
             <motion.div variants={fadeUp} className="text-center">
               <Link
                 href="/jobs"
-                className="inline-flex items-center gap-2 bg-[#0F1115] text-white px-7 py-3.5 rounded-[11px] font-satoshi font-bold text-sm hover:bg-[#2A2540] transition-colors duration-200"
+                className="inline-flex items-center gap-2 bg-[#0F1115] dark:bg-white text-white dark:text-[#0F1115] px-7 py-3.5 rounded-[11px] font-satoshi font-bold text-sm hover:bg-[#2A2540] dark:hover:bg-white/90 transition-colors duration-200"
               >
                 View all open positions <FaArrowRight className="w-3.5 h-3.5" />
               </Link>
@@ -418,19 +418,19 @@ export default function HomeClient({ previewJobs }: { previewJobs: PreviewJob[] 
       </section>
 
       {/* ═══ HOW IT WORKS ════════════════════════════════════════════════════ */}
-      <section id="how-it-works" className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-white">
+      <section id="how-it-works" className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-white dark:bg-surface">
         <div className="max-w-6xl mx-auto">
 
           <InView className="mb-12">
-            <motion.p variants={fadeUp} className="font-satoshi text-xs font-bold text-[#5A2DD4] uppercase tracking-[0.16em] mb-2.5">
+            <motion.p variants={fadeUp} className="font-satoshi text-xs font-bold text-[#5A2DD4] dark:text-[#b9a4f7] uppercase tracking-[0.16em] mb-2.5">
               How it works
             </motion.p>
-            <motion.h2 variants={fadeUp} className="font-satoshi font-black tracking-[-0.03em] leading-[1.04] text-[#0F1115] max-w-[520px] text-[clamp(2.2rem,3.4vw,3.1rem)]">
+            <motion.h2 variants={fadeUp} className="font-satoshi font-black tracking-[-0.03em] leading-[1.04] text-[#0F1115] dark:text-content max-w-[520px] text-[clamp(2.2rem,3.4vw,3.1rem)]">
               Three steps to your next role.
             </motion.h2>
           </InView>
 
-          <InView className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[#ECECF1]">
+          <InView className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[#ECECF1] dark:divide-line">
             {STEPS.map((step, i) => (
               <motion.div
                 key={step.num}
@@ -440,8 +440,8 @@ export default function HomeClient({ previewJobs }: { previewJobs: PreviewJob[] 
                 <span className="font-satoshi font-black text-[52px] tracking-[-0.04em] text-brand-gradient block mb-[18px] leading-none">
                   {step.num}
                 </span>
-                <h3 className="font-satoshi font-bold text-lg text-grey1 mb-2.5">{step.title}</h3>
-                <p className="font-openSans text-[14.5px] font-medium text-grey3 leading-relaxed">{step.desc}</p>
+                <h3 className="font-satoshi font-bold text-lg text-grey1 dark:text-content mb-2.5">{step.title}</h3>
+                <p className="font-openSans text-[14.5px] font-medium text-grey3 dark:text-content-muted leading-relaxed">{step.desc}</p>
               </motion.div>
             ))}
           </InView>
@@ -449,7 +449,7 @@ export default function HomeClient({ previewJobs }: { previewJobs: PreviewJob[] 
       </section>
 
       {/* ═══ FOR EMPLOYERS ═══════════════════════════════════════════════════ */}
-      <section id="employers" className="relative overflow-hidden py-20 md:py-24 px-4 sm:px-6 lg:px-8 bg-[#0F1115]">
+      <section id="employers" className="relative overflow-hidden py-20 md:py-24 px-4 sm:px-6 lg:px-8 bg-[#0F1115] border-y border-transparent dark:border-line">
         <div
           className="absolute -top-[120px] -right-20 w-[460px] h-[460px] rounded-full pointer-events-none"
           style={{ background: 'radial-gradient(circle, rgba(91,43,217,0.35), transparent 70%)' }}
@@ -491,7 +491,7 @@ export default function HomeClient({ previewJobs }: { previewJobs: PreviewJob[] 
       </section>
 
       {/* ═══ DIGITAL IDENTITY ════════════════════════════════════════════════ */}
-      <section id="identity" className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-[#FAFAFB]">
+      <section id="identity" className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-[#FAFAFB] dark:bg-[#12101b]">
         <div className="max-w-6xl mx-auto grid md:grid-cols-[0.85fr_1.15fr] gap-12 lg:gap-16 items-center">
 
           {/* Phone mockup */}
@@ -545,31 +545,31 @@ export default function HomeClient({ previewJobs }: { previewJobs: PreviewJob[] 
 
           {/* Copy + feature cards */}
           <InView>
-            <motion.span variants={fadeUp} className="inline-block font-satoshi text-[11px] font-bold tracking-[0.14em] uppercase text-grey3 px-3 py-1.5 bg-white border border-[#E8E8EF] rounded-lg mb-[18px]">
+            <motion.span variants={fadeUp} className="inline-block font-satoshi text-[11px] font-bold tracking-[0.14em] uppercase text-grey3 dark:text-content-muted px-3 py-1.5 bg-white dark:bg-surface-raised border border-[#E8E8EF] dark:border-line rounded-lg mb-[18px]">
               Also on Segwae
             </motion.span>
-            <motion.h2 variants={fadeUp} className="font-satoshi font-black tracking-[-0.03em] leading-[1.06] text-[#0F1115] mb-4 text-[clamp(2rem,3.2vw,2.9rem)]">
+            <motion.h2 variants={fadeUp} className="font-satoshi font-black tracking-[-0.03em] leading-[1.06] text-[#0F1115] dark:text-content mb-4 text-[clamp(2rem,3.2vw,2.9rem)]">
               Your digital identity,<br />in one tap.
             </motion.h2>
-            <motion.p variants={fadeUp} className="font-openSans text-base font-medium text-grey3 leading-relaxed mb-7 max-w-[460px]">
+            <motion.p variants={fadeUp} className="font-openSans text-base font-medium text-grey3 dark:text-content-muted leading-relaxed mb-7 max-w-[460px]">
               Every Segwae member gets a shareable profile with a QR code or NFC card. One tap and anyone sees your contact, portfolio, and links — no app required on their end.
             </motion.p>
             <motion.div variants={fadeUp} className="grid grid-cols-2 gap-3 mb-7 max-w-[480px]">
               {IDENTITY_FEATURES.map(({ icon: Icon, label, desc }) => (
-                <div key={label} className="bg-white border border-[#E8E8EF] rounded-[13px] p-[17px]">
-                  <div className="w-[34px] h-[34px] rounded-[9px] bg-[#F4F0FE] flex items-center justify-center text-[#5A2DD4] mb-3">
+                <div key={label} className="bg-white dark:bg-surface-raised border border-[#E8E8EF] dark:border-line rounded-[13px] p-[17px]">
+                  <div className="w-[34px] h-[34px] rounded-[9px] bg-[#F4F0FE] dark:bg-[#241d38] flex items-center justify-center text-[#5A2DD4] dark:text-[#b9a4f7] mb-3">
                     <Icon className="w-[17px] h-[17px]" />
                   </div>
-                  <div className="font-satoshi text-sm font-bold text-grey1 mb-1">{label}</div>
-                  <div className="font-openSans text-[12.5px] font-medium text-[#9098A3] leading-relaxed">{desc}</div>
+                  <div className="font-satoshi text-sm font-bold text-grey1 dark:text-content mb-1">{label}</div>
+                  <div className="font-openSans text-[12.5px] font-medium text-[#9098A3] dark:text-content-subtle leading-relaxed">{desc}</div>
                 </div>
               ))}
             </motion.div>
             <motion.div variants={fadeUp} className="flex gap-6 items-center flex-wrap">
-              <Link href="/signup" className="inline-flex items-center gap-1.5 font-satoshi font-bold text-sm text-[#5A2DD4] group">
+              <Link href="/signup" className="inline-flex items-center gap-1.5 font-satoshi font-bold text-sm text-[#5A2DD4] dark:text-[#b9a4f7] group">
                 Create your profile <FaArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
               </Link>
-              <Link href="/store" className="inline-flex items-center gap-1.5 font-satoshi font-semibold text-sm text-[#9098A3] hover:text-grey2 transition-colors">
+              <Link href="/store" className="inline-flex items-center gap-1.5 font-satoshi font-semibold text-sm text-[#9098A3] dark:text-content-subtle hover:text-grey2 dark:hover:text-content-muted transition-colors">
                 Order NFC card <FaArrowRight className="w-3 h-3" />
               </Link>
             </motion.div>

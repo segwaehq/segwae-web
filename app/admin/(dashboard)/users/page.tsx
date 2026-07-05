@@ -17,7 +17,7 @@ export default async function UsersPage() {
   if (error) {
     console.error('Error fetching users:', error)
     return (
-      <div className="bg-white rounded-2xl p-12 text-center">
+      <div className="bg-white dark:bg-surface-raised rounded-2xl p-12 text-center">
         <p className="font-spaceGrotesk text-xl text-errorRed">Failed to load users</p>
       </div>
     )

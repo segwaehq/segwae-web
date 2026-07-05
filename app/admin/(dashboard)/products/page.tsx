@@ -200,8 +200,8 @@ export default function ProductsPage() {
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Product Management</h1>
-          <p className="text-gray-600 mt-1">Manage NFC card designs and pricing</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-content">Product Management</h1>
+          <p className="text-gray-600 dark:text-content-muted mt-1">Manage NFC card designs and pricing</p>
         </div>
         <button
           onClick={() => openModal()}
@@ -214,9 +214,9 @@ export default function ProductsPage() {
       {/* Products Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {products.map(product => (
-          <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+          <div key={product.id} className="bg-white dark:bg-surface-raised rounded-lg shadow-md overflow-hidden">
             {/* Product Images */}
-            <div className="relative h-48 bg-gray-100">
+            <div className="relative h-48 bg-gray-100 dark:bg-surface-sunken">
               <Image
                 src={product.front_image_url}
                 alt={`${product.name} - Front`}
@@ -234,7 +234,7 @@ export default function ProductsPage() {
             <div className="p-4">
               <h3 className="font-bold text-lg mb-1">{product.name}</h3>
               {product.description && (
-                <p className="text-sm text-gray-600 mb-2 line-clamp-2">{product.description}</p>
+                <p className="text-sm text-gray-600 dark:text-content-muted mb-2 line-clamp-2">{product.description}</p>
               )}
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xl font-bold text-purple-600">
@@ -253,7 +253,7 @@ export default function ProductsPage() {
               <div className="flex gap-2">
                 <button
                   onClick={() => toggleActive(product)}
-                  className="flex-1 px-3 py-2 bg-gray-100 rounded hover:bg-gray-200 flex items-center justify-center gap-1 cursor-pointer"
+                  className="flex-1 px-3 py-2 bg-gray-100 dark:bg-white/[0.06] rounded hover:bg-gray-200 dark:hover:bg-white/[0.1] flex items-center justify-center gap-1 cursor-pointer"
                   title={product.is_active ? 'Deactivate' : 'Activate'}
                 >
                   {product.is_active ? <FiEyeOff size={16} /> : <FiEye size={16} />}
@@ -277,10 +277,10 @@ export default function ProductsPage() {
       </div>
 
       {products.length === 0 && (
-        <div className="text-center py-12 bg-white rounded-lg">
-          <FiImage className="mx-auto text-gray-400" size={48} />
-          <h3 className="mt-4 text-lg font-medium text-gray-900">No products yet</h3>
-          <p className="mt-2 text-gray-600">Get started by adding your first NFC card design</p>
+        <div className="text-center py-12 bg-white dark:bg-surface-raised rounded-lg">
+          <FiImage className="mx-auto text-gray-400 dark:text-content-subtle" size={48} />
+          <h3 className="mt-4 text-lg font-medium text-gray-900 dark:text-content">No products yet</h3>
+          <p className="mt-2 text-gray-600 dark:text-content-muted">Get started by adding your first NFC card design</p>
           <button
             onClick={() => openModal()}
             className="mt-4 bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 cursor-pointer"
@@ -293,7 +293,7 @@ export default function ProductsPage() {
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-surface-raised rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <h2 className="text-2xl font-bold mb-4">
                 {editingProduct ? 'Edit Product' : 'Add New Product'}
@@ -308,7 +308,7 @@ export default function ProductsPage() {
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500"
+                    className="w-full px-3 py-2 border dark:border-line dark:bg-surface-sunken dark:text-content rounded-lg focus:ring-2 focus:ring-purple-500"
                     placeholder="e.g., Web3 Card"
                   />
                 </div>
@@ -319,7 +319,7 @@ export default function ProductsPage() {
                   <textarea
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500"
+                    className="w-full px-3 py-2 border dark:border-line dark:bg-surface-sunken dark:text-content rounded-lg focus:ring-2 focus:ring-purple-500"
                     rows={3}
                     placeholder="Brief description of the card design"
                   />
@@ -333,11 +333,11 @@ export default function ProductsPage() {
                     required
                     value={formData.price}
                     onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500"
+                    className="w-full px-3 py-2 border dark:border-line dark:bg-surface-sunken dark:text-content rounded-lg focus:ring-2 focus:ring-purple-500"
                     placeholder="e.g., 500000 (₦5,000)"
                   />
                   {formData.price && (
-                    <p className="text-sm text-gray-600 mt-1">
+                    <p className="text-sm text-gray-600 dark:text-content-muted mt-1">
                       = ₦{(parseInt(formData.price) / 100).toLocaleString()}
                     </p>
                   )}
@@ -350,7 +350,7 @@ export default function ProductsPage() {
                     type="file"
                     accept="image/*"
                     onChange={(e) => e.target.files?.[0] && handleImageUpload(e.target.files[0], 'front_image_url')}
-                    className="w-full px-3 py-2 border rounded-lg"
+                    className="w-full px-3 py-2 border dark:border-line dark:bg-surface-sunken dark:text-content rounded-lg"
                     disabled={uploading}
                   />
                   {/* {formData.front_image_url && (
@@ -373,7 +373,7 @@ export default function ProductsPage() {
                     type="file"
                     accept="image/*"
                     onChange={(e) => e.target.files?.[0] && handleImageUpload(e.target.files[0], 'back_image_url')}
-                    className="w-full px-3 py-2 border rounded-lg"
+                    className="w-full px-3 py-2 border dark:border-line dark:bg-surface-sunken dark:text-content rounded-lg"
                     disabled={uploading}
                   />
                   {/* {formData.back_image_url && (
@@ -411,7 +411,7 @@ export default function ProductsPage() {
                     type="number"
                     value={formData.sort_order}
                     onChange={(e) => setFormData({ ...formData, sort_order: parseInt(e.target.value) })}
-                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500"
+                    className="w-full px-3 py-2 border dark:border-line dark:bg-surface-sunken dark:text-content rounded-lg focus:ring-2 focus:ring-purple-500"
                   />
                 </div>
 
@@ -420,7 +420,7 @@ export default function ProductsPage() {
                   <button
                     type="button"
                     onClick={closeModal}
-                    className="flex-1 px-4 py-2 border rounded-lg hover:bg-gray-50 cursor-pointer"
+                    className="flex-1 px-4 py-2 border dark:border-line rounded-lg hover:bg-gray-50 dark:hover:bg-white/[0.06] cursor-pointer"
                   >
                     Cancel
                   </button>

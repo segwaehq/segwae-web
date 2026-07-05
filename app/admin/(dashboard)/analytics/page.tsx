@@ -23,22 +23,22 @@ export default async function AnalyticsPage() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="bg-white rounded-2xl p-6 shadow-lg">
-          <h3 className="font-spaceGrotesk font-semibold text-sm text-grey2 mb-2">
+        <div className="bg-white dark:bg-surface-raised rounded-2xl p-6 shadow-lg">
+          <h3 className="font-spaceGrotesk font-semibold text-sm text-grey2 dark:text-content-muted mb-2">
             Total Profile Views
           </h3>
           <p className="font-satoshi font-black text-4xl text-mainPurple">
             {totalProfileViews || 0}
           </p>
         </div>
-        <div className="bg-white rounded-2xl p-6 shadow-lg">
-          <h3 className="font-spaceGrotesk font-semibold text-sm text-grey2 mb-2">
+        <div className="bg-white dark:bg-surface-raised rounded-2xl p-6 shadow-lg">
+          <h3 className="font-spaceGrotesk font-semibold text-sm text-grey2 dark:text-content-muted mb-2">
             Total QR Scans
           </h3>
           <p className="font-satoshi font-black text-4xl text-blue">{totalQRScans || 0}</p>
         </div>
-        <div className="bg-white rounded-2xl p-6 shadow-lg">
-          <h3 className="font-spaceGrotesk font-semibold text-sm text-grey2 mb-2">
+        <div className="bg-white dark:bg-surface-raised rounded-2xl p-6 shadow-lg">
+          <h3 className="font-spaceGrotesk font-semibold text-sm text-grey2 dark:text-content-muted mb-2">
             Total Link Clicks
           </h3>
           <p className="font-satoshi font-black text-4xl text-successGreen">
@@ -48,23 +48,23 @@ export default async function AnalyticsPage() {
       </div>
 
       {/* Recent Events */}
-      <div className="bg-white rounded-2xl p-6 shadow-lg">
+      <div className="bg-white dark:bg-surface-raised rounded-2xl p-6 shadow-lg">
         <h2 className="font-spaceGrotesk font-bold text-2xl mb-6">Recent Activity</h2>
         {!recentEvents || recentEvents.length === 0 ? (
-          <p className="text-grey3 font-openSans">No activity yet</p>
+          <p className="text-grey3 dark:text-content-subtle font-openSans">No activity yet</p>
         ) : (
           <div className="space-y-3">
             {recentEvents.map((event: AnalyticsEvent) => (
-              <div key={event.id} className="flex justify-between items-center border-b border-grey4 pb-3 last:border-0">
+              <div key={event.id} className="flex justify-between items-center border-b border-grey4 dark:border-line pb-3 last:border-0">
                 <div>
                   <p className="font-spaceGrotesk font-semibold">
                     {event.event_type.replace('_', ' ').toUpperCase()}
                   </p>
-                  <p className="text-sm text-grey2 font-openSans">
+                  <p className="text-sm text-grey2 dark:text-content-muted font-openSans">
                     User: {event.users?.name || 'N/A'} (@{event.users?.username})
                   </p>
                 </div>
-                <span className="text-xs text-grey3 font-openSans">
+                <span className="text-xs text-grey3 dark:text-content-subtle font-openSans">
                   {new Date(event.created_at).toLocaleString()}
                 </span>
               </div>

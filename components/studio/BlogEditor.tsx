@@ -35,7 +35,7 @@ function ToolbarButton({
       title={title}
       onClick={onClick}
       className={`flex h-8 min-w-8 items-center justify-center rounded-md px-2 text-sm transition-colors ${
-        active ? 'bg-mainPurple text-white' : 'text-grey2 hover:bg-grey5'
+        active ? 'bg-mainPurple text-white' : 'text-grey2 dark:text-content-muted hover:bg-grey5 dark:hover:bg-white/[0.06]'
       }`}
     >
       {children}
@@ -106,16 +106,16 @@ export function BlogEditor({
 
   if (!editor) {
     return (
-      <div className="flex min-h-[420px] items-center justify-center rounded-xl border border-grey4">
+      <div className="flex min-h-[420px] items-center justify-center rounded-xl border border-grey4 dark:border-line">
         <div className="h-5 w-5 animate-spin rounded-full border-2 border-mainPurple border-t-transparent" />
       </div>
     )
   }
 
   return (
-    <div className="overflow-hidden rounded-xl border border-grey4">
+    <div className="overflow-hidden rounded-xl border border-grey4 dark:border-line bg-white dark:bg-surface-raised">
       {/* Toolbar */}
-      <div className="flex flex-wrap items-center gap-1 border-b border-grey4 bg-grey6 px-2 py-1.5">
+      <div className="flex flex-wrap items-center gap-1 border-b border-grey4 dark:border-line bg-grey6 dark:bg-white/[0.03] px-2 py-1.5">
         <ToolbarButton
           title="Heading 2"
           active={editor.isActive('heading', { level: 2 })}
@@ -130,7 +130,7 @@ export function BlogEditor({
         >
           <span className="font-satoshi text-xs font-bold">H3</span>
         </ToolbarButton>
-        <div className="mx-1 h-5 w-px bg-grey4" />
+        <div className="mx-1 h-5 w-px bg-grey4 dark:bg-line" />
         <ToolbarButton
           title="Bold"
           active={editor.isActive('bold')}
@@ -152,7 +152,7 @@ export function BlogEditor({
         >
           <FaCode className="h-3 w-3" />
         </ToolbarButton>
-        <div className="mx-1 h-5 w-px bg-grey4" />
+        <div className="mx-1 h-5 w-px bg-grey4 dark:bg-line" />
         <ToolbarButton
           title="Bullet list"
           active={editor.isActive('bulletList')}
@@ -174,7 +174,7 @@ export function BlogEditor({
         >
           <FaQuoteRight className="h-3 w-3" />
         </ToolbarButton>
-        <div className="mx-1 h-5 w-px bg-grey4" />
+        <div className="mx-1 h-5 w-px bg-grey4 dark:bg-line" />
         <ToolbarButton title="Add link" active={editor.isActive('link')} onClick={() => setLink(editor)}>
           <FaLink className="h-3 w-3" />
         </ToolbarButton>

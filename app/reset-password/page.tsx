@@ -89,7 +89,7 @@ export default function ResetPasswordPage() {
     }
   }
 
-  const inputClass = "w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 transition-colors disabled:bg-grey6"
+  const inputClass = "w-full px-4 py-3 border border-grey4 dark:border-line rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 dark:text-content placeholder:text-grey3 dark:placeholder:text-content-subtle bg-white dark:bg-surface-sunken transition-colors disabled:bg-grey6 dark:disabled:bg-white/[0.03]"
 
   if (invalid) {
     return (
@@ -98,10 +98,10 @@ export default function ResetPasswordPage() {
           <div className="w-12 h-12 bg-errorRed/8 rounded-xl flex items-center justify-center mx-auto mb-5">
             <FaXmark className="w-5 h-5 text-errorRed" />
           </div>
-          <h1 className="font-satoshi font-bold text-2xl text-grey1 mb-3">
+          <h1 className="font-satoshi font-bold text-2xl text-grey1 dark:text-content mb-3">
             Link expired
           </h1>
-          <p className="font-openSans text-grey3 text-sm leading-relaxed mb-8">
+          <p className="font-openSans text-grey3 dark:text-content-muted text-sm leading-relaxed mb-8">
             This password reset link is invalid or has already been used. Request a new one below.
           </p>
           <Link
@@ -120,7 +120,7 @@ export default function ResetPasswordPage() {
       <AuthLayout>
         <div className="flex flex-col items-center justify-center h-48 gap-3">
           <FaSpinner className="w-6 h-6 text-mainPurple animate-spin" />
-          <p className="font-openSans text-grey3 text-sm">Verifying reset link…</p>
+          <p className="font-openSans text-grey3 dark:text-content-muted text-sm">Verifying reset link…</p>
         </div>
       </AuthLayout>
     )
@@ -129,17 +129,17 @@ export default function ResetPasswordPage() {
   return (
     <AuthLayout>
       <div className="mb-7">
-        <h1 className="font-satoshi font-bold text-2xl text-grey1 mb-2">
+        <h1 className="font-satoshi font-bold text-2xl text-grey1 dark:text-content mb-2">
           Set new password
         </h1>
-        <p className="font-openSans text-grey3 text-sm">
+        <p className="font-openSans text-grey3 dark:text-content-muted text-sm">
           Choose a strong password for your account.
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-grey2 mb-1.5 font-satoshi">
+          <label htmlFor="password" className="block text-sm font-medium text-grey2 dark:text-content-muted mb-1.5 font-satoshi">
             New Password
           </label>
           <div className="relative">
@@ -156,7 +156,7 @@ export default function ResetPasswordPage() {
               autoFocus
             />
             <button type="button" onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-grey3 hover:text-grey1 transition-colors cursor-pointer">
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-grey3 dark:text-content-subtle hover:text-grey1 dark:hover:text-content transition-colors cursor-pointer">
               {showPassword ? <FaEyeSlash className="w-4 h-4" /> : <FaEye className="w-4 h-4" />}
             </button>
           </div>
@@ -166,7 +166,7 @@ export default function ResetPasswordPage() {
               <div className="flex gap-1 mb-1">
                 {[1, 2, 3].map((i) => (
                   <div key={i} className={`h-0.5 flex-1 rounded-full transition-all duration-300 ${
-                    strength.score >= i * 2 ? strength.color : 'bg-grey4'
+                    strength.score >= i * 2 ? strength.color : 'bg-grey4 dark:bg-line'
                   }`} />
                 ))}
               </div>
@@ -183,9 +183,9 @@ export default function ResetPasswordPage() {
                 <div key={r.label} className="flex items-center gap-2">
                   {r.met
                     ? <FaCheck className="w-3 h-3 text-successGreen shrink-0" />
-                    : <FaXmark className="w-3 h-3 text-grey4 shrink-0" />
+                    : <FaXmark className="w-3 h-3 text-grey4 dark:text-line shrink-0" />
                   }
-                  <span className={`text-xs font-openSans ${r.met ? 'text-grey2' : 'text-grey3'}`}>
+                  <span className={`text-xs font-openSans ${r.met ? 'text-grey2 dark:text-content-muted' : 'text-grey3 dark:text-content-subtle'}`}>
                     {r.label}
                   </span>
                 </div>
@@ -195,7 +195,7 @@ export default function ResetPasswordPage() {
         </div>
 
         <div>
-          <label htmlFor="confirmPassword" className="block text-sm font-medium text-grey2 mb-1.5 font-satoshi">
+          <label htmlFor="confirmPassword" className="block text-sm font-medium text-grey2 dark:text-content-muted mb-1.5 font-satoshi">
             Confirm New Password
           </label>
           <div className="relative">
@@ -218,7 +218,7 @@ export default function ResetPasswordPage() {
               </div>
             )}
             <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-grey3 hover:text-grey1 transition-colors cursor-pointer">
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-grey3 dark:text-content-subtle hover:text-grey1 dark:hover:text-content transition-colors cursor-pointer">
               {showConfirmPassword ? <FaEyeSlash className="w-4 h-4" /> : <FaEye className="w-4 h-4" />}
             </button>
           </div>

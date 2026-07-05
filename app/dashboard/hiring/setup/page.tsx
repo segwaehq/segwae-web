@@ -6,7 +6,7 @@ import { toast } from 'sonner'
 import { FaBuilding } from 'react-icons/fa6'
 
 const inputClass =
-  'w-full px-4 py-3 border border-[#E2E1EA] rounded-xl focus:outline-none focus:border-[#A98BE8] text-sm font-medium text-[#15131C] placeholder:text-[#9098A3] bg-white transition-colors'
+  'w-full px-4 py-3 border border-[#E2E1EA] dark:border-line rounded-xl focus:outline-none focus:border-[#A98BE8] dark:focus:border-[#6a4fb0] text-sm font-medium text-[#15131C] dark:text-content placeholder:text-[#9098A3] dark:placeholder:text-content-subtle bg-white dark:bg-surface-sunken transition-colors'
 
 const COMPANY_SIZES = [
   { value: '1-10', label: '1–10 employees' },
@@ -76,30 +76,30 @@ export default function CompanySetupPage() {
   return (
     <div className="max-w-full">
       <div className="mb-8">
-        <p className="font-satoshi text-[12px] font-bold text-[#5A2DD4] uppercase tracking-[0.14em] mb-1.5">
+        <p className="font-satoshi text-[12px] font-bold text-[#5A2DD4] dark:text-[#b9a4f7] uppercase tracking-[0.14em] mb-1.5">
           Hiring
         </p>
-        <h1 className="font-satoshi font-black tracking-[-0.02em] text-[26px] text-[#15131C]">Set up your company</h1>
-        <p className="text-sm text-[#9098A3] mt-2">
+        <h1 className="font-satoshi font-black tracking-[-0.02em] text-[26px] text-[#15131C] dark:text-content">Set up your company</h1>
+        <p className="text-sm text-[#9098A3] dark:text-content-subtle mt-2">
           Create your company profile before posting jobs. You can update this at any time.
         </p>
       </div>
 
-      <div className="bg-white rounded-[18px] border border-[#E8E8EF] p-8">
-        <div className="flex items-center gap-3 mb-8 pb-6 border-b border-[#E8E8EF]">
-          <div className="w-12 h-12 rounded-xl bg-[#F1ECFD] flex items-center justify-center">
-            <FaBuilding className="w-5 h-5 text-[#5A2DD4]" />
+      <div className="bg-white dark:bg-surface-raised rounded-[18px] border border-[#E8E8EF] dark:border-line p-8">
+        <div className="flex items-center gap-3 mb-8 pb-6 border-b border-[#E8E8EF] dark:border-line">
+          <div className="w-12 h-12 rounded-xl bg-[#F1ECFD] dark:bg-[#221b36] flex items-center justify-center">
+            <FaBuilding className="w-5 h-5 text-[#5A2DD4] dark:text-[#b9a4f7]" />
           </div>
           <div>
-            <p className="font-satoshi font-bold text-[#15131C] text-sm">Company profile</p>
-            <p className="text-xs text-[#9098A3] mt-0.5">Visible to job seekers on all your listings</p>
+            <p className="font-satoshi font-bold text-[#15131C] dark:text-content text-sm">Company profile</p>
+            <p className="text-xs text-[#9098A3] dark:text-content-subtle mt-0.5">Visible to job seekers on all your listings</p>
           </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">
-              Company name <span className="text-[#B6463C]">*</span>
+            <label className="block text-xs font-bold text-[#15131C] dark:text-content mb-1.5 font-satoshi">
+              Company name <span className="text-[#B6463C] dark:text-[#f2857b]">*</span>
             </label>
             <input
               type="text"
@@ -114,7 +114,7 @@ export default function CompanySetupPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
-              <label className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">
+              <label className="block text-xs font-bold text-[#15131C] dark:text-content mb-1.5 font-satoshi">
                 Industry
               </label>
               <select name="industry" value={form.industry} onChange={handleChange} className={inputClass}>
@@ -123,7 +123,7 @@ export default function CompanySetupPage() {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">
+              <label className="block text-xs font-bold text-[#15131C] dark:text-content mb-1.5 font-satoshi">
                 Company size
               </label>
               <select name="size" value={form.size} onChange={handleChange} className={inputClass}>
@@ -134,7 +134,7 @@ export default function CompanySetupPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">
+            <label className="block text-xs font-bold text-[#15131C] dark:text-content mb-1.5 font-satoshi">
               Location
             </label>
             <input
@@ -148,7 +148,7 @@ export default function CompanySetupPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">
+            <label className="block text-xs font-bold text-[#15131C] dark:text-content mb-1.5 font-satoshi">
               Website
             </label>
             <input
@@ -162,7 +162,7 @@ export default function CompanySetupPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">
+            <label className="block text-xs font-bold text-[#15131C] dark:text-content mb-1.5 font-satoshi">
               About the company
             </label>
             <textarea

@@ -84,20 +84,20 @@ function VerifyContent() {
   return (
     <AuthLayout step={3} totalSteps={3}>
       <div className="mb-8">
-        <h1 className="font-satoshi font-bold text-2xl text-grey1 mb-2">
+        <h1 className="font-satoshi font-bold text-2xl text-grey1 dark:text-content mb-2">
           Check your email
         </h1>
-        <p className="font-openSans text-grey3 text-sm">
+        <p className="font-openSans text-grey3 dark:text-content-muted text-sm">
           We sent a 6-digit code to
         </p>
-        <p className="font-satoshi font-semibold text-grey1 text-sm mt-0.5">
+        <p className="font-satoshi font-semibold text-grey1 dark:text-content text-sm mt-0.5">
           {email}
         </p>
       </div>
 
       <form onSubmit={handleVerify} className="space-y-5">
         <div>
-          <label htmlFor="otp" className="block text-sm font-medium text-grey2 mb-1.5 font-satoshi">
+          <label htmlFor="otp" className="block text-sm font-medium text-grey2 dark:text-content-muted mb-1.5 font-satoshi">
             Verification Code
           </label>
           <input
@@ -109,11 +109,11 @@ function VerifyContent() {
             maxLength={6}
             inputMode="numeric"
             autoComplete="one-time-code"
-            className="w-full px-4 py-4 border border-grey4 rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-satoshi font-bold text-center text-3xl tracking-[0.6em] text-grey1 placeholder:text-grey4 placeholder:tracking-[0.3em] transition-colors"
+            className="w-full px-4 py-4 border border-grey4 dark:border-line rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-satoshi font-bold text-center text-3xl tracking-[0.6em] text-grey1 dark:text-content placeholder:text-grey4 dark:placeholder:text-line placeholder:tracking-[0.3em] bg-white dark:bg-surface-sunken transition-colors"
             placeholder="······"
             disabled={loading}
           />
-          <p className="mt-2 text-xs text-grey3 font-openSans text-center">
+          <p className="mt-2 text-xs text-grey3 dark:text-content-subtle font-openSans text-center">
             Can&apos;t find it? Check your spam folder.
           </p>
         </div>
@@ -136,7 +136,7 @@ function VerifyContent() {
             type="button"
             onClick={handleResend}
             disabled={!canResend || resending}
-            className="font-openSans text-sm text-mainPurple hover:underline disabled:text-grey3 disabled:no-underline disabled:cursor-not-allowed cursor-pointer"
+            className="font-openSans text-sm text-mainPurple dark:text-[#b9a4f7] hover:underline disabled:text-grey3 dark:disabled:text-content-subtle disabled:no-underline disabled:cursor-not-allowed cursor-pointer"
           >
             {resending ? (
               <span className="flex items-center gap-2">
@@ -148,14 +148,14 @@ function VerifyContent() {
         </div>
 
         <button type="button" onClick={() => router.push('/signup')}
-          className="w-full text-grey3 hover:text-grey1 transition-colors font-openSans text-sm cursor-pointer">
+          className="w-full text-grey3 dark:text-content-subtle hover:text-grey1 dark:hover:text-content transition-colors font-openSans text-sm cursor-pointer">
           ← Start over
         </button>
       </form>
 
-      <p className="font-openSans text-grey3 text-sm text-center mt-6">
+      <p className="font-openSans text-grey3 dark:text-content-muted text-sm text-center mt-6">
         Already have an account?{' '}
-        <Link href="/login" className="text-mainPurple font-semibold hover:underline">Sign in</Link>
+        <Link href="/login" className="text-mainPurple dark:text-[#b9a4f7] font-semibold hover:underline">Sign in</Link>
       </p>
     </AuthLayout>
   )

@@ -93,7 +93,7 @@ export default async function BlogArticlePage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-white dark:bg-surface">
         {/* Dark top bar */}
         <div className="bg-[#0F1115] px-6 py-4">
           <div className="mx-auto max-w-[760px]">
@@ -117,17 +117,17 @@ export default async function BlogArticlePage({
                 {post.category}
               </Link>
             )}
-            <h1 className="font-satoshi mt-4 text-[clamp(1.9rem,4vw,2.6rem)] font-black leading-[1.1] tracking-[-0.025em] text-[#15131C]">
+            <h1 className="font-satoshi mt-4 text-[clamp(1.9rem,4vw,2.6rem)] font-black leading-[1.1] tracking-[-0.025em] text-[#15131C] dark:text-content">
               {post.title}
             </h1>
             {post.excerpt && (
-              <p className="font-openSans mt-4 text-[17px] font-medium leading-relaxed text-[#6B6478]">
+              <p className="font-openSans mt-4 text-[17px] font-medium leading-relaxed text-[#6B6478] dark:text-content-muted">
                 {post.excerpt}
               </p>
             )}
 
-            <div className="mt-6 flex items-center gap-3 border-t border-[#F0EFF4] pt-5">
-              <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-[#F1F0F6]">
+            <div className="mt-6 flex items-center gap-3 border-t border-[#F0EFF4] dark:border-line pt-5">
+              <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-[#F1F0F6] dark:bg-[#241d38]">
                 {post.author_avatar_url ? (
                   <Image
                     src={post.author_avatar_url}
@@ -137,16 +137,16 @@ export default async function BlogArticlePage({
                     className="h-full w-full object-cover"
                   />
                 ) : (
-                  <FaUser className="h-4 w-4 text-[#9098A3]" />
+                  <FaUser className="h-4 w-4 text-[#9098A3] dark:text-content-subtle" />
                 )}
               </div>
               <div>
-                <p className="font-satoshi text-[13.5px] font-bold text-[#15131C]">
+                <p className="font-satoshi text-[13.5px] font-bold text-[#15131C] dark:text-content">
                   {post.author_name}
                 </p>
-                <p className="font-openSans flex items-center gap-2 text-[12.5px] font-medium text-[#9098A3]">
+                <p className="font-openSans flex items-center gap-2 text-[12.5px] font-medium text-[#9098A3] dark:text-content-subtle">
                   <span>{formatDate(post.published_at)}</span>
-                  <span className="h-1 w-1 rounded-full bg-[#C2C6CF]" />
+                  <span className="h-1 w-1 rounded-full bg-[#C2C6CF] dark:bg-content-subtle" />
                   <span className="inline-flex items-center gap-1">
                     <FaClock className="h-3 w-3" />
                     {post.reading_minutes} min read
@@ -158,7 +158,7 @@ export default async function BlogArticlePage({
 
           {/* Cover */}
           {post.cover_image_url && (
-            <div className="relative mb-9 aspect-[16/9] overflow-hidden rounded-[18px] bg-[#F1F0F6]">
+            <div className="relative mb-9 aspect-[16/9] overflow-hidden rounded-[18px] bg-[#F1F0F6] dark:bg-[#241d38]">
               <Image
                 src={post.cover_image_url}
                 alt={post.title}
@@ -178,11 +178,11 @@ export default async function BlogArticlePage({
 
           {/* Tags */}
           {post.tags.length > 0 && (
-            <div className="mt-10 flex flex-wrap gap-2 border-t border-[#F0EFF4] pt-6">
+            <div className="mt-10 flex flex-wrap gap-2 border-t border-[#F0EFF4] dark:border-line pt-6">
               {post.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="font-satoshi rounded-lg border border-[#ECECF1] bg-[#F6F5FA] px-3 py-1.5 text-xs font-semibold text-[#4B4658]"
+                  className="font-satoshi rounded-lg border border-[#ECECF1] dark:border-line bg-[#F6F5FA] dark:bg-white/[0.06] px-3 py-1.5 text-xs font-semibold text-[#4B4658] dark:text-content-muted"
                 >
                   #{tag}
                 </span>
@@ -220,9 +220,9 @@ export default async function BlogArticlePage({
 
         {/* Related */}
         {related.length > 0 && (
-          <div className="border-t border-[#EFEEF4] bg-[#FAFAFB]">
+          <div className="border-t border-[#EFEEF4] dark:border-line bg-[#FAFAFB] dark:bg-[#12101b]">
             <div className="mx-auto max-w-[1100px] px-6 py-12">
-              <h2 className="font-satoshi mb-6 text-xl font-extrabold tracking-[-0.01em] text-[#15131C]">
+              <h2 className="font-satoshi mb-6 text-xl font-extrabold tracking-[-0.01em] text-[#15131C] dark:text-content">
                 Keep reading
               </h2>
               <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

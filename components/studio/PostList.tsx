@@ -9,11 +9,11 @@ import type { BlogPost } from '@/lib/types'
 
 function StatusBadge({ status }: { status: BlogPost['status'] }) {
   return status === 'published' ? (
-    <span className="font-satoshi rounded-md bg-green-50 px-2 py-0.5 text-[11px] font-bold text-green-700">
+    <span className="font-satoshi rounded-md bg-green-50 dark:bg-green-500/15 px-2 py-0.5 text-[11px] font-bold text-green-700 dark:text-green-400">
       Published
     </span>
   ) : (
-    <span className="font-satoshi rounded-md bg-grey5 px-2 py-0.5 text-[11px] font-bold text-grey3">
+    <span className="font-satoshi rounded-md bg-grey5 dark:bg-white/[0.06] px-2 py-0.5 text-[11px] font-bold text-grey3 dark:text-content-subtle">
       Draft
     </span>
   )
@@ -41,12 +41,12 @@ export function PostList({ posts }: { posts: BlogPost[] }) {
 
   if (posts.length === 0) {
     return (
-      <div className="flex flex-col items-center gap-3 rounded-2xl border border-grey4/70 bg-white py-20">
-        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-lightPurple">
-          <FaPenNib className="h-5 w-5 text-mainPurple" />
+      <div className="flex flex-col items-center gap-3 rounded-2xl border border-grey4/70 dark:border-line bg-white dark:bg-surface-raised py-20">
+        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-lightPurple dark:bg-[#241d38]">
+          <FaPenNib className="h-5 w-5 text-mainPurple dark:text-[#b9a4f7]" />
         </div>
-        <p className="font-satoshi text-lg font-bold text-grey1">No posts yet</p>
-        <p className="font-openSans max-w-xs text-center text-sm text-grey3">
+        <p className="font-satoshi text-lg font-bold text-grey1 dark:text-content">No posts yet</p>
+        <p className="font-openSans max-w-xs text-center text-sm text-grey3 dark:text-content-subtle">
           Write your first article — it’ll appear on the public blog once you publish it.
         </p>
         <Link
@@ -60,43 +60,43 @@ export function PostList({ posts }: { posts: BlogPost[] }) {
   }
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-grey4/70 bg-white">
+    <div className="overflow-hidden rounded-2xl border border-grey4/70 dark:border-line bg-white dark:bg-surface-raised">
       <table className="w-full">
         <thead>
-          <tr className="border-b border-grey4/70 bg-grey6">
-            <th className="font-satoshi px-5 py-3 text-left text-xs font-bold uppercase tracking-wide text-grey3">
+          <tr className="border-b border-grey4/70 dark:border-line bg-grey6 dark:bg-white/[0.03]">
+            <th className="font-satoshi px-5 py-3 text-left text-xs font-bold uppercase tracking-wide text-grey3 dark:text-content-subtle">
               Title
             </th>
-            <th className="font-satoshi hidden px-5 py-3 text-left text-xs font-bold uppercase tracking-wide text-grey3 sm:table-cell">
+            <th className="font-satoshi hidden px-5 py-3 text-left text-xs font-bold uppercase tracking-wide text-grey3 dark:text-content-subtle sm:table-cell">
               Category
             </th>
-            <th className="font-satoshi hidden px-5 py-3 text-left text-xs font-bold uppercase tracking-wide text-grey3 md:table-cell">
+            <th className="font-satoshi hidden px-5 py-3 text-left text-xs font-bold uppercase tracking-wide text-grey3 dark:text-content-subtle md:table-cell">
               Updated
             </th>
-            <th className="font-satoshi px-5 py-3 text-right text-xs font-bold uppercase tracking-wide text-grey3">
+            <th className="font-satoshi px-5 py-3 text-right text-xs font-bold uppercase tracking-wide text-grey3 dark:text-content-subtle">
               Actions
             </th>
           </tr>
         </thead>
         <tbody>
           {posts.map((post) => (
-            <tr key={post.id} className="border-b border-grey5 last:border-0 hover:bg-grey6/60">
+            <tr key={post.id} className="border-b border-grey5 dark:border-line last:border-0 hover:bg-grey6/60 dark:hover:bg-white/[0.03]">
               <td className="px-5 py-3.5">
                 <Link
                   href={`/studio/${post.id}/edit`}
-                  className="font-satoshi text-sm font-bold text-grey1 transition-colors hover:text-mainPurple"
+                  className="font-satoshi text-sm font-bold text-grey1 dark:text-content transition-colors hover:text-mainPurple dark:hover:text-[#b9a4f7]"
                 >
                   {post.title}
                 </Link>
                 <div className="mt-1 flex items-center gap-2">
                   <StatusBadge status={post.status} />
-                  <span className="font-openSans text-xs text-grey3">/{post.slug}</span>
+                  <span className="font-openSans text-xs text-grey3 dark:text-content-subtle">/{post.slug}</span>
                 </div>
               </td>
-              <td className="font-openSans hidden px-5 py-3.5 text-sm text-grey2 sm:table-cell">
+              <td className="font-openSans hidden px-5 py-3.5 text-sm text-grey2 dark:text-content-muted sm:table-cell">
                 {post.category ?? '—'}
               </td>
-              <td className="font-openSans hidden px-5 py-3.5 text-sm text-grey3 md:table-cell">
+              <td className="font-openSans hidden px-5 py-3.5 text-sm text-grey3 dark:text-content-subtle md:table-cell">
                 {new Date(post.updated_at).toLocaleDateString('en-GB', {
                   day: 'numeric',
                   month: 'short',
@@ -108,7 +108,7 @@ export function PostList({ posts }: { posts: BlogPost[] }) {
                   <Link
                     href={`/studio/${post.id}/edit`}
                     title="Edit"
-                    className="flex h-8 w-8 items-center justify-center rounded-lg text-grey2 transition-colors hover:bg-grey5 hover:text-mainPurple"
+                    className="flex h-8 w-8 items-center justify-center rounded-lg text-grey2 dark:text-content-muted transition-colors hover:bg-grey5 dark:hover:bg-white/[0.06] hover:text-mainPurple dark:hover:text-[#b9a4f7]"
                   >
                     <FaPenToSquare className="h-3.5 w-3.5" />
                   </Link>
@@ -116,7 +116,7 @@ export function PostList({ posts }: { posts: BlogPost[] }) {
                     onClick={() => remove(post)}
                     disabled={deletingId === post.id}
                     title="Delete"
-                    className="flex h-8 w-8 items-center justify-center rounded-lg text-grey2 transition-colors hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
+                    className="flex h-8 w-8 items-center justify-center rounded-lg text-grey2 dark:text-content-muted transition-colors hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 dark:hover:text-red-400 disabled:opacity-50"
                   >
                     <FaTrash className="h-3.5 w-3.5" />
                   </button>

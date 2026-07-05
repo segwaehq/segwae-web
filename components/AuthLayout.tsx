@@ -55,7 +55,7 @@ export default function AuthLayout({ children, step, totalSteps, justify }: Auth
       </div>
 
       {/* ── Right panel ────────────────────────────────────────────────── */}
-      <div className={`flex-1 flex flex-col items-center overflow-y-auto ${justify} p-6 sm:p-10 bg-white min-h-screen`}>
+      <div className={`flex-1 flex flex-col items-center overflow-y-auto ${justify} p-6 sm:p-10 bg-white dark:bg-surface min-h-screen`}>
 
         {/* Mobile logo */}
         <div className="lg:hidden mb-8 self-start">
@@ -80,12 +80,12 @@ export default function AuthLayout({ children, step, totalSteps, justify }: Auth
                   <div
                     key={i}
                     className={`h-0.5 flex-1 rounded-full transition-all duration-300 ${
-                      i < step ? 'bg-mainPurple' : 'bg-grey4'
+                      i < step ? 'bg-mainPurple' : 'bg-grey4 dark:bg-line'
                     }`}
                   />
                 ))}
               </div>
-              <p className="font-satoshi text-xs text-grey3">
+              <p className="font-satoshi text-xs text-grey3 dark:text-content-subtle">
                 Step {step} of {totalSteps}
               </p>
             </div>

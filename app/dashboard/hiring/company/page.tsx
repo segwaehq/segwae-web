@@ -23,7 +23,7 @@ const INDUSTRIES = [
 ]
 
 const inputClass =
-  'w-full px-4 py-3 border border-[#E2E1EA] rounded-xl focus:outline-none focus:border-[#A98BE8] text-sm font-medium text-[#15131C] placeholder:text-[#9098A3] bg-white transition-colors'
+  'w-full px-4 py-3 border border-[#E2E1EA] dark:border-line rounded-xl focus:outline-none focus:border-[#A98BE8] dark:focus:border-[#6a4fb0] text-sm font-medium text-[#15131C] dark:text-content placeholder:text-[#9098A3] dark:placeholder:text-content-subtle bg-white dark:bg-surface-sunken transition-colors'
 
 export default function CompanyProfilePage() {
   const router = useRouter()
@@ -140,29 +140,29 @@ export default function CompanyProfilePage() {
   return (
     <div className="max-w-full">
       <div className="mb-8">
-        <p className="font-satoshi text-[12px] font-bold text-[#5A2DD4] uppercase tracking-[0.14em] mb-1.5">
+        <p className="font-satoshi text-[12px] font-bold text-[#5A2DD4] dark:text-[#b9a4f7] uppercase tracking-[0.14em] mb-1.5">
           Hiring
         </p>
-        <h1 className="font-satoshi font-black tracking-[-0.02em] text-[26px] text-[#15131C]">Company profile</h1>
-        <p className="text-sm text-[#9098A3] mt-1">
+        <h1 className="font-satoshi font-black tracking-[-0.02em] text-[26px] text-[#15131C] dark:text-content">Company profile</h1>
+        <p className="text-sm text-[#9098A3] dark:text-content-subtle mt-1">
           Visible to all job seekers on your listings.
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5">
         {/* Logo upload */}
-        <div className="bg-white rounded-[18px] border border-[#E8E8EF] p-6">
-          <p className="font-satoshi font-bold text-sm text-[#15131C] mb-4">Company logo</p>
+        <div className="bg-white dark:bg-surface-raised rounded-[18px] border border-[#E8E8EF] dark:border-line p-6">
+          <p className="font-satoshi font-bold text-sm text-[#15131C] dark:text-content mb-4">Company logo</p>
           <div className="flex items-center gap-5">
             <div
-              className="relative w-20 h-20 rounded-2xl border-2 border-dashed border-[#A98BE8] overflow-hidden cursor-pointer group"
+              className="relative w-20 h-20 rounded-2xl border-2 border-dashed border-[#A98BE8] dark:border-[#6a4fb0] overflow-hidden cursor-pointer group"
               onClick={() => !uploadingLogo && fileRef.current?.click()}
             >
               {logoPreview ? (
                 <Image src={logoPreview} alt="Logo" fill className="object-cover" />
               ) : (
-                <div className="w-full h-full bg-[#F1ECFD] flex items-center justify-center">
-                  <FaBuilding className="w-7 h-7 text-[#5A2DD4]" />
+                <div className="w-full h-full bg-[#F1ECFD] dark:bg-[#221b36] flex items-center justify-center">
+                  <FaBuilding className="w-7 h-7 text-[#5A2DD4] dark:text-[#b9a4f7]" />
                 </div>
               )}
               <div className="absolute inset-0 bg-[#5A2DD4]/70 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
@@ -181,30 +181,30 @@ export default function CompanyProfilePage() {
               />
             </div>
             <div>
-              <p className="font-satoshi font-bold text-sm text-[#15131C]">{form.name || 'Your company'}</p>
+              <p className="font-satoshi font-bold text-sm text-[#15131C] dark:text-content">{form.name || 'Your company'}</p>
               {company?.is_verified && (
-                <span className="inline-flex items-center gap-1 mt-1 text-[10px] font-semibold font-satoshi text-[#16895E] bg-[#E7F6EF] px-2 py-0.5 rounded-full">
+                <span className="inline-flex items-center gap-1 mt-1 text-[10px] font-semibold font-satoshi text-[#16895E] bg-[#E7F6EF] dark:text-[#4ade9e] dark:bg-[#12271e] px-2 py-0.5 rounded-full">
                   <FaCheck className="w-2.5 h-2.5" /> Verified
                 </span>
               )}
-              <p className="text-xs text-[#9098A3] mt-1">Click the logo to upload a new one</p>
+              <p className="text-xs text-[#9098A3] dark:text-content-subtle mt-1">Click the logo to upload a new one</p>
             </div>
           </div>
         </div>
 
         {/* Fields */}
-        <div className="bg-white rounded-[18px] border border-[#E8E8EF] p-6 space-y-4">
-          <p className="font-satoshi font-bold text-sm text-[#15131C] mb-2">Company details</p>
+        <div className="bg-white dark:bg-surface-raised rounded-[18px] border border-[#E8E8EF] dark:border-line p-6 space-y-4">
+          <p className="font-satoshi font-bold text-sm text-[#15131C] dark:text-content mb-2">Company details</p>
 
           <div>
-            <label className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">
-              Company name <span className="text-[#B6463C]">*</span>
+            <label className="block text-xs font-bold text-[#15131C] dark:text-content mb-1.5 font-satoshi">
+              Company name <span className="text-[#B6463C] dark:text-[#f2857b]">*</span>
             </label>
             <input name="name" value={form.name} onChange={handleChange} required placeholder="e.g. Flutterwave" className={inputClass} />
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">Industry</label>
+            <label className="block text-xs font-bold text-[#15131C] dark:text-content mb-1.5 font-satoshi">Industry</label>
             <select name="industry" value={form.industry} onChange={handleChange} className={inputClass}>
               <option value="">Select industry</option>
               {INDUSTRIES.map((ind) => (
@@ -214,7 +214,7 @@ export default function CompanyProfilePage() {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">Company size</label>
+            <label className="block text-xs font-bold text-[#15131C] dark:text-content mb-1.5 font-satoshi">Company size</label>
             <select name="size" value={form.size} onChange={handleChange} className={inputClass}>
               <option value="">Select size</option>
               {COMPANY_SIZES.map((s) => (
@@ -224,17 +224,17 @@ export default function CompanyProfilePage() {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">Location</label>
+            <label className="block text-xs font-bold text-[#15131C] dark:text-content mb-1.5 font-satoshi">Location</label>
             <input name="location" value={form.location} onChange={handleChange} placeholder="e.g. Lagos, Nigeria" className={inputClass} />
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">Website</label>
+            <label className="block text-xs font-bold text-[#15131C] dark:text-content mb-1.5 font-satoshi">Website</label>
             <input name="website" value={form.website} onChange={handleChange} type="url" placeholder="https://yourcompany.com" className={inputClass} />
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-[#15131C] mb-1.5 font-satoshi">About the company</label>
+            <label className="block text-xs font-bold text-[#15131C] dark:text-content mb-1.5 font-satoshi">About the company</label>
             <textarea
               name="description"
               value={form.description}

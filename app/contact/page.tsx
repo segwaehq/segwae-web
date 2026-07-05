@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { FaEnvelope, FaInstagram, FaLinkedinIn, FaXTwitter, FaArrowLeft } from 'react-icons/fa6'
 
 const inputClass =
-  'w-full px-4 py-3 border border-grey4 rounded-lg focus:outline-none focus:border-mainPurple focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 placeholder:text-grey3 bg-white transition-colors'
+  'w-full px-4 py-3 border border-grey4 dark:border-line rounded-lg focus:outline-none focus:border-mainPurple dark:focus:border-[#6a4fb0] focus:ring-1 focus:ring-mainPurple font-openSans text-sm text-grey1 dark:text-content placeholder:text-grey3 dark:placeholder:text-content-subtle bg-white dark:bg-surface-sunken transition-colors'
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -47,15 +47,15 @@ export default function Contact() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center px-6">
+      <div className="min-h-screen bg-white dark:bg-surface flex items-center justify-center px-6">
         <div className="max-w-sm w-full text-center">
           <div className="w-14 h-14 rounded-xl bg-successGreen/10 border border-successGreen/20 flex items-center justify-center mx-auto mb-6">
             <svg className="w-6 h-6 text-successGreen" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h2 className="font-satoshi font-bold text-2xl text-grey1 mb-2">Message sent</h2>
-          <p className="font-openSans text-sm text-grey3 leading-relaxed mb-8">
+          <h2 className="font-satoshi font-bold text-2xl text-grey1 dark:text-content mb-2">Message sent</h2>
+          <p className="font-openSans text-sm text-grey3 dark:text-content-subtle leading-relaxed mb-8">
             Thanks for reaching out. We&apos;ll get back to you as soon as possible.
           </p>
           <div className="flex flex-col gap-3">
@@ -70,7 +70,7 @@ export default function Contact() {
             </button>
             <Link
               href="/"
-              className="px-6 py-3 border border-grey4 text-grey2 rounded-lg font-satoshi font-semibold text-sm hover:border-grey3 transition-colors"
+              className="px-6 py-3 border border-grey4 dark:border-line text-grey2 dark:text-content-muted rounded-lg font-satoshi font-semibold text-sm hover:border-grey3 dark:hover:border-content-subtle transition-colors"
             >
               Back to Home
             </Link>
@@ -185,17 +185,17 @@ export default function Contact() {
       </div>
 
       {/* ── Right panel ───────────────────────────────────────────── */}
-      <div className="flex-1 bg-white flex items-center justify-center px-8 py-16 lg:px-16">
+      <div className="flex-1 bg-white dark:bg-surface flex items-center justify-center px-8 py-16 lg:px-16">
         <div className="w-full max-w-md">
           <div className="mb-8">
-            <h2 className="font-satoshi font-bold text-2xl text-grey1 mb-1">Send a message</h2>
-            <p className="font-openSans text-sm text-grey3">Fill in the form and we&apos;ll be in touch.</p>
+            <h2 className="font-satoshi font-bold text-2xl text-grey1 dark:text-content mb-1">Send a message</h2>
+            <p className="font-openSans text-sm text-grey3 dark:text-content-subtle">Fill in the form and we&apos;ll be in touch.</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label htmlFor="name" className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
+                <label htmlFor="name" className="block text-xs font-semibold text-grey1 dark:text-content mb-1.5 font-satoshi">
                   Name
                 </label>
                 <input
@@ -210,7 +210,7 @@ export default function Contact() {
                 />
               </div>
               <div>
-                <label htmlFor="email" className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
+                <label htmlFor="email" className="block text-xs font-semibold text-grey1 dark:text-content mb-1.5 font-satoshi">
                   Email
                 </label>
                 <input
@@ -227,7 +227,7 @@ export default function Contact() {
             </div>
 
             <div>
-              <label htmlFor="subject" className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
+              <label htmlFor="subject" className="block text-xs font-semibold text-grey1 dark:text-content mb-1.5 font-satoshi">
                 Subject
               </label>
               <select
@@ -248,7 +248,7 @@ export default function Contact() {
             </div>
 
             <div>
-              <label htmlFor="message" className="block text-xs font-semibold text-grey1 mb-1.5 font-satoshi">
+              <label htmlFor="message" className="block text-xs font-semibold text-grey1 dark:text-content mb-1.5 font-satoshi">
                 Message
               </label>
               <textarea

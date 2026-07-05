@@ -25,7 +25,7 @@ const VALUES = [
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-surface">
 
       {/* ── Hero ────────────────────────────────────────────────── */}
       <section className="relative bg-[#111827] overflow-hidden px-6 py-24 md:py-32">
@@ -55,18 +55,18 @@ export default function AboutPage() {
         <div className="max-w-4xl mx-auto">
           <div className="grid md:grid-cols-[1fr_2fr] gap-12 md:gap-20 items-start">
             <div>
-              <p className="font-satoshi text-[11px] font-semibold text-mainPurple uppercase tracking-[0.22em]">
+              <p className="font-satoshi text-[11px] font-semibold text-mainPurple dark:text-[#b9a4f7] uppercase tracking-[0.22em]">
                 Our Mission
               </p>
             </div>
             <div className="space-y-6">
-              <p className="font-satoshi font-bold text-2xl md:text-3xl text-grey1 leading-snug">
+              <p className="font-satoshi font-bold text-2xl md:text-3xl text-grey1 dark:text-content leading-snug">
                 We believe every conversation has the potential to become a valuable connection — and we&apos;re here to make sure you never miss one.
               </p>
-              <p className="font-openSans text-grey3 text-base leading-relaxed">
+              <p className="font-openSans text-grey3 dark:text-content-muted text-base leading-relaxed">
                 Segwae combines digital profiles with NFC-powered smart cards, giving professionals, entrepreneurs, and businesses across Nigeria and beyond a single, always-up-to-date identity they can share in seconds.
               </p>
-              <p className="font-openSans text-grey3 text-base leading-relaxed">
+              <p className="font-openSans text-grey3 dark:text-content-muted text-base leading-relaxed">
                 No more outdated paper cards. No more manually typing in contact details. One tap, one scan — and you&apos;re connected.
               </p>
             </div>
@@ -75,25 +75,25 @@ export default function AboutPage() {
       </section>
 
       {/* ── Values ──────────────────────────────────────────────── */}
-      <section className="px-6 py-20 md:py-28 bg-grey6">
+      <section className="px-6 py-20 md:py-28 bg-grey6 dark:bg-[#12101b]">
         <div className="max-w-4xl mx-auto">
           <div className="mb-14">
-            <p className="font-satoshi text-[11px] font-semibold text-mainPurple uppercase tracking-[0.22em] mb-3">
+            <p className="font-satoshi text-[11px] font-semibold text-mainPurple dark:text-[#b9a4f7] uppercase tracking-[0.22em] mb-3">
               What We Stand For
             </p>
-            <h2 className="font-dmSerif text-4xl md:text-5xl text-grey1">
+            <h2 className="font-dmSerif text-4xl md:text-5xl text-grey1 dark:text-content">
               Our values
             </h2>
           </div>
 
-          <div className="space-y-0 divide-y divide-grey4/60">
+          <div className="space-y-0 divide-y divide-grey4/60 dark:divide-line">
             {VALUES.map(({ number, title, body }) => (
               <div key={number} className="grid md:grid-cols-[80px_1fr_2fr] gap-6 md:gap-12 py-10 items-start">
-                <span className="font-satoshi text-[11px] font-semibold text-grey3 tabular-nums pt-1">
+                <span className="font-satoshi text-[11px] font-semibold text-grey3 dark:text-content-muted tabular-nums pt-1">
                   {number}
                 </span>
-                <h3 className="font-satoshi font-bold text-2xl text-grey1">{title}</h3>
-                <p className="font-openSans text-grey3 text-base leading-relaxed">{body}</p>
+                <h3 className="font-satoshi font-bold text-2xl text-grey1 dark:text-content">{title}</h3>
+                <p className="font-openSans text-grey3 dark:text-content-muted text-base leading-relaxed">{body}</p>
               </div>
             ))}
           </div>

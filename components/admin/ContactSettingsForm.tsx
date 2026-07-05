@@ -131,11 +131,11 @@ export default function ContactSettingsForm({ initialSettings }: Props) {
             setWhatsappNumber(value)
           }}
           placeholder="2348012345678"
-          className="w-full px-4 py-3 rounded-xl border border-grey4 font-mono text-lg focus:outline-none focus:ring-2 focus:ring-mainPurple transition-all"
+          className="w-full px-4 py-3 rounded-xl border border-grey4 dark:border-line dark:bg-surface-sunken dark:text-content dark:placeholder:text-content-subtle font-mono text-lg focus:outline-none focus:ring-2 focus:ring-mainPurple transition-all"
           required
         />
         {whatsappNumber && validateWhatsappNumber(whatsappNumber) && (
-          <p className="mt-2 font-openSans text-sm text-grey2">
+          <p className="mt-2 font-openSans text-sm text-grey2 dark:text-content-muted">
             Display format: {formatWhatsappForDisplay(whatsappNumber)}
           </p>
         )}
@@ -154,7 +154,7 @@ export default function ContactSettingsForm({ initialSettings }: Props) {
           Instagram Handle
         </label>
         <div className="relative">
-          <span className="absolute left-4 top-1/2 -translate-y-1/2 font-mono text-lg text-grey3">
+          <span className="absolute left-4 top-1/2 -translate-y-1/2 font-mono text-lg text-grey3 dark:text-content-subtle">
             @
           </span>
           <input
@@ -169,12 +169,12 @@ export default function ContactSettingsForm({ initialSettings }: Props) {
               setInstagramHandle(value)
             }}
             placeholder="segwaehq"
-            className="w-full pl-8 pr-4 py-3 rounded-xl border border-grey4 font-mono text-lg focus:outline-none focus:ring-2 focus:ring-mainPurple transition-all"
+            className="w-full pl-8 pr-4 py-3 rounded-xl border border-grey4 dark:border-line dark:bg-surface-sunken dark:text-content dark:placeholder:text-content-subtle font-mono text-lg focus:outline-none focus:ring-2 focus:ring-mainPurple transition-all"
             required
           />
         </div>
         {instagramHandle && (
-          <p className="mt-2 font-openSans text-sm text-grey2">
+          <p className="mt-2 font-openSans text-sm text-grey2 dark:text-content-muted">
             Profile URL: instagram.com/{instagramHandle}
           </p>
         )}

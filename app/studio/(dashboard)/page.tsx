@@ -13,8 +13,8 @@ export default async function StudioHome() {
     <div>
       <div className="mb-6 flex items-end justify-between gap-4">
         <div>
-          <h1 className="font-satoshi text-2xl font-black text-grey1">Posts</h1>
-          <p className="font-openSans mt-1 text-sm text-grey3">
+          <h1 className="font-satoshi text-2xl font-black text-grey1 dark:text-content">Posts</h1>
+          <p className="font-openSans mt-1 text-sm text-grey3 dark:text-content-subtle">
             {posts.length} {posts.length === 1 ? 'post' : 'posts'} · {published} published
           </p>
         </div>
