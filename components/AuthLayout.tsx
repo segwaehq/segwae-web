@@ -66,7 +66,15 @@ export default function AuthLayout({ children, step, totalSteps, justify }: Auth
               width={0}
               height={0}
               sizes="100vw"
-              className="h-7 w-auto!"
+              className="h-7 w-auto! dark:hidden"
+            />
+            <Image
+              src="/wordmark_white.png"
+              alt="Segwae"
+              width={0}
+              height={0}
+              sizes="100vw"
+              className="h-7 w-auto! hidden dark:block"
             />
           </Link>
         </div>
