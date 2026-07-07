@@ -79,6 +79,15 @@ function PasswordContent() {
         },
       })
       if (error) throw error
+      // With email confirmation enabled, Supabase does NOT error on a duplicate
+      // email (anti-enumeration). It returns a user with an empty identities array.
+      // Detect that so we don't show a false "Account created!" and strand the user
+      // on the OTP screen waiting for a code that never comes.
+      if (data.user && (data.user.identities?.length ?? 0) === 0) {
+        toast.error('An account with this email already exists. Please sign in instead.')
+        router.push('/login')
+        return
+      }
       if (data.user) {
         toast.success('Account created! Check your email for a verification code.')
         router.push(`/signup/verify?email=${encodeURIComponent(email)}`)

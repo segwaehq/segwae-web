@@ -9,6 +9,8 @@ import AuthLayout from '@/components/AuthLayout'
 
 type Role = 'seeker' | 'employer'
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
 export default function SignupPage() {
   const router = useRouter()
 
@@ -21,6 +23,7 @@ export default function SignupPage() {
     title: '',
   })
   const [usernameStatus, setUsernameStatus] = useState<'idle' | 'checking' | 'available' | 'taken'>('idle')
+  const [emailStatus, setEmailStatus] = useState<'idle' | 'invalid' | 'checking' | 'available' | 'taken'>('idle')
   const [loading, setLoading] = useState(false)
   const [usernameManuallyEdited, setUsernameManuallyEdited] = useState(false)
 
@@ -38,6 +41,14 @@ export default function SignupPage() {
     const id = setTimeout(() => checkUsernameAvailability(formData.username), 500)
     return () => clearTimeout(id)
   }, [formData.username])
+
+  useEffect(() => {
+    const email = formData.email.trim()
+    if (!email) { setEmailStatus('idle'); return }
+    if (!EMAIL_RE.test(email)) { setEmailStatus('invalid'); return }
+    const id = setTimeout(() => checkEmailAvailability(email), 500)
+    return () => clearTimeout(id)
+  }, [formData.email])
 
   const generateUsernameFromName = (name: string) =>
     name.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 27) +
@@ -58,6 +69,21 @@ export default function SignupPage() {
     }
   }
 
+  const checkEmailAvailability = async (email: string) => {
+    setEmailStatus('checking')
+    try {
+      const res = await fetch('/api/auth/check-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+      const data = await res.json()
+      setEmailStatus(data.available ? 'available' : 'taken')
+    } catch {
+      setEmailStatus('idle')
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (usernameStatus !== 'available') {
@@ -66,6 +92,10 @@ export default function SignupPage() {
     }
     if (!formData.name || !formData.email || !formData.username) {
       toast.error('Please fill in all required fields')
+      return
+    }
+    if (emailStatus === 'taken') {
+      toast.error('An account with this email already exists')
       return
     }
     setLoading(true)
@@ -148,16 +178,35 @@ export default function SignupPage() {
           <label htmlFor="email" className="block text-sm font-medium text-grey2 dark:text-content-muted mb-1.5 font-satoshi">
             Email Address <span className="text-errorRed">*</span>
           </label>
-          <input
-            type="email"
-            id="email"
-            value={formData.email}
-            onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-            required
-            className={inputClass}
-            placeholder="you@example.com"
-            disabled={loading}
-          />
+          <div className="relative">
+            <input
+              type="email"
+              id="email"
+              value={formData.email}
+              onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+              required
+              className={`${inputClass} pr-12`}
+              placeholder="you@example.com"
+              disabled={loading}
+            />
+            <div className="absolute right-4 top-1/2 -translate-y-1/2">
+              {emailStatus === 'checking' && <FaSpinner className="w-4 h-4 text-grey3 dark:text-content-subtle animate-spin" />}
+              {emailStatus === 'available' && <FaCheck className="w-4 h-4 text-successGreen" />}
+              {(emailStatus === 'taken' || emailStatus === 'invalid') && <FaXmark className="w-4 h-4 text-errorRed" />}
+            </div>
+          </div>
+          {(emailStatus === 'taken' || emailStatus === 'invalid') && (
+            <p className="mt-1 text-xs font-openSans text-errorRed">
+              {emailStatus === 'taken'
+                ? 'An account with this email already exists'
+                : 'Enter a valid email address'}
+            </p>
+          )}
+          {emailStatus === 'taken' && (
+            <p className="mt-1 text-xs font-openSans text-grey3 dark:text-content-subtle">
+              <Link href="/login" className="text-mainPurple dark:text-[#b9a4f7] font-semibold hover:underline">Sign in instead</Link>
+            </p>
+          )}
         </div>
 
         <div>

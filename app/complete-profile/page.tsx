@@ -163,6 +163,8 @@ export default function CompleteProfilePage() {
         <div className="flex flex-wrap gap-3 justify-center mt-8">
           <Link
             href={identity.username ? `/profile/${identity.username}` : '/dashboard/profile'}
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-brand-gradient text-white text-[15px] font-bold shadow-[0_10px_24px_-6px_rgba(74,55,216,0.45)] hover:-translate-y-0.5 transition-transform"
           >
             View my profile
