@@ -19,7 +19,7 @@ type Plan = {
   name: string
   price: string
   period: string
-  perTailor: string
+  perCredit: string
   tagline: string
   icon: typeof FaBolt
   features: string[]
@@ -33,12 +33,12 @@ const PLANS: Plan[] = [
     name: 'Sprint Pass',
     price: '₦2,500',
     period: 'for 7 days',
-    perTailor: '≈ ₦313 per tailor',
+    perCredit: '≈ ₦313 per credit',
     tagline: 'For “I have an interview this week.”',
     icon: FaBolt,
     features: [
-      '8 AI generations — tailor a resume or prep for an interview',
-      'Cover letters + PDF export in the Segwae template',
+      '8 AI credits — each tailors a resume (cover letter included) or preps for an interview',
+      'One-click PDF export in the Segwae template',
       'Unlimited match scores (always free)',
       'Active for 7 days',
     ],
@@ -48,12 +48,12 @@ const PLANS: Plan[] = [
     name: 'Job-Hunt Pass',
     price: '₦5,000',
     period: 'for 30 days',
-    perTailor: '≈ ₦278 per tailor — best value',
+    perCredit: '₦250 per credit — best value',
     tagline: 'A full month of serious applying.',
     icon: FaRocket,
     features: [
-      '18 AI generations — tailor a resume or prep for an interview',
-      'Cover letters + PDF export in the Segwae template',
+      '20 AI credits — each tailors a resume (cover letter included) or preps for an interview',
+      'One-click PDF export in the Segwae template',
       'Unlimited match scores (always free)',
       'Active for 30 days',
     ],
@@ -65,11 +65,11 @@ const PLANS: Plan[] = [
     name: 'Top-up',
     price: '₦1,500',
     period: 'never expires',
-    perTailor: '≈ ₦300 per tailor',
-    tagline: 'Out of generations mid-hunt? Add 5 more.',
+    perCredit: '₦300 per credit',
+    tagline: 'Out of credits mid-hunt? Add 5 more.',
     icon: FaPlus,
     features: [
-      '5 more AI generations',
+      '5 more AI credits',
       'Stacks on top of any active pass',
       'No expiry — use them whenever',
     ],
@@ -149,7 +149,8 @@ export default function UpgradePage() {
         <p className="font-openSans text-sm text-[#9098A3] dark:text-content-subtle mt-2 max-w-xl mx-auto">
           Browsing and applying to jobs is always free. A pass unlocks the AI tools — the Resume
           Tailor (resume + cover letter rewritten per role) and Interview Prep (likely questions with
-          answers from your resume). No subscription; a pass just covers your hunt.
+          answers from your resume). <span className="text-[#4B4658] dark:text-content-muted font-semibold">One AI credit = one of either</span> — tailor a
+          resume or run a prep session. Match scores stay free. No subscription.
         </p>
       </header>
 
@@ -160,12 +161,12 @@ export default function UpgradePage() {
             {entitlement.remaining > 0 ? (
               <>
                 <span className="font-satoshi font-bold text-[#15131C] dark:text-content">
-                  {entitlement.remaining} tailor{entitlement.remaining === 1 ? '' : 's'} left
+                  {entitlement.remaining} AI credit{entitlement.remaining === 1 ? '' : 's'} left
                 </span>{' '}
                 {entitlement.hasPaidPass ? '· pass active' : '· on the free tier'}
               </>
             ) : (
-              "You've used your free tailor — grab a pass below to keep going."
+              "You've used your free credit — grab a pass below to keep going."
             )}
           </p>
           <Link
@@ -228,7 +229,7 @@ export default function UpgradePage() {
                 </span>
                 <span className="font-openSans text-[13px] text-[#9098A3] dark:text-content-subtle">{plan.period}</span>
               </div>
-              <p className="font-openSans text-xs text-[#A8A2B4] dark:text-content-subtle mt-0.5">{plan.perTailor}</p>
+              <p className="font-openSans text-xs text-[#A8A2B4] dark:text-content-subtle mt-0.5">{plan.perCredit}</p>
 
               <ul className="mt-5 space-y-2.5 flex-1">
                 {plan.features.map((f, i) => (

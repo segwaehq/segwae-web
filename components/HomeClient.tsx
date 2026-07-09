@@ -18,6 +18,9 @@ import {
   FaPhone,
   FaFileLines,
   FaShareNodes,
+  FaWandMagicSparkles,
+  FaGaugeHigh,
+  FaComments,
 } from 'react-icons/fa6'
 
 const ease = [0.22, 1, 0.36, 1] as const
@@ -135,6 +138,27 @@ const IDENTITY_FEATURES = [
   { icon: FaWifi, label: 'Offline-ready', desc: 'Share without internet access.' },
 ]
 
+const AI_TOOLS = [
+  {
+    icon: FaGaugeHigh,
+    name: 'Match Score',
+    tag: 'Free',
+    desc: 'See how well your resume fits a role before you apply — and exactly what to sharpen. Unlimited, always free.',
+  },
+  {
+    icon: FaWandMagicSparkles,
+    name: 'Resume Tailor',
+    tag: 'Pass',
+    desc: 'Rewrites your resume and cover letter for the exact role, then exports a clean PDF in one click.',
+  },
+  {
+    icon: FaComments,
+    name: 'Interview Prep',
+    tag: 'Pass',
+    desc: 'The questions you’re most likely to be asked, with answers drawn straight from your own experience.',
+  },
+]
+
 function jobHref(job: PreviewJob) {
   return job.id ? `/jobs/${job.id}` : '/jobs'
 }
@@ -219,9 +243,9 @@ export default function HomeClient({ previewJobs }: { previewJobs: PreviewJob[] 
 
               <motion.div variants={fadeUp} className="flex gap-10 mt-9 pt-6 border-t border-[#ECECF1] dark:border-line">
                 {[
-                  { num: '500+', label: 'Open roles' },
-                  { num: '50+', label: 'Hiring companies' },
-                  { num: '10k+', label: 'Professionals' },
+                  { num: 'Free', label: 'To create your profile' },
+                  { num: 'AI', label: 'Resume & match tools' },
+                  { num: '1-tap', label: 'Apply to roles' },
                 ].map((s) => (
                   <div key={s.label}>
                     <p className="font-satoshi font-black text-[28px] tracking-[-0.03em] text-[#0F1115] dark:text-content leading-none">
@@ -278,7 +302,7 @@ export default function HomeClient({ previewJobs }: { previewJobs: PreviewJob[] 
                   ))}
                 </div>
                 <div className="px-5 py-[13px] bg-[#FAFAFC] dark:bg-white/[0.03] border-t border-[#EFEFF4] dark:border-line text-center font-openSans text-xs font-medium text-[#9098A3] dark:text-content-subtle">
-                  Updated daily · 500+ open positions
+                  New roles added regularly
                 </div>
               </div>
             </motion.div>
@@ -448,6 +472,71 @@ export default function HomeClient({ previewJobs }: { previewJobs: PreviewJob[] 
         </div>
       </section>
 
+      {/* ═══ SEGWAE AI ═══════════════════════════════════════════════════════ */}
+      <section id="ai" className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-[#FAFAFB] dark:bg-[#12101b]">
+        <div className="max-w-6xl mx-auto">
+
+          <InView className="max-w-[580px] mb-11">
+            <motion.div
+              variants={fadeUp}
+              className="inline-flex items-center gap-2 px-[13px] py-1.5 rounded-full bg-[#F4F0FE] dark:bg-[#221b36] border border-[#E6DCFB] dark:border-[#332a4d] mb-5"
+            >
+              <FaWandMagicSparkles className="w-3 h-3 text-[#5A2DD4] dark:text-[#b9a4f7]" />
+              <span className="font-satoshi text-xs font-bold tracking-[0.04em] text-[#5A2DD4] dark:text-[#b9a4f7]">
+                Segwae AI
+              </span>
+            </motion.div>
+            <motion.h2 variants={fadeUp} className="font-satoshi font-black tracking-[-0.03em] leading-[1.04] text-[#0F1115] dark:text-content text-[clamp(2.2rem,3.4vw,3.1rem)]">
+              Land the interview, faster.
+            </motion.h2>
+            <motion.p variants={fadeUp} className="font-openSans text-grey3 dark:text-content-muted text-base font-medium leading-relaxed mt-4">
+              Segwae reads the job and your resume, then helps you apply sharper — score your fit, rewrite your resume and cover letter for the role, and walk in prepared for the questions.
+            </motion.p>
+          </InView>
+
+          <InView className="grid md:grid-cols-3 gap-4">
+            {AI_TOOLS.map(({ icon: Icon, name, tag, desc }) => (
+              <motion.div
+                key={name}
+                variants={fadeUp}
+                className="bg-white dark:bg-surface-raised rounded-[15px] border border-[#E8E8EF] dark:border-line p-[22px] h-full flex flex-col"
+              >
+                <div className="flex items-center justify-between mb-[18px]">
+                  <div className="w-11 h-11 rounded-[12px] bg-[#F4F0FE] dark:bg-[#241d38] flex items-center justify-center text-[#5A2DD4] dark:text-[#b9a4f7]">
+                    <Icon className="w-[18px] h-[18px]" />
+                  </div>
+                  <span
+                    className={`text-[10px] font-satoshi font-bold px-2.5 py-[3px] rounded-md ${
+                      tag === 'Free'
+                        ? 'text-[#16895E] bg-[#E7F6EF] dark:text-[#4ade9e] dark:bg-[#12271e]'
+                        : 'text-[#5A2DD4] bg-[#F1ECFD] dark:text-[#b9a4f7] dark:bg-[#221b36]'
+                    }`}
+                  >
+                    {tag === 'Free' ? 'Free' : 'With a pass'}
+                  </span>
+                </div>
+                <h3 className="font-satoshi font-bold text-[16px] text-grey1 dark:text-content mb-2">{name}</h3>
+                <p className="font-openSans text-[13.5px] font-medium text-grey3 dark:text-content-muted leading-relaxed">{desc}</p>
+              </motion.div>
+            ))}
+          </InView>
+
+          <InView className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <motion.div variants={fadeUp}>
+              <Link
+                href="/dashboard/ai-tools"
+                className="inline-flex items-center gap-2 bg-brand-gradient text-white px-6 py-3.5 rounded-[11px] font-satoshi font-bold text-sm shadow-[0_8px_22px_rgba(74,55,216,0.3)] hover:-translate-y-0.5 transition-transform"
+              >
+                Try it free <FaArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </motion.div>
+            <motion.p variants={fadeUp} className="font-openSans text-[13px] font-medium text-[#9098A3] dark:text-content-subtle">
+              Match scores are always free · Passes from ₦2,500 · No subscription
+            </motion.p>
+          </InView>
+        </div>
+      </section>
+
       {/* ═══ FOR EMPLOYERS ═══════════════════════════════════════════════════ */}
       <section id="employers" className="relative overflow-hidden py-20 md:py-24 px-4 sm:px-6 lg:px-8 bg-[#0F1115] border-y border-transparent dark:border-line">
         <div
@@ -464,7 +553,7 @@ export default function HomeClient({ previewJobs }: { previewJobs: PreviewJob[] 
                 Hire standout talent, faster.
               </h2>
               <p className="font-openSans text-base font-medium text-white/55 leading-relaxed max-w-[420px]">
-                Post roles to thousands of qualified professionals. Review rich profiles, manage every application, and find your next great hire — all in one dashboard.
+                Post roles to a growing community of qualified professionals. Review rich profiles, manage every application, and find your next great hire — all in one dashboard.
               </p>
             </motion.div>
 
@@ -595,7 +684,7 @@ export default function HomeClient({ previewJobs }: { previewJobs: PreviewJob[] 
             Your next chapter<br />starts here.
           </motion.h2>
           <motion.p variants={fadeUp} className="font-openSans text-lg font-medium text-white/[0.78] mb-8 max-w-[430px] mx-auto leading-relaxed">
-            Join thousands of professionals building careers and making connections on Segwae.
+            Join professionals building careers and making connections on Segwae.
           </motion.p>
           <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link

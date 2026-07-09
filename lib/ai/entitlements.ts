@@ -12,7 +12,7 @@ export const FREE_TAILOR_CAP = 1
 /** Pass plans — server-authoritative price (kobo), cap, and validity. Tunable. */
 export const PASS_PLANS = {
   sprint: { label: 'Sprint Pass', amountKobo: 250_000, generations_cap: 8, days: 7 },
-  job_hunt: { label: 'Job-Hunt Pass', amountKobo: 500_000, generations_cap: 18, days: 30 },
+  job_hunt: { label: 'Job-Hunt Pass', amountKobo: 500_000, generations_cap: 20, days: 30 },
   topup: { label: 'Top-up (5 tailors)', amountKobo: 150_000, generations_cap: 5, days: null },
 } as const
 

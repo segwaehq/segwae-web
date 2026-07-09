@@ -301,9 +301,9 @@ export default function ResumeTailorPage() {
           <div className="space-y-2 border-t border-[#F0EFF4] dark:border-line pt-4">
             <p className="font-openSans text-[13px] text-[#9098A3] dark:text-content-subtle">
               {entitlement.remaining > 0
-                ? `${entitlement.remaining} tailor${entitlement.remaining === 1 ? '' : 's'} left` +
+                ? `${entitlement.remaining} AI credit${entitlement.remaining === 1 ? '' : 's'} left` +
                   (entitlement.hasPaidPass ? ' · pass active' : ' · free')
-                : "You've used your free tailor — grab a pass to keep going."}
+                : "You've used your free credit — grab a pass to keep going."}
             </p>
             <Link
               href="/dashboard/upgrade"
