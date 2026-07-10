@@ -1,5 +1,10 @@
 import { createClient } from '@/lib/supabase/server'
+import type { SupabaseClient } from '@supabase/supabase-js'
 import type { Company, Job, JobApplication, Resume, EmailTemplate, InterviewSchedule } from '@/lib/types'
+
+// Routes that authenticate a mobile Bearer token pass a request-scoped client so
+// these queries run under the caller's RLS. Web callers omit it and get the
+// cookie-based server client, exactly as before.
 
 // ─── Company ──────────────────────────────────────────────────────────────────
 
@@ -107,8 +112,8 @@ export async function getJobsByCompany(companyId: string): Promise<Job[]> {
   })
 }
 
-export async function getJobById(jobId: string): Promise<Job | null> {
-  const supabase = await createClient()
+export async function getJobById(jobId: string, client?: SupabaseClient): Promise<Job | null> {
+  const supabase = client ?? await createClient()
   const { data } = await supabase
     .from('jobs')
     .select(`
@@ -176,8 +181,8 @@ export async function getApplicationsForJob(jobId: string): Promise<JobApplicati
   return data ?? []
 }
 
-export async function getMyApplications(userId: string): Promise<JobApplication[]> {
-  const supabase = await createClient()
+export async function getMyApplications(userId: string, client?: SupabaseClient): Promise<JobApplication[]> {
+  const supabase = client ?? await createClient()
   const { data, error } = await supabase
     .from('job_applications')
     .select(`
@@ -194,8 +199,8 @@ export async function getMyApplications(userId: string): Promise<JobApplication[
   return data ?? []
 }
 
-export async function getTodayApplicationCount(userId: string): Promise<number> {
-  const supabase = await createClient()
+export async function getTodayApplicationCount(userId: string, client?: SupabaseClient): Promise<number> {
+  const supabase = client ?? await createClient()
   const { data, error } = await supabase.rpc('get_today_application_count', {
     p_user_id: userId,
   })
@@ -203,8 +208,8 @@ export async function getTodayApplicationCount(userId: string): Promise<number> 
   return data ?? 0
 }
 
-export async function getTotalApplicationCount(userId: string): Promise<number> {
-  const supabase = await createClient()
+export async function getTotalApplicationCount(userId: string, client?: SupabaseClient): Promise<number> {
+  const supabase = client ?? await createClient()
   const { count, error } = await supabase
     .from('job_applications')
     .select('*', { count: 'exact', head: true })
@@ -215,9 +220,10 @@ export async function getTotalApplicationCount(userId: string): Promise<number> 
 
 export async function getExistingApplication(
   jobId: string,
-  userId: string
+  userId: string,
+  client?: SupabaseClient
 ): Promise<{ id: string; status: string } | null> {
-  const supabase = await createClient()
+  const supabase = client ?? await createClient()
   const { data } = await supabase
     .from('job_applications')
     .select('id, status')
@@ -233,8 +239,8 @@ export async function createApplication(payload: {
   cover_note: string | null
   resume_url: string | null
   ad_watched: boolean
-}): Promise<JobApplication> {
-  const supabase = await createClient()
+}, client?: SupabaseClient): Promise<JobApplication> {
+  const supabase = client ?? await createClient()
   const { data, error } = await supabase
     .from('job_applications')
     .insert(payload)
@@ -285,8 +291,8 @@ export async function bulkUpdateApplicationStatus(
 
 // ─── Resumes ──────────────────────────────────────────────────────────────────
 
-export async function getResumes(userId: string): Promise<Resume[]> {
-  const supabase = await createClient()
+export async function getResumes(userId: string, client?: SupabaseClient): Promise<Resume[]> {
+  const supabase = client ?? await createClient()
   const { data, error } = await supabase
     .from('resumes')
     .select('*')

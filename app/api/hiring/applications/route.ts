@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { getRequestAuth } from '@/lib/supabase/api-auth'
 import {
   getMyApplications,
   getTodayApplicationCount,
@@ -10,40 +10,35 @@ import {
   createApplication,
 } from '@/lib/hiring/queries'
 
-async function getAuthedUser() {
-  const supabase = await createClient()
-  const { data: { user }, error } = await supabase.auth.getUser()
-  if (error || !user) return null
-  return user
-}
-
 export async function GET(request: Request) {
-  const user = await getAuthedUser()
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const auth = await getRequestAuth(request)
+  if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const { user, supabase } = auth
 
   const { searchParams } = new URL(request.url)
 
   if (searchParams.get('today_count') === 'true') {
     const [count, total_count] = await Promise.all([
-      getTodayApplicationCount(user.id),
-      getTotalApplicationCount(user.id),
+      getTodayApplicationCount(user.id, supabase),
+      getTotalApplicationCount(user.id, supabase),
     ])
     return NextResponse.json({ count, total_count })
   }
 
   const checkJobId = searchParams.get('check_job_id')
   if (checkJobId) {
-    const application = await getExistingApplication(checkJobId, user.id)
+    const application = await getExistingApplication(checkJobId, user.id, supabase)
     return NextResponse.json({ application })
   }
 
-  const applications = await getMyApplications(user.id)
+  const applications = await getMyApplications(user.id, supabase)
   return NextResponse.json({ applications })
 }
 
 export async function POST(request: Request) {
-  const user = await getAuthedUser()
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const auth = await getRequestAuth(request)
+  if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const { user, supabase } = auth
 
   const body = await request.json()
   const { job_id, cover_note, resume_id, ad_watched } = body
@@ -51,7 +46,7 @@ export async function POST(request: Request) {
   if (!job_id) return NextResponse.json({ error: 'job_id is required' }, { status: 400 })
 
   // Verify job exists and is accepting applications
-  const job = await getJobById(job_id)
+  const job = await getJobById(job_id, supabase)
   if (!job) return NextResponse.json({ error: 'Job not found' }, { status: 404 })
   if (job.status !== 'active') return NextResponse.json({ error: 'Job is not accepting applications' }, { status: 400 })
   if (job.application_deadline && new Date(job.application_deadline) < new Date()) {
@@ -60,11 +55,11 @@ export async function POST(request: Request) {
   if (job.posting_mode !== 'internal') return NextResponse.json({ error: 'Cannot apply to external jobs through Segwae' }, { status: 400 })
 
   // Block duplicate applications
-  const existing = await getExistingApplication(job_id, user.id)
+  const existing = await getExistingApplication(job_id, user.id, supabase)
   if (existing) return NextResponse.json({ error: 'Already applied to this job' }, { status: 409 })
 
   // Resolve resume URL — block if no resumes
-  const resumes = await getResumes(user.id)
+  const resumes = await getResumes(user.id, supabase)
   if (resumes.length === 0) {
     return NextResponse.json({ error: 'no_resumes', message: 'Please add a resume before applying' }, { status: 422 })
   }
@@ -80,7 +75,7 @@ export async function POST(request: Request) {
 
   // Server-side ad gate: verify the client's claim about ad_watched
   // Count is fetched before insert so N = count + 1
-  const todayCount = await getTodayApplicationCount(user.id)
+  const todayCount = await getTodayApplicationCount(user.id, supabase)
   const submissionNumber = todayCount + 1
   const adRequired = submissionNumber % 2 === 0
 
@@ -91,7 +86,7 @@ export async function POST(request: Request) {
       cover_note: cover_note || null,
       resume_url,
       ad_watched: adRequired ? (ad_watched === true) : false,
-    })
+    }, supabase)
 
     const newCount = todayCount + 1
     return NextResponse.json({ application, today_count: newCount, ad_required_next: (newCount + 1) % 2 === 0 }, { status: 201 })

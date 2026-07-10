@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { getRequestUser } from '@/lib/supabase/api-auth'
 import { tailorResume } from '@/lib/ai/resume-tools'
 import { resolveResumeInput } from '@/lib/ai/resume-input'
 import { consumeTailor, refundTailor } from '@/lib/ai/entitlements'
@@ -9,18 +9,8 @@ export const runtime = 'nodejs'
 // Opus 4.8 + adaptive thinking can run well beyond the default serverless limit.
 export const maxDuration = 300
 
-async function getAuthedUser() {
-  const supabase = await createClient()
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.getUser()
-  if (error || !user) return null
-  return user
-}
-
 export async function POST(request: Request) {
-  const user = await getAuthedUser()
+  const user = await getRequestUser(request)
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await request.json().catch(() => null)
